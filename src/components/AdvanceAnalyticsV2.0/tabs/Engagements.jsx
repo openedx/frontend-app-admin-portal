@@ -86,7 +86,7 @@ const Engagements = ({ enterpriseId }) => {
     sendEnterpriseTrackEvent(
       enterpriseId,
       `${EVENT_NAMES.ANALYTICS_V2.ENGAGEMENT_CHART_CLICKED}`,
-      { ...data },
+      { chartId: data?.points?.[0]?.data?.chartId },
     );
   };
 

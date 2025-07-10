@@ -91,7 +91,7 @@ const useBnrSubsidyRequests = (
 
         const options = {
           page: (args.pageIndex || 0) + 1,
-          page_size: args.pageSize || 4,
+          page_size: args.pageSize || 10,
           state: REQUEST_TAB_VISIBLE_STATES.join(','),
         };
 

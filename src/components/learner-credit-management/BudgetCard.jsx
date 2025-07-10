@@ -25,6 +25,7 @@ const BudgetCard = ({ original }) => {
     enterpriseUUID,
     id,
     isAssignable,
+    isBnREnabled,
     isRetired,
     retiredAt,
     name,
@@ -51,6 +52,7 @@ const BudgetCard = ({ original }) => {
         displayName={name}
         enterpriseSlug={enterpriseSlug}
         isAssignable={isAssignable}
+        isBnREnabled={isBnREnabled}
         isRetired={isRetired}
         retiredAt={retiredAt}
       />
@@ -108,6 +110,7 @@ BudgetCard.propTypes = {
       pending: PropTypes.number,
     }),
     isAssignable: PropTypes.bool,
+    isBnREnabled: PropTypes.bool,
     isRetired: PropTypes.bool,
     retiredAt: PropTypes.string,
     enterpriseUUID: PropTypes.string.isRequired,

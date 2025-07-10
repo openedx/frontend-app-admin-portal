@@ -67,6 +67,7 @@ const BaseSubBudgetCard = ({
   enablePortalLearnerCreditManagementScreen,
   isLoading,
   isAssignable,
+  isBnREnabled,
   isRetired,
   retiredAt,
 }) => {
@@ -163,6 +164,7 @@ const BaseSubBudgetCard = ({
             <SubBudgetCardUtilization
               isFetchingBudgets={isFetchingBudgets}
               isAssignable={isAssignable}
+              isBnREnabled={isBnREnabled}
               status={status}
               available={available}
               pending={pending}
@@ -189,6 +191,7 @@ BaseSubBudgetCard.propTypes = {
   pending: PropTypes.number,
   displayName: PropTypes.string,
   isAssignable: PropTypes.bool,
+  isBnREnabled: PropTypes.bool,
   isRetired: PropTypes.bool,
   retiredAt: PropTypes.string,
 };

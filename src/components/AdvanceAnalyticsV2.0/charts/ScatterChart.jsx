@@ -21,7 +21,18 @@ import messages from '../messages';
  * @returns The rendered Plotly scatter chart.
  */
 const ScatterChart = ({
-  data, xKey, yKey, colorKey, colorMap, hovertemplate, xAxisTitle, yAxisTitle, markerSizes, customDataKeys, onClick,
+  data,
+  xKey,
+  yKey,
+  colorKey,
+  colorMap,
+  hovertemplate,
+  xAxisTitle,
+  yAxisTitle,
+  markerSizes,
+  customDataKeys,
+  onClick,
+  chartId,
 }) => {
   const intl = useIntl();
   const categories = Object.keys(colorMap);
@@ -31,6 +42,7 @@ const ScatterChart = ({
     // Create a Map to get the index of each item for bubble marker size calculation.
     const dataIndexMap = new Map(data.map((item, index) => [item, index]));
     return {
+      chartId,
       x: filteredData.map(item => item[xKey]),
       y: filteredData.map(item => item[yKey]),
       type: 'scatter',
@@ -48,7 +60,7 @@ const ScatterChart = ({
       customdata: customDataKeys.length ? filteredData.map(item => customDataKeys.map(key => item[key])) : [],
       hovertemplate,
     };
-  }), [data, xKey, yKey, colorKey, colorMap, hovertemplate, categories, markerSizes, customDataKeys, intl]);
+  }), [data, xKey, yKey, colorKey, colorMap, hovertemplate, categories, markerSizes, customDataKeys, intl, chartId]);
 
   const layout = {
     margin: { t: 0 },
@@ -87,6 +99,7 @@ ScatterChart.defaultProps = {
 };
 
 ScatterChart.propTypes = {
+  chartId: PropTypes.string.isRequired,
   data: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
   xKey: PropTypes.string.isRequired,
   yKey: PropTypes.string.isRequired,

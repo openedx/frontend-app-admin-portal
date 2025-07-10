@@ -24,8 +24,8 @@ const SkillsByEnrollmentChart = ({
             isFetching={isFetching}
             isError={isError}
             chartType="BarChart"
-            chartId="skills-by-enrollment-chart"
             chartProps={{
+              chartId: 'skills-by-enrollment-chart',
               data,
               onClick,
               xKey: 'skillName',

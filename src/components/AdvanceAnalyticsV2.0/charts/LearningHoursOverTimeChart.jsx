@@ -53,8 +53,8 @@ const LearningHoursOverTimeChart = ({
             isFetching={isFetching}
             isError={isError}
             chartType="LineChart"
-            chartId="learning-hours-over-time-chart"
             chartProps={{
+              chartId: 'learning-hours-over-time-chart',
               data: aggregatedData,
               onClick,
               xKey: 'activityDate',
