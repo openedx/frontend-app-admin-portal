@@ -7,6 +7,7 @@ import { IntlProvider } from '@edx/frontend-platform/i18n';
 
 import userEvent from '@testing-library/user-event';
 import AdminOnboardingTours from '../AdminOnboardingTours';
+import { RESET_TARGETS } from '../constants';
 
 const mockOnAdvance = jest.fn();
 const mockOnEnd = jest.fn();
@@ -144,5 +145,27 @@ describe('AdminOnboardingTours', () => {
     await waitFor(() => {
       expect(mockOnEnd).toHaveBeenCalled();
     });
+  });
+
+  it('resets current step to 0 when targetSelector is in RESET_TARGETS', () => {
+    // Render with a non-reset target first
+    const { rerender } = renderComponent({ targetSelector: '#step-1' });
+
+    // Verify we start at step 1
+    expect(screen.getByText('Step 1')).toBeInTheDocument();
+
+    // Change to a reset target
+    rerender(
+      <IntlProvider locale="en">
+        <Provider store={store}>
+          <p id="step-1">Step 1</p>
+          <p id="step-2">Step 2</p>
+          <AdminOnboardingTours {...defaultProps} targetSelector={RESET_TARGETS[0]} />
+        </Provider>
+      </IntlProvider>,
+    );
+
+    // Verify we're back at step 1 (reset to 0)
+    expect(screen.getByText('Step 1')).toBeInTheDocument();
   });
 });

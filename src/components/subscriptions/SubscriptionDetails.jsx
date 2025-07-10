@@ -33,11 +33,11 @@ const SubscriptionDetails = ({ enterpriseSlug, intl }) => {
   const backToSubscriptionsPath = `/${enterpriseSlug}/admin/subscriptions/${MANAGE_LEARNERS_TAB}`;
 
   return (
-    <>
+    <div id="subscription-plans-detail-page">
       {hasMultipleSubscriptions && (
         <Row className="ml-0 mb-3">
           <Link to={backToSubscriptionsPath}>
-            <Button variant="outline-primary">
+            <Button variant="outline-primary" id="subscription-navigation">
               <Icon src={ArrowBackIos} className="mr-2" />
               {intl.formatMessage({
                 id: 'admin.portal.subscription.details.back.to.subscriptions.button',
@@ -54,7 +54,7 @@ const SubscriptionDetails = ({ enterpriseSlug, intl }) => {
           <div className="d-flex justify-content-between mb-3">
             <h2>{subscription.title}</h2>
             {shouldShowInviteLearnersButton && (
-              <div className="text-md-right">
+              <div className="text-md-right" id="invite-learners-button">
                 <InviteLearnersButton
                   onSuccess={({ numAlreadyAssociated, numSuccessfulAssignments }) => {
                     forceRefresh();
@@ -132,7 +132,7 @@ const SubscriptionDetails = ({ enterpriseSlug, intl }) => {
       >
         {toastMessage}
       </Toast>
-    </>
+    </div>
   );
 };
 
