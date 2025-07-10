@@ -53,8 +53,8 @@ const EnrollmentsOverTimeChart = ({
             isFetching={isFetching}
             isError={isError}
             chartType="LineChart"
-            chartId="enrollments-over-time-chart"
             chartProps={{
+              chartId: 'enrollments-over-time-chart',
               data: aggregatedData,
               onClick,
               xKey: 'enterpriseEnrollmentDate',
