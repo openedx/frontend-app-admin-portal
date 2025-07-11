@@ -5,7 +5,7 @@ import configureMockStore from 'redux-mock-store';
 import thunk from 'redux-thunk';
 import { sendEnterpriseTrackEvent } from '@edx/frontend-enterprise-utils';
 import { IntlProvider } from '@edx/frontend-platform/i18n';
-import { screen, render } from '@testing-library/react';
+import { screen, render, waitFor } from '@testing-library/react';
 import { userEvent } from '@testing-library/user-event';
 import '@testing-library/jest-dom/extend-expect';
 import dayjs from 'dayjs';
@@ -59,6 +59,19 @@ jest.mock('../../EnterpriseSubsidiesContext/data/hooks', () => ({
     data: [],
   }),
 }));
+
+const mockModuleActivityReportResponse = {
+  results: [
+    {
+      module_id: 'module-1',
+      user_id: 999,
+    },
+    {
+      module_id: 'module-2',
+      user_id: 1000,
+    },
+  ],
+};
 
 const scrollIntoViewMock = jest.fn();
 window.HTMLElement.prototype.scrollIntoView = scrollIntoViewMock;
@@ -374,6 +387,25 @@ describe('<Admin />', () => {
 
         expect(screen.getByRole('heading', { name: 'Learner Progress Report' })).toBeInTheDocument();
         expect(container.querySelector('.budgets-dropdown')).toBeInTheDocument();
+      });
+    });
+
+    describe('with enterprise module activity data', () => {
+      it('renders module activity data correctly', async () => {
+        const mockfetchEnterpriseModuleActivityReport = jest.spyOn(EnterpriseDataApiService, 'fetchEnterpriseModuleActivityReport');
+        mockfetchEnterpriseModuleActivityReport.mockResolvedValue({ data: mockModuleActivityReportResponse });
+        render(<AdminWrapper {...baseProps} />);
+        const moduleActivityComponent = await screen.findByText('Module Activity (Executive Education)');
+        expect(moduleActivityComponent).toBeInTheDocument();
+      });
+    });
+
+    describe('without enterprise module activity data', () => {
+      it('does not render module activity data', async () => {
+        const mockfetchEnterpriseModuleActivityReport = jest.spyOn(EnterpriseDataApiService, 'fetchEnterpriseModuleActivityReport');
+        mockfetchEnterpriseModuleActivityReport.mockResolvedValue({ data: { results: [] } });
+        render(<AdminWrapper {...baseProps} />);
+        await expect(waitFor(() => screen.findByText('Module Activity (Executive Education)'), { timeout: 100 })).rejects.toThrow();
       });
     });
 
