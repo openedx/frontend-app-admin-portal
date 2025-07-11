@@ -31,6 +31,22 @@ export const ANALYTICS_INSIGHTS_TARGETS = {
   SKILLS: 'analytics-skills',
 };
 
+export const ADMINISTER_SUBSCRIPTIONS_TARGETS = {
+  SIDEBAR: 'subscriptions-sidebar',
+  SUBSCRIPTION_PLANS_LIST: 'subscription-plans-list',
+  MANAGE_LEARNERS_BUTTON: 'manage-learners-button',
+  SUBSCRIPTION_PLANS_DETAIL_PAGE: 'subscription-plans-detail-page',
+  INVITE_LEARNERS_BUTTON: 'invite-learners-button',
+  LICENSE_ALLOCATION_SECTION: 'license-allocation-section',
+  LICENSE_ALLOCATION_FILTERS: 'license-allocation-filters',
+  SUBSCRIPTIONS_NAVIGATION: 'subscription-navigation',
+};
+
+// targets that will trigger an index reset
+export const RESET_TARGETS = [
+  ADMINISTER_SUBSCRIPTIONS_TARGETS.SUBSCRIPTION_PLANS_DETAIL_PAGE,
+];
+
 export const ADMIN_TOUR_EVENT_NAMES = {
   ENROLLMENT_INSIGHTS_ADVANCE_EVENT_NAME: 'edx.ui.enterprise.admin-portal.admin-onboarding-tours.enrollment-insights.advance',
   ENROLLMENT_INSIGHTS_COMPLETED_EVENT_NAME: 'edx.ui.enterprise.admin-portal.admin-onboarding-tours.enrollment-insights.completed',
@@ -41,6 +57,9 @@ export const ADMIN_TOUR_EVENT_NAMES = {
   ORGANIZE_LEARNERS_ADVANCE_EVENT_NAME: 'edx.ui.enterprise.admin-portal.admin-onboarding-tours.organize-learners.advance',
   ORGANIZE_LEARNERS_COMPLETED_EVENT_NAME: 'edx.ui.enterprise.admin-portal.admin-onboarding-tours.organize-learners.completed',
   ORGANIZE_LEARNERS_DISMISS_EVENT_NAME: 'edx.ui.enterprise.admin-portal.admin-onboarding-tours.organize-learners.dismiss',
+  ADMINISTER_SUBSCRIPTIONS_ADVANCE_EVENT_NAME: 'edx.ui.enterprise.admin-portal.admin-onboarding-tours.administer-subscriptions.advance',
+  ADMINISTER_SUBSCRIPTIONS_COMPLETED_EVENT_NAME: 'edx.ui.enterprise.admin-portal.admin-onboarding-tours.administer-subscriptions.completed',
+  ADMINISTER_SUBSCRIPTIONS_DISMISS_EVENT_NAME: 'edx.ui.enterprise.admin-portal.admin-onboarding-tours.administer-subscriptions.dismiss',
 };
 
 export const ONBOARDING_WELCOME_MODAL_COOKIE_NAME = 'seen-onboarding-welcome-modal';

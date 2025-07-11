@@ -1,6 +1,7 @@
 import {
   render, screen, fireEvent,
 } from '@testing-library/react';
+import '@testing-library/jest-dom';
 import { IntlProvider } from '@edx/frontend-platform/i18n';
 import { Provider } from 'react-redux';
 import configureStore from 'redux-mock-store';
@@ -47,6 +48,9 @@ const defaultState = {
     onboardingTourDismissed: false,
     uuid: 'test-uuid',
   },
+  portalConfiguration: {
+    enableSubscriptionManagementScreen: true,
+  },
 };
 
 const mockSetShowCollapsible = jest.fn();
@@ -86,6 +90,9 @@ describe('TourCollapsible', () => {
         onboardingTourDismissed: false,
         uuid: 'test-uuid',
       },
+      portalConfiguration: {
+        enableSubscriptionManagementScreen: true,
+      },
     };
     setup(state);
     expect(screen.queryByTestId('floating-collapsible')).toBeFalsy();
@@ -98,6 +105,9 @@ describe('TourCollapsible', () => {
         onboardingTourCompleted: false,
         onboardingTourDismissed: true,
         uuid: 'test-uuid',
+      },
+      portalConfiguration: {
+        enableSubscriptionManagementScreen: true,
       },
     };
     setup(state);
@@ -123,6 +133,9 @@ describe('TourCollapsible', () => {
         onboardingTourDismissed: true,
         uuid: 'test-uuid',
       },
+      portalConfiguration: {
+        enableSubscriptionManagementScreen: true,
+      },
     };
     setup(state);
 
@@ -140,6 +153,9 @@ describe('TourCollapsible', () => {
         onboardingTourDismissed: false,
         uuid: 'test-uuid',
       },
+      portalConfiguration: {
+        enableSubscriptionManagementScreen: true,
+      },
     };
     setup(state);
 
@@ -149,5 +165,20 @@ describe('TourCollapsible', () => {
     // Wait for tooltip to appear
     const tooltipId = 'product-tours-question-icon-tooltip';
     expect(document.getElementById(tooltipId)).toBeDefined();
+  });
+
+  it('does not display administer subscriptions step when subscription management is disabled', () => {
+    const state = {
+      enterpriseCustomerAdmin: {
+        onboardingTourCompleted: false,
+        onboardingTourDismissed: false,
+        uuid: 'test-uuid',
+      },
+      portalConfiguration: {
+        enableSubscriptionManagementScreen: false,
+      },
+    };
+    setup(state, true);
+    expect(screen.queryByText('Administer subscriptions')).not.toBeInTheDocument();
   });
 });

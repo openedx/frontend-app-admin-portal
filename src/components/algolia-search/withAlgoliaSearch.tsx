@@ -7,7 +7,6 @@ const withAlgoliaSearch = (WrappedComponent) => {
   const WithAlgoliaSearch = ({ enterpriseId, enterpriseFeatures, ...rest }) => {
     const algolia = useAlgoliaSearch({
       enterpriseId,
-      enterpriseFeatures,
     });
     return <WrappedComponent algolia={algolia} enterpriseId={enterpriseId} {...rest} />;
   };

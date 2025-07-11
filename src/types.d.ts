@@ -91,10 +91,6 @@ declare global {
     active: boolean,
   };
 
-  type EnterpriseFeatures = {
-    catalogQuerySearchFiltersEnabled?: boolean,
-  };
-
   export type SubscriptionPlan = {
     title: string,
     uuid: string,

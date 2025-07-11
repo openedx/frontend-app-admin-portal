@@ -21,7 +21,7 @@ const SubscriptionManagementPage = ({ enterpriseId, intl }) => {
       <Helmet title={PAGE_TITLE} />
       <Hero title={PAGE_TITLE} />
       <main role="main" className="manage-subscription">
-        <Container className="py-3" fluid>
+        <Container id="subscription-plans-list" className="py-3" fluid>
           <SubscriptionRoutes />
         </Container>
       </main>
