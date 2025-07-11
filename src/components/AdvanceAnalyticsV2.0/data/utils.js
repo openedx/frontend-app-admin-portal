@@ -193,8 +193,10 @@ export const sumEntitiesByMetric = (records, groupByKey, fieldsToSum = []) => {
   records?.forEach(record => {
     const key = record[groupByKey];
     if (!result[key]) {
-      // Create a shallow copy of the record to preserve other fields
-      result[key] = { ...record };
+      // Shallow copy of record excluding groupByKey + enrollType
+      const { enrollType, ...rest } = record;
+      result[key] = { ...rest };
+      result[key][groupByKey] = key; // re-add the grouping key explicitly
       // Initialize all summable fields to 0
       fieldsToSum.forEach(field => {
         result[key][field] = 0;

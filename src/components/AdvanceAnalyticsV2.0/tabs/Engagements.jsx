@@ -133,10 +133,11 @@ const Engagements = ({ enterpriseId }) => {
 
       {/* Stats */}
       <Stats
-        tabName="Engagement"
+        title="Engagement"
         data={statsData}
         isFetching={isStatsFetching}
         isError={isStatsError}
+        activeTab={ANALYTICS_TABS.ENGAGEMENTS}
       />
 
       {/* Skills Chart */}

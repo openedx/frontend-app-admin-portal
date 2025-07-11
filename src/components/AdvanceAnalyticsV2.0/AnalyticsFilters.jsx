@@ -28,7 +28,7 @@ const AnalyticsFilters = ({
 }) => {
   const intl = useIntl();
   const [collapsed, setCollapsed] = useState(false);
-  const isProgressTab = activeTab === 'progress';
+  const isProgressOrOutcomesTab = activeTab === 'progress' || activeTab === 'outcomes';
 
   const handleDateRangeChange = (selectedRange) => {
     const today = new Date();
@@ -159,7 +159,7 @@ const AnalyticsFilters = ({
               </Form.Group>
             </div>
 
-            {!isProgressTab && (
+            {!isProgressOrOutcomesTab && (
               <div className="col">
                 <Form.Group>
                   <Form.Label>
@@ -206,7 +206,7 @@ const AnalyticsFilters = ({
           </div>
 
           <div className="row filter-container">
-            {!isProgressTab && (
+            {!isProgressOrOutcomesTab && (
               <div className="col" data-testid="granularity-select">
                 <Form.Group>
                   <Form.Label>
@@ -283,7 +283,7 @@ const AnalyticsFilters = ({
               </Form.Group>
             </div>
 
-            {!isProgressTab && (
+            {!isProgressOrOutcomesTab && (
               <div className="col">
                 <Form.Group>
                   <Form.Label className="font-weight-normal">
@@ -325,7 +325,7 @@ const AnalyticsFilters = ({
               </Form.Group>
             </div>
 
-            {isProgressTab && (
+            {isProgressOrOutcomesTab && (
             <div className="col">
               <Form.Group>
                 <Form.Label className="font-weight-normal d-flex align-items-center">
@@ -364,7 +364,7 @@ const AnalyticsFilters = ({
             )}
           </div>
 
-          {!isProgressTab && (
+          {!isProgressOrOutcomesTab && (
             <div className="row filter-container pb-2">
               <div className="col-3">
                 <Form.Group>

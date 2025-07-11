@@ -11,10 +11,10 @@ const data = {
   completions: 265400,
 };
 describe('Stats', () => {
-  it('renders the correct values for each statistic', async () => {
+  it('renders the correct values for each engagement statistic', async () => {
     const { container } = render(
       <IntlProvider locale="en">
-        <Stats data={data} isFetching={false} isError={false} />
+        <Stats data={data} isFetching={false} isError={false} title="Engagement" activeTab="engagements" />
       </IntlProvider>,
     );
 
@@ -28,5 +28,25 @@ describe('Stats', () => {
     expect(container.querySelector('.value-learning-hours')?.textContent).toEqual('25.35M');
     expect(container.querySelector('.title-completions')?.textContent).toEqual('Completions');
     expect(container.querySelector('.value-completions')?.textContent).toEqual('265.4K');
+  });
+
+  it('renders the correct values for each outcomes statistic', async () => {
+    const { container } = render(
+      <IntlProvider locale="en">
+        <Stats data={data} isFetching={false} isError={false} title="Outcomes" activeTab="outcomes" />
+      </IntlProvider>,
+    );
+
+    expect(container.querySelector('.title-enrollments')).toBeNull();
+    expect(container.querySelector('.title-daily-sessions')).toBeNull();
+
+    expect(container.querySelector('.title-completions')?.textContent).toEqual('Completions');
+    expect(container.querySelector('.value-completions')?.textContent).toEqual('265.4K');
+    expect(container.querySelector('.title-unique-skills')?.textContent).toEqual('Unique skills gained');
+    expect(container.querySelector('.value-unique-skills')?.textContent).toEqual('0');
+    expect(container.querySelector('.title-upskilled-learners')?.textContent).toEqual('Upskilled learners');
+    expect(container.querySelector('.value-upskilled-learners')?.textContent).toEqual('0');
+    expect(container.querySelector('.title-new-skills')?.textContent).toContain('New skills learned in');
+    expect(container.querySelector('.value-new-skills')?.textContent).toEqual('0');
   });
 });

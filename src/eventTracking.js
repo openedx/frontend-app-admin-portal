@@ -42,6 +42,7 @@ const LEARNER_PROGRESS_REPORT_EVENTS = {
 // analytics-v2
 const ANALYTICS_V2_EVENTS = {
   ENGAGEMENT_CHART_CLICKED: `${ANALYTICS_V2_PREFIX}.engagement.chart.clicked`,
+  OUTCOMES_CHART_CLICKED: `${ANALYTICS_V2_PREFIX}.outcomes.chart.clicked`,
 };
 // learner profile view
 const LEARNER_PROFILE_VIEW_EVENTS = {
