@@ -30,14 +30,14 @@ const RequestFailureModal = ({
         <div className="micro">
           <p className="h6">Suggested resolution steps</p>
           <ul className="text-gray pl-3">
-            <li>Wait and try to {isDeclinedReason ? 'decline' : 'approve' } this enrollment request again later</li>
+            <li>Wait and try to {isDeclinedReason ? 'decline' : 'approve'} this enrollment request again later</li>
             <li>If the issue continues, contact customer support</li>
             <li>
               Get more troubleshooting help at{' '}
               <Hyperlink
                 destination={
-                    getConfig().ENTERPRISE_SUPPORT_URL
-                  }
+                  getConfig().ENTERPRISE_SUPPORT_URL
+                }
                 target="_blank"
               >
                 Help Center
