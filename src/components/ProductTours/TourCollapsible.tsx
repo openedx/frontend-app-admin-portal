@@ -1,18 +1,20 @@
-import React, { FC } from 'react';
+import React, { FC, useMemo } from 'react';
 import { connect } from 'react-redux';
 
 import {
   IconButton, Icon, OverlayTrigger, Tooltip, Stack,
 } from '@openedx/paragon';
 import {
-  CreditCard, InsertChartOutlined, Question, Person, TrendingUp,
+  CreditCard, InsertChartOutlined, Person, Question, Settings, TextSnippet, TrendingUp,
 } from '@openedx/paragon/icons';
 import { useIntl } from '@edx/frontend-platform/i18n';
 
 import FloatingCollapsible from '../FloatingCollapsible';
 import messages, {
   ADMINISTER_SUBSCRIPTIONS_TITLE,
+  CUSTOMIZE_REPORTS_TITLE,
   ORGANIZE_LEARNERS_TITLE,
+  SET_UP_PREFERENCES_TITLE,
   TRACK_LEARNER_PROGRESS_TITLE,
   VIEW_ENROLLMENTS_INSIGHT_TITLE,
 } from './AdminOnboardingTours/messages';
@@ -21,9 +23,11 @@ import { Step } from './AdminOnboardingTours/OnboardingSteps';
 import {
   ADMINISTER_SUBSCRIPTIONS_TARGETS,
   ANALYTICS_INSIGHTS_TARGETS,
+  CUSTOMIZE_REPORTS_SIDEBAR,
   ORGANIZE_LEARNER_TARGETS,
   TRACK_LEARNER_PROGRESS_TARGETS,
 } from './AdminOnboardingTours/constants';
+import { TOUR_TARGETS } from './constants';
 
 interface Props {
   dismissOnboardingTour: (adminUuid: string) => void;
@@ -33,6 +37,7 @@ interface Props {
   showCollapsible: boolean;
   setShowCollapsible: (value: boolean) => void;
   enableSubscriptionManagementScreen: boolean;
+  enableReportingConfigScreen: boolean;
 }
 
 const QUICK_START_GUIDE_STEPS = [{
@@ -55,7 +60,19 @@ const QUICK_START_GUIDE_STEPS = [{
   title: ORGANIZE_LEARNERS_TITLE,
   timeEstimate: 2,
   targetId: ORGANIZE_LEARNER_TARGETS.PEOPLE_MANAGEMENT_SIDEBAR,
-}];
+}, {
+  icon: TextSnippet,
+  title: CUSTOMIZE_REPORTS_TITLE,
+  timeEstimate: 1,
+  targetId: CUSTOMIZE_REPORTS_SIDEBAR,
+},
+{
+  icon: Settings,
+  title: SET_UP_PREFERENCES_TITLE,
+  timeEstimate: 1,
+  targetId: TOUR_TARGETS.SETTINGS_SIDEBAR,
+},
+];
 
 const TourCollapsible: FC<Props> = (
   {
@@ -66,6 +83,7 @@ const TourCollapsible: FC<Props> = (
     setShowCollapsible,
     uuid: adminUuid,
     enableSubscriptionManagementScreen,
+    enableReportingConfigScreen,
   },
 ) => {
   const intl = useIntl();
@@ -80,6 +98,17 @@ const TourCollapsible: FC<Props> = (
     reopenTour(adminUuid);
   };
 
+  const hiddenSteps = useMemo(() => {
+    const steps: string[] = [];
+    if (!enableSubscriptionManagementScreen) {
+      steps.push(ADMINISTER_SUBSCRIPTIONS_TITLE);
+    }
+    if (!enableReportingConfigScreen) {
+      steps.push(CUSTOMIZE_REPORTS_TITLE);
+    }
+    return steps;
+  }, [enableSubscriptionManagementScreen, enableReportingConfigScreen]);
+
   return (
     <>
       {showCollapsible && (
@@ -90,7 +119,7 @@ const TourCollapsible: FC<Props> = (
           <p className="small">{intl.formatMessage(messages.collapsibleIntro)}</p>
           <Stack gap={3} className="mb-3">
             {QUICK_START_GUIDE_STEPS.map(step => {
-              if (step.title === ADMINISTER_SUBSCRIPTIONS_TITLE && !enableSubscriptionManagementScreen) {
+              if (hiddenSteps.includes(step.title)) {
                 return null;
               }
               return (
@@ -134,6 +163,7 @@ const mapStateToProps = state => ({
   onboardingTourDismissed: state.enterpriseCustomerAdmin.onboardingTourDismissed as boolean,
   uuid: state.enterpriseCustomerAdmin.uuid as string,
   enableSubscriptionManagementScreen: state.portalConfiguration.enableSubscriptionManagementScreen as boolean,
+  enableReportingConfigScreen: state.portalConfiguration.enableReportingConfigScreen as boolean,
 });
 
 const mapDispatchToProps = dispatch => ({
