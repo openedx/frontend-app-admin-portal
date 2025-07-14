@@ -226,7 +226,7 @@ const mockApprovedRequest = {
   courseId: mockCourseKey,
   amount: 199,
   requestDate: 'Oct 27, 2023',
-  requestStatus: 'Approved',
+  requestStatus: 'approved',
   lastActionStatus: 'waiting_for_learner',
   lastActionErrorReason: undefined,
   latestAction: { status: 'approved', timestamp: '2023-10-27' },
@@ -1248,6 +1248,95 @@ describe('<BudgetDetailPage />', () => {
     expect(sendEnterpriseTrackEvent).toHaveBeenCalledTimes(2);
   }, 30000);
 
+  it('cancels a approved learner credit request', async () => {
+    const user = userEvent.setup();
+    EnterpriseAccessApiService.cancelApprovedBnrSubsidyRequest.mockResolvedValueOnce({ status: 200 });
+    const NUMBER_OF_APPROVE_REQUEST_TO_GENERATE = 60;
+    useParams.mockReturnValue({
+      enterpriseSlug: 'test-enterprise-slug',
+      enterpriseAppPage: 'test-enterprise-page',
+      budgetId: mockSubsidyAccessPolicyUUID,
+      activeTabKey: 'activity',
+    });
+    useSubsidyAccessPolicy.mockReturnValue({
+      isInitialLoading: false,
+      data: mockPerLearnerSpendLimitSubsidyAccessPolicyWithBnrEnabled,
+    });
+    useEnterpriseGroupLearners.mockReturnValue({
+      data: {
+        count: 0,
+        currentPage: 1,
+        next: null,
+        numPages: 1,
+        results: [],
+      },
+    });
+    useBudgetDetailActivityOverview.mockReturnValue({
+      isLoading: false,
+      data: {
+        approvedBnrRequests: { count: NUMBER_OF_APPROVE_REQUEST_TO_GENERATE },
+        contentAssignments: undefined,
+        spentTransactions: { count: 0 },
+      },
+    });
+    const mockFetchLearnerCreditRequests = jest.fn();
+    // Max page size is 25 rows. Generate one assignment with a known learner email and the others with random emails.
+    const mockRequestsList = [
+      mockApprovedRequest, // Use the mockApprovedRequest with known values
+      ...Array.from({ length: PAGE_SIZE - 1 }, createMockApprovedRequest),
+    ];
+    useBnrSubsidyRequests.mockReturnValue({
+      isLoading: false,
+      bnrRequests: {
+        itemCount: NUMBER_OF_APPROVE_REQUEST_TO_GENERATE,
+        results: mockRequestsList,
+        pageCount: Math.floor(NUMBER_OF_APPROVE_REQUEST_TO_GENERATE / PAGE_SIZE),
+      },
+      fetchBnrRequests: mockFetchLearnerCreditRequests,
+    });
+    useBudgetRedemptions.mockReturnValue({
+      isLoading: false,
+      budgetRedemptions: mockEmptyBudgetRedemptions,
+      fetchBudgetRedemptions: jest.fn(),
+    });
+    useEnterpriseRemovedGroupMembers.mockReturnValue({
+      isRemovedMembersLoading: false,
+      removedGroupMembersCount: 0,
+    });
+    renderWithRouter(<BudgetDetailPageWrapper />);
+
+    await waitFor(() => {
+      expect(screen.getByText('Pending')).toBeInTheDocument();
+    });
+
+    // First open the dropdown menu
+    const dropdownToggle = screen.getByTestId('dropdown-toggle-test-approved-request-uuid');
+    expect(dropdownToggle).toBeInTheDocument();
+    await user.click(dropdownToggle);
+
+    // Then find and click the cancel approval item
+    const cancelIconButton = screen.getByTestId('cancel-approval-test-approved-request-uuid');
+    expect(cancelIconButton).toBeInTheDocument();
+    await user.click(cancelIconButton);
+    expect(sendEnterpriseTrackEvent).toHaveBeenCalledTimes(1);
+
+    const modalDialog = screen.getByRole('dialog');
+    expect(modalDialog).toBeInTheDocument();
+    expect(screen.getByText('Cancel approval?')).toBeInTheDocument();
+
+    const cancelDialogButton = getButtonElement('Cancel approval');
+    await user.click(cancelDialogButton);
+
+    await waitFor(() => {
+      expect(EnterpriseAccessApiService.cancelApprovedBnrSubsidyRequest).toHaveBeenCalledWith({
+        enterpriseId: enterpriseUUID,
+        subsidyRequestUUID: 'test-approved-request-uuid',
+      });
+    });
+
+    expect(sendEnterpriseTrackEvent).toHaveBeenCalledTimes(2);
+  });
+
   it('renders with approved requests table data and verifies first field data', async () => {
     const NUMBER_OF_APPROVE_REQUEST_TO_GENERATE = 60;
     useParams.mockReturnValue({
@@ -1411,7 +1500,6 @@ describe('<BudgetDetailPage />', () => {
       expect.objectContaining(expectedDefaultTableFetchDataArgs),
     );
 
-    // Verify column sort
     const columnHeader = pendingSection.getByText(sortByColumnHeader);
     await user.click(columnHeader);
 
@@ -1484,7 +1572,6 @@ describe('<BudgetDetailPage />', () => {
       expect(screen.getByText('Pending')).toBeInTheDocument();
     });
 
-    // Verify table renders even without status filter choices
     const pendingSection = within(screen.getByText('Pending').closest('section'));
     expect(pendingSection.getByRole('table')).toBeInTheDocument();
   });
@@ -1545,13 +1632,11 @@ describe('<BudgetDetailPage />', () => {
       expect(screen.getByText('Pending')).toBeInTheDocument();
     });
 
-    // Verify refresh button exists
     expect(screen.getByText('Refresh')).toBeInTheDocument();
 
-    // Test refresh button click functionality (covers line 8 in ApprovedRequestsTableRefreshAction.jsx)
     const refreshButton = screen.getByText('Refresh');
     await user.click(refreshButton);
-    expect(mockFetchLearnerCreditRequests).toHaveBeenCalledTimes(2); // Once on initial render, once on click
+    expect(mockFetchLearnerCreditRequests).toHaveBeenCalledTimes(2);
   });
 
   it('renders approved requests table with empty filter choices when no status counts (tests line 61)', async () => {
@@ -1584,14 +1669,14 @@ describe('<BudgetDetailPage />', () => {
       },
     });
     const mockFetchLearnerCreditRequests = jest.fn();
-    // Test with null requestStatusCounts to trigger line 61 empty array fallback
+
     useBnrSubsidyRequests.mockReturnValue({
       isLoading: false,
       bnrRequests: {
         itemCount: NUMBER_OF_APPROVE_REQUEST_TO_GENERATE,
         results: [mockApprovedRequest],
         pageCount: 1,
-        requestStatusCounts: null, // This triggers line 61 empty array fallback
+        requestStatusCounts: null,
       },
       fetchBnrRequests: mockFetchLearnerCreditRequests,
     });
@@ -1611,7 +1696,6 @@ describe('<BudgetDetailPage />', () => {
       expect(screen.getByText('Pending')).toBeInTheDocument();
     });
 
-    // Verify table renders even with no status counts (empty array fallback)
     const pendingSection = within(screen.getByText('Pending').closest('section'));
     expect(pendingSection.getByRole('table')).toBeInTheDocument();
   });
@@ -1647,7 +1731,7 @@ describe('<BudgetDetailPage />', () => {
       },
     });
     const mockFetchLearnerCreditRequests = jest.fn();
-    // Test with failed cancellation error reason to trigger FailedCancellation component
+
     const mockFailedCancellationRequest = {
       ...mockApprovedRequest,
       lastActionErrorReason: 'Failed: Cancellation',
@@ -1677,18 +1761,15 @@ describe('<BudgetDetailPage />', () => {
       expect(screen.getByText('Pending')).toBeInTheDocument();
     });
 
-    // Test that the FailedCancellation chip is rendered (covers lines 12, 16, 23)
     const failedCancellationChip = screen.getByText('Failed: Cancellation');
     expect(failedCancellationChip).toBeInTheDocument();
 
-    // Test chip click to open modal (covers line 31 in FailedCancellation.jsx)
     await user.click(failedCancellationChip);
 
     await waitFor(() => {
       expect(screen.getByText('This approved request was not canceled. Something went wrong behind the scenes.')).toBeInTheDocument();
     });
 
-    // Test that help center link is rendered
     expect(screen.getByText('Help Center')).toBeInTheDocument();
   });
 
@@ -1730,6 +1811,7 @@ describe('<BudgetDetailPage />', () => {
       {
         ...createMockApprovedRequest(),
         lastActionStatus: 'refunded',
+        lastActionErrorReason: 'Failed: Cancellation',
       },
       {
         ...createMockApprovedRequest(),
@@ -1763,7 +1845,8 @@ describe('<BudgetDetailPage />', () => {
     // Verify basic table structure and status rendering
     const pendingSection = within(screen.getByText('Pending').closest('section'));
     expect(pendingSection.getByRole('table')).toBeInTheDocument();
-    expect(screen.getAllByText('Approved')).toHaveLength(2);
+    expect(screen.getAllByText('Waiting for learner')).toHaveLength(2);
+    expect(screen.getAllByText('Failed: Cancellation')).toHaveLength(1);
   });
 
   it('handles approved requests table pagination correctly', async () => {
@@ -1802,7 +1885,7 @@ describe('<BudgetDetailPage />', () => {
       bnrRequests: {
         itemCount: NUMBER_OF_APPROVE_REQUEST_TO_GENERATE,
         results: mockRequestsList,
-        pageCount: 2, // Multiple pages to test pagination
+        pageCount: 2,
       },
       fetchBnrRequests: mockFetchLearnerCreditRequests,
     });

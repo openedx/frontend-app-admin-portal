@@ -174,7 +174,7 @@ class EnterpriseAccessApiService {
   /**
    * List content assignments for a specific AssignmentConfiguration.
    */
-  static listContentAssignments(assignmentConfigurationUUID, options:any = {}) {
+  static listContentAssignments(assignmentConfigurationUUID, options: any = {}) {
     const { learnerState, ...optionsRest } = options;
     const params = {
       page: 1,
@@ -215,7 +215,7 @@ class EnterpriseAccessApiService {
   /**
    * Cancel ALL content assignments for a specific AssignmentConfiguration.
    */
-  static cancelAllContentAssignments(assignmentConfigurationUUID, options:any = {}) {
+  static cancelAllContentAssignments(assignmentConfigurationUUID, options: any = {}) {
     const { learnerState, ...optionsRest } = options;
     const params = {
       ...snakeCaseObject(optionsRest),
@@ -245,7 +245,7 @@ class EnterpriseAccessApiService {
   /**
    * Remind ALL content assignments for a specific AssignmentConfiguration.
    */
-  static remindAllContentAssignments(assignmentConfigurationUUID, options:any = {}) {
+  static remindAllContentAssignments(assignmentConfigurationUUID, options: any = {}) {
     const { learnerState, ...optionsRest } = options;
     const params = {
       ...snakeCaseObject(optionsRest),
@@ -302,7 +302,7 @@ class EnterpriseAccessApiService {
     userEmail: string,
     lmsUserId: string,
     enterpriseUuid: string,
-  ) : LearnerProfileResponse {
+  ): LearnerProfileResponse {
     const queryParams = new URLSearchParams({
       user_email: userEmail,
       lms_user_id: lmsUserId,
@@ -376,6 +376,27 @@ class EnterpriseAccessApiService {
     };
 
     const url = `${EnterpriseAccessApiService.baseUrl}/learner-credit-requests/approve/`;
+    return EnterpriseAccessApiService.apiClient().post(url, options);
+  }
+
+  /**
+   * Cancels an approved BNR (Browse and Request) subsidy request for an enterprise.
+   *
+   * @param params - The parameters for canceling the approved subsidy request
+   * @param params.enterpriseId - The UUID of the enterprise customer
+   * @param params.subsidyRequestUUID - The UUID of the approved subsidy request to cancel
+   * @returns A promise that resolves to the API response for the cancel operation
+   */
+  static cancelApprovedBnrSubsidyRequest({
+    enterpriseId,
+    subsidyRequestUUID,
+  }) {
+    const options = {
+      request_uuid: subsidyRequestUUID,
+      enterprise_customer_uuid: enterpriseId,
+    };
+
+    const url = `${EnterpriseAccessApiService.baseUrl}/learner-credit-requests/cancel/`;
     return EnterpriseAccessApiService.apiClient().post(url, options);
   }
 }
