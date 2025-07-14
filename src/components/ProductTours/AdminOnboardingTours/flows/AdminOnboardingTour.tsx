@@ -27,7 +27,6 @@ interface AdminOnboardingTourProps {
   enterpriseSlug: string;
   onClose: () => void;
   targetSelector?: string;
-  portalConfiguration: PortalConfiguration;
 }
 
 const AdminOnboardingTour = (
