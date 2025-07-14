@@ -29,7 +29,7 @@ const LearningHoursOverTimeChart = ({
 
   return (
     <div className="bg-primary-100 rounded-lg container-fluid p-3 learning-hours-over-time-chart-container mb-3 engagement-chart-container">
-      <div className="top-skills-by-enrollment-chart-container mb-4 h-100 overflow-hidden">
+      <div className="mb-4 h-100 overflow-hidden">
         <Header
           title={intl.formatMessage({
             id: 'advance.analytics.engagement.tab.learning.hours.over.time.chart.title',
