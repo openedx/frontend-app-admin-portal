@@ -13,6 +13,11 @@ const messages = defineMessages({
     defaultMessage: 'Licenses',
     description: 'Subsidy type label for licenses',
   },
+  subsidyTypeBudget: {
+    id: 'adminPortal.settings.access.subsidyTypeSelection.budget',
+    defaultMessage: 'Learner Credit',
+    description: 'Subsidy type label for budget',
+  },
 });
 
 export const ACCESS_TAB = 'access';
@@ -107,6 +112,7 @@ export const SSO_CONFIG_POLLING_INTERVAL = 1000;
 export const SUBSIDY_TYPE_LABELS = {
   [SUPPORTED_SUBSIDY_TYPES.coupon]: messages.subsidyTypeCodes,
   [SUPPORTED_SUBSIDY_TYPES.license]: messages.subsidyTypeLicenses,
+  [SUPPORTED_SUBSIDY_TYPES.budget]: messages.subsidyTypeBudget,
 };
 
 export const DARK_COLOR = '#454545';

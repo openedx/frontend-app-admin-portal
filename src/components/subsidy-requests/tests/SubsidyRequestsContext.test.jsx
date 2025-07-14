@@ -76,7 +76,7 @@ describe('useSubsidyRequestsContext', () => {
       }),
     );
     expect(result.current.enterpriseSubsidyTypesForRequests).toEqual([
-      SUBSIDY_TYPES.license,
+      SUBSIDY_TYPES.budget, SUBSIDY_TYPES.license,
     ]);
   });
 });
