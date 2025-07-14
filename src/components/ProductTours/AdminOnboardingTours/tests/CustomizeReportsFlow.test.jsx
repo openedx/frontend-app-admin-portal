@@ -53,5 +53,4 @@ describe('useCustomizeReportsFlow', () => {
 
     expect(flow[0].target).toBe(`#${CUSTOMIZE_REPORTS_SIDEBAR}`);
   });
-  // TODO: Don't show when reporting configuration disabled!
 });
