@@ -144,3 +144,27 @@ export const LEARNER_CREDIT_ROUTE = '/:enterpriseSlug/admin/:enterpriseAppPage/:
 export const ENTERPRISE_RESTRICTION_TYPE = 'custom-b2b-enterprise';
 
 export const APPROVED_REQUEST_TYPE = 'approved';
+
+// BNR (Browse & Request) subsidy request constants
+export const BNR_REQUEST_PAGE_SIZE = 10;
+export const REQUEST_TAB_VISIBLE_STATES = [
+  'requested',
+  'declined',
+  'cancelled',
+  'errored',
+];
+
+export const REQUEST_STATUS_FILTER_CHOICES = [
+  {
+    name: 'Requested',
+    value: 'requested',
+  },
+  {
+    name: 'Declined',
+    value: 'declined',
+  },
+  {
+    name: 'Cancelled',
+    value: 'cancelled',
+  },
+];
