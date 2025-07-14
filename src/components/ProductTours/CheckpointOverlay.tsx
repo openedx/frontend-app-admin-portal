@@ -51,16 +51,24 @@ const CheckpointOverlay: FC<CheckpointOverlayProps> = ({ target }) => {
           });
         }
       } else {
-        const targetElement = document.querySelector(selector);
+        // Add timeout for assignment-budget-detail-card to wait for page loading
+        const findAndSetElement = () => {
+          const targetElement = document.querySelector(selector);
+          if (targetElement) {
+            const boundingRect = targetElement.getBoundingClientRect();
+            setRect({
+              top: boundingRect.top,
+              left: boundingRect.left,
+              width: boundingRect.width,
+              height: boundingRect.height,
+            });
+          }
+        };
 
-        if (targetElement) {
-          const boundingRect = targetElement.getBoundingClientRect();
-          setRect({
-            top: boundingRect.top,
-            left: boundingRect.left,
-            width: boundingRect.width,
-            height: boundingRect.height,
-          });
+        if (selector === '#assignment-budget-detail-card') {
+          setTimeout(findAndSetElement, 2000); // Wait 2 seconds for page to load
+        } else {
+          findAndSetElement();
         }
       }
     };

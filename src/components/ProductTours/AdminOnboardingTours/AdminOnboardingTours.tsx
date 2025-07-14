@@ -22,6 +22,11 @@ interface AdminOnboardingToursProps {
   onClose: () => void;
   setTarget: Function,
   targetSelector: string;
+  enablePortalLearnerCreditManagementScreen: boolean;
+  enterpriseUUID: string;
+  enterpriseFeatures: {
+    topDownAssignmentRealTimeLcm: boolean;
+  };
 }
 
 interface RootState {
@@ -34,17 +39,41 @@ interface RootState {
   };
   portalConfiguration: {
     enterpriseSlug: string;
+    enablePortalLearnerCreditManagementScreen: boolean;
+    enterpriseId: string;
+    enterpriseFeatures: {
+      topDownAssignmentRealTimeLcm: boolean;
+    };
   };
 }
 
 const AdminOnboardingTours: FC<AdminOnboardingToursProps> = ({
-  adminUuid, enterpriseSlug, insights, insightsLoading, isOpen, onClose, setTarget, targetSelector,
+  adminUuid,
+  enterpriseSlug,
+  insights,
+  insightsLoading,
+  isOpen,
+  onClose,
+  setTarget,
+  targetSelector,
+  enablePortalLearnerCreditManagementScreen,
+  enterpriseUUID,
+  enterpriseFeatures,
 }) => {
   const intl = useIntl();
   const aiButtonVisible = (insights?.learner_engagement && insights?.learner_progress) && !insightsLoading;
   const [currentStep, setCurrentStep] = useState(0);
   const adminOnboardingSteps = AdminOnboardingTour({
-    adminUuid, aiButtonVisible, currentStep, setCurrentStep, enterpriseSlug, onClose, targetSelector,
+    adminUuid,
+    aiButtonVisible,
+    currentStep,
+    setCurrentStep,
+    enterpriseSlug,
+    onClose,
+    targetSelector,
+    enablePortalLearnerCreditManagementScreen,
+    enterpriseUUID,
+    enterpriseFeatures,
   });
 
   // Reset step for use case where we need to navigate to a different page but still
@@ -59,7 +88,14 @@ const AdminOnboardingTours: FC<AdminOnboardingToursProps> = ({
     if (adminOnboardingSteps[currentStep]) {
       const nextTarget = adminOnboardingSteps[currentStep].target;
       const targetWithoutPrefix = nextTarget.replace(/^[.#]/, '');
-      setTarget(targetWithoutPrefix);
+      // Add timeout for assignment-budget-detail-card to wait for page loading
+      if (targetWithoutPrefix === 'assignment-budget-detail-card') {
+        setTimeout(() => {
+          setTarget(targetWithoutPrefix);
+        }, 2000); // Wait 2 seconds for page to load
+      } else {
+        setTarget(targetWithoutPrefix);
+      }
     }
   }, [currentStep, adminOnboardingSteps, setTarget]);
 
@@ -118,5 +154,8 @@ const mapStateToProps = (state: RootState) => ({
   enterpriseSlug: state.portalConfiguration.enterpriseSlug,
   insights: state.dashboardInsights.insights,
   insightsLoading: state.dashboardInsights.loading,
+  enablePortalLearnerCreditManagementScreen: state.portalConfiguration.enablePortalLearnerCreditManagementScreen,
+  enterpriseUUID: state.portalConfiguration.enterpriseId,
+  enterpriseFeatures: state.portalConfiguration.enterpriseFeatures,
 });
 export default connect(mapStateToProps)(AdminOnboardingTours);

@@ -395,7 +395,7 @@ const BudgetActions = ({
   }
 
   return (
-    <div className="h-100 d-flex align-items-center justify-content-center pt-4 pt-lg-0">
+    <div className="h-100 d-flex align-items-center justify-content-center pt-4 pt-lg-0" id="new-assignment-button">
       <div>
         <h3>
           <FormattedMessage

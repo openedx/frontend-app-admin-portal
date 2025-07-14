@@ -6,6 +6,7 @@ import {
   ORGANIZE_LEARNER_TARGETS,
   TRACK_LEARNER_PROGRESS_TARGETS,
   ADMINISTER_SUBSCRIPTIONS_TARGETS,
+  ALLOCATE_LEARNING_BUDGETS_TARGETS,
 } from '../constants';
 
 import { TourStep } from '../../types';
@@ -14,6 +15,7 @@ import LearnerProgressFlow from './LearnerProgressFlow';
 import AnalyticsFlow from './AnalyticsFlow';
 import OrganizeLearnersFlow from './OrganizeLearnersFlow';
 import AdministerSubscriptionsFlow from './AdministerSubscriptionsFlow';
+import AllocateLearningBudgetsFlow from './AllocateLearningBudgetsFlow';
 
 interface AdminOnboardingTourProps {
   adminUuid: string;
@@ -23,11 +25,25 @@ interface AdminOnboardingTourProps {
   enterpriseSlug: string;
   onClose: () => void;
   targetSelector?: string;
+  enablePortalLearnerCreditManagementScreen: boolean;
+  enterpriseUUID: string;
+  enterpriseFeatures: {
+    topDownAssignmentRealTimeLcm: boolean;
+  }
 }
 
 const AdminOnboardingTour = (
   {
-    adminUuid, aiButtonVisible, currentStep, setCurrentStep, enterpriseSlug, onClose, targetSelector,
+    adminUuid,
+    aiButtonVisible,
+    currentStep,
+    setCurrentStep,
+    enterpriseSlug,
+    onClose,
+    targetSelector,
+    enablePortalLearnerCreditManagementScreen,
+    enterpriseUUID,
+    enterpriseFeatures,
   }: AdminOnboardingTourProps,
 ): Array<TourStep> => {
   function handleAdvanceTour(advanceEventName: string) {
@@ -36,6 +52,14 @@ const AdminOnboardingTour = (
     const manageLearnersButton = document.getElementById('manage-learners-button');
     if (manageLearnersButton && targetSelector === 'manage-learners-button') {
       manageLearnersButton.click();
+      setCurrentStep(0);
+      sendEnterpriseTrackEvent(enterpriseSlug, advanceEventName, { 'completed-step': newIndex });
+      return;
+    }
+
+    const viewBudgetButton = document.getElementById(ALLOCATE_LEARNING_BUDGETS_TARGETS.VIEW_BUDGET);
+    if (viewBudgetButton && targetSelector === ALLOCATE_LEARNING_BUDGETS_TARGETS.VIEW_BUDGET) {
+      viewBudgetButton.click();
       setCurrentStep(0);
       sendEnterpriseTrackEvent(enterpriseSlug, advanceEventName, { 'completed-step': newIndex });
       return;
@@ -70,6 +94,13 @@ const AdminOnboardingTour = (
   const learnerProgressFlow = LearnerProgressFlow({ aiButtonVisible, handleAdvanceTour, handleEndTour });
   const organizeLearnersFlow = OrganizeLearnersFlow({ handleAdvanceTour, handleEndTour });
   const administerSubscriptionsFlow = AdministerSubscriptionsFlow({ handleAdvanceTour, handleEndTour });
+  const allocateLearningBudgetsFlow = AllocateLearningBudgetsFlow({
+    handleAdvanceTour,
+    handleEndTour,
+    enablePortalLearnerCreditManagementScreen,
+    enterpriseUUID,
+    enterpriseFeatures,
+  });
 
   // Map target selectors to their respective flows
   const flowMapping = {
@@ -85,6 +116,10 @@ const AdminOnboardingTour = (
     ...Object.fromEntries(
       Object.values(ADMINISTER_SUBSCRIPTIONS_TARGETS)
         .map(target => [target, administerSubscriptionsFlow]),
+    ),
+    ...Object.fromEntries(
+      Object.values(ALLOCATE_LEARNING_BUDGETS_TARGETS)
+        .map(target => [target, allocateLearningBudgetsFlow]),
     ),
   };
 

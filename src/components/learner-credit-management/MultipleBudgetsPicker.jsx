@@ -108,7 +108,7 @@ const MultipleBudgetsPicker = ({
           },
         ]}
       >
-        <DataTable.TableControlBar />
+        <DataTable.TableControlBar id="learner-credit-search-filter" />
         <CardView
           CardComponent={BudgetCard}
           columnSizes={{ xs: 12 }}
