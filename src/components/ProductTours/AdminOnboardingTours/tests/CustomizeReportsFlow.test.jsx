@@ -3,7 +3,7 @@ import { renderHook } from '@testing-library/react';
 import { IntlProvider } from '@edx/frontend-platform/i18n';
 import { CUSTOMIZE_REPORTS_SIDEBAR } from '../constants';
 import messages from '../messages';
-import CustomizeReportsFlow from '../CustomizeReportsFlow';
+import CustomizeReportsFlow from '../flows/CustomizeReportsFlow';
 
 const mockFormatMessage = jest.fn((message) => message.defaultMessage || message.id || 'Mocked message');
 

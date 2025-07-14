@@ -14,6 +14,7 @@ const SetUpPreferencesFlow = ({
 
   return [
     {
+      title: intl.formatMessage(messages.viewSetUpPreferencesTitle),
       target: `#${TOUR_TARGETS.SETTINGS_SIDEBAR}`,
       placement: 'right',
       body: intl.formatMessage(messages.viewSetUpPreferences),

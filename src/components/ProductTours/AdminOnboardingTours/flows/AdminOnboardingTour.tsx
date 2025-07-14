@@ -15,7 +15,7 @@ import LearnerProgressFlow from './LearnerProgressFlow';
 import AnalyticsFlow from './AnalyticsFlow';
 import OrganizeLearnersFlow from './OrganizeLearnersFlow';
 import AdministerSubscriptionsFlow from './AdministerSubscriptionsFlow';
-import CustomizeReportsFlow from '../CustomizeReportsFlow';
+import CustomizeReportsFlow from './CustomizeReportsFlow';
 import SetUpPreferencesFlow from '../SetUpPreferencesFlow';
 import { TOUR_TARGETS } from '../../constants';
 

@@ -1,7 +1,7 @@
 import { useIntl } from '@edx/frontend-platform/i18n';
-import { CUSTOMIZE_REPORTS_SIDEBAR } from './constants';
-import messages from './messages';
-import { TourStep } from '../types';
+import { CUSTOMIZE_REPORTS_SIDEBAR } from '../constants';
+import messages from '../messages';
+import { TourStep } from '../../types';
 
 interface CreateTourFlowsProps {
   handleEndTour: (endEventName: string, flowUuid?: string) => void;
@@ -14,6 +14,7 @@ const CustomizeReportsFlow = ({
 
   return [
     {
+      title: intl.formatMessage(messages.viewCustomizeReportsTitle),
       target: `#${CUSTOMIZE_REPORTS_SIDEBAR}`,
       placement: 'right',
       body: intl.formatMessage(messages.viewCustomizeReports),

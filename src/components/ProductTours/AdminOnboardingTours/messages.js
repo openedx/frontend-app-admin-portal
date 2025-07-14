@@ -219,17 +219,27 @@ const messages = defineMessages({
     defaultMessage: 'To view more plans, navigate back to Subscription Management using this button or the main menu.',
     description: 'Description for the administer subscriptions flow step eight',
   },
+  viewCustomizeReportsTitle: {
+    id: 'adminPortal.productTours.adminOnboarding.customizeReports.title',
+    defaultMessage: 'Customize reports',
+    description: 'Title for the customize reports step',
+  },
   viewCustomizeReports: {
     id: 'adminPortal.productTours.adminOnboarding.customizeReports.title.1',
     defaultMessage: 'Automate reporting on learner engagement, progress, and catalog activity. Set up reports to be delivered '
       + 'to your email daily, weekly, or monthly for easy tracking.',
-    description: 'Title for the customize reports step',
+    description: 'Description for the customize reports step',
+  },
+  viewSetUpPreferencesTitle: {
+    id: 'adminPortal.productTours.adminOnboarding.setUpPreferences.title',
+    defaultMessage: 'Set up preferences',
+    description: 'Title for the set up preferences step',
   },
   viewSetUpPreferences: {
     id: 'adminPortal.productTours.adminOnboarding.setUpPreferences.title.1',
     defaultMessage: 'Customize and configure your portal to fit your organization\'s needs. Set up branding, '
       + 'manage learner access, enable SSO, and integrate learning platforms—all in one place.',
-    description: 'Title for the set up preferences step',
+    description: 'Description for the set up preferences step',
   },
 });
 
