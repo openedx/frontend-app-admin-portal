@@ -1,4 +1,4 @@
-import React, { FC, useMemo } from 'react';
+import React, { FC, useEffect, useState } from 'react';
 import { connect } from 'react-redux';
 
 import {
@@ -40,7 +40,14 @@ interface Props {
   enableReportingConfigScreen: boolean;
 }
 
-const QUICK_START_GUIDE_STEPS = [{
+type StepDefinition = {
+  icon: React.ComponentType,
+  title: string,
+  timeEstimate: number,
+  targetId: string
+};
+
+const QUICK_START_GUIDE_STEPS: StepDefinition[] = [{
   icon: TrendingUp,
   title: TRACK_LEARNER_PROGRESS_TITLE,
   timeEstimate: 2,
@@ -87,6 +94,7 @@ const TourCollapsible: FC<Props> = (
   },
 ) => {
   const intl = useIntl();
+  const [steps, setSteps] = useState<StepDefinition[]>([]);
 
   const handleDismiss = () => {
     setShowCollapsible(false);
@@ -98,15 +106,17 @@ const TourCollapsible: FC<Props> = (
     reopenTour(adminUuid);
   };
 
-  const hiddenSteps = useMemo(() => {
-    const steps: string[] = [];
-    if (!enableSubscriptionManagementScreen) {
-      steps.push(ADMINISTER_SUBSCRIPTIONS_TITLE);
-    }
-    if (!enableReportingConfigScreen) {
-      steps.push(CUSTOMIZE_REPORTS_TITLE);
-    }
-    return steps;
+  useEffect(() => {
+    setSteps(QUICK_START_GUIDE_STEPS.filter(step => {
+      switch (step.title) {
+        case ADMINISTER_SUBSCRIPTIONS_TITLE:
+          return enableSubscriptionManagementScreen;
+        case CUSTOMIZE_REPORTS_TITLE:
+          return enableReportingConfigScreen;
+        default:
+          return true;
+      }
+    }));
   }, [enableSubscriptionManagementScreen, enableReportingConfigScreen]);
 
   return (
@@ -118,21 +128,16 @@ const TourCollapsible: FC<Props> = (
         >
           <p className="small">{intl.formatMessage(messages.collapsibleIntro)}</p>
           <Stack gap={3} className="mb-3">
-            {QUICK_START_GUIDE_STEPS.map(step => {
-              if (hiddenSteps.includes(step.title)) {
-                return null;
-              }
-              return (
-                <Step
-                  key={step.title}
-                  icon={step.icon}
-                  title={step.title}
-                  timeEstimate={step.timeEstimate}
-                  targetId={step.targetId}
-                  onTourSelect={onTourSelect}
-                />
-              );
-            })}
+            {steps.map(step => (
+              <Step
+                key={step.title}
+                icon={step.icon}
+                title={step.title}
+                timeEstimate={step.timeEstimate}
+                targetId={step.targetId}
+                onTourSelect={onTourSelect}
+              />
+            ))}
           </Stack>
         </FloatingCollapsible>
       )}
