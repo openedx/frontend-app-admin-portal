@@ -1,4 +1,4 @@
-import React, { FC, useEffect, useState } from 'react';
+import React, { FC } from 'react';
 import { connect } from 'react-redux';
 
 import {
@@ -94,7 +94,6 @@ const TourCollapsible: FC<Props> = (
   },
 ) => {
   const intl = useIntl();
-  const [steps, setSteps] = useState<StepDefinition[]>([]);
 
   const handleDismiss = () => {
     setShowCollapsible(false);
@@ -106,18 +105,16 @@ const TourCollapsible: FC<Props> = (
     reopenTour(adminUuid);
   };
 
-  useEffect(() => {
-    setSteps(QUICK_START_GUIDE_STEPS.filter(step => {
-      switch (step.title) {
-        case ADMINISTER_SUBSCRIPTIONS_TITLE:
-          return enableSubscriptionManagementScreen;
-        case CUSTOMIZE_REPORTS_TITLE:
-          return enableReportingConfigScreen;
-        default:
-          return true;
-      }
-    }));
-  }, [enableSubscriptionManagementScreen, enableReportingConfigScreen]);
+  const steps = QUICK_START_GUIDE_STEPS.filter(step => {
+    switch (step.title) {
+      case ADMINISTER_SUBSCRIPTIONS_TITLE:
+        return enableSubscriptionManagementScreen;
+      case CUSTOMIZE_REPORTS_TITLE:
+        return enableReportingConfigScreen;
+      default:
+        return true;
+    }
+  });
 
   return (
     <>
