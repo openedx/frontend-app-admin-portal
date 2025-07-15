@@ -424,7 +424,11 @@ const Admin = ({
   const searchParam = location?.search || '';
   const queryParams = new URLSearchParams(searchParam);
   const queryParamsLength = Array.from(queryParams.entries()).length;
-  const filtersActive = queryParamsLength !== 0 && !(queryParamsLength === 1 && queryParams.has('ordering'));
+  const filtersActive = (
+    queryParamsLength !== 0
+    && !(queryParamsLength === 1 && (queryParams.has('ordering') || queryParams.has('page')))
+    && !(queryParamsLength === 2 && (queryParams.has('ordering') && queryParams.has('page')))
+  );
   const tableMetadata = getMetadataForAction(actionSlug);
   const csvErrorMessage = getCsvErrorMessage(tableMetadata.csvButtonId);
   const searchParams = {
