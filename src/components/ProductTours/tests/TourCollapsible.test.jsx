@@ -167,6 +167,42 @@ describe('TourCollapsible', () => {
     expect(document.getElementById(tooltipId)).toBeDefined();
   });
 
+  it('displays all steps when features enabled', () => {
+    const state = {
+      enterpriseCustomerAdmin: {
+        onboardingTourCompleted: false,
+        onboardingTourDismissed: false,
+        uuid: 'test-uuid',
+      },
+      portalConfiguration: {
+        enableReportingConfigScreen: true,
+        enableSubscriptionManagementScreen: true,
+      },
+    };
+    setup(state, true);
+    expect(screen.queryByText('Track Learner Progress')).toBeInTheDocument();
+    expect(screen.queryByText('View enrollment insights')).toBeInTheDocument();
+    expect(screen.queryByText('Administer subscriptions')).toBeInTheDocument();
+    expect(screen.queryByText('Organize learners')).toBeInTheDocument();
+    expect(screen.queryByText('Customize Reports')).toBeInTheDocument();
+    expect(screen.queryByText('Set Up Preferences')).toBeInTheDocument();
+  });
+
+  it('does not display reporting configuration step when reporting is disabled', () => {
+    const state = {
+      enterpriseCustomerAdmin: {
+        onboardingTourCompleted: false,
+        onboardingTourDismissed: false,
+        uuid: 'test-uuid',
+      },
+      portalConfiguration: {
+        enableReportingConfigScreen: false,
+      },
+    };
+    setup(state, true);
+    expect(screen.queryByText('Customize Reports')).not.toBeInTheDocument();
+  });
+
   it('does not display administer subscriptions step when subscription management is disabled', () => {
     const state = {
       enterpriseCustomerAdmin: {
