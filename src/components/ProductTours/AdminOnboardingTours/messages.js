@@ -149,7 +149,7 @@ const messages = defineMessages({
   },
   organizeLearnersWithGroupsStepSixBody: {
     id: 'adminPortal.productTours.adminOnboarding.organizeLearners.withGroups.body.6',
-    defaultMessage: '“View group” allows you to edit group details, track progress, or view learners. Let\'s show you to the group detail page now.',
+    defaultMessage: 'Let\'s view your group.',
     description: 'Description for the organize learners flow with groups step six',
   },
   organizeLearnersWithGroupsStepSevenBody: {
@@ -232,7 +232,7 @@ const messages = defineMessages({
   },
   administerSubscriptionsStepThreeBody: {
     id: 'adminPortal.productTours.adminOnboarding.administerSubscriptions.body.3',
-    defaultMessage: '"Manage learners" allows you to view more details about a plan. Let\'s take you there now',
+    defaultMessage: '"Manage learners" allows you to view more details about a plan. Let\'s view your learners.',
     description: 'Description for the administer subscriptions flow step three',
   },
   administerSubscriptionsStepFourBody: {
