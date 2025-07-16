@@ -1,5 +1,5 @@
 import React, { useContext } from 'react';
-import { Col, Row } from '@openedx/paragon';
+import { Col, Row, Skeleton } from '@openedx/paragon';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 
@@ -15,6 +15,7 @@ import { SubsidyRequestsContext } from '../../subsidy-requests';
 import { SUPPORTED_SUBSIDY_TYPES } from '../../../data/constants/subsidyRequests';
 import { getSubsidyTypeLabelAndRoute } from './data/utils';
 import { EnterpriseSubsidiesContext } from '../../EnterpriseSubsidiesContext';
+import { useLearnerCreditBrowseAndRequest } from './data/hooks';
 
 const SettingsAccessTab = ({
   enterpriseId,
@@ -30,6 +31,8 @@ const SettingsAccessTab = ({
     updateSubsidyRequestConfiguration,
     enterpriseSubsidyTypesForRequests,
   } = useContext(SubsidyRequestsContext);
+
+  const { isLoadingPolicies, hasBnrEnabledPolicy } = useLearnerCreditBrowseAndRequest(enterpriseId);
 
   const {
     coupons,
@@ -54,6 +57,31 @@ const SettingsAccessTab = ({
   );
 
   const subsidyTypeLabelAndRoute = getSubsidyTypeLabelAndRoute(configuredRequestSubsidyType, enterpriseSlug);
+
+  const renderSubsidyTypeSelection = () => {
+    if (isLoadingPolicies) {
+      return <Skeleton loading={isLoadingPolicies} height={80} />;
+    }
+
+    if (hasBnrEnabledPolicy) {
+      return <SettingsAccessConfiguredSubsidyType subsidyType={SUPPORTED_SUBSIDY_TYPES.budget} />;
+    }
+
+    if (hasConfiguredSubsidyType) {
+      return (
+        <SettingsAccessConfiguredSubsidyType subsidyType={subsidyRequestConfiguration.subsidyType} />
+      );
+    }
+
+    return (
+      <SettingsAccessSubsidyTypeSelection
+        subsidyRequestConfiguration={subsidyRequestConfiguration}
+        subsidyTypes={enterpriseSubsidyTypesForRequests}
+        disabled={hasConfiguredSubsidyType}
+        updateSubsidyRequestConfiguration={updateSubsidyRequestConfiguration}
+      />
+    );
+  };
 
   return (
     <div className="settings-access-tab mt-4">
@@ -99,16 +127,7 @@ const SettingsAccessTab = ({
               description="Label for the 'Subsidy type' section in the 'Configure Access' tab in settings page."
             />
           </h3>
-          {hasConfiguredSubsidyType ? (
-            <SettingsAccessConfiguredSubsidyType subsidyType={subsidyRequestConfiguration.subsidyType} />
-          ) : (
-            <SettingsAccessSubsidyTypeSelection
-              subsidyRequestConfiguration={subsidyRequestConfiguration}
-              subsidyTypes={enterpriseSubsidyTypesForRequests}
-              disabled={hasConfiguredSubsidyType}
-              updateSubsidyRequestConfiguration={updateSubsidyRequestConfiguration}
-            />
-          )}
+          {renderSubsidyTypeSelection()}
         </div>
       )}
       <div className="mb-5">
@@ -140,7 +159,7 @@ const SettingsAccessTab = ({
           />
         )}
       </div>
-      {subsidyTypeLabelAndRoute && (
+      {(subsidyTypeLabelAndRoute && !hasBnrEnabledPolicy) && (
         <div>
           <div className="d-flex justify-content-between">
             <h3>Manage course requests</h3>

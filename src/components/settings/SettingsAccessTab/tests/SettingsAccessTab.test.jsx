@@ -7,6 +7,7 @@ import SettingsAccessTab from '../index';
 import { SubsidyRequestsContext } from '../../../subsidy-requests';
 import { SUPPORTED_SUBSIDY_TYPES } from '../../../../data/constants/subsidyRequests';
 import { EnterpriseSubsidiesContext } from '../../../EnterpriseSubsidiesContext';
+import { useLearnerCreditBrowseAndRequest } from '../data/hooks';
 
 jest.mock('../SettingsAccessSubsidyTypeSelection', () => ({
   __esModule: true, // this property makes it work
@@ -41,6 +42,12 @@ jest.mock('../../../subsidy-request-management-alerts/NoAvailableLicensesBanner'
 jest.mock('../../../subsidy-request-management-alerts/NoAvailableCodesBanner', () => ({
   __esModule: true,
   default: jest.fn(() => 'NoAvailableCodesBanner'),
+}));
+jest.mock('../data/hooks', () => ({
+  useLearnerCreditBrowseAndRequest: jest.fn(() => ({
+    isLoadingPolicies: false,
+    hasBnrEnabledPolicy: false,
+  })),
 }));
 jest.mock('../../../../config');
 
@@ -241,6 +248,67 @@ describe('<SettingsAccessTab />', () => {
             enterpriseSubsidyTypesForRequests: [SUPPORTED_SUBSIDY_TYPES.coupon, SUPPORTED_SUBSIDY_TYPES.license],
           }
         }
+      />,
+    );
+
+    expect(screen.getByText('SettingsAccessConfiguredSubsidyType')).toBeInTheDocument();
+  });
+
+  it('should show skeleton when loading is true', () => {
+    useLearnerCreditBrowseAndRequest.mockReturnValue({
+      isLoadingPolicies: true,
+      hasBnrEnabledPolicy: false,
+    });
+
+    renderWithRouter(
+      <SettingsAccessTabWrapper
+        subsidyRequestConfigurationContextValue={{
+          subsidyRequestConfiguration: null,
+          updateSubsidyRequestConfiguration: jest.fn(),
+          enterpriseSubsidyTypesForRequests: [SUPPORTED_SUBSIDY_TYPES.budget, SUPPORTED_SUBSIDY_TYPES.license],
+        }}
+      />,
+    );
+
+    expect(document.querySelector('.react-loading-skeleton')).toBeTruthy();
+  });
+
+  it('should not render Manage course requests when hasBnrEnabledPolicy is true', () => {
+    useLearnerCreditBrowseAndRequest.mockReturnValue({
+      isLoadingPolicies: false,
+      hasBnrEnabledPolicy: true,
+    });
+
+    renderWithRouter(
+      <SettingsAccessTabWrapper
+        subsidyRequestConfigurationContextValue={{
+          subsidyRequestConfiguration: {
+            ...mockSubsidyRequestConfiguration,
+            subsidyType: SUPPORTED_SUBSIDY_TYPES.license,
+          },
+          updateSubsidyRequestConfiguration: jest.fn(),
+          enterpriseSubsidyTypesForRequests: [SUPPORTED_SUBSIDY_TYPES.budget],
+        }}
+        props={{ enableUniversalLink: true }}
+      />,
+    );
+
+    expect(screen.queryByText('Manage course requests')).not.toBeInTheDocument();
+  });
+
+  it('should render SettingsAccessConfiguredSubsidyType with budget type when hasBnrEnabledPolicy is true', () => {
+    useLearnerCreditBrowseAndRequest.mockReturnValue({
+      isLoadingPolicies: false,
+      hasBnrEnabledPolicy: true,
+    });
+
+    renderWithRouter(
+      <SettingsAccessTabWrapper
+        subsidyRequestConfigurationContextValue={{
+          subsidyRequestConfiguration: null,
+          updateSubsidyRequestConfiguration: jest.fn(),
+          enterpriseSubsidyTypesForRequests: [SUPPORTED_SUBSIDY_TYPES.budget, SUPPORTED_SUBSIDY_TYPES.license],
+        }}
       />,
     );
 
