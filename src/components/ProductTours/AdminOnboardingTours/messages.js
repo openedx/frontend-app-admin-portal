@@ -109,26 +109,67 @@ const messages = defineMessages({
     defaultMessage: 'Create learner groups, view all learners in your organization, and access individual learner profiles—all in one place.',
     description: 'Description for the organize learners flow step one',
   },
+  organizeLearnersStepOneNoMembersBody: {
+    id: 'adminPortal.productTours.adminOnboarding.organizeLearners.noLearners.body.1',
+    defaultMessage: 'Once learners join the organization, you can create learner groups, view all learners in your organization, and access individual learner profiles—all in one place.',
+    description: 'Description for the organize learners flow step one if there are no enterprise members',
+  },
   organizeLearnersStepTwoBody: {
     id: 'adminPortal.productTours.adminOnboarding.organizeLearners.body.2',
-    defaultMessage: 'Organize learners by creating groups for tracking and assignments.',
+    defaultMessage: 'View all learners in your organization. Search by name and access profiles to track progress and view learning access.',
     description: 'Description for the organize learners flow step two',
   },
   organizeLearnersStepThreeBody: {
     id: 'adminPortal.productTours.adminOnboarding.organizeLearners.body.3',
-    defaultMessage: 'When you\'re ready, use "Create Group" to get started.',
+    defaultMessage: '"View more" allows you to see the learner\'s full profile with enrollments, access type, and group'
+    + ' memberships at a glance.',
     description: 'Description for the organize learners flow step three',
   },
   organizeLearnersStepFourBody: {
     id: 'adminPortal.productTours.adminOnboarding.organizeLearners.body.4',
-    defaultMessage: 'View all learners in your organization. Search by name and access profiles to track progress and view learning access.',
+    defaultMessage: 'Organize learners by creating groups for tracking and assignments.',
     description: 'Description for the organize learners flow step four',
   },
   organizeLearnersStepFiveBody: {
-    id: 'adminPortal.productTours.adminOnboarding.organizeLearners.body.6',
-    defaultMessage: '"View more" allows you to see the learner\'s full profile with enrollments, access type, and group'
-    + ' memberships at a glance.',
-    description: 'Description for the organize learners flow step six',
+    id: 'adminPortal.productTours.adminOnboarding.organizeLearners.body.5',
+    defaultMessage: 'When you\'re ready, use "Create Group" to get started.',
+    description: 'Description for the organize learners flow step five',
+  },
+  organizeLearnersWithGroupsStepFourBody: {
+    id: 'adminPortal.productTours.adminOnboarding.organizeLearners.withGroups.body.4',
+    defaultMessage: 'View, manage, and create your learner groups here.',
+    description: 'Description for the organize learners flow with groups step four',
+  },
+  organizeLearnersWithGroupsStepFiveBody: {
+    id: 'adminPortal.productTours.adminOnboarding.organizeLearners.withGroups.body.5',
+    defaultMessage: '“Create Group" allows you to add more learner groups.',
+    description: 'Description for the organize learners flow with groups step five',
+  },
+  organizeLearnersWithGroupsStepSixBody: {
+    id: 'adminPortal.productTours.adminOnboarding.organizeLearners.withGroups.body.6',
+    defaultMessage: '“View group” allows you to edit group details, track progress, or view learners. Let\'s show you to the group detail page now.',
+    description: 'Description for the organize learners flow with groups step six',
+  },
+  organizeLearnersWithGroupsStepSevenBody: {
+    id: 'adminPortal.productTours.adminOnboarding.organizeLearners.withGroups.body.7',
+    defaultMessage: 'View and edit your group\'s name, see the total number of members, and view when it was created.',
+    description: 'Description for the organize learners flow with groups step seven',
+  },
+  organizeLearnersWithGroupsStepEightBody: {
+    id: 'adminPortal.productTours.adminOnboarding.organizeLearners.withGroups.body.8',
+    defaultMessage: 'Navigate to the Learner Progress Report, automatically filtered for this group, to track their progress.',
+    description: 'Description for the organize learners flow with groups step eight',
+  },
+  organizeLearnersWithGroupsStepNineBody: {
+    id: 'adminPortal.productTours.adminOnboarding.organizeLearners.withGroups.body.9',
+    defaultMessage: 'View and manage learners in this group. See names, emails, join dates, and enrollments. Add or remove members, '
+    + 'download the list as a CSV, or view individual learner profiles.',
+    description: 'Description for the organize learners flow with groups step nine',
+  },
+  organizeLearnersWithGroupsStepTenBody: {
+    id: 'adminPortal.productTours.adminOnboarding.organizeLearners.withGroups.body.10',
+    defaultMessage: 'To return to the People Management page, use the breadcrumbs or left-hand navigation.',
+    description: 'Description for the organize learners flow with groups step ten',
   },
   viewEnrollmentInsights: {
     id: 'adminPortal.productTours.adminOnboarding.viewEnrollmentInsights.title.1',

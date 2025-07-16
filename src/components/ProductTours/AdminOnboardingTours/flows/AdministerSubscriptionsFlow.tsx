@@ -1,24 +1,58 @@
 import { useIntl } from '@edx/frontend-platform/i18n';
+import { sendEnterpriseTrackEvent } from '@edx/frontend-enterprise-utils';
 import { useParams } from 'react-router';
 import { ADMINISTER_SUBSCRIPTIONS_TARGETS, ADMIN_TOUR_EVENT_NAMES } from '../constants';
 import messages from '../messages';
 import { TourStep } from '../../types';
 
 interface CreateTourFlowsProps {
-  handleAdvanceTour: (advanceEventName: string) => void;
+  currentStep: number;
+  enterpriseSlug: string;
   handleEndTour: (endEventName: string, flowUuid?: string) => void;
+  setCurrentStep: (step: number) => void;
+  targetSelector?: string;
 }
 
 const AdministerSubscriptionsFlow = ({
-  handleAdvanceTour,
+  currentStep,
+  enterpriseSlug,
   handleEndTour,
+  setCurrentStep,
+  targetSelector,
 }: CreateTourFlowsProps): Array<TourStep> => {
   const intl = useIntl();
   const params = useParams();
-  const onAnalyticsAdvance = () => handleAdvanceTour(ADMIN_TOUR_EVENT_NAMES.ENROLLMENT_INSIGHTS_ADVANCE_EVENT_NAME);
-
   const subscriptionUuid = params['*']?.split('/')[1];
   const isOnDetailPage = !!subscriptionUuid;
+
+  function handleAdvanceTour(advanceEventName: string) {
+    const newIndex = currentStep + 1;
+
+    const manageLearnersButton = document.getElementById('manage-learners-button');
+    if (manageLearnersButton && targetSelector === 'manage-learners-button') {
+      manageLearnersButton.click();
+      setCurrentStep(0);
+      sendEnterpriseTrackEvent(enterpriseSlug, advanceEventName, { 'completed-step': newIndex });
+      return;
+    }
+
+    const detailPageTargets = [
+      ADMINISTER_SUBSCRIPTIONS_TARGETS.SUBSCRIPTION_PLANS_DETAIL_PAGE,
+      ADMINISTER_SUBSCRIPTIONS_TARGETS.INVITE_LEARNERS_BUTTON,
+      ADMINISTER_SUBSCRIPTIONS_TARGETS.LICENSE_ALLOCATION_SECTION,
+      ADMINISTER_SUBSCRIPTIONS_TARGETS.LICENSE_ALLOCATION_FILTERS,
+      ADMINISTER_SUBSCRIPTIONS_TARGETS.SUBSCRIPTIONS_NAVIGATION,
+    ];
+
+    if (detailPageTargets.includes(targetSelector as string)) {
+      sendEnterpriseTrackEvent(enterpriseSlug, advanceEventName, { 'completed-step': 3 + newIndex });
+    } else {
+      sendEnterpriseTrackEvent(enterpriseSlug, advanceEventName, { 'completed-step': newIndex });
+    }
+    setCurrentStep(newIndex);
+  }
+
+  const onAnalyticsAdvance = () => handleAdvanceTour(ADMIN_TOUR_EVENT_NAMES.ENROLLMENT_INSIGHTS_ADVANCE_EVENT_NAME);
 
   if (isOnDetailPage) {
     return [

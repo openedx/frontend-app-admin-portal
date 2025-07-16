@@ -20,6 +20,7 @@ import { makePlural } from '../../../utils';
 import EVENT_NAMES from '../../../eventTracking';
 import ValidatedEmailsContextProvider from '../data/ValidatedEmailsContextProvider';
 import GroupInviteErrorToast from '../GroupInviteErrorToast';
+import { ORGANIZE_LEARNER_TARGETS } from '../../ProductTours/AdminOnboardingTours/constants';
 
 const GroupDetailPage = ({ enterpriseUUID }) => {
   const intl = useIntl();
@@ -85,6 +86,7 @@ const GroupDetailPage = ({ enterpriseUUID }) => {
             handleNameUpdate={handleNameUpdate}
           />
           <Breadcrumb
+            id={ORGANIZE_LEARNER_TARGETS.GROUP_DETAIL_BREADCRUMBS}
             aria-label="people management breadcrumb navigation"
             links={[
               {
@@ -99,7 +101,7 @@ const GroupDetailPage = ({ enterpriseUUID }) => {
             ]}
             activeLabel={groupName}
           />
-          <Card orientation="horizontal">
+          <Card id={ORGANIZE_LEARNER_TARGETS.GROUP_DETAIL_CARD} orientation="horizontal">
             <Card.Body>
               <Card.Header
                 title={(
@@ -138,6 +140,7 @@ const GroupDetailPage = ({ enterpriseUUID }) => {
                 onClick={openDeleteModal}
               />
               <Hyperlink
+                id={ORGANIZE_LEARNER_TARGETS.VIEW_GROUP_PROGRESS}
                 className="btn btn-primary"
                 target="_blank"
                 destination={`/${enterpriseSlug}/admin/${ROUTE_NAMES.learners}?group_uuid=${groupUuid}#fullreport`}

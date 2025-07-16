@@ -21,8 +21,9 @@ const renderHookWithIntl = (hookFn) => renderHook(hookFn, {
 });
 
 describe('AdministerSubscriptionsFlow', () => {
-  const mockHandleAdvanceTour = jest.fn();
   const mockHandleEndTour = jest.fn();
+  const enterpriseId = 'enterprise-id';
+  const mockSetCurrentStep = jest.fn();
 
   beforeEach(() => {
     jest.clearAllMocks();
@@ -37,8 +38,12 @@ describe('AdministerSubscriptionsFlow', () => {
 
     it('should return main subscription page flow when on main page', () => {
       const { result } = renderHookWithIntl(() => AdministerSubscriptionsFlow({
-        handleAdvanceTour: mockHandleAdvanceTour,
+        currentStep: 0,
+        enterpriseId,
+        enterpriseSlug: enterpriseId,
         handleEndTour: mockHandleEndTour,
+        setCurrentStep: mockSetCurrentStep,
+        targetSelector: '',
       }));
 
       expect(result.current).toHaveLength(3);
@@ -49,8 +54,12 @@ describe('AdministerSubscriptionsFlow', () => {
 
     it('should have correct step properties for main flow', () => {
       const { result } = renderHookWithIntl(() => AdministerSubscriptionsFlow({
-        handleAdvanceTour: mockHandleAdvanceTour,
+        currentStep: 0,
+        enterpriseId,
+        enterpriseSlug: enterpriseId,
         handleEndTour: mockHandleEndTour,
+        setCurrentStep: mockSetCurrentStep,
+        targetSelector: '',
       }));
 
       expect(result.current[0].title).toBe('Administer subscriptions');
@@ -64,35 +73,6 @@ describe('AdministerSubscriptionsFlow', () => {
       expect(result.current[2].placement).toBe('left');
       expect(typeof result.current[2].onEnd).toBe('function');
     });
-
-    it('should call handleAdvanceTour on intermediate steps', () => {
-      const { result } = renderHookWithIntl(() => AdministerSubscriptionsFlow({
-        handleAdvanceTour: mockHandleAdvanceTour,
-        handleEndTour: mockHandleEndTour,
-      }));
-
-      act(() => {
-        result.current[0].onAdvance();
-      });
-      expect(mockHandleAdvanceTour).toHaveBeenCalledTimes(1);
-
-      act(() => {
-        result.current[1].onAdvance();
-      });
-      expect(mockHandleAdvanceTour).toHaveBeenCalledTimes(2);
-    });
-
-    it('should call handleAdvanceTour on the final step (manage learners button)', () => {
-      const { result } = renderHookWithIntl(() => AdministerSubscriptionsFlow({
-        handleAdvanceTour: mockHandleAdvanceTour,
-        handleEndTour: mockHandleEndTour,
-      }));
-
-      act(() => {
-        result.current[2].onEnd();
-      });
-      expect(mockHandleAdvanceTour).toHaveBeenCalledTimes(1);
-    });
   });
 
   describe('Detail subscription page flow', () => {
@@ -104,8 +84,12 @@ describe('AdministerSubscriptionsFlow', () => {
 
     it('should return subscription detail page flow when on detail page', () => {
       const { result } = renderHookWithIntl(() => AdministerSubscriptionsFlow({
-        handleAdvanceTour: mockHandleAdvanceTour,
+        currentStep: 0,
+        enterpriseId,
+        enterpriseSlug: enterpriseId,
         handleEndTour: mockHandleEndTour,
+        setCurrentStep: mockSetCurrentStep,
+        targetSelector: '',
       }));
 
       expect(result.current).toHaveLength(5);
@@ -118,8 +102,12 @@ describe('AdministerSubscriptionsFlow', () => {
 
     it('should have correct step properties for detail flow', () => {
       const { result } = renderHookWithIntl(() => AdministerSubscriptionsFlow({
-        handleAdvanceTour: mockHandleAdvanceTour,
+        currentStep: 0,
+        enterpriseId,
+        enterpriseSlug: enterpriseId,
         handleEndTour: mockHandleEndTour,
+        setCurrentStep: mockSetCurrentStep,
+        targetSelector: '',
       }));
 
       result.current.slice(0, -1).forEach((step) => {
@@ -132,27 +120,14 @@ describe('AdministerSubscriptionsFlow', () => {
       expect(lastStep.onEnd).toBeUndefined();
     });
 
-    it('should call handleAdvanceTour on intermediate steps', () => {
-      const { result } = renderHookWithIntl(() => AdministerSubscriptionsFlow({
-        handleAdvanceTour: mockHandleAdvanceTour,
-        handleEndTour: mockHandleEndTour,
-      }));
-
-      act(() => {
-        result.current[0].onAdvance();
-      });
-      expect(mockHandleAdvanceTour).toHaveBeenCalledTimes(1);
-
-      act(() => {
-        result.current[1].onAdvance();
-      });
-      expect(mockHandleAdvanceTour).toHaveBeenCalledTimes(2);
-    });
-
     it('should call handleEndTour on the final step', () => {
       const { result } = renderHookWithIntl(() => AdministerSubscriptionsFlow({
-        handleAdvanceTour: mockHandleAdvanceTour,
+        currentStep: 0,
+        enterpriseId,
+        enterpriseSlug: enterpriseId,
         handleEndTour: mockHandleEndTour,
+        setCurrentStep: mockSetCurrentStep,
+        targetSelector: '',
       }));
 
       act(() => {
@@ -169,8 +144,12 @@ describe('AdministerSubscriptionsFlow', () => {
       });
 
       const { result } = renderHookWithIntl(() => AdministerSubscriptionsFlow({
-        handleAdvanceTour: mockHandleAdvanceTour,
+        currentStep: 0,
+        enterpriseId,
+        enterpriseSlug: enterpriseId,
         handleEndTour: mockHandleEndTour,
+        setCurrentStep: mockSetCurrentStep,
+        targetSelector: '',
       }));
 
       expect(result.current).toHaveLength(3);
@@ -183,8 +162,12 @@ describe('AdministerSubscriptionsFlow', () => {
       });
 
       const { result } = renderHookWithIntl(() => AdministerSubscriptionsFlow({
-        handleAdvanceTour: mockHandleAdvanceTour,
+        currentStep: 0,
+        enterpriseId,
+        enterpriseSlug: enterpriseId,
         handleEndTour: mockHandleEndTour,
+        setCurrentStep: mockSetCurrentStep,
+        targetSelector: '',
       }));
 
       expect(result.current).toHaveLength(5);
@@ -197,8 +180,12 @@ describe('AdministerSubscriptionsFlow', () => {
       });
 
       const { result } = renderHookWithIntl(() => AdministerSubscriptionsFlow({
-        handleAdvanceTour: mockHandleAdvanceTour,
+        currentStep: 0,
+        enterpriseId,
+        enterpriseSlug: enterpriseId,
         handleEndTour: mockHandleEndTour,
+        setCurrentStep: mockSetCurrentStep,
+        targetSelector: '',
       }));
 
       expect(result.current).toHaveLength(5);
@@ -211,8 +198,12 @@ describe('AdministerSubscriptionsFlow', () => {
       });
 
       const { result } = renderHookWithIntl(() => AdministerSubscriptionsFlow({
-        handleAdvanceTour: mockHandleAdvanceTour,
+        currentStep: 0,
+        enterpriseId,
+        enterpriseSlug: enterpriseId,
         handleEndTour: mockHandleEndTour,
+        setCurrentStep: mockSetCurrentStep,
+        targetSelector: '',
       }));
 
       expect(result.current).toHaveLength(3);
@@ -227,16 +218,24 @@ describe('AdministerSubscriptionsFlow', () => {
       });
 
       const { result: mainFlow } = renderHookWithIntl(() => AdministerSubscriptionsFlow({
-        handleAdvanceTour: mockHandleAdvanceTour,
+        currentStep: 0,
+        enterpriseId,
+        enterpriseSlug: enterpriseId,
         handleEndTour: mockHandleEndTour,
+        setCurrentStep: mockSetCurrentStep,
+        targetSelector: '',
       }));
 
       useParams.mockReturnValue({
         '*': 'subscriptions/manage-learners/test-uuid',
       });
       const { result: detailFlow } = renderHookWithIntl(() => AdministerSubscriptionsFlow({
-        handleAdvanceTour: mockHandleAdvanceTour,
+        currentStep: 0,
+        enterpriseId,
+        enterpriseSlug: enterpriseId,
         handleEndTour: mockHandleEndTour,
+        setCurrentStep: mockSetCurrentStep,
+        targetSelector: '',
       }));
       expect(mainFlow.current).toHaveLength(3);
 

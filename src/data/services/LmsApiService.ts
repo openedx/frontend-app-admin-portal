@@ -433,6 +433,16 @@ class LmsApiService {
     return LmsApiService.apiClient().patch(url, options);
   }
 
+  static fetchEnterpriseCustomerMember(enterpriseUUID: string) {
+    let url = `${LmsApiService.enterpriseCustomerMembersUrl}${enterpriseUUID}/`;
+    const queryParams = new URLSearchParams({
+      page: '1',
+      page_size: '1',
+    });
+    url = `${LmsApiService.enterpriseCustomerMembersUrl}${enterpriseUUID}?${queryParams.toString()}`;
+    return LmsApiService.apiClient().get(url);
+  }
+
   static fetchEnterpriseCustomerMembers(enterpriseUUID: string, options: any) {
     let url = `${LmsApiService.enterpriseCustomerMembersUrl}${enterpriseUUID}/`;
     if (options) {
