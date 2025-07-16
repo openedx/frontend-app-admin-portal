@@ -52,6 +52,8 @@ export const RESET_TARGETS = [
   ORGANIZE_LEARNER_TARGETS.GROUP_DETAIL_CARD,
 ];
 
+export const CUSTOMIZE_REPORTS_SIDEBAR = 'customize-reports-sidebar';
+
 export const ADMIN_TOUR_EVENT_NAMES = {
   ENROLLMENT_INSIGHTS_ADVANCE_EVENT_NAME: 'edx.ui.enterprise.admin-portal.admin-onboarding-tours.enrollment-insights.advance',
   ENROLLMENT_INSIGHTS_COMPLETED_EVENT_NAME: 'edx.ui.enterprise.admin-portal.admin-onboarding-tours.enrollment-insights.completed',

@@ -1,4 +1,6 @@
-import React, { useState, useRef, useEffect } from 'react';
+import React, {
+  useState, useRef, useEffect, useMemo,
+} from 'react';
 import PropTypes from 'prop-types';
 
 import {
@@ -6,9 +8,11 @@ import {
 } from '@edx/frontend-platform/i18n';
 import { Tabs, Tab } from '@openedx/paragon';
 
+import { logError } from '@edx/frontend-platform/logging';
 import { formatTimestamp } from '../../utils';
 import AdminSearchForm from './AdminSearchForm';
 import ModuleActivityReport from './tabs/ModuleActivityReport';
+import EnterpriseDataApiService from '../../data/services/EnterpriseDataApiService';
 
 const LearnerReport = ({
   tableMetadata,
@@ -35,6 +39,7 @@ const LearnerReport = ({
   const [activeTab, setActiveTab] = useState('learner-progress-report');
   const fullReportRef = useRef(null);
   const [navigateToReport, setNavigateToReport] = useState(location?.hash === '#fullreport');
+  const [isModuleReportEmpty, setIsModuleReportEmpty] = useState(true);
 
   const intl = useIntl();
 
@@ -46,6 +51,101 @@ const LearnerReport = ({
       setNavigateToReport(false);
     }
   }, [navigateToReport]);
+
+  useEffect(() => {
+    const filters = {};
+    EnterpriseDataApiService.fetchEnterpriseModuleActivityReport(enterpriseId, {
+      search: '',
+      ...filters,
+    })
+      .then((response) => {
+        if (response?.data?.results?.length === 0) {
+          setIsModuleReportEmpty(true);
+        } else {
+          setIsModuleReportEmpty(false);
+        }
+      })
+      .catch((err) => {
+        logError(err);
+      });
+  }, [enterpriseId]);
+
+  const visibleTabs = useMemo(() => {
+    const tabs = [];
+    tabs.push(
+      <Tab
+        eventKey="learner-progress-report"
+        title={intl.formatMessage({
+          id: 'adminPortal.lpr.tab.learnerProgressReport.title',
+          defaultMessage: 'Learner Progress Report',
+          description: 'Title for the learner progress report tab in admin portal.',
+        })}
+      >
+        <div className="row">
+          <div className="col">
+            {!error && !loading && !hasEmptyData() && (
+              <>
+                <div className="row pb-3 mt-2">
+                  <div className="col-12 col-md-12 col-xl-12">
+                    {renderDownloadButton()}
+                  </div>
+                </div>
+                {displaySearchBar() && (
+                  <AdminSearchForm
+                    searchParams={searchParams}
+                    searchEnrollmentsList={() => searchEnrollmentsList()}
+                    tableData={getTableData() ? getTableData().results : []}
+                    budgets={budgets}
+                    groups={groups}
+                    enterpriseId={enterpriseId}
+                  />
+                )}
+              </>
+            )}
+            {csvErrorMessage && renderCsvErrorMessage(csvErrorMessage)}
+            <div className="mt-3 mb-5">
+              {enterpriseId && tableMetadata.component}
+            </div>
+          </div>
+        </div>
+      </Tab>,
+    );
+    if (!isModuleReportEmpty) {
+      tabs.push(
+        <Tab
+          eventKey="module-activity"
+          title={intl.formatMessage({
+            id: 'adminPortal.lpr.tab.moduleActivity.title',
+            defaultMessage: 'Module Activity (Executive Education)',
+            description: 'Title for the module activity tab in admin portal.',
+          })}
+        >
+          <div className="mt-3" data-testid="module-activity-report">
+            <ModuleActivityReport enterpriseId={enterpriseId} />
+          </div>
+        </Tab>,
+      );
+    }
+
+    return tabs;
+  }, [
+    error,
+    loading,
+    hasEmptyData,
+    renderDownloadButton,
+    displaySearchBar,
+    searchParams,
+    searchEnrollmentsList,
+    getTableData,
+    budgets,
+    groups,
+    enterpriseId,
+    csvErrorMessage,
+    renderCsvErrorMessage,
+    tableMetadata,
+    isModuleReportEmpty,
+    intl,
+  ]);
 
   return (
     <>
@@ -95,54 +195,7 @@ const LearnerReport = ({
             setActiveTab(tab);
           }}
         >
-          <Tab
-            eventKey="learner-progress-report"
-            title={intl.formatMessage({
-              id: 'adminPortal.lpr.tab.learnerProgressReport.title',
-              defaultMessage: 'Learner Progress Report',
-              description: 'Title for the learner progress report tab in admin portal.',
-            })}
-          >
-            <div className="row">
-              <div className="col">
-                {!error && !loading && !hasEmptyData() && (
-                  <>
-                    <div className="row pb-3 mt-2">
-                      <div className="col-12 col-md-12 col-xl-12">
-                        {renderDownloadButton()}
-                      </div>
-                    </div>
-                    {displaySearchBar() && (
-                      <AdminSearchForm
-                        searchParams={searchParams}
-                        searchEnrollmentsList={() => searchEnrollmentsList()}
-                        tableData={getTableData() ? getTableData().results : []}
-                        budgets={budgets}
-                        groups={groups}
-                        enterpriseId={enterpriseId}
-                      />
-                    )}
-                  </>
-                )}
-                {csvErrorMessage && renderCsvErrorMessage(csvErrorMessage)}
-                <div className="mt-3 mb-5">
-                  {enterpriseId && tableMetadata.component}
-                </div>
-              </div>
-            </div>
-          </Tab>
-          <Tab
-            eventKey="module-activity"
-            title={intl.formatMessage({
-              id: 'adminPortal.lpr.tab.moduleActivity.title',
-              defaultMessage: 'Module Activity (Executive Education)',
-              description: 'Title for the module activity tab in admin portal.',
-            })}
-          >
-            <div className="mt-3">
-              <ModuleActivityReport enterpriseId={enterpriseId} />
-            </div>
-          </Tab>
+          {visibleTabs}
         </Tabs>
       </div>
     </>

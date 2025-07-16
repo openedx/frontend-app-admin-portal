@@ -272,4 +272,22 @@ describe('AnalyticsFilters Component', () => {
     expect(calculation).toHaveTextContent('Moving Average (3 Period)');
     expect(calculation).toHaveTextContent('Moving Average (7 Period)');
   });
+
+  test('renders outcomes-specific filters', async () => {
+    render(
+      <IntlProvider locale="en">
+        <AnalyticsFilters
+          {...defaultProps}
+          activeTab="outcomes"
+        />
+      </IntlProvider>,
+    );
+
+    expect(screen.queryByLabelText('Calculation / Trends')).not.toBeInTheDocument();
+    expect(screen.queryByLabelText('Date granularity')).not.toBeInTheDocument();
+    expect(screen.queryByLabelText('Filter by budget')).not.toBeInTheDocument();
+    expect(screen.queryByLabelText('Filter by course type')).not.toBeInTheDocument();
+
+    expect(screen.getByLabelText('Filter by start date')).toBeDisabled();
+  });
 });

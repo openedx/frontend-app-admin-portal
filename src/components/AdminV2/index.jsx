@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { Helmet } from 'react-helmet';
+import { isEmpty } from 'lodash-es';
 import {
   Alert, Icon,
 } from '@openedx/paragon';
@@ -38,7 +39,7 @@ import { withLocation, withParams } from '../../hoc';
 import BudgetExpiryAlertAndModal from '../BudgetExpiryAlertAndModal';
 import LearnerReport from './LearnerReport';
 import SortableItem from './SortableItem';
-import { getFromLocalStorage, saveToLocalStorage } from '../../utils';
+import { getFromLocalStorage, saveToLocalStorage, getFilteredQueryParams } from '../../utils';
 import SubscriptionModal from './SubscriptionModal';
 import { SubscriptionData } from '../subscriptions';
 
@@ -118,6 +119,9 @@ const Admin = ({
   }, [enterpriseId]);
 
   const getMetadataForAction = (actionSlugParam) => {
+    const expectedQueryParams = ['search', 'search_course', 'search_start_date', 'budget_uuid', 'group_uuid'];
+    const filteredQueryParams = getFilteredQueryParams(location.search, expectedQueryParams);
+
     const defaultData = {
       title: intl.formatMessage({
         id: 'admin.portal.lpr.v2.report.full.report.title',
@@ -126,9 +130,10 @@ const Admin = ({
       }),
       component: <EnrollmentsTable />,
       csvFetchMethod: () => (
-        EnterpriseDataApiService.fetchCourseEnrollments(enterpriseId, {}, { csv: true })
+        EnterpriseDataApiService.fetchCourseEnrollments(enterpriseId, filteredQueryParams, { csv: true })
       ),
       csvButtonId: 'enrollments',
+      hasActiveFilters: !isEmpty(filteredQueryParams),
     };
 
     const actionData = {
@@ -312,7 +317,7 @@ const Admin = ({
   const renderDownloadButton = () => {
     const tableMetadata = getMetadataForAction(actionSlug);
     let downloadButtonLabel;
-    if (actionSlug) {
+    if (actionSlug || tableMetadata.hasActiveFilters) {
       downloadButtonLabel = intl.formatMessage({
         id: 'admin.portal.lpr.current.report.csv.download',
         defaultMessage: 'Download current report (CSV)',
@@ -419,7 +424,11 @@ const Admin = ({
   const searchParam = location?.search || '';
   const queryParams = new URLSearchParams(searchParam);
   const queryParamsLength = Array.from(queryParams.entries()).length;
-  const filtersActive = queryParamsLength !== 0 && !(queryParamsLength === 1 && queryParams.has('ordering'));
+  const filtersActive = (
+    queryParamsLength !== 0
+    && !(queryParamsLength === 1 && (queryParams.has('ordering') || queryParams.has('page')))
+    && !(queryParamsLength === 2 && (queryParams.has('ordering') && queryParams.has('page')))
+  );
   const tableMetadata = getMetadataForAction(actionSlug);
   const csvErrorMessage = getCsvErrorMessage(tableMetadata.csvButtonId);
   const searchParams = {

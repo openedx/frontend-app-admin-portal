@@ -261,7 +261,6 @@ describe('utils', () => {
         {
           courseKey: 'HarvardX+CS50x',
           enrollmentCount: 30,
-          enrollType: 'audit',
         },
       ]);
     });

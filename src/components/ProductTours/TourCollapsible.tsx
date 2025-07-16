@@ -5,14 +5,16 @@ import {
   IconButton, Icon, OverlayTrigger, Tooltip, Stack,
 } from '@openedx/paragon';
 import {
-  CreditCard, InsertChartOutlined, Question, Person, TrendingUp,
+  CreditCard, InsertChartOutlined, Person, Question, Settings, TextSnippet, TrendingUp,
 } from '@openedx/paragon/icons';
 import { useIntl } from '@edx/frontend-platform/i18n';
 
 import FloatingCollapsible from '../FloatingCollapsible';
 import messages, {
   ADMINISTER_SUBSCRIPTIONS_TITLE,
+  CUSTOMIZE_REPORTS_TITLE,
   ORGANIZE_LEARNERS_TITLE,
+  SET_UP_PREFERENCES_TITLE,
   TRACK_LEARNER_PROGRESS_TITLE,
   VIEW_ENROLLMENTS_INSIGHT_TITLE,
 } from './AdminOnboardingTours/messages';
@@ -21,9 +23,11 @@ import { Step } from './AdminOnboardingTours/OnboardingSteps';
 import {
   ADMINISTER_SUBSCRIPTIONS_TARGETS,
   ANALYTICS_INSIGHTS_TARGETS,
+  CUSTOMIZE_REPORTS_SIDEBAR,
   ORGANIZE_LEARNER_TARGETS,
   TRACK_LEARNER_PROGRESS_TARGETS,
 } from './AdminOnboardingTours/constants';
+import { TOUR_TARGETS } from './constants';
 
 interface Props {
   dismissOnboardingTour: (adminUuid: string) => void;
@@ -33,9 +37,17 @@ interface Props {
   showCollapsible: boolean;
   setShowCollapsible: (value: boolean) => void;
   enableSubscriptionManagementScreen: boolean;
+  enableReportingConfigScreen: boolean;
 }
 
-const QUICK_START_GUIDE_STEPS = [{
+type StepDefinition = {
+  icon: React.ComponentType,
+  title: string,
+  timeEstimate: number,
+  targetId: string
+};
+
+const QUICK_START_GUIDE_STEPS: StepDefinition[] = [{
   icon: TrendingUp,
   title: TRACK_LEARNER_PROGRESS_TITLE,
   timeEstimate: 2,
@@ -55,7 +67,19 @@ const QUICK_START_GUIDE_STEPS = [{
   title: ORGANIZE_LEARNERS_TITLE,
   timeEstimate: 2,
   targetId: ORGANIZE_LEARNER_TARGETS.PEOPLE_MANAGEMENT_SIDEBAR,
-}];
+}, {
+  icon: TextSnippet,
+  title: CUSTOMIZE_REPORTS_TITLE,
+  timeEstimate: 1,
+  targetId: CUSTOMIZE_REPORTS_SIDEBAR,
+},
+{
+  icon: Settings,
+  title: SET_UP_PREFERENCES_TITLE,
+  timeEstimate: 1,
+  targetId: TOUR_TARGETS.SETTINGS_SIDEBAR,
+},
+];
 
 const TourCollapsible: FC<Props> = (
   {
@@ -66,6 +90,7 @@ const TourCollapsible: FC<Props> = (
     setShowCollapsible,
     uuid: adminUuid,
     enableSubscriptionManagementScreen,
+    enableReportingConfigScreen,
   },
 ) => {
   const intl = useIntl();
@@ -80,6 +105,17 @@ const TourCollapsible: FC<Props> = (
     reopenTour(adminUuid);
   };
 
+  const steps = QUICK_START_GUIDE_STEPS.filter(step => {
+    switch (step.title) {
+      case ADMINISTER_SUBSCRIPTIONS_TITLE:
+        return enableSubscriptionManagementScreen;
+      case CUSTOMIZE_REPORTS_TITLE:
+        return enableReportingConfigScreen;
+      default:
+        return true;
+    }
+  });
+
   return (
     <>
       {showCollapsible && (
@@ -89,21 +125,16 @@ const TourCollapsible: FC<Props> = (
         >
           <p className="small">{intl.formatMessage(messages.collapsibleIntro)}</p>
           <Stack gap={3} className="mb-3">
-            {QUICK_START_GUIDE_STEPS.map(step => {
-              if (step.title === ADMINISTER_SUBSCRIPTIONS_TITLE && !enableSubscriptionManagementScreen) {
-                return null;
-              }
-              return (
-                <Step
-                  key={step.title}
-                  icon={step.icon}
-                  title={step.title}
-                  timeEstimate={step.timeEstimate}
-                  targetId={step.targetId}
-                  onTourSelect={onTourSelect}
-                />
-              );
-            })}
+            {steps.map(step => (
+              <Step
+                key={step.title}
+                icon={step.icon}
+                title={step.title}
+                timeEstimate={step.timeEstimate}
+                targetId={step.targetId}
+                onTourSelect={onTourSelect}
+              />
+            ))}
           </Stack>
         </FloatingCollapsible>
       )}
@@ -134,6 +165,7 @@ const mapStateToProps = state => ({
   onboardingTourDismissed: state.enterpriseCustomerAdmin.onboardingTourDismissed as boolean,
   uuid: state.enterpriseCustomerAdmin.uuid as string,
   enableSubscriptionManagementScreen: state.portalConfiguration.enableSubscriptionManagementScreen as boolean,
+  enableReportingConfigScreen: state.portalConfiguration.enableReportingConfigScreen as boolean,
 });
 
 const mapDispatchToProps = dispatch => ({
