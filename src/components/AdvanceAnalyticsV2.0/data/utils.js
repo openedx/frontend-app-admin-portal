@@ -210,3 +210,15 @@ export const sumEntitiesByMetric = (records, groupByKey, fieldsToSum = []) => {
 
   return Object.values(result);
 };
+
+/** * Generates a date string which is 90 days before today in 'YYYY-MM-DD' format.
+ * This is used as the default start date for analytics filters.
+ * @return {string} The date string in 'YYYY-MM-DD' format.
+ */
+export const get90DayPriorDate = () => {
+  const today = new Date();
+  const newStartDate = new Date(today.setDate(today.getDate() - 90))
+    .toISOString()
+    .split('T')[0];
+  return newStartDate;
+};

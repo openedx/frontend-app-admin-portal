@@ -5,6 +5,7 @@ import { FormattedMessage, useIntl } from '@edx/frontend-platform/i18n';
 import PropTypes from 'prop-types';
 import IconWithTooltip from '../IconWithTooltip';
 import { GRANULARITY, CALCULATION, DATE_RANGE } from './data/constants';
+import { get90DayPriorDate } from './data/utils';
 
 export const DEFAULT_GROUP = '';
 
@@ -29,14 +30,17 @@ const AnalyticsFilters = ({
   const intl = useIntl();
   const [collapsed, setCollapsed] = useState(false);
   const isProgressOrOutcomesTab = activeTab === 'progress' || activeTab === 'outcomes';
+  const [dateRangeValue, setDateRangeValue] = useState(DATE_RANGE.LAST_90_DAYS);
 
   const handleDateRangeChange = (selectedRange) => {
+    setDateRangeValue(selectedRange);
     const today = new Date();
     const rangeMap = {
       [DATE_RANGE.LAST_7_DAYS]: 7,
       [DATE_RANGE.LAST_30_DAYS]: 30,
       [DATE_RANGE.LAST_90_DAYS]: 90,
       [DATE_RANGE.YEAR_TO_DATE]: 365,
+      [DATE_RANGE.CUSTOM]: 0,
     };
     if (rangeMap[selectedRange]) {
       const newStartDate = new Date(today.setDate(today.getDate() - rangeMap[selectedRange]))
@@ -46,6 +50,16 @@ const AnalyticsFilters = ({
     }
     const newEndDate = new Date().toISOString().split('T')[0];
     setEndDate(newEndDate);
+  };
+
+  const handleStartDateChange = (selectedDate) => {
+    setStartDate(selectedDate);
+    setDateRangeValue(DATE_RANGE.CUSTOM);
+  };
+
+  const handleEndDateChange = (selectedDate) => {
+    setEndDate(selectedDate);
+    setDateRangeValue(DATE_RANGE.CUSTOM);
   };
 
   return (
@@ -87,7 +101,8 @@ const AnalyticsFilters = ({
                   as="select"
                   onChange={(e) => handleDateRangeChange(e.target.value)}
                   disabled={isFetching}
-                  defaultValue={DATE_RANGE.LAST_90_DAYS}
+                  defaultValue={dateRangeValue}
+                  value={dateRangeValue}
                 >
                   <option value={DATE_RANGE.LAST_7_DAYS}>
                     {intl.formatMessage({
@@ -117,6 +132,13 @@ const AnalyticsFilters = ({
                       description: 'Option for year to date in date range filter in the admin portal analytics page',
                     })}
                   </option>
+                  <option value={DATE_RANGE.CUSTOM}>
+                    {intl.formatMessage({
+                      id: 'advance.analytics.date.range.filter.option.custom',
+                      defaultMessage: 'Custom',
+                      description: 'Option for custom date in date range filter in the admin portal analytics page',
+                    })}
+                  </option>
                 </Form.Control>
               </Form.Group>
             </div>
@@ -132,9 +154,9 @@ const AnalyticsFilters = ({
                 <Form.Control
                   controlClassName="font-weight-normal analytics-filter-form-controls rounded-0"
                   type="date"
-                  value={startDate || data?.minEnrollmentDate || ''}
+                  value={startDate || get90DayPriorDate()}
                   min={data?.minEnrollmentDate || ''}
-                  onChange={(e) => setStartDate(e.target.value)}
+                  onChange={(e) => handleStartDateChange(e.target.value)}
                   disabled={isFetching}
                 />
               </Form.Group>
@@ -153,7 +175,7 @@ const AnalyticsFilters = ({
                   type="date"
                   value={endDate || currentDate || ''}
                   max={currentDate || ''}
-                  onChange={(e) => setEndDate(e.target.value)}
+                  onChange={(e) => handleEndDateChange(e.target.value)}
                   disabled={isFetching}
                 />
               </Form.Group>

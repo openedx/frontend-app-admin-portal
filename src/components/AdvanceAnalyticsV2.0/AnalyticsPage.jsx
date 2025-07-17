@@ -12,6 +12,7 @@ import { GRANULARITY, CALCULATION } from './data/constants';
 import { useAllFlexEnterpriseGroups } from '../learner-credit-management/data';
 import { AnalyticsFiltersContext } from './AnalyticsFiltersContext';
 import Outcomes from './tabs/Outcomes';
+import { get90DayPriorDate } from './data/utils';
 
 const AnalyticsPage = ({ enterpriseId }) => {
   const [activeTab, setActiveTab] = useState('engagements');
@@ -38,7 +39,7 @@ const AnalyticsPage = ({ enterpriseId }) => {
 
   const filtersContextValue = useMemo(() => ({
     data,
-    startDate: startDate || data?.minEnrollmentDate,
+    startDate: startDate || get90DayPriorDate(),
     endDate: endDate || currentDate,
     currentDate,
     granularity,
