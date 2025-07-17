@@ -8,6 +8,7 @@ import RequestDetailsTableCell from './RequestDetailsTableCell';
 import RequestStatusTableCell from './RequestStatusTableCell';
 import RequestAmountTableCell from './RequestAmountTableCell';
 import RequestRecentActionTableCell from './RequestRecentActionTableCell';
+import ApprovedRequestActionsTableCell from './ApprovedRequestActionsTableCell';
 import ApprovedRequestsTableRefreshAction from './ApprovedRequestsTableRefreshAction';
 import { DEFAULT_PAGE, PAGE_SIZE } from './data';
 
@@ -126,6 +127,18 @@ const BudgetDetailApprovedRequestTable = ({
           accessor: 'recentAction',
           Cell: RequestRecentActionTableCell,
           disableFilters: true,
+        },
+        {
+          Header: intl.formatMessage({
+            id: 'lcm.budget.detail.page.approved.requests.table.columns.actions',
+            defaultMessage: 'Actions',
+            description:
+              'Column header for the actions column in the approved requests table',
+          }),
+          accessor: 'actions',
+          Cell: ApprovedRequestActionsTableCell,
+          disableFilters: true,
+          disableSortBy: true,
         },
       ]}
       additionalColumns={approvedRequestsTableData.additionalColumns}
