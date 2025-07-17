@@ -3,6 +3,7 @@ import { logError } from '@edx/frontend-platform/logging';
 
 import {
   ANALYTICS_INSIGHTS_TARGETS,
+  CUSTOMIZE_REPORTS_SIDEBAR,
   ORGANIZE_LEARNER_TARGETS,
   TRACK_LEARNER_PROGRESS_TARGETS,
   ADMINISTER_SUBSCRIPTIONS_TARGETS,
@@ -14,6 +15,9 @@ import LearnerProgressFlow from './LearnerProgressFlow';
 import AnalyticsFlow from './AnalyticsFlow';
 import OrganizeLearnersFlow from './OrganizeLearnersFlow';
 import AdministerSubscriptionsFlow from './AdministerSubscriptionsFlow';
+import CustomizeReportsFlow from './CustomizeReportsFlow';
+import SetUpPreferencesFlow from '../SetUpPreferencesFlow';
+import { TOUR_TARGETS } from '../../constants';
 
 interface AdminOnboardingTourProps {
   adminUuid: string;
@@ -70,6 +74,8 @@ const AdminOnboardingTour = (
   const learnerProgressFlow = LearnerProgressFlow({ aiButtonVisible, handleAdvanceTour, handleEndTour });
   const organizeLearnersFlow = OrganizeLearnersFlow({ handleAdvanceTour, handleEndTour });
   const administerSubscriptionsFlow = AdministerSubscriptionsFlow({ handleAdvanceTour, handleEndTour });
+  const customizeReportsFlow = CustomizeReportsFlow({ handleEndTour });
+  const setUpPreferencesFlow = SetUpPreferencesFlow({ handleEndTour });
 
   // Map target selectors to their respective flows
   const flowMapping = {
@@ -86,6 +92,10 @@ const AdminOnboardingTour = (
       Object.values(ADMINISTER_SUBSCRIPTIONS_TARGETS)
         .map(target => [target, administerSubscriptionsFlow]),
     ),
+    // Customize reports flow target
+    [CUSTOMIZE_REPORTS_SIDEBAR]: customizeReportsFlow,
+    // Set up preferences flow target
+    [TOUR_TARGETS.SETTINGS_SIDEBAR]: setUpPreferencesFlow,
   };
 
   // we default to the first flow (learner progress)

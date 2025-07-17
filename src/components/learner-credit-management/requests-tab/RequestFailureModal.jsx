@@ -36,7 +36,7 @@ const RequestFailureModal = ({
               Get more troubleshooting help at{' '}
               <Hyperlink
                 destination={
-                  getConfig().ENTERPRISE_SUPPORT_URL
+                  getConfig().ENTERPRISE_SUPPORT_LEARNER_CREDIT_URL
                 }
                 target="_blank"
               >

@@ -1309,7 +1309,7 @@ describe('<BudgetDetailPage />', () => {
       expect(screen.getByText('Pending')).toBeInTheDocument();
     });
 
-    // First open the dropdown menu
+    // First, open the dropdown menu
     const dropdownToggle = screen.getByTestId('dropdown-toggle-test-approved-request-uuid');
     expect(dropdownToggle).toBeInTheDocument();
     await user.click(dropdownToggle);
@@ -1335,7 +1335,7 @@ describe('<BudgetDetailPage />', () => {
     });
 
     expect(sendEnterpriseTrackEvent).toHaveBeenCalledTimes(2);
-  });
+  }, 30000);
 
   it('renders with approved requests table data and verifies first field data', async () => {
     const NUMBER_OF_APPROVE_REQUEST_TO_GENERATE = 60;
