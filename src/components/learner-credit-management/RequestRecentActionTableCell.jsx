@@ -3,13 +3,26 @@ import PropTypes from 'prop-types';
 
 const RequestRecentActionTableCell = ({ row }) => {
   const { original } = row;
-  const { requestDate, requestStatus } = original;
+  const {
+    requestDate,
+    requestStatus,
+    latestAction,
+    lastActionDate,
+  } = original;
 
-  // For approved requests, the recent action is typically the approval
-  const formattedActionType = `${requestStatus.charAt(0).toUpperCase()}${requestStatus.slice(1)}`;
+  const formatRequest = () => {
+    const hasRemindedAction = latestAction && latestAction.recentAction === 'Reminded';
+    // Using reminded action if the latest action is 'Reminded' else fall back to requestStatus
+    const status = hasRemindedAction ? latestAction.recentAction : requestStatus;
+    const formattedActionType = `${status.charAt(0).toUpperCase()}${status.slice(1)}`;
 
-  // requestDate is already a formatted string from the transformation
-  const formattedActionTimestamp = requestDate;
+    // Date is already a formatted string from the transformation
+    const formattedActionTimestamp = hasRemindedAction ? lastActionDate : requestDate;
+
+    return { formattedActionType, formattedActionTimestamp };
+  };
+
+  const { formattedActionType, formattedActionTimestamp } = formatRequest();
 
   return (
     <span>
@@ -23,6 +36,10 @@ RequestRecentActionTableCell.propTypes = {
     original: PropTypes.shape({
       requestDate: PropTypes.string.isRequired,
       requestStatus: PropTypes.string.isRequired,
+      latestAction: PropTypes.shape({
+        recentAction: PropTypes.string.isRequired,
+      }).isRequired,
+      lastActionDate: PropTypes.string.isRequired,
     }).isRequired,
   }).isRequired,
 };

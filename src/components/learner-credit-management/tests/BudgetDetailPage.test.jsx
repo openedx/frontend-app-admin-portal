@@ -1337,6 +1337,94 @@ describe('<BudgetDetailPage />', () => {
     expect(sendEnterpriseTrackEvent).toHaveBeenCalledTimes(2);
   }, 30000);
 
+  it('reminds an approved learner credit request', async () => {
+    const user = userEvent.setup();
+    EnterpriseAccessApiService.remindApprovedBnrSubsidyRequest.mockResolvedValueOnce({ status: 200 });
+    const NUMBER_OF_APPROVE_REQUEST_TO_GENERATE = 60;
+    useParams.mockReturnValue({
+      enterpriseSlug: 'test-enterprise-slug',
+      enterpriseAppPage: 'test-enterprise-page',
+      budgetId: mockSubsidyAccessPolicyUUID,
+      activeTabKey: 'activity',
+    });
+    useSubsidyAccessPolicy.mockReturnValue({
+      isInitialLoading: false,
+      data: mockPerLearnerSpendLimitSubsidyAccessPolicyWithBnrEnabled,
+    });
+    useEnterpriseGroupLearners.mockReturnValue({
+      data: {
+        count: 0,
+        currentPage: 1,
+        next: null,
+        numPages: 1,
+        results: [],
+      },
+    });
+    useBudgetDetailActivityOverview.mockReturnValue({
+      isLoading: false,
+      data: {
+        approvedBnrRequests: { count: NUMBER_OF_APPROVE_REQUEST_TO_GENERATE },
+        contentAssignments: undefined,
+        spentTransactions: { count: 0 },
+      },
+    });
+    const mockFetchLearnerCreditRequests = jest.fn();
+    // Max page size is 25 rows. Generate one assignment with a known learner email and the others with random emails.
+    const mockRequestsList = [
+      mockApprovedRequest, // Use the mockApprovedRequest with known values
+      ...Array.from({ length: PAGE_SIZE - 1 }, createMockApprovedRequest),
+    ];
+    useBnrSubsidyRequests.mockReturnValue({
+      isLoading: false,
+      bnrRequests: {
+        itemCount: NUMBER_OF_APPROVE_REQUEST_TO_GENERATE,
+        results: mockRequestsList,
+        pageCount: Math.floor(NUMBER_OF_APPROVE_REQUEST_TO_GENERATE / PAGE_SIZE),
+      },
+      fetchBnrRequests: mockFetchLearnerCreditRequests,
+    });
+    useBudgetRedemptions.mockReturnValue({
+      isLoading: false,
+      budgetRedemptions: mockEmptyBudgetRedemptions,
+      fetchBudgetRedemptions: jest.fn(),
+    });
+    useEnterpriseRemovedGroupMembers.mockReturnValue({
+      isRemovedMembersLoading: false,
+      removedGroupMembersCount: 0,
+    });
+    renderWithRouter(<BudgetDetailPageWrapper />);
+
+    await waitFor(() => {
+      expect(screen.getByText('Pending')).toBeInTheDocument();
+    });
+
+    // First, open the dropdown menu
+    const dropdownToggle = screen.getByTestId('dropdown-toggle-test-approved-request-uuid');
+    expect(dropdownToggle).toBeInTheDocument();
+    await user.click(dropdownToggle);
+
+    // Then find and click the remind approval item
+    const remindIconButton = screen.getByTestId('remind-approval-test-approved-request-uuid');
+    expect(remindIconButton).toBeInTheDocument();
+    await user.click(remindIconButton);
+    expect(sendEnterpriseTrackEvent).toHaveBeenCalledTimes(1);
+
+    const modalDialog = screen.getByRole('dialog');
+    expect(modalDialog).toBeInTheDocument();
+    expect(screen.getByText('Remind learner?')).toBeInTheDocument();
+
+    const remindDialogButton = getButtonElement('Send reminder');
+    await user.click(remindDialogButton);
+
+    await waitFor(() => {
+      expect(EnterpriseAccessApiService.remindApprovedBnrSubsidyRequest).toHaveBeenCalledWith({
+        subsidyRequestUUID: 'test-approved-request-uuid',
+      });
+    });
+
+    expect(sendEnterpriseTrackEvent).toHaveBeenCalledTimes(2);
+  }, 30000);
+
   it('renders with approved requests table data and verifies first field data', async () => {
     const NUMBER_OF_APPROVE_REQUEST_TO_GENERATE = 60;
     useParams.mockReturnValue({

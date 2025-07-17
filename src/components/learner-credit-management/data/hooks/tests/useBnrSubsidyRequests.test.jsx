@@ -41,6 +41,7 @@ const mockApiResponse = {
         latestAction: {
           status: 'waiting for learner',
           errorReason: null,
+          created: '2023-10-27T10:00:00Z',
         },
       },
       {
@@ -54,6 +55,7 @@ const mockApiResponse = {
         latestAction: {
           status: 'refunded',
           errorReason: 'Payment failed',
+          created: '2023-10-27T11:00:00Z',
         },
       },
     ],
@@ -70,10 +72,12 @@ const expectedTransformedData = [
     requestDate: 'Oct 27, 2023',
     requestStatus: 'approved',
     lastActionStatus: 'waiting_for_learner',
+    lastActionDate: 'Oct 27, 2023',
     lastActionErrorReason: null,
     latestAction: {
       status: 'waiting for learner',
       errorReason: null,
+      created: '2023-10-27T10:00:00Z',
     },
   },
   {
@@ -85,10 +89,12 @@ const expectedTransformedData = [
     requestDate: 'Oct 26, 2023',
     requestStatus: 'approved',
     lastActionStatus: 'refunded',
+    lastActionDate: 'Oct 27, 2023',
     lastActionErrorReason: 'Payment failed',
     latestAction: {
       status: 'refunded',
       errorReason: 'Payment failed',
+      created: '2023-10-27T11:00:00Z',
     },
   },
 ];
