@@ -15,6 +15,7 @@ interface Insights {
 
 interface AdminOnboardingToursProps {
   adminUuid: string,
+  enterpriseId: string;
   enterpriseSlug: string;
   insights: Insights;
   insightsLoading: boolean;
@@ -33,22 +34,22 @@ interface RootState {
     uuid: string;
   };
   portalConfiguration: {
+    enterpriseId: string;
     enterpriseSlug: string;
   };
 }
 
 const AdminOnboardingTours: FC<AdminOnboardingToursProps> = ({
-  adminUuid, enterpriseSlug, insights, insightsLoading, isOpen, onClose, setTarget, targetSelector,
+  adminUuid, enterpriseId, enterpriseSlug, insights, insightsLoading, isOpen, onClose, setTarget, targetSelector,
 }) => {
   const intl = useIntl();
   const aiButtonVisible = (insights?.learner_engagement && insights?.learner_progress) && !insightsLoading;
   const [currentStep, setCurrentStep] = useState(0);
   const adminOnboardingSteps = AdminOnboardingTour({
-    adminUuid, aiButtonVisible, currentStep, setCurrentStep, enterpriseSlug, onClose, targetSelector,
+    adminUuid, aiButtonVisible, currentStep, setCurrentStep, enterpriseId, enterpriseSlug, onClose, targetSelector,
   });
 
-  // Reset step for use case where we need to navigate to a different page but still
-  // on the same flow
+  // Reset step for use case where we need to navigate to a different page but still on the same flow
   useEffect(() => {
     if (RESET_TARGETS.includes(targetSelector)) {
       setCurrentStep(0);
@@ -62,6 +63,10 @@ const AdminOnboardingTours: FC<AdminOnboardingToursProps> = ({
       setTarget(targetWithoutPrefix);
     }
   }, [currentStep, adminOnboardingSteps, setTarget]);
+
+  // useEffect(() => {
+  //   console.log('target selector has changed to ', targetSelector);
+  // }, [targetSelector]);
 
   const tours = [
     {
@@ -115,6 +120,7 @@ AdminOnboardingTours.propTypes = {
 };
 const mapStateToProps = (state: RootState) => ({
   adminUuid: state.enterpriseCustomerAdmin.uuid,
+  enterpriseId: state.portalConfiguration.enterpriseId,
   enterpriseSlug: state.portalConfiguration.enterpriseSlug,
   insights: state.dashboardInsights.insights,
   insightsLoading: state.dashboardInsights.loading,

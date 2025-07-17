@@ -4,6 +4,7 @@ import { CardGrid, Collapsible, Icon } from '@openedx/paragon';
 import { ExpandLess, ExpandMore } from '@openedx/paragon/icons';
 
 import GroupDetailCard from './GroupDetailCard';
+import { ORGANIZE_LEARNER_TARGETS } from '../ProductTours/AdminOnboardingTours/constants';
 
 const GroupCardGrid = ({ groups }) => {
   const [previewGroups, setPreviewGroups] = useState();
@@ -26,9 +27,12 @@ const GroupCardGrid = ({ groups }) => {
         }}
         hasEqualColumnHeights="true"
       >
-        {previewGroups?.map((group) => (
-          <GroupDetailCard group={group} />
-        ))}
+        {previewGroups?.map((group, index) => {
+          if (index === 0) {
+            return <GroupDetailCard id={ORGANIZE_LEARNER_TARGETS.ORG_GROUP_CARD} group={group} />;
+          }
+          return <GroupDetailCard group={group} />;
+        })}
       </CardGrid>
       {overflowGroups && (
         <Collapsible.Advanced>

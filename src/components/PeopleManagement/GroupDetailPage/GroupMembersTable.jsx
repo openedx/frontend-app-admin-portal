@@ -18,6 +18,7 @@ import DownloadCsvIconButton from './DownloadCsvIconButton';
 import RemoveMemberModal from './RemoveMemberModal';
 import GeneralErrorModal from '../GeneralErrorModal';
 import AddMemberTableAction from './AddMemberTableAction';
+import { ORGANIZE_LEARNER_TARGETS } from '../../ProductTours/AdminOnboardingTours/constants';
 
 const FilterStatus = (rest) => <DataTable.FilterStatus showFilteredFields={false} {...rest} />;
 
@@ -94,7 +95,7 @@ const GroupMembersTable = ({
 }) => {
   const intl = useIntl();
   return (
-    <span className="budget-detail-assignments">
+    <span id={ORGANIZE_LEARNER_TARGETS.GROUP_DETAIL_TABLE} className="budget-detail-assignments">
       <DataTable
         isSortable
         manualSortBy

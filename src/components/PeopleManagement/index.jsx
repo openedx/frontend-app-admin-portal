@@ -107,7 +107,7 @@ const PeopleManagementPage = ({ enterpriseId }) => {
         closeToast={closeGroupInviteErrorModal}
       />
       <div className="mx-3 mt-4">
-        <span id={ORGANIZE_LEARNER_TARGETS.ORG_GROUPS_ZERO_STATE}>
+        <span id={ORGANIZE_LEARNER_TARGETS.ORG_GROUPS}>
           <ActionRow className="mb-4">
             <span className="flex-column">
               <span className="d-flex">

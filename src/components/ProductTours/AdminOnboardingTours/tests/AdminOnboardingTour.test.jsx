@@ -1,8 +1,12 @@
 import { act, renderHook } from '@testing-library/react';
 import '@testing-library/jest-dom';
+import { QueryClientProvider } from '@tanstack/react-query';
 import { sendEnterpriseTrackEvent } from '@edx/frontend-enterprise-utils';
+
 import useAdminOnboardingTour from '../flows/AdminOnboardingTour';
 import { ADMIN_TOUR_EVENT_NAMES } from '../constants';
+import useHasEnterpriseMembers from '../data/useHasEnterpriseMembers';
+import { queryClient } from '../../../test/testUtils';
 
 const mockMessages = {
   collapsibleTitle: {
@@ -18,6 +22,8 @@ const mockMessages = {
     defaultMessage: 'Track learner activity and progress.',
   },
 };
+
+jest.mock('../data/useHasEnterpriseMembers');
 
 jest.mock('@edx/frontend-enterprise-utils', () => {
   const originalModule = jest.requireActual('@edx/frontend-enterprise-utils');
@@ -38,6 +44,12 @@ jest.mock('@edx/frontend-platform/i18n', () => ({
   defineMessages: (messages) => messages,
 }));
 
+const wrapper = ({ children }) => (
+  <QueryClientProvider client={queryClient()}>
+    {children}
+  </QueryClientProvider>
+);
+
 describe('useAdminOnboardingTour', () => {
   const defaultProps = {
     currentStep: 0,
@@ -45,29 +57,34 @@ describe('useAdminOnboardingTour', () => {
     enterpriseSlug: 'test-enterprise',
   };
 
+  beforeEach(() => {
+    useHasEnterpriseMembers.mockReturnValue(true);
+  });
+
   it('returns tour configuration with correct structure', () => {
-    const { result } = renderHook(() => useAdminOnboardingTour(defaultProps));
+    const { result } = renderHook(() => useAdminOnboardingTour(defaultProps), { wrapper });
     expect(result.current.length === 7);
   });
 
   it('includes title and body with FormattedMessage components', () => {
-    const { result } = renderHook(() => useAdminOnboardingTour(defaultProps));
+    const { result } = renderHook(() => useAdminOnboardingTour(defaultProps), { wrapper });
     expect(result.current[0].title).toBeDefined();
     expect(result.current[0].body).toBeDefined();
   });
 
   it('includes onAdvance function', () => {
-    const { result } = renderHook(() => useAdminOnboardingTour(defaultProps));
+    const { result } = renderHook(() => useAdminOnboardingTour(defaultProps), { wrapper });
     expect(typeof result.current[0].onAdvance).toBe('function');
   });
 
   it('handles missing enterpriseSlug gracefully', () => {
-    const { result } = renderHook(() => useAdminOnboardingTour({}));
+    const { result } = renderHook(() => useAdminOnboardingTour({}), { wrapper });
+
     expect(result.current[0]).toBeDefined();
   });
 
   it('returns all required properties', () => {
-    const { result } = renderHook(() => useAdminOnboardingTour(defaultProps));
+    const { result } = renderHook(() => useAdminOnboardingTour(defaultProps), { wrapper });
     const requiredProps = [
       'target',
       'title',
@@ -82,7 +99,7 @@ describe('useAdminOnboardingTour', () => {
   });
 
   it('should call sendEnterpriseTrackEvent with correct parameters when tour advances', () => {
-    const { result } = renderHook(() => useAdminOnboardingTour(defaultProps));
+    const { result } = renderHook(() => useAdminOnboardingTour(defaultProps), { wrapper });
 
     const firstStep = result.current[0];
 

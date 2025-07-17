@@ -2,6 +2,7 @@ import {
   render, screen, waitFor,
 } from '@testing-library/react';
 import '@testing-library/jest-dom/extend-expect';
+import { BrowserRouter } from 'react-router-dom';
 import thunk from 'redux-thunk';
 import configureMockStore from 'redux-mock-store';
 import { Provider } from 'react-redux';
@@ -92,13 +93,15 @@ const PeopleManagementPageWrapper = ({
 }) => {
   const store = getMockStore(initialState);
   return (
-    <IntlProvider locale="en">
-      <Provider store={store}>
-        <EnterpriseSubsidiesContext.Provider value={enterpriseSubsidiesContextValue}>
-          <PeopleManagementPage />
-        </EnterpriseSubsidiesContext.Provider>
-      </Provider>
-    </IntlProvider>
+    <BrowserRouter>
+      <IntlProvider locale="en">
+        <Provider store={store}>
+          <EnterpriseSubsidiesContext.Provider value={enterpriseSubsidiesContextValue}>
+            <PeopleManagementPage />
+          </EnterpriseSubsidiesContext.Provider>
+        </Provider>
+      </IntlProvider>
+    </BrowserRouter>
   );
 };
 
@@ -144,13 +147,15 @@ describe('<PeopleManagementPage >', () => {
     useAllFlexEnterpriseGroups.mockReturnValue({ data: mockGroupsResponse });
     const store = getMockStore(initialStoreState);
     render(
-      <IntlProvider locale="en">
-        <Provider store={store}>
-          <EnterpriseSubsidiesContext.Provider value={subsEnterpriseSubsidiesContextValue}>
-            <PeopleManagementPage />
-          </EnterpriseSubsidiesContext.Provider>
-        </Provider>
-      </IntlProvider>,
+      <BrowserRouter>
+        <IntlProvider locale="en">
+          <Provider store={store}>
+            <EnterpriseSubsidiesContext.Provider value={subsEnterpriseSubsidiesContextValue}>
+              <PeopleManagementPage />
+            </EnterpriseSubsidiesContext.Provider>
+          </Provider>
+        </IntlProvider>
+      </BrowserRouter>,
     );
     expect(screen.getByText('only cool people')).toBeInTheDocument();
     expect(screen.getByText('4 members')).toBeInTheDocument();
@@ -160,13 +165,15 @@ describe('<PeopleManagementPage >', () => {
     useAllFlexEnterpriseGroups.mockReturnValue({ data: mockMultipleGroupsResponse });
     const store = getMockStore(initialStoreState);
     render(
-      <IntlProvider locale="en">
-        <Provider store={store}>
-          <EnterpriseSubsidiesContext.Provider value={subsEnterpriseSubsidiesContextValue}>
-            <PeopleManagementPage />
-          </EnterpriseSubsidiesContext.Provider>
-        </Provider>
-      </IntlProvider>,
+      <BrowserRouter>
+        <IntlProvider locale="en">
+          <Provider store={store}>
+            <EnterpriseSubsidiesContext.Provider value={subsEnterpriseSubsidiesContextValue}>
+              <PeopleManagementPage />
+            </EnterpriseSubsidiesContext.Provider>
+          </Provider>
+        </IntlProvider>
+      </BrowserRouter>,
     );
     expect(sendEnterpriseTrackEvent).toHaveBeenCalledWith(
       enterpriseUUID,
