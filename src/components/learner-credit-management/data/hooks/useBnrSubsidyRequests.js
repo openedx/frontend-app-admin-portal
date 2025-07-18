@@ -72,6 +72,11 @@ const transformApiDataToTableData = (apiResults) => apiResults.map((item) => {
     month: 'short',
     day: 'numeric',
   });
+  const lastActionDate = new Date(item?.latestAction?.created).toLocaleDateString('en-US', {
+    year: 'numeric',
+    month: 'short',
+    day: 'numeric',
+  });
   return {
     uuid: item?.uuid,
     email: item?.email,
@@ -82,6 +87,7 @@ const transformApiDataToTableData = (apiResults) => apiResults.map((item) => {
     requestStatus: item?.state,
     lastActionStatus: getLastActionStatus(item?.latestAction),
     lastActionErrorReason: item?.latestAction?.errorReason,
+    lastActionDate,
     latestAction: item?.latestAction,
   };
 });

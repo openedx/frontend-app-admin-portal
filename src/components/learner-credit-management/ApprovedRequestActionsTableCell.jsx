@@ -3,17 +3,18 @@ import PropTypes from 'prop-types';
 import { Dropdown, Icon, IconButton } from '@openedx/paragon';
 import { MoreVert } from '@openedx/paragon/icons';
 import ApprovedRequestTableCancel from './ApprovedRequestTableCancel';
+import ApprovedRequestTableRemind from './ApprovedRequestTableRemind';
 
 const ApprovedRequestActionsTableCell = ({ row }) => {
   const { original } = row;
 
-  // Check if the cancel button should be shown for this row
-  const shouldShowCancelButton = (
+  // Check if the cancel and remind button should be shown for this row
+  const shouldShowShowActionButtons = (
     (original.lastActionStatus === 'waiting_for_learner' || original.requestStatus === 'approved')
   );
 
   // Don't render dropdown if no actions are available
-  if (!shouldShowCancelButton) {
+  if (!shouldShowShowActionButtons) {
     return null;
   }
 
@@ -29,6 +30,7 @@ const ApprovedRequestActionsTableCell = ({ row }) => {
         aria-label="More actions"
       />
       <Dropdown.Menu>
+        <ApprovedRequestTableRemind row={row} />
         <ApprovedRequestTableCancel row={row} />
       </Dropdown.Menu>
     </Dropdown>
