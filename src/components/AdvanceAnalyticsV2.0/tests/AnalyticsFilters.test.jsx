@@ -132,6 +132,7 @@ describe('AnalyticsFilters Component', () => {
     });
 
     expect(mockSetStartDate).toHaveBeenCalledWith('2021-07-01');
+    expect(screen.getByLabelText('Date range options')).toHaveValue(DATE_RANGE.CUSTOM);
   });
 
   test('changing end date calls handler', () => {
@@ -149,6 +150,7 @@ describe('AnalyticsFilters Component', () => {
     });
 
     expect(mockSetEndDate).toHaveBeenCalledWith('2021-07-31');
+    expect(screen.getByLabelText('Date range options')).toHaveValue(DATE_RANGE.CUSTOM);
   });
 
   test('changing group calls handler', () => {
@@ -208,10 +210,17 @@ describe('AnalyticsFilters Component', () => {
         <AnalyticsFilters
           {...defaultProps}
           activeTab="engagement"
+          startDate=""
+          endDate=""
+          currentDate={new Date().toISOString().split('T')[0]}
         />
       </IntlProvider>,
     );
-
+    const defaultDate = new Date();
+    const selectedStartDate = screen.getByLabelText('Start date');
+    expect(selectedStartDate).toHaveValue(new Date(defaultDate.setDate(defaultDate.getDate() - 90)).toISOString().split('T')[0]);
+    expect(screen.getByLabelText('End date')).toHaveValue(new Date().toISOString().split('T')[0]);
+    expect(screen.getByLabelText('Date range options')).toHaveValue(DATE_RANGE.LAST_90_DAYS);
     const past7Date = new Date();
     fireEvent.change(screen.getByLabelText('Date range options'), {
       target: { value: DATE_RANGE.LAST_7_DAYS },
