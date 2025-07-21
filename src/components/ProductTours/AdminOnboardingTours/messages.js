@@ -149,29 +149,13 @@ const messages = defineMessages({
   },
   organizeLearnersWithGroupsStepSixBody: {
     id: 'adminPortal.productTours.adminOnboarding.organizeLearners.withGroups.body.6',
-    defaultMessage: 'Let\'s view your group.',
+    defaultMessage: '"View group" allows you to edit group details, add and remove learners, or track learner\'s progress.',
     description: 'Description for the organize learners flow with groups step six',
   },
   organizeLearnersWithGroupsStepSevenBody: {
     id: 'adminPortal.productTours.adminOnboarding.organizeLearners.withGroups.body.7',
     defaultMessage: 'View and edit your group\'s name, see the total number of members, and view when it was created.',
     description: 'Description for the organize learners flow with groups step seven',
-  },
-  organizeLearnersWithGroupsStepEightBody: {
-    id: 'adminPortal.productTours.adminOnboarding.organizeLearners.withGroups.body.8',
-    defaultMessage: 'Navigate to the Learner Progress Report, automatically filtered for this group, to track their progress.',
-    description: 'Description for the organize learners flow with groups step eight',
-  },
-  organizeLearnersWithGroupsStepNineBody: {
-    id: 'adminPortal.productTours.adminOnboarding.organizeLearners.withGroups.body.9',
-    defaultMessage: 'View and manage learners in this group. See names, emails, join dates, and enrollments. Add or remove members, '
-    + 'download the list as a CSV, or view individual learner profiles.',
-    description: 'Description for the organize learners flow with groups step nine',
-  },
-  organizeLearnersWithGroupsStepTenBody: {
-    id: 'adminPortal.productTours.adminOnboarding.organizeLearners.withGroups.body.10',
-    defaultMessage: 'To return to the People Management page, use the breadcrumbs or left-hand navigation.',
-    description: 'Description for the organize learners flow with groups step ten',
   },
   viewEnrollmentInsights: {
     id: 'adminPortal.productTours.adminOnboarding.viewEnrollmentInsights.title.1',

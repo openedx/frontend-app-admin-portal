@@ -534,8 +534,12 @@ class LmsApiService {
     return response;
   };
 
-  static fetchEnterpriseGroup = async (groupUuid: string): EnterpriseGroupResponse => {
-    const groupEndpoint = `${LmsApiService.enterpriseGroupListUrl}${groupUuid}/`;
+  static fetchEnterpriseGroup = async (groupUuid: string, options): EnterpriseGroupResponse => {
+    let groupEndpoint = `${LmsApiService.enterpriseGroupListUrl}${groupUuid}/`;
+    if (options) {
+      const queryParams = new URLSearchParams(options);
+      groupEndpoint = `${LmsApiService.enterpriseGroupUrl}${groupUuid}/learners?${queryParams.toString()}`;
+    }
     const response = LmsApiService.apiClient().get(groupEndpoint);
     response.data = camelCaseObject(response.data);
     return response;
@@ -544,6 +548,16 @@ class LmsApiService {
   static fetchEnterpriseGroups = async (): EnterpriseGroupListResponse => {
     const url = `${LmsApiService.enterpriseGroupUrl}`;
     const response = LmsApiService.apiClient().get(url);
+    response.data = camelCaseObject(response.data);
+    return response;
+  };
+
+  static fetchEnterpriseGroupsByEnterprise = async (enterpriseUuid: string): EnterpriseGroupResponse => {
+    const queryParams = new URLSearchParams({
+      enterprise_uuids: enterpriseUuid,
+    });
+    const groupEndpoint = `${LmsApiService.enterpriseGroupListUrl}?${queryParams.toString()}`;
+    const response = await LmsApiService.apiClient().get(groupEndpoint);
     response.data = camelCaseObject(response.data);
     return response;
   };

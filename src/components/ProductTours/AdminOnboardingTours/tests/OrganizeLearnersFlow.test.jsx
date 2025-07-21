@@ -6,8 +6,7 @@ import { QueryClientProvider } from '@tanstack/react-query';
 import OrganizeLearnersFlow from '../flows/OrganizeLearnersFlow';
 import { ORGANIZE_LEARNER_TARGETS } from '../constants';
 import messages from '../messages';
-import { useAllFlexEnterpriseGroups } from '../../../learner-credit-management/data';
-import useHasEnterpriseMembers from '../data/useHasEnterpriseMembers';
+import useHydrateAdminOnboardingData from '../data/useHydrateAdminOnboardingData';
 import { queryClient } from '../../../test/testUtils';
 
 const mockFormatMessage = jest.fn((message) => message.defaultMessage || message.id || 'Mocked message');
@@ -28,7 +27,7 @@ jest.mock('../../../learner-credit-management/data', () => ({
   useAllFlexEnterpriseGroups: jest.fn(),
 }));
 
-jest.mock('../data/useHasEnterpriseMembers');
+jest.mock('../data/useHydrateAdminOnboardingData');
 
 const wrapper = ({ children }) => (
   <QueryClientProvider client={queryClient()}>
@@ -38,17 +37,9 @@ const wrapper = ({ children }) => (
   </QueryClientProvider>
 );
 
-const mockGroupsResponse = [{
-  name: 'secret group of cool employees',
-  uuid: '12345',
-  acceptedMembersCount: 4,
-  groupType: 'flex',
-  created: '2024-09-15T03:33:33.292361Z',
-}];
-
+const mockHandleAdvanceTour = jest.fn();
 const mockHandleEndTour = jest.fn();
 const enterpriseId = 'enterprise-id';
-const mockSetCurrentStep = jest.fn();
 
 describe('useCreateOrganizeLearnersFlow', () => {
   beforeEach(() => {
@@ -59,16 +50,12 @@ describe('useCreateOrganizeLearnersFlow', () => {
   });
 
   it('creates organize learners flow with correct structure for no groups', () => {
-    useAllFlexEnterpriseGroups.mockReturnValue({ data: { results: {} } });
-    useHasEnterpriseMembers.mockReturnValue({ data: true });
+    useHydrateAdminOnboardingData.mockReturnValue({ hasEnterpriseMembers: true, hasEnterpriseGroups: false });
     const { result } = renderHook(
       () => OrganizeLearnersFlow({
-        currentStep: 0,
         enterpriseId,
-        enterpriseSlug: enterpriseId,
+        handleAdvanceTour: mockHandleAdvanceTour,
         handleEndTour: mockHandleEndTour,
-        setCurrentStep: mockSetCurrentStep,
-        targetSelector: '',
       }),
       { wrapper },
     );
@@ -106,16 +93,12 @@ describe('useCreateOrganizeLearnersFlow', () => {
   });
 
   it('uses correct target selectors for organize learners flow', () => {
-    useAllFlexEnterpriseGroups.mockReturnValue({ data: { results: {} } });
-    useHasEnterpriseMembers.mockReturnValue({ data: true });
+    useHydrateAdminOnboardingData.mockReturnValue({ hasEnterpriseMembers: true, hasEnterpriseGroups: true });
     const { result } = renderHook(
       () => OrganizeLearnersFlow({
-        currentStep: 0,
         enterpriseId,
-        enterpriseSlug: enterpriseId,
+        handleAdvanceTour: mockHandleAdvanceTour,
         handleEndTour: mockHandleEndTour,
-        setCurrentStep: mockSetCurrentStep,
-        targetSelector: '',
       }),
       { wrapper },
     );
@@ -130,16 +113,12 @@ describe('useCreateOrganizeLearnersFlow', () => {
   });
 
   it('creates organize learners flow when there are groups', () => {
-    useAllFlexEnterpriseGroups.mockReturnValue({ data: mockGroupsResponse });
-    useHasEnterpriseMembers.mockReturnValue({ data: true });
+    useHydrateAdminOnboardingData.mockReturnValue({ hasEnterpriseMembers: true, hasEnterpriseGroups: true });
     const { result } = renderHook(
       () => OrganizeLearnersFlow({
-        currentStep: 0,
         enterpriseId,
-        enterpriseSlug: enterpriseId,
+        handleAdvanceTour: mockHandleAdvanceTour,
         handleEndTour: mockHandleEndTour,
-        setCurrentStep: mockSetCurrentStep,
-        targetSelector: '',
       }),
       { wrapper },
     );
@@ -180,63 +159,16 @@ describe('useCreateOrganizeLearnersFlow', () => {
     });
   });
 
-  it('creates organize learners flow for the group detail page', () => {
-    useParams.mockReturnValue({
-      '*': 'group-uuid',
-    });
-    useAllFlexEnterpriseGroups.mockReturnValue({ data: { results: {} } });
-    useHasEnterpriseMembers.mockReturnValue({ data: true });
-    const { result } = renderHook(
-      () => OrganizeLearnersFlow({
-        currentStep: 0,
-        enterpriseId,
-        enterpriseSlug: enterpriseId,
-        handleEndTour: mockHandleEndTour,
-        setCurrentStep: mockSetCurrentStep,
-        targetSelector: '',
-      }),
-      { wrapper },
-    );
-
-    const flow = result.current;
-    expect(flow).toHaveLength(4);
-
-    expect(flow[0]).toMatchObject({
-      target: `#${ORGANIZE_LEARNER_TARGETS.GROUP_DETAIL_CARD}`,
-      placement: 'bottom',
-      body: messages.organizeLearnersWithGroupsStepSevenBody.defaultMessage,
-    });
-    expect(flow[1]).toMatchObject({
-      target: `#${ORGANIZE_LEARNER_TARGETS.VIEW_GROUP_PROGRESS}`,
-      placement: 'left',
-      body: messages.organizeLearnersWithGroupsStepEightBody.defaultMessage,
-    });
-    expect(flow[2]).toMatchObject({
-      target: `#${ORGANIZE_LEARNER_TARGETS.GROUP_DETAIL_TABLE}`,
-      placement: 'top',
-      body: messages.organizeLearnersWithGroupsStepNineBody.defaultMessage,
-    });
-    expect(flow[3]).toMatchObject({
-      target: `#${ORGANIZE_LEARNER_TARGETS.GROUP_DETAIL_BREADCRUMBS}`,
-      placement: 'bottom',
-      body: messages.organizeLearnersWithGroupsStepTenBody.defaultMessage,
-    });
-  });
-
   it('creates organize learners flow when there are no enterprise learners', () => {
+    useHydrateAdminOnboardingData.mockReturnValue({ hasEnterpriseMembers: false, hasEnterpriseGroups: false });
     useParams.mockReturnValue({
       '*': 'group-uuid',
     });
-    useAllFlexEnterpriseGroups.mockReturnValue({ data: { results: {} } });
-    useHasEnterpriseMembers.mockReturnValue({ data: false });
     const { result } = renderHook(
       () => OrganizeLearnersFlow({
-        currentStep: 0,
         enterpriseId,
-        enterpriseSlug: enterpriseId,
+        handleAdvanceTour: mockHandleAdvanceTour,
         handleEndTour: mockHandleEndTour,
-        setCurrentStep: mockSetCurrentStep,
-        targetSelector: '',
       }),
       { wrapper },
     );

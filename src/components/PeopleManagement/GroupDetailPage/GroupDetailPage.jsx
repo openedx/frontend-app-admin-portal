@@ -25,10 +25,9 @@ import { ORGANIZE_LEARNER_TARGETS } from '../../ProductTours/AdminOnboardingTour
 const GroupDetailPage = ({ enterpriseUUID }) => {
   const intl = useIntl();
   const { enterpriseSlug, groupUuid } = useParams();
-  const { data: enterpriseGroup } = useEnterpriseGroupUuid(groupUuid);
+  const { data: enterpriseGroup, isLoading } = useEnterpriseGroupUuid(groupUuid);
   const [isDeleteModalOpen, openDeleteModal, closeDeleteModal] = useToggle(false);
   const [isEditModalOpen, openEditModal, closeEditModal] = useToggle(false);
-  const [isLoading, setIsLoading] = useState(true);
   const [groupName, setGroupName] = useState(enterpriseGroup?.name);
   const [isAddMembersModalOpen, openAddMembersModal, closeAddMembersModal] = useToggle(false);
   const [isGroupInviteErrorModalOpen, openGroupInviteErrorModal, closeGroupInviteErrorModal] = useToggle(false);
@@ -47,7 +46,6 @@ const GroupDetailPage = ({ enterpriseUUID }) => {
 
   useEffect(() => {
     if (enterpriseGroup !== undefined) {
-      setIsLoading(false);
       handleNameUpdate(enterpriseGroup.name);
     }
   }, [enterpriseGroup]);

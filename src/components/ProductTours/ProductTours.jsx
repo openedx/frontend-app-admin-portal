@@ -33,6 +33,7 @@ import {
 } from './AdminOnboardingTours/constants';
 import { ROUTE_NAMES } from '../EnterpriseApp/data/constants';
 import OnboardingWelcomeModal from './AdminOnboardingTours/OnboardingWelcomeModal';
+import useHydrateAdminOnboardingData from './AdminOnboardingTours/data/useHydrateAdminOnboardingData';
 
 /**
  * All the logic here is for determining what ProductTours we should show.
@@ -41,10 +42,12 @@ import OnboardingWelcomeModal from './AdminOnboardingTours/OnboardingWelcomeModa
 const ProductTours = ({
   enableLearnerPortal,
   enterpriseSlug,
+  enterpriseId,
   onboardingEnabled,
   onboardingTourCompleted,
   onboardingTourDismissed,
 }) => {
+  const { isLoading } = useHydrateAdminOnboardingData(enterpriseId);
   const navigate = useNavigate();
   const { FEATURE_CONTENT_HIGHLIGHTS } = getConfig();
   const enablePortalAppearance = features.SETTINGS_PAGE_APPEARANCE_TAB;
@@ -99,7 +102,7 @@ const ProductTours = ({
 
   return (
     <div className="product-tours">
-      {onboardingEnabled && (
+      {onboardingEnabled && !isLoading && (
         <>
           <OnboardingWelcomeModal
             openAdminTour={setIsAdminTourOpen}
@@ -130,6 +133,7 @@ const ProductTours = ({
 ProductTours.propTypes = {
   enableLearnerPortal: PropTypes.bool.isRequired,
   enterpriseSlug: PropTypes.string.isRequired,
+  enterpriseId: PropTypes.string.isRequired,
   onboardingEnabled: PropTypes.bool.isRequired,
   onboardingTourCompleted: PropTypes.bool.isRequired,
   onboardingTourDismissed: PropTypes.bool.isRequired,
@@ -138,6 +142,7 @@ ProductTours.propTypes = {
 const mapStateToProps = state => ({
   enableLearnerPortal: state.portalConfiguration.enableLearnerPortal,
   enterpriseSlug: state.portalConfiguration.enterpriseSlug,
+  enterpriseId: state.portalConfiguration.enterpriseId,
   onboardingEnabled: state.portalConfiguration.enterpriseFeatures?.enterpriseAdminOnboardingEnabled || false,
   onboardingTourCompleted: state.enterpriseCustomerAdmin.onboardingTourCompleted,
   onboardingTourDismissed: state.enterpriseCustomerAdmin.onboardingTourDismissed,

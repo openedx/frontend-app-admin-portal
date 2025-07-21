@@ -5,7 +5,7 @@ import { sendEnterpriseTrackEvent } from '@edx/frontend-enterprise-utils';
 
 import useAdminOnboardingTour from '../flows/AdminOnboardingTour';
 import { ADMIN_TOUR_EVENT_NAMES } from '../constants';
-import useHasEnterpriseMembers from '../data/useHasEnterpriseMembers';
+import useHydrateAdminOnboardingData from '../data/useHydrateAdminOnboardingData';
 import { queryClient } from '../../../test/testUtils';
 
 const mockMessages = {
@@ -23,7 +23,7 @@ const mockMessages = {
   },
 };
 
-jest.mock('../data/useHasEnterpriseMembers');
+jest.mock('../data/useHydrateAdminOnboardingData');
 
 jest.mock('@edx/frontend-enterprise-utils', () => {
   const originalModule = jest.requireActual('@edx/frontend-enterprise-utils');
@@ -58,7 +58,7 @@ describe('useAdminOnboardingTour', () => {
   };
 
   beforeEach(() => {
-    useHasEnterpriseMembers.mockReturnValue(true);
+    useHydrateAdminOnboardingData.mockReturnValue(true, true);
   });
 
   it('returns tour configuration with correct structure', () => {

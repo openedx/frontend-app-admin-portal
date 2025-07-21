@@ -19,10 +19,6 @@ export const ORGANIZE_LEARNER_TARGETS = {
   ORG_GROUP_CARD: 'org-group-card',
   CREATE_GROUP_BUTTON: 'create-group-button',
   MEMBER_DETAIL_PAGE: 'member-detail-page',
-  GROUP_DETAIL_CARD: 'group-detail-card',
-  VIEW_GROUP_PROGRESS: 'view-group-progress',
-  GROUP_DETAIL_TABLE: 'group-detail-table',
-  GROUP_DETAIL_BREADCRUMBS: 'group-detail-breadcrumbs',
 };
 
 // View enrollment insights - Analytics flow
@@ -76,5 +72,5 @@ export const ONBOARDING_TOUR_DISMISS_COOKIE_NAME = 'dismiss-admin-onboarding-tou
 // Inspired by https://tkdodo.eu/blog/effective-react-query-keys#use-query-key-factories.
 export const adminOnboardingQueryKeys = {
   all: ['admin-onboarding'],
-  hasEnterpriseMembers: ({ enterpriseId }) => [...adminOnboardingQueryKeys.all, 'hasEnterpriseMembers', enterpriseId],
+  hydrateAdminOnboardingData: ({ enterpriseId }) => [...adminOnboardingQueryKeys.all, 'hydrateAdminOnboardingData', enterpriseId],
 };

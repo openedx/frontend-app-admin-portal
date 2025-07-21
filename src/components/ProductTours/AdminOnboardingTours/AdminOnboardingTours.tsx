@@ -64,10 +64,6 @@ const AdminOnboardingTours: FC<AdminOnboardingToursProps> = ({
     }
   }, [currentStep, adminOnboardingSteps, setTarget]);
 
-  // useEffect(() => {
-  //   console.log('target selector has changed to ', targetSelector);
-  // }, [targetSelector]);
-
   const tours = [
     {
       tourId: 'admin-onboarding-tour',
