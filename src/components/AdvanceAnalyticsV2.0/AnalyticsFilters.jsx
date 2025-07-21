@@ -10,10 +10,6 @@ import { get90DayPriorDate } from './data/utils';
 export const DEFAULT_GROUP = '';
 
 const AnalyticsFilters = ({
-  startDate,
-  setStartDate,
-  endDate,
-  setEndDate,
   granularity,
   setGranularity,
   calculation,
@@ -31,6 +27,8 @@ const AnalyticsFilters = ({
   const [collapsed, setCollapsed] = useState(false);
   const isProgressOrOutcomesTab = activeTab === 'progress' || activeTab === 'outcomes';
   const [dateRangeValue, setDateRangeValue] = useState(DATE_RANGE.LAST_90_DAYS);
+  const [startDate, setStartDate] = useState();
+  const [endDate, setEndDate] = useState();
 
   const handleDateRangeChange = (selectedRange) => {
     setDateRangeValue(selectedRange);
@@ -42,7 +40,7 @@ const AnalyticsFilters = ({
       [DATE_RANGE.YEAR_TO_DATE]: 365,
       [DATE_RANGE.CUSTOM]: 0,
     };
-    if (rangeMap[selectedRange]) {
+    if (rangeMap[selectedRange] || rangeMap[selectedRange] === 0) {
       const newStartDate = new Date(today.setDate(today.getDate() - rangeMap[selectedRange]))
         .toISOString()
         .split('T')[0];
@@ -415,10 +413,6 @@ const AnalyticsFilters = ({
 };
 
 AnalyticsFilters.propTypes = {
-  startDate: PropTypes.string,
-  setStartDate: PropTypes.func.isRequired,
-  endDate: PropTypes.string,
-  setEndDate: PropTypes.func.isRequired,
   granularity: PropTypes.string.isRequired,
   setGranularity: PropTypes.func.isRequired,
   calculation: PropTypes.string.isRequired,
