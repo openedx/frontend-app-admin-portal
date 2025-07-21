@@ -19,10 +19,9 @@ export const getHydrateAdminOnboardingData = async ({ enterpriseId }) => {
   return { hasEnterpriseMembers, hasEnterpriseGroups };
 };
 
-const useHydrateAdminOnboardingData = (enterpriseId, { queryOptions } = {}) => useQuery({
-  queryKey: adminOnboardingQueryKeys.hydrateAdminOnboardingData(enterpriseId),
+const useHydrateAdminOnboardingData = (enterpriseId: string) => useQuery({
+  queryKey: adminOnboardingQueryKeys.hydrateAdminOnboardingData({ enterpriseId }),
   queryFn: () => getHydrateAdminOnboardingData({ enterpriseId }),
-  ...queryOptions,
 });
 
 export default useHydrateAdminOnboardingData;

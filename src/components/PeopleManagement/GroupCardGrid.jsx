@@ -29,9 +29,9 @@ const GroupCardGrid = ({ groups }) => {
       >
         {previewGroups?.map((group, index) => {
           if (index === 0) {
-            return <GroupDetailCard id={ORGANIZE_LEARNER_TARGETS.ORG_GROUP_CARD} group={group} />;
+            return <GroupDetailCard key={group.uuid} id={ORGANIZE_LEARNER_TARGETS.ORG_GROUP_CARD} group={group} />;
           }
-          return <GroupDetailCard group={group} />;
+          return <GroupDetailCard key={group.uuid} group={group} />;
         })}
       </CardGrid>
       {overflowGroups && (

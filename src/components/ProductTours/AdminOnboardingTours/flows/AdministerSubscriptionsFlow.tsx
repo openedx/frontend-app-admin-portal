@@ -28,8 +28,8 @@ const AdministerSubscriptionsFlow = ({
   function handleAdvanceTour(advanceEventName: string) {
     const newIndex = currentStep + 1;
 
-    const manageLearnersButton = document.getElementById('manage-learners-button');
-    if (manageLearnersButton && targetSelector === 'manage-learners-button') {
+    const manageLearnersButton = document.getElementById(ADMINISTER_SUBSCRIPTIONS_TARGETS.MANAGE_LEARNERS_BUTTON);
+    if (manageLearnersButton && targetSelector === ADMINISTER_SUBSCRIPTIONS_TARGETS.MANAGE_LEARNERS_BUTTON) {
       manageLearnersButton.click();
       setCurrentStep(0);
       sendEnterpriseTrackEvent(enterpriseSlug, advanceEventName, { 'completed-step': newIndex });

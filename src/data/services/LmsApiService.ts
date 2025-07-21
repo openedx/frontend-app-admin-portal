@@ -32,6 +32,8 @@ export type GroupInviteSummary = {
 export type EnterpriseGroupResponse = Promise<AxiosResponse<EnterpriseGroup>>;
 export type EnterpriseGroupListResponse = Promise<AxiosResponse<PaginatedCurrentPage<EnterpriseGroup>>>;
 export type EnterpriseLearnersListResponse = Promise<AxiosResponse<PaginatedCurrentPage<EnterpriseLearner>>>;
+export type EnterpriseCustomerMemberListResponse = Promise<
+AxiosResponse<PaginatedCurrentPage<EnterpriseCustomerMember>>>;
 export type EnterpriseGroupMembershipResponse = Promise<AxiosResponse<PaginatedCurrentPage<EnterpriseGroupMembership>>>;
 export type EnterpriseGroupInviteResponse = Promise<AxiosResponse<GroupInviteSummary>>;
 
@@ -434,16 +436,14 @@ class LmsApiService {
   }
 
   static fetchEnterpriseCustomerMember(enterpriseUUID: string) {
-    let url = `${LmsApiService.enterpriseCustomerMembersUrl}${enterpriseUUID}/`;
-    const queryParams = new URLSearchParams({
+    const options = {
       page: '1',
       page_size: '1',
-    });
-    url = `${LmsApiService.enterpriseCustomerMembersUrl}${enterpriseUUID}?${queryParams.toString()}`;
-    return LmsApiService.apiClient().get(url);
+    };
+    return LmsApiService.fetchEnterpriseCustomerMembers(enterpriseUUID, options);
   }
 
-  static fetchEnterpriseCustomerMembers(enterpriseUUID: string, options: any) {
+  static fetchEnterpriseCustomerMembers(enterpriseUUID: string, options: any) : EnterpriseCustomerMemberListResponse {
     let url = `${LmsApiService.enterpriseCustomerMembersUrl}${enterpriseUUID}/`;
     if (options) {
       const queryParams = new URLSearchParams(options);
@@ -534,7 +534,7 @@ class LmsApiService {
     return response;
   };
 
-  static fetchEnterpriseGroup = async (groupUuid: string, options): EnterpriseGroupResponse => {
+  static fetchEnterpriseGroup = async (groupUuid: string, options?: any): EnterpriseGroupResponse => {
     let groupEndpoint = `${LmsApiService.enterpriseGroupListUrl}${groupUuid}/`;
     if (options) {
       const queryParams = new URLSearchParams(options);

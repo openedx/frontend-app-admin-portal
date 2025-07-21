@@ -2,15 +2,22 @@ import { renderHook, act } from '@testing-library/react';
 import '@testing-library/jest-dom';
 import { useParams } from 'react-router';
 import { IntlProvider } from '@edx/frontend-platform/i18n';
+import { sendEnterpriseTrackEvent } from '@edx/frontend-enterprise-utils';
+
 import AdministerSubscriptionsFlow from '../flows/AdministerSubscriptionsFlow';
+import { ADMIN_TOUR_EVENT_NAMES } from '../constants';
 
 jest.mock('react-router', () => ({
   useParams: jest.fn(),
 }));
 
-jest.mock('@edx/frontend-enterprise-utils', () => ({
-  sendEnterpriseTrackEvent: jest.fn(),
-}));
+jest.mock('@edx/frontend-enterprise-utils', () => {
+  const originalModule = jest.requireActual('@edx/frontend-enterprise-utils');
+  return ({
+    ...originalModule,
+    sendEnterpriseTrackEvent: jest.fn(),
+  });
+});
 
 const renderHookWithIntl = (hookFn) => renderHook(hookFn, {
   wrapper: ({ children }) => (
@@ -73,6 +80,22 @@ describe('AdministerSubscriptionsFlow', () => {
       expect(result.current[2].placement).toBe('left');
       expect(typeof result.current[2].onEnd).toBe('function');
     });
+  });
+
+  it('should call handleAdvanceTour on intermediate steps', () => {
+    const { result } = renderHookWithIntl(() => AdministerSubscriptionsFlow({
+      currentStep: 0,
+      enterpriseId,
+      enterpriseSlug: enterpriseId,
+      handleEndTour: mockHandleEndTour,
+      setCurrentStep: mockSetCurrentStep,
+      targetSelector: '',
+    }));
+
+    act(() => {
+      result.current[0].onAdvance();
+    });
+    expect(sendEnterpriseTrackEvent).toHaveBeenCalledWith(enterpriseId, ADMIN_TOUR_EVENT_NAMES.ENROLLMENT_INSIGHTS_ADVANCE_EVENT_NAME, { 'completed-step': 1 });
   });
 
   describe('Detail subscription page flow', () => {
