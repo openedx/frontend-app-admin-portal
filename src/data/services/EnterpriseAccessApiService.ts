@@ -399,6 +399,24 @@ class EnterpriseAccessApiService {
     const url = `${EnterpriseAccessApiService.baseUrl}/learner-credit-requests/cancel/`;
     return EnterpriseAccessApiService.apiClient().post(url, options);
   }
+
+  /**
+   * Send reminder for an approved BNR (Browse and Request) subsidy request for an enterprise.
+   *
+   * @param params - The parameters for reminding the approved subsidy request
+   * @param params.subsidyRequestUUID - The UUID of the approved bnr request for reminder
+   * @returns A promise that resolves to the API response for the remind operation
+   */
+  static remindApprovedBnrSubsidyRequest({
+    subsidyRequestUUID,
+  }) {
+    const options = {
+      learner_credit_request_uuid: subsidyRequestUUID,
+    };
+
+    const url = `${EnterpriseAccessApiService.baseUrl}/learner-credit-requests/remind/`;
+    return EnterpriseAccessApiService.apiClient().post(url, options);
+  }
 }
 
 export default EnterpriseAccessApiService;
