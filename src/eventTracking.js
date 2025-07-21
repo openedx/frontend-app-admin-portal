@@ -179,6 +179,14 @@ export const LEARNER_CREDIT_MANAGEMENT_EVENTS = {
   // Activity tab approved requests datatable
   BUDGET_DETAILS_REQUEST_DATATABLE_VIEW_COURSE: `${BUDGET_DETAIL_ACTIVITY_TAB_PREFIX}.approved_requests_table_view_course.clicked`,
   EMPTY_STATE_CTA: `${BUDGET_DETAIL_ACTIVITY_TAB_PREFIX}.empty_state_cta_to_catalog.clicked`,
+  // Activity tab approved requests table cancel
+  BUDGET_DETAILS_APPROVED_REQUESTS_DATATABLE_OPEN_CANCEL_MODAL: `${BUDGET_DETAIL_ACTIVITY_TAB_PREFIX}.approved_requests_table_cancel_modal_open.clicked`,
+  BUDGET_DETAILS_APPROVED_REQUESTS_DATATABLE_CLOSE_CANCEL_MODAL: `${BUDGET_DETAIL_ACTIVITY_TAB_PREFIX}.approved_requests_table_cancel_modal_close.clicked`,
+  BUDGET_DETAILS_APPROVED_REQUESTS_DATATABLE_CANCEL: `${BUDGET_DETAIL_ACTIVITY_TAB_PREFIX}.approved_requests_table_cancel.clicked`,
+  // Activity tab approved requests table remind
+  BUDGET_DETAILS_APPROVED_REQUESTS_DATATABLE_OPEN_REMIND_MODAL: `${BUDGET_DETAIL_ACTIVITY_TAB_PREFIX}.approved_requests_table_remind_modal_open.clicked`,
+  BUDGET_DETAILS_APPROVED_REQUESTS_DATATABLE_CLOSE_REMIND_MODAL: `${BUDGET_DETAIL_ACTIVITY_TAB_PREFIX}.approved_requests_table_remind_modal_close.clicked`,
+  BUDGET_DETAILS_APPROVED_REQUESTS_DATATABLE_REMIND: `${BUDGET_DETAIL_ACTIVITY_TAB_PREFIX}.approved_requests_table_remind.clicked`,
   // Activity tab chips
   BUDGET_DETAILS_ASSIGNED_DATATABLE_CHIP_NOTIFY_LEARNER: `${BUDGET_DETAIL_ACTIVITY_TAB_PREFIX}.assigned_table_chip_notify_learner.clicked`,
   BUDGET_DETAILS_ASSIGNED_DATATABLE_CHIP_INCOMPLETE_ASSIGNMENT: `${BUDGET_DETAIL_ACTIVITY_TAB_PREFIX}.assigned_table_chip_incomplete_assignment.clicked`,

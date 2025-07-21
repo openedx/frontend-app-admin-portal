@@ -145,6 +145,8 @@ export const ENTERPRISE_RESTRICTION_TYPE = 'custom-b2b-enterprise';
 
 export const APPROVED_REQUEST_TYPE = 'approved';
 
+export const REMINDED_RECENT_ACTION_TYPE = 'Reminded';
+
 // BNR (Browse & Request) subsidy request constants
 export const BNR_REQUEST_PAGE_SIZE = 10;
 export const REQUEST_TAB_VISIBLE_STATES = [

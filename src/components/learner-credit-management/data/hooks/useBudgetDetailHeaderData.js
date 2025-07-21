@@ -51,7 +51,7 @@ const assignBudgetDetails = (policy, isTopDownAssignmentEnabled) => {
 
   const available = spendAvailableUsd;
   const limit = policy.spendLimit / 100;
-  const utilized = policy.isAssignable && isTopDownAssignmentEnabled
+  const utilized = (policy.isAssignable && isTopDownAssignmentEnabled) || policy.bnrEnabled
     ? (amountAllocatedUsd + amountRedeemedUsd)
     : amountRedeemedUsd;
 
