@@ -319,9 +319,10 @@ class EnterpriseAccessApiService {
    * @param {Object} options - Additional query parameters to filter the requests.
    * @returns {Promise<AxiosResponse>} - A promise that resolves to the API response.
    */
-  static fetchBnrSubsidyRequests(enterpriseUUID, options = {}) {
+  static fetchBnrSubsidyRequests(enterpriseUUID, policyUuid, options = {}) {
     const params = new URLSearchParams({
       enterprise_customer_uuid: enterpriseUUID,
+      policy_uuid: policyUuid,
       ...options,
     });
     const url = `${EnterpriseAccessApiService.baseUrl}/learner-credit-requests/?${params.toString()}`;

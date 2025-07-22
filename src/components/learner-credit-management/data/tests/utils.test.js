@@ -589,6 +589,7 @@ describe('retrieveBudgetDetailActivityOverview', () => {
         isAssignable: true,
         assignmentConfiguration: { uuid: 'config-123' },
         bnrEnabled: true,
+        uuid: 'policy-uuid-123',
       },
       enterpriseUUID: 'enterprise-uuid-123',
       isTopDownAssignmentEnabled: true,
@@ -611,6 +612,7 @@ describe('retrieveBudgetDetailActivityOverview', () => {
     expect(EnterpriseAccessApiService.listContentAssignments).toHaveBeenCalledWith('config-123', {});
     expect(EnterpriseAccessApiService.fetchBnrSubsidyRequests).toHaveBeenCalledWith(
       'enterprise-uuid-123',
+      'policy-uuid-123',
       expect.objectContaining({
         state: 'approved',
       }),

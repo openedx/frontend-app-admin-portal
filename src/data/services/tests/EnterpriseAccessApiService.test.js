@@ -15,6 +15,7 @@ axios.post = jest.fn();
 axios.patch = jest.fn();
 const enterpriseAccessBaseUrl = `${process.env.ENTERPRISE_ACCESS_BASE_URL}`;
 const mockEnterpriseUUID = 'test-enterprise-id';
+const mockPolicyId = 'test-policy-id';
 const mockLicenseRequestUUID = 'test-license-request-uuid';
 const mockCouponCodeRequestUUID = 'test-coupon-code-request-uuid';
 const mockAssignmentConfigurationUUID = 'test-assignment-configuration-uuid';
@@ -258,10 +259,11 @@ describe('EnterpriseAccessApiService', () => {
     expect(axios.get).toBeCalledWith(`${enterpriseAccessBaseUrl}/api/v1/admin-view/learner_profile/?${queryParams.toString()}`);
   });
   test('fetchBnrSubsidyRequests calls enterprise-access with enterpriseUUID only', () => {
-    EnterpriseAccessApiService.fetchBnrSubsidyRequests(mockEnterpriseUUID);
+    EnterpriseAccessApiService.fetchBnrSubsidyRequests(mockEnterpriseUUID, mockPolicyId);
 
     const expectedParams = new URLSearchParams({
       enterprise_customer_uuid: mockEnterpriseUUID,
+      policy_uuid: mockPolicyId,
     });
 
     expect(axios.get).toBeCalledWith(
@@ -295,10 +297,11 @@ describe('EnterpriseAccessApiService', () => {
       ordering: '-created',
     };
 
-    EnterpriseAccessApiService.fetchBnrSubsidyRequests(mockEnterpriseUUID, options);
+    EnterpriseAccessApiService.fetchBnrSubsidyRequests(mockEnterpriseUUID, mockPolicyId, options);
 
     const expectedParams = new URLSearchParams({
       enterprise_customer_uuid: mockEnterpriseUUID,
+      policy_uuid: mockPolicyId,
       page: '2',
       page_size: '10',
       state: 'requested,declined',
