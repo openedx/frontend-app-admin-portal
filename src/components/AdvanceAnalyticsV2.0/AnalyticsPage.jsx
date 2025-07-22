@@ -7,7 +7,6 @@ import { useIntl } from '@edx/frontend-platform/i18n';
 import Hero from '../Hero';
 import Engagements from './tabs/Engagements';
 import Progress from './tabs/Progress';
-import { useEnterpriseAnalyticsAggregatesData } from './data/hooks';
 import { GRANULARITY, CALCULATION } from './data/constants';
 import { useAllFlexEnterpriseGroups } from '../learner-credit-management/data';
 import { AnalyticsFiltersContext } from './AnalyticsFiltersContext';
@@ -18,8 +17,6 @@ const AnalyticsPage = ({ enterpriseId }) => {
   const [granularity, setGranularity] = useState(GRANULARITY.WEEKLY);
   const [calculation, setCalculation] = useState(CALCULATION.TOTAL);
   const [groupUUID, setGroupUUID] = useState('');
-  const [startDate, setStartDate] = useState();
-  const [endDate, setEndDate] = useState();
   const intl = useIntl();
   const { data: groups, isLoading: isGroupsLoading } = useAllFlexEnterpriseGroups(enterpriseId);
 
@@ -29,31 +26,21 @@ const AnalyticsPage = ({ enterpriseId }) => {
     description: 'Title of the analytics page',
   });
 
-  const { data } = useEnterpriseAnalyticsAggregatesData({
-    enterpriseCustomerUUID: enterpriseId,
-    startDate,
-    endDate,
-  });
   const currentDate = new Date().toISOString().split('T')[0];
 
   const filtersContextValue = useMemo(() => ({
-    data,
-    startDate: startDate || data?.minEnrollmentDate,
-    endDate: endDate || currentDate,
     currentDate,
     granularity,
     calculation,
     groupUUID,
     enterpriseId,
-    setStartDate,
-    setEndDate,
     setGranularity,
     setCalculation,
     setGroupUUID,
     groups,
     isGroupsLoading,
   }), [
-    data, startDate, endDate, currentDate, granularity, calculation,
+    currentDate, granularity, calculation,
     groupUUID, enterpriseId, groups, isGroupsLoading,
   ]);
 
