@@ -552,7 +552,7 @@ class LmsApiService {
     return response;
   };
 
-  static fetchEnterpriseGroupsByEnterprise = async (enterpriseUuid: string): EnterpriseGroupResponse => {
+  static fetchEnterpriseGroupsByEnterprise = async (enterpriseUuid: string): EnterpriseGroupListResponse => {
     const queryParams = new URLSearchParams({
       enterprise_uuids: enterpriseUuid,
     });

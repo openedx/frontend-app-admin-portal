@@ -4,7 +4,7 @@ import { ADMIN_TOUR_EVENT_NAMES, ORGANIZE_LEARNER_TARGETS } from '../constants';
 import messages from '../messages';
 import { configuration } from '../../../../config';
 import { TourStep } from '../../types';
-import useHydrateAdminOnboardingData from '../data/useHydrateAdminOnboardingData';
+import useHydrateAdminOnboardingData, { HydratedAdminOnboardingData } from '../data/useHydrateAdminOnboardingData';
 
 interface OrganizeLearnersFlowProps {
   enterpriseId: string;
@@ -16,7 +16,8 @@ const OrganizeLearnersFlow = ({
   enterpriseId, handleAdvanceTour, handleEndTour,
 }: OrganizeLearnersFlowProps): Array<TourStep> => {
   const intl = useIntl();
-  const { hasEnterpriseMembers, hasEnterpriseGroups } = useHydrateAdminOnboardingData(enterpriseId);
+  const { data: hydrateAdminOnboardingData } = useHydrateAdminOnboardingData(enterpriseId);
+  const { hasEnterpriseMembers, hasEnterpriseGroups } = hydrateAdminOnboardingData as HydratedAdminOnboardingData;
   const onOrganizeAdvance = () => handleAdvanceTour(ADMIN_TOUR_EVENT_NAMES.ORGANIZE_LEARNERS_ADVANCE_EVENT_NAME);
   const onOrganizeEnd = () => handleEndTour(
     ADMIN_TOUR_EVENT_NAMES.ORGANIZE_LEARNERS_COMPLETED_EVENT_NAME,

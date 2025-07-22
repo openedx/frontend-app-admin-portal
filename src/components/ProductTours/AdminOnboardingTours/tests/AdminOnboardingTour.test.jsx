@@ -58,7 +58,7 @@ describe('useAdminOnboardingTour', () => {
   };
 
   beforeEach(() => {
-    useHydrateAdminOnboardingData.mockReturnValue(true, true);
+    useHydrateAdminOnboardingData.mockReturnValue({ hasEnterpriseMembers: true, hasEnterpriseGroups: true });
   });
 
   it('returns tour configuration with correct structure', () => {

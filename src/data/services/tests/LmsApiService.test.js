@@ -151,6 +151,40 @@ describe('LmsApiService', () => {
       },
     });
   });
+  test('fetchEnterpriseGroup returns groups', async () => {
+    const mockPayload = {
+      status: 200,
+      data: {
+        results: [
+          {
+            next: null,
+            previous: null,
+            count: 2,
+            num_pages: 1,
+            current_page: 1,
+            start: 0,
+            results: [
+              {
+                enterprise_customer: 1234,
+                name: 'test group',
+                uuid: 'test-uuid',
+                accepted_members_count: 1,
+                group_type: 'flex',
+                created: '2025-05-29T00:04:18.318397Z',
+              },
+            ],
+          },
+        ],
+      },
+    };
+
+    axios.get.mockResolvedValue(mockPayload);
+    const response = await LmsApiService.fetchEnterpriseGroup('test-uuid');
+    expect(axios.get).toHaveBeenCalledWith(
+      `${lmsBaseUrl}/enterprise/api/v1/enterprise_group/test-uuid/`,
+    );
+    expect(response).toEqual(camelCaseDict(mockPayload));
+  });
   test('fetchEnterpriseGroupMemberships returns group memberships', async () => {
     const mockPayload = {
       status: 200,

@@ -152,11 +152,6 @@ const messages = defineMessages({
     defaultMessage: '"View group" allows you to edit group details, add and remove learners, or track learner\'s progress.',
     description: 'Description for the organize learners flow with groups step six',
   },
-  organizeLearnersWithGroupsStepSevenBody: {
-    id: 'adminPortal.productTours.adminOnboarding.organizeLearners.withGroups.body.7',
-    defaultMessage: 'View and edit your group\'s name, see the total number of members, and view when it was created.',
-    description: 'Description for the organize learners flow with groups step seven',
-  },
   viewEnrollmentInsights: {
     id: 'adminPortal.productTours.adminOnboarding.viewEnrollmentInsights.title.1',
     defaultMessage: VIEW_ENROLLMENTS_INSIGHT_TITLE,
@@ -216,7 +211,7 @@ const messages = defineMessages({
   },
   administerSubscriptionsStepThreeBody: {
     id: 'adminPortal.productTours.adminOnboarding.administerSubscriptions.body.3',
-    defaultMessage: '"Manage learners" allows you to view more details about a plan. Let\'s view your learners.',
+    defaultMessage: '"Manage learners" allows you to view more details about a plan. Let\'s view your learners now.',
     description: 'Description for the administer subscriptions flow step three',
   },
   administerSubscriptionsStepFourBody: {

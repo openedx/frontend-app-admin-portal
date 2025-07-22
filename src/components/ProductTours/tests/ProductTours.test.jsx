@@ -105,7 +105,7 @@ describe('<ProductTours/>', () => {
   beforeEach(() => {
     mergeConfig({ FEATURE_CONTENT_HIGHLIGHTS: false });
     mergeConfig({ FEATURE_LEARNER_CREDIT_MANAGEMENT: false });
-    useHydrateAdminOnboardingData.mockReturnValue(true, true);
+    useHydrateAdminOnboardingData.mockReturnValue({ hasEnterpriseMembers: true, hasEnterpriseGroups: true });
     global.localStorage.clear();
     jest.clearAllMocks();
   });
