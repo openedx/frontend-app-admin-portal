@@ -21,6 +21,9 @@ const API_FIELDS_BY_TABLE_COLUMN_ACCESSOR = {
   amount: 'amount',
   requestDate: 'requestDate',
   requestStatus: 'requestStatus',
+  lastActionStatus: 'latest_action__status',
+  lastActionErrorReason: 'latest_action__error_reason',
+  recentAction: 'latest_action__recent_action',
 };
 
 export const applySortByToOptions = (sortBy, options) => {
@@ -43,27 +46,47 @@ export const applySortByToOptions = (sortBy, options) => {
   }
 };
 
+// Configuration mapping for filter field transformations
+const FILTER_FIELD_CONFIG = {
+  requestDetails: {
+    apiParam: 'search',
+    transform: (value) => value,
+  },
+  requestStatus: {
+    apiParam: 'state',
+    transform: (value) => (Array.isArray(value) ? value.join(',') : value),
+  },
+  lastActionStatus: {
+    apiParam: 'action_status',
+    transform: (value) => (Array.isArray(value) ? value.join(',') : value),
+  },
+  lastActionErrorReason: {
+    apiParam: 'action_error_reason',
+    transform: (value) => (Array.isArray(value) ? value.join(',') : value),
+  },
+};
+
 export const applyFiltersToOptions = (filters, options) => {
   if (!filters || filters.length === 0) {
     return;
   }
-  const emailSearchQuery = filters.find(filter => filter.id === 'requestDetails')?.value;
-  const statusFilter = filters.find(filter => filter.id === 'requestStatus')?.value;
 
-  if (emailSearchQuery) {
-    Object.assign(options, {
-      search: emailSearchQuery,
-    });
-  }
+  filters.forEach(filter => {
+    const config = FILTER_FIELD_CONFIG[filter.id];
 
-  if (statusFilter && statusFilter.length > 0) {
-    Object.assign(options, {
-      state: statusFilter.join(','),
-    });
-  }
+    if (config && filter.value) {
+      if (Array.isArray(filter.value) && filter.value.length === 0) {
+        return;
+      }
+      if (typeof filter.value === 'string' && !filter.value.trim()) {
+        return;
+      }
+
+      const transformedValue = config.transform(filter.value);
+      Object.assign(options, { [config.apiParam]: transformedValue });
+    }
+  });
 };
-
-const getLastActionStatus = (latestAction) => latestAction?.status?.toLowerCase().replace(/\s+/g, '_');
 
 // Transform API response data to match DataTable the requirements
 const transformApiDataToTableData = (apiResults) => apiResults.map((item) => {
@@ -85,8 +108,8 @@ const transformApiDataToTableData = (apiResults) => apiResults.map((item) => {
     amount: item?.coursePrice || 0,
     requestDate,
     requestStatus: item?.state,
-    lastActionStatus: getLastActionStatus(item?.latestAction),
-    lastActionErrorReason: item?.latestAction?.errorReason,
+    lastActionStatus: item?.latestAction?.status, // Direct assignment, no transformation
+    lastActionErrorReason: item?.latestAction?.errorReason, // Use error_reason field
     lastActionDate,
     latestAction: item?.latestAction,
   };

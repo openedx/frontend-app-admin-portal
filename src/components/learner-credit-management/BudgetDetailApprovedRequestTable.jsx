@@ -17,19 +17,14 @@ const FilterStatus = (rest) => (
 );
 
 const getRequestStatusDisplayName = (status) => {
-  if (status === 'waiting_for_learner') {
-    return 'Waiting for learner';
-  }
+  const statusDisplayMap = {
+    reminded: 'Waiting for learner',
+    approved: 'Approved',
+    pending: 'Pending',
+    refunded: 'Refunded',
+  };
 
-  if (status === 'refunded') {
-    return 'Refunded';
-  }
-
-  if (status === 'failed_cancellation') {
-    return 'Failed cancellation';
-  }
-
-  return status
+  return statusDisplayMap[status] || status
     .split('_')
     .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
     .join(' ');

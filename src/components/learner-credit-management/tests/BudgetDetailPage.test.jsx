@@ -1894,12 +1894,12 @@ describe('<BudgetDetailPage />', () => {
     const mockRequestsWithDifferentStatuses = [
       {
         ...mockApprovedRequest,
-        lastActionStatus: 'waiting_for_learner',
+        lastActionStatus: 'reminded',
       },
       {
         ...createMockApprovedRequest(),
         lastActionStatus: 'refunded',
-        lastActionErrorReason: 'Failed: Cancellation',
+        lastActionErrorReason: 'failed_cancellation',
       },
       {
         ...createMockApprovedRequest(),
