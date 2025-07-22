@@ -319,8 +319,8 @@ export async function fetchContentAssignments(assignmentConfigurationUUID, optio
  *
  * @returns Camelcased response from the BnR subsidy requests.
  */
-export async function fetchBnrRequest(enterpriseUUID, options = {}) {
-  const response = await EnterpriseAccessApiService.fetchBnrSubsidyRequests(enterpriseUUID, options);
+export async function fetchBnrRequest(enterpriseUUID, policyUuid, options = {}) {
+  const response = await EnterpriseAccessApiService.fetchBnrSubsidyRequests(enterpriseUUID, policyUuid, options);
   return camelCaseObject(response.data);
 }
 
@@ -411,7 +411,7 @@ export async function retrieveBudgetDetailActivityOverview({
     promisesToFulfill.push(fetchContentAssignments(subsidyAccessPolicy.assignmentConfiguration.uuid));
   }
   if (isBnrEnabledSubsidy) {
-    promisesToFulfill.push(fetchBnrRequest(enterpriseUUID, {
+    promisesToFulfill.push(fetchBnrRequest(enterpriseUUID, subsidyAccessPolicy.uuid, {
       state: APPROVED_REQUEST_TYPE,
     }));
   }

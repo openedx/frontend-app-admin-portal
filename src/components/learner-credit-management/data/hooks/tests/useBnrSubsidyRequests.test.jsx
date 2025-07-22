@@ -24,7 +24,15 @@ jest.mock('../../../../../data/services/EnterpriseAccessApiService', () => ({
   fetchBnrSubsidyRequests: jest.fn(),
 }));
 
+jest.mock('../useBudgetId', () => ({
+  __esModule: true,
+  default: jest.fn(() => ({
+    subsidyAccessPolicyId: 'test-policy-id',
+  })),
+}));
+
 const mockEnterpriseId = 'test-enterprise-id';
+const mockPolicyId = 'test-policy-id';
 const mockApiResponse = {
   data: {
     count: 2,
@@ -184,6 +192,7 @@ describe('useBnrSubsidyRequests', () => {
 
       expect(EnterpriseAccessApiService.fetchBnrSubsidyRequests).toHaveBeenCalledWith(
         mockEnterpriseId,
+        mockPolicyId,
         {
           page: 1,
           page_size: 25,
@@ -216,6 +225,7 @@ describe('useBnrSubsidyRequests', () => {
 
       expect(EnterpriseAccessApiService.fetchBnrSubsidyRequests).toHaveBeenCalledWith(
         mockEnterpriseId,
+        mockPolicyId,
         {
           page: 2,
           page_size: undefined,
@@ -244,6 +254,7 @@ describe('useBnrSubsidyRequests', () => {
 
       expect(EnterpriseAccessApiService.fetchBnrSubsidyRequests).toHaveBeenCalledWith(
         mockEnterpriseId,
+        mockPolicyId,
         {
           page: 1,
           page_size: 25,
@@ -273,6 +284,7 @@ describe('useBnrSubsidyRequests', () => {
 
       expect(EnterpriseAccessApiService.fetchBnrSubsidyRequests).toHaveBeenCalledWith(
         mockEnterpriseId,
+        mockPolicyId,
         {
           page: 1,
           page_size: 25,
@@ -402,6 +414,7 @@ describe('useBnrSubsidyRequests', () => {
 
       expect(EnterpriseAccessApiService.fetchBnrSubsidyRequests).toHaveBeenCalledWith(
         mockEnterpriseId,
+        mockPolicyId,
         {
           page: 3,
           page_size: 10,
