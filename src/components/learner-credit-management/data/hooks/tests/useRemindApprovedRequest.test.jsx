@@ -13,6 +13,7 @@ jest.mock('@edx/frontend-platform/logging');
 
 const mockSubsidyAccessPolicyId = 'test-policy-id';
 const mockSubsidyRequestUUID = 'test-request-uuid';
+const mockEnterpriseId = 'test-enterprise-id';
 
 let mockQueryClient;
 
@@ -48,6 +49,7 @@ describe('useRemindApprovedRequest', () => {
       const { result } = renderHook(
         () => useRemindApprovedRequest(
           mockSubsidyRequestUUID,
+          mockEnterpriseId,
           mockOnSuccess,
           mockOnFailure,
         ),
@@ -67,6 +69,7 @@ describe('useRemindApprovedRequest', () => {
       const { result } = renderHook(
         () => useRemindApprovedRequest(
           mockSubsidyRequestUUID,
+          mockEnterpriseId,
           mockOnSuccess,
           mockOnFailure,
         ),
@@ -84,6 +87,7 @@ describe('useRemindApprovedRequest', () => {
       const { result } = renderHook(
         () => useRemindApprovedRequest(
           mockSubsidyRequestUUID,
+          mockEnterpriseId,
           mockOnSuccess,
           mockOnFailure,
         ),
@@ -115,6 +119,7 @@ describe('useRemindApprovedRequest', () => {
       const { result } = renderHook(
         () => useRemindApprovedRequest(
           mockSubsidyRequestUUID,
+          mockEnterpriseId,
           mockOnSuccess,
           mockOnFailure,
         ),
@@ -142,6 +147,7 @@ describe('useRemindApprovedRequest', () => {
       const { result } = renderHook(
         () => useRemindApprovedRequest(
           mockSubsidyRequestUUID,
+          mockEnterpriseId,
           mockOnSuccess,
           mockOnFailure,
         ),
@@ -153,6 +159,7 @@ describe('useRemindApprovedRequest', () => {
       });
 
       expect(EnterpriseAccessApiService.remindApprovedBnrSubsidyRequest).toHaveBeenCalledWith({
+        enterpriseId: mockEnterpriseId,
         subsidyRequestUUID: mockSubsidyRequestUUID,
       });
     });
@@ -161,6 +168,7 @@ describe('useRemindApprovedRequest', () => {
       const { result } = renderHook(
         () => useRemindApprovedRequest(
           mockSubsidyRequestUUID,
+          mockEnterpriseId,
           mockOnSuccess,
           mockOnFailure,
         ),
@@ -179,6 +187,7 @@ describe('useRemindApprovedRequest', () => {
       const { result } = renderHook(
         () => useRemindApprovedRequest(
           mockSubsidyRequestUUID,
+          mockEnterpriseId,
           mockOnSuccess,
           mockOnFailure,
         ),
@@ -198,6 +207,7 @@ describe('useRemindApprovedRequest', () => {
       const { result } = renderHook(
         () => useRemindApprovedRequest(
           mockSubsidyRequestUUID,
+          mockEnterpriseId,
           null, // No onSuccess callback
           mockOnFailure,
         ),
@@ -223,6 +233,7 @@ describe('useRemindApprovedRequest', () => {
       const { result } = renderHook(
         () => useRemindApprovedRequest(
           mockSubsidyRequestUUID,
+          mockEnterpriseId,
           mockOnSuccess,
           mockOnFailure,
         ),
@@ -255,6 +266,7 @@ describe('useRemindApprovedRequest', () => {
       const { result } = renderHook(
         () => useRemindApprovedRequest(
           mockSubsidyRequestUUID,
+          mockEnterpriseId,
           mockOnSuccess,
           mockOnFailure,
         ),
@@ -280,6 +292,7 @@ describe('useRemindApprovedRequest', () => {
       const { result } = renderHook(
         () => useRemindApprovedRequest(
           mockSubsidyRequestUUID,
+          mockEnterpriseId,
           mockOnSuccess,
           mockOnFailure,
         ),

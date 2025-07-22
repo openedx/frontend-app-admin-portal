@@ -408,10 +408,12 @@ class EnterpriseAccessApiService {
    * @returns A promise that resolves to the API response for the remind operation
    */
   static remindApprovedBnrSubsidyRequest({
+    enterpriseId,
     subsidyRequestUUID,
   }) {
     const options = {
       learner_credit_request_uuid: subsidyRequestUUID,
+      enterprise_customer_uuid: enterpriseId,
     };
 
     const url = `${EnterpriseAccessApiService.baseUrl}/learner-credit-requests/remind/`;
