@@ -11,6 +11,24 @@ const BnrRequestStatusCell = ({ row }) => {
   const recentAction = latestAction?.recentAction;
   const [target, setTarget] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
+
+  // Format error reasons for display
+  const formatErrorReason = (reason) => {
+    if (!reason) {
+      return null;
+    }
+
+    const errorReasonMap = {
+      failed_approval: 'Failed: Approval',
+      failed_cancellation: 'Failed: Cancellation',
+      failed_system: 'Failed: System Error',
+      failed_payment: 'Failed: Payment',
+      failed_enrollment: 'Failed: Enrollment',
+    };
+
+    return errorReasonMap[reason]
+      || reason.split('_').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(': ');
+  };
   const getStatusConfig = useMemo(() => {
     const statusConfigs = {
       requested: {
@@ -44,7 +62,8 @@ const BnrRequestStatusCell = ({ row }) => {
   };
 
   // Determine what to display in the chip
-  const displayText = errorReason || getStatusConfig.label;
+  const formattedErrorReason = formatErrorReason(errorReason);
+  const displayText = formattedErrorReason || getStatusConfig.label;
   const displayIcon = errorReason ? Error : getStatusConfig.icon;
   const displayVariant = errorReason ? 'dark' : '';
   const isClickable = !!errorReason;
@@ -66,7 +85,7 @@ const BnrRequestStatusCell = ({ row }) => {
 
       {errorReason && (
         <RequestFailureModal
-          errorReason={errorReason}
+          errorReason={formattedErrorReason}
           isOpen={isModalOpen}
           onClose={closeModal}
           target={target}

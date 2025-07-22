@@ -40,7 +40,8 @@ const RequestStatusTableCell = ({ enterpriseId, row }) => {
   // Currently we check both `lastActionErrorReason` and `lastActionStatus` which creates
   // confusion since status information comes from two different sources. The API should
   // be updated to return a single, unified status field to simplify this logic.
-  if (lastActionErrorReason === 'Failed: Cancellation') {
+
+  if (lastActionErrorReason === 'failed_cancellation') {
     return (
       <FailedCancellation
         learnerEmail={learnerEmail}
@@ -49,7 +50,7 @@ const RequestStatusTableCell = ({ enterpriseId, row }) => {
     );
   }
 
-  if (lastActionStatus === 'waiting_for_learner' || requestStatus === 'approved') {
+  if (lastActionStatus === 'reminded' || requestStatus === 'approved') {
     return (
       <WaitingForLearner
         learnerEmail={learnerEmail}

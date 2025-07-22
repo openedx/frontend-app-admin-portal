@@ -39,7 +39,7 @@ const mockApiResponse = {
         created: '2023-10-27T10:00:00Z',
         state: 'approved',
         latestAction: {
-          status: 'waiting for learner',
+          status: 'reminded',
           errorReason: null,
           created: '2023-10-27T10:00:00Z',
         },
@@ -71,11 +71,11 @@ const expectedTransformedData = [
     amount: 100,
     requestDate: 'Oct 27, 2023',
     requestStatus: 'approved',
-    lastActionStatus: 'waiting_for_learner',
+    lastActionStatus: 'reminded',
     lastActionDate: 'Oct 27, 2023',
     lastActionErrorReason: null,
     latestAction: {
-      status: 'waiting for learner',
+      status: 'reminded',
       errorReason: null,
       created: '2023-10-27T10:00:00Z',
     },
@@ -90,10 +90,10 @@ const expectedTransformedData = [
     requestStatus: 'approved',
     lastActionStatus: 'refunded',
     lastActionDate: 'Oct 27, 2023',
-    lastActionErrorReason: 'Payment failed',
+    lastActionErrorReason: 'failed_cancellation',
     latestAction: {
       status: 'refunded',
-      errorReason: 'Payment failed',
+      errorReason: 'failed_cancellation',
       created: '2023-10-27T11:00:00Z',
     },
   },
@@ -247,8 +247,8 @@ describe('useBnrSubsidyRequests', () => {
         {
           page: 1,
           page_size: 25,
-          search: 'test@example.com',
           state: 'approved,pending',
+          search: 'test@example.com',
         },
       );
     });
@@ -528,10 +528,24 @@ describe('applyFiltersToOptions', () => {
     });
   });
 
-  it('should not apply status filter when array is empty', () => {
+  it('should apply nested field filters correctly', () => {
+    const options = {};
+    applyFiltersToOptions([
+      { id: 'lastActionStatus', value: ['reminded', 'approved'] },
+      { id: 'lastActionErrorReason', value: ['failed_cancellation'] },
+    ], options);
+    expect(options).toEqual({
+      action_status: 'reminded,approved',
+      action_error_reason: 'failed_cancellation',
+    });
+  });
+
+  it('should not apply filters when values are empty', () => {
     const options = {};
     applyFiltersToOptions([
       { id: 'requestStatus', value: [] },
+      { id: 'requestDetails', value: '' },
+      { id: 'lastActionStatus', value: [] },
     ], options);
     expect(options).toEqual({});
   });
