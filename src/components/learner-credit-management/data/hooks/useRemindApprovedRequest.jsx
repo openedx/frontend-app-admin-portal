@@ -9,6 +9,7 @@ import useBudgetId from './useBudgetId';
 
 const useRemindApprovedRequest = (
   subsidyRequestUUID,
+  enterpriseId,
   onSuccess,
   onFailure,
 ) => {
@@ -22,6 +23,7 @@ const useRemindApprovedRequest = (
     try {
       const response = await EnterpriseAccessApiService.remindApprovedBnrSubsidyRequest({
         subsidyRequestUUID,
+        enterpriseId,
       });
 
       setRemindButtonState('complete');
@@ -45,7 +47,7 @@ const useRemindApprovedRequest = (
 
       throw err;
     }
-  }, [subsidyRequestUUID, queryClient, subsidyAccessPolicyId, onSuccess, onFailure]);
+  }, [subsidyRequestUUID, queryClient, subsidyAccessPolicyId, enterpriseId, onSuccess, onFailure]);
 
   return {
     remindButtonState,
