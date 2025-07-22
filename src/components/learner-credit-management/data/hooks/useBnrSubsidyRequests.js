@@ -63,8 +63,6 @@ export const applyFiltersToOptions = (filters, options) => {
   }
 };
 
-const getLastActionStatus = (latestAction) => latestAction?.status?.toLowerCase().replace(/\s+/g, '_');
-
 // Transform API response data to match DataTable the requirements
 const transformApiDataToTableData = (apiResults) => apiResults.map((item) => {
   const requestDate = new Date(item.created).toLocaleDateString('en-US', {
@@ -85,7 +83,7 @@ const transformApiDataToTableData = (apiResults) => apiResults.map((item) => {
     amount: item?.coursePrice || 0,
     requestDate,
     requestStatus: item?.state,
-    lastActionStatus: getLastActionStatus(item?.latestAction),
+    lastActionStatus: item?.latestAction?.status, // Direct assignment, no transformation
     lastActionErrorReason: item?.latestAction?.errorReason,
     lastActionDate,
     latestAction: item?.latestAction,

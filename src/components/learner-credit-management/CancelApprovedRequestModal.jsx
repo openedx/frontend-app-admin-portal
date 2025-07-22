@@ -62,7 +62,7 @@ const CancelApprovedRequestModal = ({
         <p>
           <FormattedMessage
             id="lcm.budget.detail.page.approved.requests.cancel.approval.modal.body2"
-            defaultMessage="The learner will be notified that their approved request has been canceled. The funds associated with this request will move from 'assigned' back to 'available'."
+            defaultMessage="The learner will be notified that their approved request has been canceled. The funds associated with this request will move from 'pending' back to 'available'."
             description="Body text for the cancel approval modal which informs the user that the learner will be notified that the approval has been canceled."
           />
         </p>
