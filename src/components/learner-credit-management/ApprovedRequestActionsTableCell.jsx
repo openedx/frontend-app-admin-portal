@@ -10,7 +10,7 @@ const ApprovedRequestActionsTableCell = ({ row }) => {
 
   // Check if the cancel and remind button should be shown for this row
   const shouldShowShowActionButtons = (
-    (original.lastActionStatus === 'waiting_for_learner' || original.requestStatus === 'approved')
+    (original.lastActionStatus === 'reminded' || original.requestStatus === 'approved')
   );
 
   // Don't render dropdown if no actions are available

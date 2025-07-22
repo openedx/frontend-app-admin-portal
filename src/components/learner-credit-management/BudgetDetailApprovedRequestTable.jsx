@@ -17,7 +17,7 @@ const FilterStatus = (rest) => (
 );
 
 const getRequestStatusDisplayName = (status) => {
-  if (status === 'waiting_for_learner') {
+  if (status === 'appoved' || status === 'reminded') {
     return 'Waiting for learner';
   }
 
@@ -29,8 +29,7 @@ const getRequestStatusDisplayName = (status) => {
     return 'Failed cancellation';
   }
 
-  return status
-    .split('_')
+  return status.split('_')
     .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
     .join(' ');
 };

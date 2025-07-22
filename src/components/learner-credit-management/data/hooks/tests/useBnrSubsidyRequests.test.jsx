@@ -47,7 +47,7 @@ const mockApiResponse = {
         created: '2023-10-27T10:00:00Z',
         state: 'approved',
         latestAction: {
-          status: 'waiting for learner',
+          status: 'reminded',
           errorReason: null,
           created: '2023-10-27T10:00:00Z',
         },
@@ -79,11 +79,11 @@ const expectedTransformedData = [
     amount: 100,
     requestDate: 'Oct 27, 2023',
     requestStatus: 'approved',
-    lastActionStatus: 'waiting_for_learner',
+    lastActionStatus: 'reminded',
     lastActionDate: 'Oct 27, 2023',
     lastActionErrorReason: null,
     latestAction: {
-      status: 'waiting for learner',
+      status: 'reminded',
       errorReason: null,
       created: '2023-10-27T10:00:00Z',
     },
