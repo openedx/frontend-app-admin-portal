@@ -141,7 +141,7 @@ const EnterpriseAppRoutes = ({
           element={<LearnerDetailPage />}
         />,
         <Route
-          path="/*"
+          path="/"
           key="people-management"
           element={<PeopleManagementPage />}
         />,

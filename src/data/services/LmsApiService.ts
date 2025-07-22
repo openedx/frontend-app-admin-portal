@@ -32,6 +32,8 @@ export type GroupInviteSummary = {
 export type EnterpriseGroupResponse = Promise<AxiosResponse<EnterpriseGroup>>;
 export type EnterpriseGroupListResponse = Promise<AxiosResponse<PaginatedCurrentPage<EnterpriseGroup>>>;
 export type EnterpriseLearnersListResponse = Promise<AxiosResponse<PaginatedCurrentPage<EnterpriseLearner>>>;
+export type EnterpriseCustomerMemberListResponse = Promise<
+AxiosResponse<PaginatedCurrentPage<EnterpriseCustomerMember>>>;
 export type EnterpriseGroupMembershipResponse = Promise<AxiosResponse<PaginatedCurrentPage<EnterpriseGroupMembership>>>;
 export type EnterpriseGroupInviteResponse = Promise<AxiosResponse<GroupInviteSummary>>;
 
@@ -433,7 +435,15 @@ class LmsApiService {
     return LmsApiService.apiClient().patch(url, options);
   }
 
-  static fetchEnterpriseCustomerMembers(enterpriseUUID: string, options: any) {
+  static fetchEnterpriseCustomerMember(enterpriseUUID: string) {
+    const options = {
+      page: '1',
+      page_size: '1',
+    };
+    return LmsApiService.fetchEnterpriseCustomerMembers(enterpriseUUID, options);
+  }
+
+  static fetchEnterpriseCustomerMembers(enterpriseUUID: string, options: any) : EnterpriseCustomerMemberListResponse {
     let url = `${LmsApiService.enterpriseCustomerMembersUrl}${enterpriseUUID}/`;
     if (options) {
       const queryParams = new URLSearchParams(options);
@@ -524,8 +534,12 @@ class LmsApiService {
     return response;
   };
 
-  static fetchEnterpriseGroup = async (groupUuid: string): EnterpriseGroupResponse => {
-    const groupEndpoint = `${LmsApiService.enterpriseGroupListUrl}${groupUuid}/`;
+  static fetchEnterpriseGroup = async (groupUuid: string, options?: any): EnterpriseGroupResponse => {
+    let groupEndpoint = `${LmsApiService.enterpriseGroupListUrl}${groupUuid}/`;
+    if (options) {
+      const queryParams = new URLSearchParams(options);
+      groupEndpoint = `${LmsApiService.enterpriseGroupUrl}${groupUuid}/learners?${queryParams.toString()}`;
+    }
     const response = LmsApiService.apiClient().get(groupEndpoint);
     response.data = camelCaseObject(response.data);
     return response;
@@ -534,6 +548,16 @@ class LmsApiService {
   static fetchEnterpriseGroups = async (): EnterpriseGroupListResponse => {
     const url = `${LmsApiService.enterpriseGroupUrl}`;
     const response = LmsApiService.apiClient().get(url);
+    response.data = camelCaseObject(response.data);
+    return response;
+  };
+
+  static fetchEnterpriseGroupsByEnterprise = async (enterpriseUuid: string): EnterpriseGroupListResponse => {
+    const queryParams = new URLSearchParams({
+      enterprise_uuids: enterpriseUuid,
+    });
+    const groupEndpoint = `${LmsApiService.enterpriseGroupListUrl}?${queryParams.toString()}`;
+    const response = await LmsApiService.apiClient().get(groupEndpoint);
     response.data = camelCaseObject(response.data);
     return response;
   };

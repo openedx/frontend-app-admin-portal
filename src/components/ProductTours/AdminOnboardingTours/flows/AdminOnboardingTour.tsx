@@ -2,20 +2,20 @@ import { sendEnterpriseTrackEvent } from '@edx/frontend-enterprise-utils';
 import { logError } from '@edx/frontend-platform/logging';
 
 import {
+  ADMINISTER_SUBSCRIPTIONS_TARGETS,
   ANALYTICS_INSIGHTS_TARGETS,
   CUSTOMIZE_REPORTS_SIDEBAR,
   ORGANIZE_LEARNER_TARGETS,
   TRACK_LEARNER_PROGRESS_TARGETS,
-  ADMINISTER_SUBSCRIPTIONS_TARGETS,
 } from '../constants';
 
 import { TourStep } from '../../types';
 import LmsApiService from '../../../../data/services/LmsApiService';
-import LearnerProgressFlow from './LearnerProgressFlow';
-import AnalyticsFlow from './AnalyticsFlow';
-import OrganizeLearnersFlow from './OrganizeLearnersFlow';
 import AdministerSubscriptionsFlow from './AdministerSubscriptionsFlow';
+import AnalyticsFlow from './AnalyticsFlow';
 import CustomizeReportsFlow from './CustomizeReportsFlow';
+import LearnerProgressFlow from './LearnerProgressFlow';
+import OrganizeLearnersFlow from './OrganizeLearnersFlow';
 import SetUpPreferencesFlow from '../SetUpPreferencesFlow';
 import { TOUR_TARGETS } from '../../constants';
 
@@ -23,44 +23,24 @@ interface AdminOnboardingTourProps {
   adminUuid: string;
   aiButtonVisible: boolean;
   currentStep: number;
-  setCurrentStep: (currentStep: number) => void;
+  enterpriseId: string;
   enterpriseSlug: string;
   onClose: () => void;
+  setCurrentStep: (currentStep: number) => void;
   targetSelector?: string;
 }
 
 const AdminOnboardingTour = (
   {
-    adminUuid, aiButtonVisible, currentStep, setCurrentStep, enterpriseSlug, onClose, targetSelector,
+    adminUuid, aiButtonVisible, currentStep, enterpriseId, enterpriseSlug, onClose, setCurrentStep, targetSelector,
   }: AdminOnboardingTourProps,
 ): Array<TourStep> => {
   function handleAdvanceTour(advanceEventName: string) {
     const newIndex = currentStep + 1;
-
-    const manageLearnersButton = document.getElementById('manage-learners-button');
-    if (manageLearnersButton && targetSelector === 'manage-learners-button') {
-      manageLearnersButton.click();
-      setCurrentStep(0);
-      sendEnterpriseTrackEvent(enterpriseSlug, advanceEventName, { 'completed-step': newIndex });
-      return;
-    }
-
-    const detailPageTargets = [
-      ADMINISTER_SUBSCRIPTIONS_TARGETS.SUBSCRIPTION_PLANS_DETAIL_PAGE,
-      ADMINISTER_SUBSCRIPTIONS_TARGETS.INVITE_LEARNERS_BUTTON,
-      ADMINISTER_SUBSCRIPTIONS_TARGETS.LICENSE_ALLOCATION_SECTION,
-      ADMINISTER_SUBSCRIPTIONS_TARGETS.LICENSE_ALLOCATION_FILTERS,
-      ADMINISTER_SUBSCRIPTIONS_TARGETS.SUBSCRIPTIONS_NAVIGATION,
-    ];
-
-    if (detailPageTargets.includes(targetSelector as string)) {
-      sendEnterpriseTrackEvent(enterpriseSlug, advanceEventName, { 'completed-step': 3 + newIndex });
-    } else {
-      sendEnterpriseTrackEvent(enterpriseSlug, advanceEventName, { 'completed-step': newIndex });
-    }
-
+    sendEnterpriseTrackEvent(enterpriseSlug, advanceEventName, { 'completed-step': newIndex });
     setCurrentStep(newIndex);
   }
+
   async function handleEndTour(endEventName: string, flowUuid: string) {
     try {
       onClose();
@@ -70,11 +50,14 @@ const AdminOnboardingTour = (
       logError(error);
     }
   }
+
+  const administerSubscriptionsFlow = AdministerSubscriptionsFlow({
+    currentStep, enterpriseSlug, handleEndTour, setCurrentStep, targetSelector,
+  });
   const analyticsFlow = AnalyticsFlow({ handleAdvanceTour, handleEndTour });
-  const learnerProgressFlow = LearnerProgressFlow({ aiButtonVisible, handleAdvanceTour, handleEndTour });
-  const organizeLearnersFlow = OrganizeLearnersFlow({ handleAdvanceTour, handleEndTour });
-  const administerSubscriptionsFlow = AdministerSubscriptionsFlow({ handleAdvanceTour, handleEndTour });
   const customizeReportsFlow = CustomizeReportsFlow({ handleEndTour });
+  const learnerProgressFlow = LearnerProgressFlow({ aiButtonVisible, handleAdvanceTour, handleEndTour });
+  const organizeLearnersFlow = OrganizeLearnersFlow({ enterpriseId, handleAdvanceTour, handleEndTour });
   const setUpPreferencesFlow = SetUpPreferencesFlow({ handleEndTour });
 
   // Map target selectors to their respective flows

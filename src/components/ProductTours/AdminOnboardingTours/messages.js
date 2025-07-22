@@ -111,26 +111,46 @@ const messages = defineMessages({
     defaultMessage: 'Create learner groups, view all learners in your organization, and access individual learner profiles—all in one place.',
     description: 'Description for the organize learners flow step one',
   },
+  organizeLearnersStepOneNoMembersBody: {
+    id: 'adminPortal.productTours.adminOnboarding.organizeLearners.noLearners.body.1',
+    defaultMessage: 'Once learners join the organization, you can create learner groups, view all learners in your organization, and access individual learner profiles—all in one place.',
+    description: 'Description for the organize learners flow step one if there are no enterprise members',
+  },
   organizeLearnersStepTwoBody: {
     id: 'adminPortal.productTours.adminOnboarding.organizeLearners.body.2',
-    defaultMessage: 'Organize learners by creating groups for tracking and assignments.',
+    defaultMessage: 'View all learners in your organization. Search by name and access profiles to track progress and view learning access.',
     description: 'Description for the organize learners flow step two',
   },
   organizeLearnersStepThreeBody: {
     id: 'adminPortal.productTours.adminOnboarding.organizeLearners.body.3',
-    defaultMessage: 'When you\'re ready, use "Create Group" to get started.',
+    defaultMessage: '"View more" allows you to see the learner\'s full profile with enrollments, access type, and group'
+    + ' memberships at a glance.',
     description: 'Description for the organize learners flow step three',
   },
   organizeLearnersStepFourBody: {
     id: 'adminPortal.productTours.adminOnboarding.organizeLearners.body.4',
-    defaultMessage: 'View all learners in your organization. Search by name and access profiles to track progress and view learning access.',
+    defaultMessage: 'Organize learners by creating groups for tracking and assignments.',
     description: 'Description for the organize learners flow step four',
   },
   organizeLearnersStepFiveBody: {
-    id: 'adminPortal.productTours.adminOnboarding.organizeLearners.body.6',
-    defaultMessage: '"View more" allows you to see the learner\'s full profile with enrollments, access type, and group'
-    + ' memberships at a glance.',
-    description: 'Description for the organize learners flow step six',
+    id: 'adminPortal.productTours.adminOnboarding.organizeLearners.body.5',
+    defaultMessage: 'When you\'re ready, use "Create Group" to get started.',
+    description: 'Description for the organize learners flow step five',
+  },
+  organizeLearnersWithGroupsStepFourBody: {
+    id: 'adminPortal.productTours.adminOnboarding.organizeLearners.withGroups.body.4',
+    defaultMessage: 'View, manage, and create your learner groups here.',
+    description: 'Description for the organize learners flow with groups step four',
+  },
+  organizeLearnersWithGroupsStepFiveBody: {
+    id: 'adminPortal.productTours.adminOnboarding.organizeLearners.withGroups.body.5',
+    defaultMessage: '“Create Group" allows you to add more learner groups.',
+    description: 'Description for the organize learners flow with groups step five',
+  },
+  organizeLearnersWithGroupsStepSixBody: {
+    id: 'adminPortal.productTours.adminOnboarding.organizeLearners.withGroups.body.6',
+    defaultMessage: '"View group" allows you to edit group details, add and remove learners, or track learner\'s progress.',
+    description: 'Description for the organize learners flow with groups step six',
   },
   viewEnrollmentInsights: {
     id: 'adminPortal.productTours.adminOnboarding.viewEnrollmentInsights.title.1',
@@ -191,7 +211,7 @@ const messages = defineMessages({
   },
   administerSubscriptionsStepThreeBody: {
     id: 'adminPortal.productTours.adminOnboarding.administerSubscriptions.body.3',
-    defaultMessage: '"Manage learners" allows you to view more details about a plan. Let\'s take you there now',
+    defaultMessage: '"Manage learners" allows you to view more details about a plan. Let\'s view your learners now.',
     description: 'Description for the administer subscriptions flow step three',
   },
   administerSubscriptionsStepFourBody: {

@@ -28,10 +28,12 @@ import { SubsidyRequestsContext } from '../../subsidy-requests';
 import { EnterpriseSubsidiesContext } from '../../EnterpriseSubsidiesContext';
 import { SUPPORTED_SUBSIDY_TYPES } from '../../../data/constants/subsidyRequests';
 import { SUBSIDY_TYPES } from '../../../data/constants/subsidyTypes';
+import useHydrateAdminOnboardingData from '../AdminOnboardingTours/data/useHydrateAdminOnboardingData';
 
 const mockStore = configureMockStore([thunk]);
 
 const ENTERPRISE_SLUG = 'sluggy';
+const ENTERPRISE_UUID = 'test-enterprise-uuid';
 
 const SUBSCRIPTION_PAGE_LOCATION = `/${ENTERPRISE_SLUG}/admin/${ROUTE_NAMES.subscriptionManagement}`;
 const SETTINGS_PAGE_LOCATION = `/${ENTERPRISE_SLUG}/admin/${ROUTE_NAMES.settings}/${ACCESS_TAB}`;
@@ -39,6 +41,8 @@ const LEARNER_CREDIT_PAGE_LOCATION = `/${ENTERPRISE_SLUG}/admin/${ROUTE_NAMES.le
 
 let onboardingEnabled = true;
 let lastLogin = null;
+
+jest.mock('../AdminOnboardingTours/data/useHydrateAdminOnboardingData');
 
 const ToursWithContext = ({
   subsidyType = SUPPORTED_SUBSIDY_TYPES.license,
@@ -59,6 +63,7 @@ const ToursWithContext = ({
   store = mockStore({
     portalConfiguration: {
       enterpriseSlug: ENTERPRISE_SLUG,
+      enterpriseId: ENTERPRISE_UUID,
       enableLearnerPortal,
       enterpriseFeatures: {
         enterpriseAdminOnboardingEnabled: onboardingEnabled,
@@ -100,6 +105,7 @@ describe('<ProductTours/>', () => {
   beforeEach(() => {
     mergeConfig({ FEATURE_CONTENT_HIGHLIGHTS: false });
     mergeConfig({ FEATURE_LEARNER_CREDIT_MANAGEMENT: false });
+    useHydrateAdminOnboardingData.mockReturnValue({ data: { hasEnterpriseMembers: true, hasEnterpriseGroups: true } });
     global.localStorage.clear();
     jest.clearAllMocks();
   });
