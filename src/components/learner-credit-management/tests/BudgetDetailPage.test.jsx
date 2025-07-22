@@ -1419,6 +1419,7 @@ describe('<BudgetDetailPage />', () => {
     await waitFor(() => {
       expect(EnterpriseAccessApiService.remindApprovedBnrSubsidyRequest).toHaveBeenCalledWith({
         subsidyRequestUUID: 'test-approved-request-uuid',
+        enterpriseId: enterpriseUUID,
       });
     });
 

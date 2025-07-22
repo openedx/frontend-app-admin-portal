@@ -35,7 +35,10 @@ const ApprovedRequestTableRemind = ({ row, enterpriseId }) => {
     close,
     isOpen,
     open,
-  } = useRemindApprovedRequest(uuid);
+  } = useRemindApprovedRequest(
+    uuid,
+    enterpriseId,
+  );
 
   const sharedTrackEventMetadata = {
     subsidyUuid,
