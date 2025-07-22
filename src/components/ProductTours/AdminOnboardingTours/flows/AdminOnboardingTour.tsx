@@ -58,7 +58,6 @@ const AdminOnboardingTour = (
   const customizeReportsFlow = CustomizeReportsFlow({ handleEndTour });
   const learnerProgressFlow = LearnerProgressFlow({ aiButtonVisible, handleAdvanceTour, handleEndTour });
   const organizeLearnersFlow = OrganizeLearnersFlow({ enterpriseId, handleAdvanceTour, handleEndTour });
-
   const setUpPreferencesFlow = SetUpPreferencesFlow({ handleEndTour });
 
   // Map target selectors to their respective flows

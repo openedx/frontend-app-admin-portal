@@ -50,7 +50,7 @@ describe('useCreateOrganizeLearnersFlow', () => {
   });
 
   it('creates organize learners flow with correct structure for no groups', () => {
-    useHydrateAdminOnboardingData.mockReturnValue({ hasEnterpriseMembers: true, hasEnterpriseGroups: false });
+    useHydrateAdminOnboardingData.mockReturnValue({ data: { hasEnterpriseMembers: true, hasEnterpriseGroups: false } });
     const { result } = renderHook(
       () => OrganizeLearnersFlow({
         enterpriseId,
@@ -93,7 +93,7 @@ describe('useCreateOrganizeLearnersFlow', () => {
   });
 
   it('uses correct target selectors for organize learners flow', () => {
-    useHydrateAdminOnboardingData.mockReturnValue({ hasEnterpriseMembers: true, hasEnterpriseGroups: true });
+    useHydrateAdminOnboardingData.mockReturnValue({ data: { hasEnterpriseMembers: true, hasEnterpriseGroups: true } });
     const { result } = renderHook(
       () => OrganizeLearnersFlow({
         enterpriseId,
@@ -113,7 +113,7 @@ describe('useCreateOrganizeLearnersFlow', () => {
   });
 
   it('creates organize learners flow when there are groups', () => {
-    useHydrateAdminOnboardingData.mockReturnValue({ hasEnterpriseMembers: true, hasEnterpriseGroups: true });
+    useHydrateAdminOnboardingData.mockReturnValue({ data: { hasEnterpriseMembers: true, hasEnterpriseGroups: true } });
     const { result } = renderHook(
       () => OrganizeLearnersFlow({
         enterpriseId,
@@ -160,7 +160,9 @@ describe('useCreateOrganizeLearnersFlow', () => {
   });
 
   it('creates organize learners flow when there are no enterprise learners', () => {
-    useHydrateAdminOnboardingData.mockReturnValue({ hasEnterpriseMembers: false, hasEnterpriseGroups: false });
+    useHydrateAdminOnboardingData.mockReturnValue(
+      { data: { hasEnterpriseMembers: false, hasEnterpriseGroups: false } },
+    );
     useParams.mockReturnValue({
       '*': 'group-uuid',
     });

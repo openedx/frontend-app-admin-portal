@@ -90,7 +90,7 @@ const OrganizeLearnersFlow = ({
     target: `#${ORGANIZE_LEARNER_TARGETS.ORG_GROUP_CARD}`,
     placement: 'left',
     body: intl.formatMessage(messages.organizeLearnersWithGroupsStepSixBody),
-    onEnd: onOrganizeAdvance,
+    onEnd: onOrganizeEnd,
   }];
 
   if (!hasEnterpriseMembers) {
