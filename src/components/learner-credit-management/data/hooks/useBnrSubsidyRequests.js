@@ -7,6 +7,7 @@ import { debounce } from 'lodash-es';
 
 import EnterpriseAccessApiService from '../../../../data/services/EnterpriseAccessApiService';
 import { REQUEST_STATUS_FILTER_CHOICES, REQUEST_TAB_VISIBLE_STATES } from '../constants';
+import useBudgetId from './useBudgetId';
 
 const initialBnrRequestsState = {
   results: [],
@@ -99,6 +100,7 @@ const useBnrSubsidyRequests = ({
   const currentArgsRef = useRef(null);
   const [isLoading, setIsLoading] = useState(true);
   const [bnrRequests, setBnrRequests] = useState(initialBnrRequestsState);
+  const { subsidyAccessPolicyId } = useBudgetId();
 
   const fetchBnrRequests = useCallback(async (args) => {
     if (!isEnabled || !enterpriseId) {
@@ -130,6 +132,7 @@ const useBnrSubsidyRequests = ({
 
       const response = await EnterpriseAccessApiService.fetchBnrSubsidyRequests(
         enterpriseId,
+        subsidyAccessPolicyId,
         options,
       );
       const data = camelCaseObject(response.data);
@@ -149,7 +152,7 @@ const useBnrSubsidyRequests = ({
       logError('Failed to fetch BNR subsidy requests', error);
       setIsLoading(false);
     }
-  }, [isEnabled, enterpriseId]);
+  }, [isEnabled, enterpriseId, subsidyAccessPolicyId]);
 
   const debouncedFetchBnrRequests = useMemo(
     () => debounce(fetchBnrRequests, 300),
