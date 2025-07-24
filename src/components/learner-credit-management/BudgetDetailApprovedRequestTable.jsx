@@ -51,7 +51,8 @@ const BudgetDetailApprovedRequestTable = ({
 
   return (
     <DataTable
-      isSortable
+      // Temporarily disabling sorting for release
+      isSortable={false}
       manualSortBy
       isPaginated
       manualPagination
@@ -97,6 +98,8 @@ const BudgetDetailApprovedRequestTable = ({
           Filter: CheckboxFilter,
           filter: 'includesValue',
           filterChoices: statusFilterChoices,
+          // Temporarily disabling filters for release
+          disableFilters: true,
         },
         {
           Header: intl.formatMessage({
