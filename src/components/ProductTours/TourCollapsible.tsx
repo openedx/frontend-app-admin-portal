@@ -1,6 +1,5 @@
-import React, { FC } from 'react';
+import React, { FC, useEffect, useState } from 'react';
 import { connect } from 'react-redux';
-
 import {
   IconButton, Icon, OverlayTrigger, Tooltip, Stack,
 } from '@openedx/paragon';
@@ -28,72 +27,43 @@ import {
   TRACK_LEARNER_PROGRESS_TARGETS,
 } from './AdminOnboardingTours/constants';
 import { TOUR_TARGETS } from './constants';
+import useFetchCompletedOnboardingFlows from './AdminOnboardingTours/data/useFetchCompletedOnboardingFlows';
+import { configuration } from '../../config';
 
 interface Props {
+  adminUuid: string;
   dismissOnboardingTour: (adminUuid: string) => void;
-  reopenOnboardingTour: (adminUuid: string) => void;
+  enableReportingConfigScreen: boolean;
+  enableSubscriptionManagementScreen: boolean;
   onTourSelect?: (targetId: string) => void;
-  uuid: string;
+  reopenOnboardingTour: (adminUuid: string) => void;
   showCollapsible: boolean;
   setShowCollapsible: (value: boolean) => void;
-  enableSubscriptionManagementScreen: boolean;
-  enableReportingConfigScreen: boolean;
 }
 
 type StepDefinition = {
   icon: React.ComponentType,
   title: string,
   timeEstimate: number,
-  targetId: string
+  targetId: string,
+  completed?: boolean
 };
-
-const QUICK_START_GUIDE_STEPS: StepDefinition[] = [{
-  icon: TrendingUp,
-  title: TRACK_LEARNER_PROGRESS_TITLE,
-  timeEstimate: 2,
-  targetId: TRACK_LEARNER_PROGRESS_TARGETS.LEARNER_PROGRESS_SIDEBAR,
-}, {
-  icon: InsertChartOutlined,
-  title: VIEW_ENROLLMENTS_INSIGHT_TITLE,
-  timeEstimate: 1,
-  targetId: ANALYTICS_INSIGHTS_TARGETS.SIDEBAR,
-}, {
-  icon: CreditCard,
-  title: ADMINISTER_SUBSCRIPTIONS_TITLE,
-  timeEstimate: 2,
-  targetId: ADMINISTER_SUBSCRIPTIONS_TARGETS.SIDEBAR,
-}, {
-  icon: Person,
-  title: ORGANIZE_LEARNERS_TITLE,
-  timeEstimate: 2,
-  targetId: ORGANIZE_LEARNER_TARGETS.PEOPLE_MANAGEMENT_SIDEBAR,
-}, {
-  icon: TextSnippet,
-  title: CUSTOMIZE_REPORTS_TITLE,
-  timeEstimate: 1,
-  targetId: CUSTOMIZE_REPORTS_SIDEBAR,
-},
-{
-  icon: Settings,
-  title: SET_UP_PREFERENCES_TITLE,
-  timeEstimate: 1,
-  targetId: TOUR_TARGETS.SETTINGS_SIDEBAR,
-},
-];
 
 const TourCollapsible: FC<Props> = (
   {
+    adminUuid,
     dismissOnboardingTour: dismissTour,
-    reopenOnboardingTour: reopenTour,
+    enableReportingConfigScreen,
+    enableSubscriptionManagementScreen,
     onTourSelect,
+    reopenOnboardingTour: reopenTour,
     showCollapsible,
     setShowCollapsible,
-    uuid: adminUuid,
-    enableSubscriptionManagementScreen,
-    enableReportingConfigScreen,
   },
 ) => {
   const intl = useIntl();
+  const [onboardingSteps, setOnboardingSteps] = useState();
+  const { data: completedTourFlows } = useFetchCompletedOnboardingFlows(adminUuid);
 
   const handleDismiss = () => {
     setShowCollapsible(false);
@@ -105,16 +75,76 @@ const TourCollapsible: FC<Props> = (
     reopenTour(adminUuid);
   };
 
-  const steps = QUICK_START_GUIDE_STEPS.filter(step => {
-    switch (step.title) {
-      case ADMINISTER_SUBSCRIPTIONS_TITLE:
-        return enableSubscriptionManagementScreen;
-      case CUSTOMIZE_REPORTS_TITLE:
-        return enableReportingConfigScreen;
-      default:
-        return true;
+  useEffect(() => {
+    const QUICK_START_GUIDE_STEPS: StepDefinition[] = [{
+      icon: TrendingUp,
+      title: TRACK_LEARNER_PROGRESS_TITLE,
+      timeEstimate: 2,
+      targetId: TRACK_LEARNER_PROGRESS_TARGETS.LEARNER_PROGRESS_SIDEBAR,
+      completed: false,
+    }, {
+      icon: InsertChartOutlined,
+      title: VIEW_ENROLLMENTS_INSIGHT_TITLE,
+      timeEstimate: 1,
+      targetId: ANALYTICS_INSIGHTS_TARGETS.SIDEBAR,
+      completed: false,
+    }, {
+      icon: CreditCard,
+      title: ADMINISTER_SUBSCRIPTIONS_TITLE,
+      timeEstimate: 2,
+      targetId: ADMINISTER_SUBSCRIPTIONS_TARGETS.SIDEBAR,
+      completed: false,
+    }, {
+      icon: Person,
+      title: ORGANIZE_LEARNERS_TITLE,
+      timeEstimate: 2,
+      targetId: ORGANIZE_LEARNER_TARGETS.PEOPLE_MANAGEMENT_SIDEBAR,
+      completed: false,
+    }, {
+      icon: TextSnippet,
+      title: CUSTOMIZE_REPORTS_TITLE,
+      timeEstimate: 1,
+      targetId: CUSTOMIZE_REPORTS_SIDEBAR,
+      completed: false,
+    }, {
+      icon: Settings,
+      title: SET_UP_PREFERENCES_TITLE,
+      timeEstimate: 1,
+      targetId: TOUR_TARGETS.SETTINGS_SIDEBAR,
+      completed: false,
+    }];
+
+    const FLOW_UUID_MAPPING = new Map([
+      [TRACK_LEARNER_PROGRESS_TITLE, configuration.ADMIN_ONBOARDING_UUIDS.FLOW_TRACK_LEARNER_PROGRESS_UUID?.toString()],
+      [VIEW_ENROLLMENTS_INSIGHT_TITLE, configuration.ADMIN_ONBOARDING_UUIDS.FLOW_ENROLLMENT_INSIGHTS?.toString()],
+      [ADMINISTER_SUBSCRIPTIONS_TITLE, configuration.ADMIN_ONBOARDING_UUIDS.FLOW_SUBSCRIPTIONS_UUID?.toString()],
+      [ORGANIZE_LEARNERS_TITLE, configuration.ADMIN_ONBOARDING_UUIDS.FLOW_ORGANIZE_LEARNERS_UUID?.toString()],
+      [CUSTOMIZE_REPORTS_TITLE, configuration.ADMIN_ONBOARDING_UUIDS.FLOW_CUSTOMIZE_REPORTS_UUID?.toString()],
+      [SET_UP_PREFERENCES_TITLE, configuration.ADMIN_ONBOARDING_UUIDS.FLOW_PREFERENCES_UUID?.toString()],
+    ]);
+
+    // filter out steps that are turned off for the user
+    const steps = QUICK_START_GUIDE_STEPS.filter(step => {
+      switch (step.title) {
+        case ADMINISTER_SUBSCRIPTIONS_TITLE:
+          return enableSubscriptionManagementScreen;
+        case CUSTOMIZE_REPORTS_TITLE:
+          return enableReportingConfigScreen;
+        default:
+          return true;
+      }
+    });
+
+    if (completedTourFlows) {
+      steps.forEach((step) => {
+        const flowUuid = FLOW_UUID_MAPPING.get(step.title);
+        if (completedTourFlows.includes(flowUuid)) {
+          step.completed = true; // eslint-disable-line no-param-reassign
+        }
+      });
     }
-  });
+    setOnboardingSteps(steps);
+  }, [completedTourFlows, enableReportingConfigScreen, enableSubscriptionManagementScreen]);
 
   return (
     <>
@@ -124,15 +154,16 @@ const TourCollapsible: FC<Props> = (
           onDismiss={handleDismiss}
         >
           <p className="small">{intl.formatMessage(messages.collapsibleIntro)}</p>
-          <Stack gap={3} className="mb-3">
-            {steps.map(step => (
+          <Stack gap={2} className="mb-3">
+            {onboardingSteps?.map(step => (
               <Step
-                key={step.title}
+                completed={step.completed}
                 icon={step.icon}
-                title={step.title}
-                timeEstimate={step.timeEstimate}
-                targetId={step.targetId}
+                key={step.title}
                 onTourSelect={onTourSelect}
+                targetId={step.targetId}
+                timeEstimate={step.timeEstimate}
+                title={step.title}
               />
             ))}
           </Stack>
@@ -161,11 +192,11 @@ const TourCollapsible: FC<Props> = (
 };
 
 const mapStateToProps = state => ({
+  adminUuid: state.enterpriseCustomerAdmin.uuid as string,
+  enableReportingConfigScreen: state.portalConfiguration.enableReportingConfigScreen as boolean,
+  enableSubscriptionManagementScreen: state.portalConfiguration.enableSubscriptionManagementScreen as boolean,
   onboardingTourCompleted: state.enterpriseCustomerAdmin.onboardingTourCompleted as boolean,
   onboardingTourDismissed: state.enterpriseCustomerAdmin.onboardingTourDismissed as boolean,
-  uuid: state.enterpriseCustomerAdmin.uuid as string,
-  enableSubscriptionManagementScreen: state.portalConfiguration.enableSubscriptionManagementScreen as boolean,
-  enableReportingConfigScreen: state.portalConfiguration.enableReportingConfigScreen as boolean,
 });
 
 const mapDispatchToProps = dispatch => ({

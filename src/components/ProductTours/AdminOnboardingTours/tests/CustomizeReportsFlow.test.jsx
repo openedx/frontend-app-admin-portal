@@ -43,7 +43,6 @@ describe('useCustomizeReportsFlow', () => {
       target: `#${CUSTOMIZE_REPORTS_SIDEBAR}`,
       placement: 'right',
       body: messages.viewCustomizeReports.defaultMessage,
-      onAdvance: mockHandleEndTour,
     });
   });
 

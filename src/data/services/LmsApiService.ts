@@ -173,6 +173,11 @@ class LmsApiService {
     return LmsApiService.apiClient().get(enterpriseAdminProfileUrl);
   }
 
+  static fetchEnterpriseAdminProfile(adminUuid): EnterpriseAdminResponse {
+    const enterpriseAdminProfileUrl = `${LmsApiService.baseUrl}/enterprise/api/v1/enterprise-customer-admin/${adminUuid}/`;
+    return LmsApiService.apiClient().get(enterpriseAdminProfileUrl);
+  }
+
   static postOnboardingTourDismissed({ value, adminUuid }) {
     const dismissOnboardingTourUrl = `${LmsApiService.baseUrl}/enterprise/api/v1/enterprise-customer-admin/${adminUuid}/`;
     return LmsApiService.apiClient().patch(dismissOnboardingTourUrl, {
