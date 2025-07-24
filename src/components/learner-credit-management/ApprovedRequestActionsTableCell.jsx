@@ -4,13 +4,15 @@ import { Dropdown, Icon, IconButton } from '@openedx/paragon';
 import { MoreVert } from '@openedx/paragon/icons';
 import ApprovedRequestTableCancel from './ApprovedRequestTableCancel';
 import ApprovedRequestTableRemind from './ApprovedRequestTableRemind';
+import { REQUEST_RECENT_ACTIONS } from './data';
 
 const ApprovedRequestActionsTableCell = ({ row }) => {
   const { original } = row;
 
   // Check if the cancel and remind button should be shown for this row
   const shouldShowShowActionButtons = (
-    (original.lastActionStatus === 'waiting_for_learner' || original.requestStatus === 'approved')
+    (original.lastActionStatus === REQUEST_RECENT_ACTIONS.reminded
+      || original.requestStatus === REQUEST_RECENT_ACTIONS.approved)
   );
 
   // Don't render dropdown if no actions are available
