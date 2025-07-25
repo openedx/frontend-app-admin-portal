@@ -7,6 +7,7 @@ import useAdminOnboardingTour from '../flows/AdminOnboardingTour';
 import { ADMIN_TOUR_EVENT_NAMES } from '../constants';
 import useHydrateAdminOnboardingData from '../data/useHydrateAdminOnboardingData';
 import { queryClient } from '../../../test/testUtils';
+import { SubsidyRequestsContext } from '../../../subsidy-requests';
 
 const mockMessages = {
   collapsibleTitle: {
@@ -20,6 +21,13 @@ const mockMessages = {
   learnerProgressBody: {
     id: 'admin.portal.productTours.learnerProgress.body',
     defaultMessage: 'Track learner activity and progress.',
+  },
+};
+
+const requestsDisabled = {
+  subsidyRequestConfiguration: {
+    subsidyRequestsEnabled: false,
+    subsidyType: 'license',
   },
 };
 
@@ -45,12 +53,14 @@ jest.mock('@edx/frontend-platform/i18n', () => ({
 }));
 
 const wrapper = ({ children }) => (
-  <QueryClientProvider client={queryClient()}>
-    {children}
-  </QueryClientProvider>
+  <SubsidyRequestsContext.Provider value={requestsDisabled}>
+    <QueryClientProvider client={queryClient()}>
+      {children}
+    </QueryClientProvider>
+  </SubsidyRequestsContext.Provider>
 );
 
-describe('useAdminOnboardingTour', () => {
+describe('useAdminOnboard ingTour', () => {
   const defaultProps = {
     currentStep: 0,
     setCurrentStep: jest.fn(),

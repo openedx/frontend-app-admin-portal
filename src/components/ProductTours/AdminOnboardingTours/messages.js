@@ -193,6 +193,7 @@ const messages = defineMessages({
     + 'Use these insights to understand learner interests and skill development trends.',
     description: 'Description for the analytics tracking step six',
   },
+
   administerSubscriptionsTitle: {
     id: 'adminPortal.productTours.adminOnboarding.administerSubscriptions.title',
     defaultMessage: ADMINISTER_SUBSCRIPTIONS_TITLE,
@@ -238,6 +239,11 @@ const messages = defineMessages({
     id: 'adminPortal.productTours.adminOnboarding.administerSubscriptions.body.8',
     defaultMessage: 'To view more plans, navigate back to Subscription Management using this button or the main menu.',
     description: 'Description for the administer subscriptions flow step eight',
+  },
+  administerSubscriptionsStepNineBody: {
+    id: 'adminPortal.productTours.adminOnboarding.administerSubscriptions.body.9',
+    defaultMessage: 'Review and manage course requests from your learners.',
+    description: 'Description for the administer subscriptions flow step nine',
   },
   viewCustomizeReportsTitle: {
     id: 'adminPortal.productTours.adminOnboarding.customizeReports.title',

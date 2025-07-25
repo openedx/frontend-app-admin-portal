@@ -1,6 +1,10 @@
+import { useContext } from 'react';
 import { useIntl } from '@edx/frontend-platform/i18n';
 import { sendEnterpriseTrackEvent } from '@edx/frontend-enterprise-utils';
 import { useParams } from 'react-router';
+
+import { SubsidyRequestsContext } from '../../../subsidy-requests';
+import { SUPPORTED_SUBSIDY_TYPES } from '../../../../data/constants/subsidyRequests';
 import { ADMINISTER_SUBSCRIPTIONS_TARGETS, ADMIN_TOUR_EVENT_NAMES } from '../constants';
 import messages from '../messages';
 import { TourStep } from '../../types';
@@ -24,6 +28,11 @@ const AdministerSubscriptionsFlow = ({
   const params = useParams();
   const subscriptionUuid = params['*']?.split('/')[1];
   const isOnDetailPage = !!subscriptionUuid;
+
+  const { subsidyRequestConfiguration } = useContext(SubsidyRequestsContext);
+  const isSubsidyRequestsEnabled = subsidyRequestConfiguration?.subsidyRequestsEnabled;
+  const subsidyType = subsidyRequestConfiguration?.subsidyType;
+  const isRequestsTabShown = isSubsidyRequestsEnabled && subsidyType === SUPPORTED_SUBSIDY_TYPES.license;
 
   function handleAdvanceTour(advanceEventName: string) {
     const newIndex = currentStep + 1;
@@ -90,7 +99,7 @@ const AdministerSubscriptionsFlow = ({
   }
 
   // Main subscription page flow (steps 1-3)
-  return [
+  const mainPageFlow: Array<TourStep> = [
     {
       target: `#${ADMINISTER_SUBSCRIPTIONS_TARGETS.SIDEBAR}`,
       placement: 'right',
@@ -111,6 +120,16 @@ const AdministerSubscriptionsFlow = ({
       onEnd: onAnalyticsAdvance,
     },
   ];
+
+  if (isRequestsTabShown) {
+    mainPageFlow.splice(2, 0, {
+      target: `#${ADMINISTER_SUBSCRIPTIONS_TARGETS.MANAGE_REQUESTS}`,
+      placement: 'bottom',
+      body: intl.formatMessage(messages.administerSubscriptionsStepNineBody),
+      onAdvance: onAnalyticsAdvance,
+    });
+  }
+  return mainPageFlow;
 };
 
 export default AdministerSubscriptionsFlow;

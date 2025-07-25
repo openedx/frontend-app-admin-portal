@@ -40,6 +40,7 @@ export const ADMINISTER_SUBSCRIPTIONS_TARGETS = {
   LICENSE_ALLOCATION_SECTION: 'license-allocation-section',
   LICENSE_ALLOCATION_FILTERS: 'license-allocation-filters',
   SUBSCRIPTIONS_NAVIGATION: 'subscription-navigation',
+  MANAGE_REQUESTS: 'tabs-subscription-management-tab-manage-requests',
 };
 
 // targets that will trigger an index reset
