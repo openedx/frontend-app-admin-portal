@@ -5,13 +5,14 @@ import { Error } from '@openedx/paragon/icons';
 import { getConfig } from '@edx/frontend-platform/config';
 
 import BaseModalPopup from '../assignments-status-chips/BaseModalPopup';
+import { REQUEST_RECENT_ACTIONS } from '../data';
 
 const RequestFailureModal = ({
   errorReason, isOpen, onClose, target, recentAction,
 }) => {
   if (!isOpen) { return null; }
-  const isDeclinedReason = recentAction === 'Declined';
-  const isApprovedReason = recentAction === 'Approved';
+  const isDeclinedReason = recentAction === REQUEST_RECENT_ACTIONS.declined;
+  const isApprovedReason = recentAction === REQUEST_RECENT_ACTIONS.approved;
   const modalContent = (
     <BaseModalPopup
       positionRef={target}

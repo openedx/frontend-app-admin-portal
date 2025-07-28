@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { REMINDED_RECENT_ACTION_TYPE } from './data';
+import { REQUEST_RECENT_ACTIONS } from './data';
 
 const RequestRecentActionTableCell = ({ row }) => {
   const { original } = row;
@@ -12,8 +12,8 @@ const RequestRecentActionTableCell = ({ row }) => {
   } = original;
 
   const formatRequest = () => {
-    const hasRemindedAction = latestAction && latestAction.recentAction === REMINDED_RECENT_ACTION_TYPE;
-    // Using reminded action if the latest action is 'Reminded' else fall back to requestStatus
+    const hasRemindedAction = latestAction && latestAction.recentAction === REQUEST_RECENT_ACTIONS.reminded;
+    // Using reminded action if the latest action is 'reminded' else fall back to requestStatus
     const status = hasRemindedAction ? latestAction.recentAction : requestStatus;
     const formattedActionType = `${status.charAt(0).toUpperCase()}${status.slice(1)}`;
 

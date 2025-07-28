@@ -10,30 +10,11 @@ import RequestAmountTableCell from './RequestAmountTableCell';
 import RequestRecentActionTableCell from './RequestRecentActionTableCell';
 import ApprovedRequestActionsTableCell from './ApprovedRequestActionsTableCell';
 import ApprovedRequestsTableRefreshAction from './ApprovedRequestsTableRefreshAction';
-import { DEFAULT_PAGE, PAGE_SIZE } from './data';
+import { DEFAULT_PAGE, PAGE_SIZE, REQUEST_STATUSES } from './data';
 
 const FilterStatus = (rest) => (
   <DataTable.FilterStatus showFilteredFields={false} {...rest} />
 );
-
-const getRequestStatusDisplayName = (status) => {
-  if (status === 'waiting_for_learner') {
-    return 'Waiting for learner';
-  }
-
-  if (status === 'refunded') {
-    return 'Refunded';
-  }
-
-  if (status === 'failed_cancellation') {
-    return 'Failed cancellation';
-  }
-
-  return status
-    .split('_')
-    .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
-    .join(' ');
-};
 
 const selectColumn = {
   id: 'selection',
@@ -51,11 +32,11 @@ const BudgetDetailApprovedRequestTable = ({
   const statusFilterChoices = tableData.requestStatusCounts
     ? tableData.requestStatusCounts
       .filter(({ lastActionStatus }) => {
-        const displayName = getRequestStatusDisplayName(lastActionStatus);
+        const displayName = REQUEST_STATUSES[lastActionStatus];
         return !!displayName;
       })
       .map(({ lastActionStatus, count }) => ({
-        name: getRequestStatusDisplayName(lastActionStatus),
+        name: REQUEST_STATUSES[lastActionStatus],
         number: count,
         value: lastActionStatus,
       }))
@@ -70,7 +51,8 @@ const BudgetDetailApprovedRequestTable = ({
 
   return (
     <DataTable
-      isSortable
+      // Temporarily disabling sorting for release
+      isSortable={false}
       manualSortBy
       isPaginated
       manualPagination
@@ -116,6 +98,8 @@ const BudgetDetailApprovedRequestTable = ({
           Filter: CheckboxFilter,
           filter: 'includesValue',
           filterChoices: statusFilterChoices,
+          // Temporarily disabling filters for release
+          disableFilters: true,
         },
         {
           Header: intl.formatMessage({
