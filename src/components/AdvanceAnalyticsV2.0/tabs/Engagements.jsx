@@ -1,7 +1,9 @@
+import { useState } from 'react';
 import { FormattedMessage } from '@edx/frontend-platform/i18n';
 import PropTypes from 'prop-types';
 import { sendEnterpriseTrackEvent } from '@edx/frontend-enterprise-utils';
 import { ANALYTICS_TABS } from '../constants';
+import { COURSE_TYPES } from '../data/constants';
 import {
   useEnterpriseEngagementData,
   useEnterpriseAnalyticsAggregatesData,
@@ -21,14 +23,11 @@ import TopCoursesByLearningHoursTable from '../tables/TopCoursesByLearningHoursT
 import TopSubjectsByEnrollmentTable from '../tables/TopSubjectsByEnrollmentTable';
 import TopSubjectsByLearningHoursTable from '../tables/TopSubjectsByLearningHoursTable';
 import EVENT_NAMES from '../../../eventTracking';
+import { get90DayPriorDate } from '../data/utils';
 
 const Engagements = ({ enterpriseId }) => {
   // Filters
   const {
-    startDate,
-    setStartDate,
-    endDate,
-    setEndDate,
     granularity,
     setGranularity,
     calculation,
@@ -39,6 +38,10 @@ const Engagements = ({ enterpriseId }) => {
     groups,
     isGroupsLoading,
   } = useAnalyticsFilters();
+
+  const [startDate, setStartDate] = useState(get90DayPriorDate());
+  const [endDate, setEndDate] = useState(currentDate);
+  const [courseType, setCourseType] = useState(COURSE_TYPES.ALL_COURSE_TYPES);
 
   // Stats Data
   const { isFetching: isStatsFetching, isError: isStatsError, data: statsData } = useEnterpriseAnalyticsAggregatesData({
@@ -68,6 +71,7 @@ const Engagements = ({ enterpriseId }) => {
     granularity,
     calculation,
     groupUUID,
+    courseType,
   });
 
   // Enrollments Data
@@ -118,6 +122,8 @@ const Engagements = ({ enterpriseId }) => {
           setStartDate={setStartDate}
           endDate={endDate}
           setEndDate={setEndDate}
+          courseType={courseType}
+          setCourseType={setCourseType}
           granularity={granularity}
           setGranularity={setGranularity}
           calculation={calculation}
