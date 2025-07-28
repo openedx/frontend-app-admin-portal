@@ -10,6 +10,7 @@ import {
   startAndEnrollBySortLogic,
   transformSubsidySummary,
   retrieveBudgetDetailActivityOverview,
+  transformRequestOverview,
 } from '../utils';
 import {
   COURSE_PACING_MAP,
@@ -617,5 +618,107 @@ describe('retrieveBudgetDetailActivityOverview', () => {
         state: 'approved',
       }),
     );
+  });
+});
+
+describe('transformRequestOverview', () => {
+  it('should transform allowed request states correctly', () => {
+    const requestStates = [
+      { state: 'requested', count: 10 },
+      { state: 'cancelled', count: 5 },
+      { state: 'declined', count: 3 },
+    ];
+
+    const result = transformRequestOverview(requestStates);
+
+    expect(result).toEqual([
+      { name: 'Requested', number: 10, value: 'requested' },
+      { name: 'Cancelled', number: 5, value: 'cancelled' },
+      { name: 'Declined', number: 3, value: 'declined' },
+    ]);
+  });
+
+  it('should filter out disallowed request states', () => {
+    const requestStates = [
+      { state: 'requested', count: 10 },
+      { state: 'approved', count: 8 },
+      { state: 'cancelled', count: 5 },
+      { state: 'pending', count: 12 },
+      { state: 'declined', count: 3 },
+    ];
+
+    const result = transformRequestOverview(requestStates);
+
+    expect(result).toEqual([
+      { name: 'Requested', number: 10, value: 'requested' },
+      { name: 'Cancelled', number: 5, value: 'cancelled' },
+      { name: 'Declined', number: 3, value: 'declined' },
+    ]);
+    expect(result).toHaveLength(3);
+  });
+
+  it('should handle empty array input', () => {
+    const requestStates = [];
+    const result = transformRequestOverview(requestStates);
+    expect(result).toEqual([]);
+  });
+
+  it('should handle array with no allowed states', () => {
+    const requestStates = [
+      { state: 'approved', count: 8 },
+      { state: 'pending', count: 12 },
+      { state: 'unknown', count: 2 },
+    ];
+
+    const result = transformRequestOverview(requestStates);
+    expect(result).toEqual([]);
+  });
+
+  it('should handle single allowed state', () => {
+    const requestStates = [
+      { state: 'requested', count: 15 },
+    ];
+
+    const result = transformRequestOverview(requestStates);
+
+    expect(result).toEqual([
+      { name: 'Requested', number: 15, value: 'requested' },
+    ]);
+  });
+
+  it('should handle mixed case and maintain original value', () => {
+    const requestStates = [
+      { state: 'requested', count: 10 },
+      { state: 'cancelled', count: 5 },
+      { state: 'declined', count: 3 },
+    ];
+
+    const result = transformRequestOverview(requestStates);
+
+    // Verify that the original state value is preserved in the 'value' field
+    expect(result[0].value).toBe('requested');
+    expect(result[1].value).toBe('cancelled');
+    expect(result[2].value).toBe('declined');
+
+    // Verify that the name is properly capitalized
+    expect(result[0].name).toBe('Requested');
+    expect(result[1].name).toBe('Cancelled');
+    expect(result[2].name).toBe('Declined');
+  });
+
+  it('should handle zero counts', () => {
+    const requestStates = [
+      { state: 'requested', count: 0 },
+      { state: 'cancelled', count: 0 },
+      { state: 'declined', count: 0 },
+    ];
+
+    const result = transformRequestOverview(requestStates);
+
+    expect(result).toEqual([
+      { name: 'Requested', number: 0, value: 'requested' },
+      { name: 'Cancelled', number: 0, value: 'cancelled' },
+      { name: 'Declined', number: 0, value: 'declined' },
+    ]);
   });
 });
