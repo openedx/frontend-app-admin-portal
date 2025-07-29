@@ -39,7 +39,7 @@ export type EnterpriseGroupInviteResponse = Promise<AxiosResponse<GroupInviteSum
 
 export type FetchEnterpriseLearnerDataArgs = { enterpriseCustomer?: string, userId?: string, username?: string };
 
-export interface EnterpriseAdminResponse {
+export interface EnterpriseAdminsResponse {
   data: {
     count: number;
     next?: any;
@@ -54,6 +54,16 @@ export interface EnterpriseAdminResponse {
     }>;
   };
 }
+
+export interface EnterpriseAdminResponse {
+  uuid?: string;
+  enterprise_customer_user?: number;
+  last_login?: string | null;
+  completed_tour_flows?: any[];
+  onboarding_tour_dismissed?: boolean;
+  onboarding_tour_completed?: boolean;
+};
+
 class LmsApiService {
   static apiClient = getAuthenticatedHttpClient;
 
@@ -168,7 +178,7 @@ class LmsApiService {
       });
   }
 
-  static fetchLoggedInEnterpriseAdminProfile(): EnterpriseAdminResponse {
+  static fetchLoggedInEnterpriseAdminProfile(): EnterpriseAdminsResponse {
     const enterpriseAdminProfileUrl = `${LmsApiService.baseUrl}/enterprise/api/v1/enterprise-customer-admin/`;
     return LmsApiService.apiClient().get(enterpriseAdminProfileUrl);
   }

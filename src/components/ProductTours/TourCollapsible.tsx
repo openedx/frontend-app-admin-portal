@@ -62,7 +62,7 @@ const TourCollapsible: FC<Props> = (
   },
 ) => {
   const intl = useIntl();
-  const [onboardingSteps, setOnboardingSteps] = useState();
+  const [onboardingSteps, setOnboardingSteps] = useState<StepDefinition[] | undefined>();
   const { data: completedTourFlows } = useFetchCompletedOnboardingFlows(adminUuid);
 
   const handleDismiss = () => {
@@ -138,7 +138,8 @@ const TourCollapsible: FC<Props> = (
     if (completedTourFlows) {
       steps.forEach((step) => {
         const flowUuid = FLOW_UUID_MAPPING.get(step.title);
-        if (completedTourFlows.includes(flowUuid)) {
+        // @ts-ignore
+        if (flowUuid && completedTourFlows?.includes(flowUuid)) {
           step.completed = true; // eslint-disable-line no-param-reassign
         }
       });

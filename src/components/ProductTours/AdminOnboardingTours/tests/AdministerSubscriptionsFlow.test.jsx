@@ -165,7 +165,7 @@ describe('AdministerSubscriptionsFlow', () => {
     act(() => {
       result.current[0].onAdvance();
     });
-    expect(sendEnterpriseTrackEvent).toHaveBeenCalledWith(enterpriseId, ADMIN_TOUR_EVENT_NAMES.ENROLLMENT_INSIGHTS_ADVANCE_EVENT_NAME, { 'completed-step': 1 });
+    expect(sendEnterpriseTrackEvent).toHaveBeenCalledWith(enterpriseId, ADMIN_TOUR_EVENT_NAMES.ADMINISTER_SUBSCRIPTIONS_ADVANCE_EVENT_NAME, { 'completed-step': 1 });
   });
 
   describe('Detail subscription page flow', () => {
@@ -209,8 +209,8 @@ describe('AdministerSubscriptionsFlow', () => {
       });
 
       const lastStep = result.current[4];
-      expect(typeof lastStep.onAdvance).toBe('function');
-      expect(lastStep.onEnd).toBeUndefined();
+      expect(typeof lastStep.onEnd).toBe('function');
+      expect(lastStep.onAdvance).toBeUndefined();
     });
 
     it('should call handleEndTour on the final step', () => {
@@ -224,7 +224,7 @@ describe('AdministerSubscriptionsFlow', () => {
       }));
 
       act(() => {
-        result.current[4].onAdvance();
+        result.current[4].onEnd();
       });
       expect(mockHandleEndTour).toHaveBeenCalledTimes(1);
     });
