@@ -2,7 +2,7 @@ import { renderHook } from '@testing-library/react';
 import { useQuery } from '@tanstack/react-query';
 import * as utils from '../utils';
 import useEnterpriseEngagementData from './useEnterpriseEngagementData';
-import { generateKey } from '../constants';
+import { generateKey, COURSE_TYPES } from '../constants';
 
 jest.mock('@tanstack/react-query');
 jest.mock('../utils', () => ({
@@ -15,6 +15,7 @@ describe('useEnterpriseEngagementData', () => {
   const enterpriseCustomerUUID = 'enterprise-123';
   const startDate = '2023-01-01';
   const endDate = '2023-01-31';
+  const courseType = COURSE_TYPES.OPEN_COURSES;
 
   beforeEach(() => {
     jest.clearAllMocks();
@@ -110,5 +111,60 @@ describe('useEnterpriseEngagementData', () => {
     }));
 
     expect(result.current).toEqual(rawResponse);
+  });
+
+  it('calls useQuery with correct parameters for course type', () => {
+    useQuery.mockReturnValue({ data: null, isFetching: false });
+
+    renderHook(() => useEnterpriseEngagementData({
+      enterpriseCustomerUUID,
+      startDate,
+      endDate,
+      courseType,
+    }));
+
+    expect(useQuery).toHaveBeenCalledTimes(1);
+
+    const expectedKey = generateKey('engagements', enterpriseCustomerUUID, {
+      startDate,
+      endDate,
+      groupUUID: undefined,
+      courseType,
+    });
+
+    expect(useQuery).toHaveBeenCalledWith(expect.objectContaining({
+      queryKey: expectedKey,
+      queryFn: expect.any(Function),
+      staleTime: 0.5 * 60 * 60 * 1000,
+      cacheTime: 0.75 * 60 * 60 * 1000,
+      keepPreviousData: true,
+    }));
+  });
+
+  it('calls useQuery with correct parameters when courseType is ALL_COURSE_TYPES', () => {
+    useQuery.mockReturnValue({ data: null, isFetching: false });
+
+    renderHook(() => useEnterpriseEngagementData({
+      enterpriseCustomerUUID,
+      startDate,
+      endDate,
+      courseType: COURSE_TYPES.ALL_COURSE_TYPES,
+    }));
+
+    expect(useQuery).toHaveBeenCalledTimes(1);
+
+    const expectedKey = generateKey('engagements', enterpriseCustomerUUID, {
+      startDate,
+      endDate,
+      groupUUID: undefined,
+    });
+
+    expect(useQuery).toHaveBeenCalledWith(expect.objectContaining({
+      queryKey: expectedKey,
+      queryFn: expect.any(Function),
+      staleTime: 0.5 * 60 * 60 * 1000,
+      cacheTime: 0.75 * 60 * 60 * 1000,
+      keepPreviousData: true,
+    }));
   });
 });
