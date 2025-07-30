@@ -4,8 +4,11 @@ import { Chip } from '@openedx/paragon';
 import PropTypes from 'prop-types';
 import WaitingForLearner from './request-status-chips/WaitingForLearner';
 import FailedCancellation from './request-status-chips/FailedCancellation';
+import FailedRedemption from './request-status-chips/FailedRedemption';
 import { capitalizeFirstLetter } from '../../utils';
-import { REQUEST_RECENT_ACTIONS, useBudgetId, useSubsidyAccessPolicy } from './data';
+import {
+  REQUEST_ERROR_STATES, REQUEST_RECENT_ACTIONS, useBudgetId, useSubsidyAccessPolicy,
+} from './data';
 
 const RequestStatusTableCell = ({ enterpriseId, row }) => {
   const { original } = row;
@@ -40,12 +43,18 @@ const RequestStatusTableCell = ({ enterpriseId, row }) => {
   // Currently we check both `lastActionErrorReason` and `lastActionStatus` which creates
   // confusion since status information comes from two different sources. The API should
   // be updated to return a single, unified status field to simplify this logic.
-  if (lastActionErrorReason === 'failed_cancellation') {
+  if (lastActionErrorReason === REQUEST_ERROR_STATES.failed_cancellation) {
     return (
       <FailedCancellation
         learnerEmail={learnerEmail}
         trackEvent={sendGenericTrackEvent}
       />
+    );
+  }
+
+  if (lastActionErrorReason === REQUEST_ERROR_STATES.failed_redemption) {
+    return (
+      <FailedRedemption trackEvent={sendGenericTrackEvent} />
     );
   }
 

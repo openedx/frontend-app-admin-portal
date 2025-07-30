@@ -1,12 +1,20 @@
-import { render, screen, fireEvent } from '@testing-library/react';
+import {
+  render, screen, fireEvent, waitFor,
+} from '@testing-library/react';
 import '@testing-library/jest-dom';
 import { IntlProvider } from '@edx/frontend-platform/i18n';
 import AnalyticsFilters from '../AnalyticsFilters';
-import { GRANULARITY, CALCULATION, DATE_RANGE } from '../data/constants';
+import {
+  GRANULARITY, CALCULATION, DATE_RANGE, COURSE_TYPES,
+} from '../data/constants';
+import { get90DayPriorDate } from '../data/utils';
 
 const mockSetGroupUUID = jest.fn();
 const mockSetGranularity = jest.fn();
 const mockSetCalculation = jest.fn();
+const mockSetStartDate = jest.fn();
+const mockSetEndDate = jest.fn();
+const mockSetCourseType = jest.fn();
 
 const mockData = {
   minEnrollmentDate: '2021-01-01',
@@ -17,7 +25,15 @@ const mockGroups = [
   { uuid: 'group-2', name: 'Group 2' },
 ];
 
+const defaultEndDate = new Date().toISOString().split('T')[0];
+
 const defaultProps = {
+  startDate: get90DayPriorDate(),
+  setStartDate: mockSetStartDate,
+  endDate: defaultEndDate,
+  setEndDate: mockSetEndDate,
+  courseType: COURSE_TYPES.ALL_COURSE_TYPES,
+  setCourseType: mockSetCourseType,
   groupUUID: 'group-1',
   setGroupUUID: mockSetGroupUUID,
   currentDate: '2021-06-30',
@@ -51,7 +67,7 @@ describe('AnalyticsFilters Component', () => {
     expect(screen.getByLabelText('Date granularity')).toBeInTheDocument();
     expect(screen.getByLabelText('Filter by budget')).toBeDisabled();
     expect(screen.getByLabelText('Filter by course')).toBeDisabled();
-    expect(screen.getByLabelText('Filter by course type')).toBeDisabled();
+    expect(screen.getByLabelText('Filter by course type')).toBeInTheDocument();
     expect(screen.getByLabelText('Date range options')).toBeInTheDocument();
   });
 
@@ -162,6 +178,23 @@ describe('AnalyticsFilters Component', () => {
     expect(mockSetGroupUUID).toHaveBeenCalledWith('group-2');
   });
 
+  test('changing course type calls handler', () => {
+    render(
+      <IntlProvider locale="en">
+        <AnalyticsFilters
+          {...defaultProps}
+          activeTab="engagement"
+        />
+      </IntlProvider>,
+    );
+    expect(screen.getByLabelText('Filter by course type')).toHaveValue(COURSE_TYPES.ALL_COURSE_TYPES);
+    fireEvent.change(screen.getByLabelText('Filter by course type'), {
+      target: { value: COURSE_TYPES.OPEN_COURSES },
+    });
+
+    expect(mockSetCourseType).toHaveBeenCalledWith(COURSE_TYPES.OPEN_COURSES);
+  });
+
   test('changing granularity calls handler', () => {
     render(
       <IntlProvider locale="en">
@@ -202,8 +235,6 @@ describe('AnalyticsFilters Component', () => {
         <AnalyticsFilters
           {...defaultProps}
           activeTab="engagement"
-          startDate=""
-          endDate=""
           currentDate={new Date().toISOString().split('T')[0]}
         />
       </IntlProvider>,
@@ -221,14 +252,16 @@ describe('AnalyticsFilters Component', () => {
       [DATE_RANGE.CUSTOM, 0],
     ]);
 
-    dateRangeMap.forEach((value, key) => {
+    dateRangeMap.forEach(async (value, key) => {
       fireEvent.change(screen.getByLabelText('Date range options'), {
         target: { value: key },
       });
       const newStartDate = new Date();
-      expect(screen.getByLabelText('Start date')).toHaveValue(new Date(newStartDate.setDate(newStartDate.getDate() - value)).toISOString().split('T')[0]);
-      expect(screen.getByLabelText('End date')).toHaveValue(new Date().toISOString().split('T')[0]);
-      expect(screen.getByLabelText('Date range options')).toHaveValue(key);
+      await waitFor(() => {
+        expect(screen.getByLabelText('Start date')).toHaveValue(new Date(newStartDate.setDate(newStartDate.getDate() - value)).toISOString().split('T')[0]);
+        expect(screen.getByLabelText('End date')).toHaveValue(new Date().toISOString().split('T')[0]);
+        expect(screen.getByLabelText('Date range options')).toHaveValue(key);
+      });
     });
   });
 

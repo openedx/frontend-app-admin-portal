@@ -199,6 +199,7 @@ export const LEARNER_CREDIT_MANAGEMENT_EVENTS = {
   BUDGET_DETAILS_ASSIGNED_DATATABLE_CHIP_GENERIC_ERROR: `${BUDGET_DETAIL_ACTIVITY_TAB_PREFIX}.assigned_table_chip_generic_error.clicked`,
   // Request tab chips
   BUDGET_DETAILS_REQUEST_DATATABLE_CHIP_FAILED_CANCELLATION: `${BUDGET_DETAIL_ACTIVITY_TAB_PREFIX}.request_table_chip_failed_cancellation.clicked`,
+  BUDGET_DETAILS_REQUEST_DATATABLE_CHIP_FAILED_REDEMPTION: `${BUDGET_DETAIL_ACTIVITY_TAB_PREFIX}.request_table_chip_failed_redemption.clicked`,
   BUDGET_DETAILS_REQUEST_DATATABLE_CHIP_WAITING_FOR_LEARNER: `${BUDGET_DETAIL_ACTIVITY_TAB_PREFIX}.request_table_chip_waiting_for_learner.clicked`,
   BUDGET_DETAILS_REQUEST_DATATABLE_CHIP_GENERIC_ERROR: `${BUDGET_DETAIL_ACTIVITY_TAB_PREFIX}.request_table_chip_generic_error.clicked`,
   // Activity tab chips help center links
@@ -212,6 +213,7 @@ export const LEARNER_CREDIT_MANAGEMENT_EVENTS = {
   BUDGET_DETAILS_ASSIGNED_DATATABLE_CHIP_GENERIC_ERROR_HELP_CENTER: `${BUDGET_DETAIL_ACTIVITY_TAB_PREFIX}.assigned_table_chip_generic_error_help_center.clicked`,
   // Request tab chips help center links
   BUDGET_DETAILS_REQUEST_DATATABLE_CHIP_FAILED_CANCELLATION_HELP_CENTER: `${BUDGET_DETAIL_ACTIVITY_TAB_PREFIX}.request_table_chip_failed_cancellation_help_center.clicked`,
+  BUDGET_DETAILS_REQUEST_DATATABLE_CHIP_FAILED_REDEMPTION_HELP_CENTER: `${BUDGET_DETAIL_ACTIVITY_TAB_PREFIX}.request_table_chip_failed_redemption_help_center.clicked`,
   BUDGET_DETAILS_REQUEST_DATATABLE_CHIP_WAITING_FOR_LEARNER_HELP_CENTER: `${BUDGET_DETAIL_ACTIVITY_TAB_PREFIX}.request_table_chip_waiting_for_learner_help_center.clicked`,
   BUDGET_DETAILS_REQUEST_DATATABLE_CHIP_GENERIC_ERROR_HELP_CENTER: `${BUDGET_DETAIL_ACTIVITY_TAB_PREFIX}.request_table_chip_generic_error_help_center.clicked`,
   // Activity tab - Invite Members Modal
