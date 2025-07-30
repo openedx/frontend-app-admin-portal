@@ -48,6 +48,7 @@ const Engagements = ({ enterpriseId }) => {
     enterpriseCustomerUUID: enterpriseId,
     startDate,
     endDate,
+    courseType,
   });
 
   // Skills Data
@@ -58,6 +59,7 @@ const Engagements = ({ enterpriseId }) => {
     key: ANALYTICS_TABS.SKILLS,
     startDate,
     endDate,
+    courseType,
   });
 
   // Engagements Data
@@ -84,6 +86,7 @@ const Engagements = ({ enterpriseId }) => {
     granularity,
     calculation,
     groupUUID,
+    courseType,
   });
 
   const handleChartClick = (data) => {

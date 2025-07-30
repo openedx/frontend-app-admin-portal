@@ -1,7 +1,8 @@
 import { useMemo } from 'react';
 import { useQuery } from '@tanstack/react-query';
 
-import { advanceAnalyticsQueryKeys } from '../constants';
+import { advanceAnalyticsQueryKeys, COURSE_TYPES } from '../constants';
+
 import EnterpriseDataApiService from '../../../../data/services/EnterpriseDataApiService';
 
 export { default as useEnterpriseEnrollmentsData } from './useEnterpriseEnrollmentsData';
@@ -18,11 +19,16 @@ export const useEnterpriseAnalyticsData = ({
   groupUUID = undefined,
   currentPage = undefined,
   pageSize = undefined,
+  courseType = undefined,
   queryOptions = {},
 }) => {
-  const requestOptions = {
-    startDate, endDate, granularity, calculation, page: currentPage, pageSize, groupUUID,
-  };
+  const requestOptions = courseType === COURSE_TYPES.ALL_COURSE_TYPES
+    ? {
+      startDate, endDate, granularity, calculation, page: currentPage, pageSize, groupUUID,
+    }
+    : {
+      startDate, endDate, granularity, calculation, page: currentPage, pageSize, groupUUID, courseType,
+    };
   return useQuery({
     queryKey: advanceAnalyticsQueryKeys[key](enterpriseCustomerUUID, requestOptions),
     queryFn: () => EnterpriseDataApiService.fetchAdminAnalyticsData(
@@ -58,11 +64,14 @@ export const useEnterpriseAnalyticsAggregatesData = ({
   enterpriseCustomerUUID,
   startDate,
   endDate,
+  courseType = undefined,
   queryOptions = {},
 }) => {
-  const requestOptions = {
-    startDate, endDate,
-  };
+  const requestOptions = courseType === COURSE_TYPES.ALL_COURSE_TYPES
+    ? { startDate, endDate }
+    : {
+      startDate, endDate, courseType,
+    };
   return useQuery({
     queryKey: advanceAnalyticsQueryKeys.aggregates(enterpriseCustomerUUID, requestOptions),
     queryFn: () => EnterpriseDataApiService.fetchAdminAggregatesData(
