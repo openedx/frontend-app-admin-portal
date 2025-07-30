@@ -13,11 +13,11 @@ export const TRACK_LEARNER_PROGRESS_TARGETS = {
 // Organize learners - People Management flow
 export const ORGANIZE_LEARNER_TARGETS = {
   PEOPLE_MANAGEMENT_SIDEBAR: 'people-management-link',
-  ORG_GROUPS_ZERO_STATE: 'org-groups-zero-state',
-  CREATE_GROUP_BUTTON: 'create-group-button',
   ORG_MEMBER_TABLE: 'org-member-table',
-  ORG_MEMBER_HIGHLIGHT: 'org-member-highlight',
   MEMBER_VIEW_MORE: 'member-view-more',
+  ORG_GROUPS: 'org-groups',
+  ORG_GROUP_CARD: 'org-group-card',
+  CREATE_GROUP_BUTTON: 'create-group-button',
   MEMBER_DETAIL_PAGE: 'member-detail-page',
 };
 
@@ -59,7 +59,10 @@ export const ALLOCATE_LEARNING_BUDGETS_TARGETS = {
 export const RESET_TARGETS = [
   ADMINISTER_SUBSCRIPTIONS_TARGETS.SUBSCRIPTION_PLANS_DETAIL_PAGE,
   ALLOCATE_LEARNING_BUDGETS_TARGETS.ASSIGNMENT_BUDGET_DETAIL_CARD,
+  ORGANIZE_LEARNER_TARGETS.GROUP_DETAIL_CARD,
 ];
+
+export const CUSTOMIZE_REPORTS_SIDEBAR = 'customize-reports-sidebar';
 
 export const ADMIN_TOUR_EVENT_NAMES = {
   ENROLLMENT_INSIGHTS_ADVANCE_EVENT_NAME: 'edx.ui.enterprise.admin-portal.admin-onboarding-tours.enrollment-insights.advance',
@@ -81,3 +84,10 @@ export const ADMIN_TOUR_EVENT_NAMES = {
 
 export const ONBOARDING_WELCOME_MODAL_COOKIE_NAME = 'seen-onboarding-welcome-modal';
 export const ONBOARDING_TOUR_DISMISS_COOKIE_NAME = 'dismiss-admin-onboarding-tour';
+
+// Query Key factory for the people management module, intended to be used with `@tanstack/react-query`.
+// Inspired by https://tkdodo.eu/blog/effective-react-query-keys#use-query-key-factories.
+export const adminOnboardingQueryKeys = {
+  all: ['admin-onboarding'],
+  hydrateAdminOnboardingData: ({ enterpriseId }) => [...adminOnboardingQueryKeys.all, 'hydrateAdminOnboardingData', enterpriseId],
+};

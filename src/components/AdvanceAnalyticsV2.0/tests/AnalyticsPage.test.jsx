@@ -21,6 +21,9 @@ jest.mock('../tabs/Engagements', () => function Engagements() {
 jest.mock('../tabs/Progress', () => function Progress() {
   return <div>Progress Tab Content</div>;
 });
+jest.mock('../tabs/Outcomes', () => function Progress() {
+  return <div>Outcomes Tab Content</div>;
+});
 
 const mockUseEnterpriseAnalyticsAggregatesData = useEnterpriseAnalyticsAggregatesData;
 const mockUseAllFlexEnterpriseGroups = useAllFlexEnterpriseGroups;
@@ -120,6 +123,6 @@ describe('AnalyticsPage', () => {
 
     // Switch to "Outcomes" tab
     await user.click(screen.getByText('Outcomes'));
-    expect(screen.getByText('Outcomes')).toBeInTheDocument();
+    expect(screen.getByText('Outcomes Tab Content')).toBeInTheDocument();
   });
 });

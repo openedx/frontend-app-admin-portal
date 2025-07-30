@@ -9,6 +9,7 @@ import {
 import classNames from 'classnames';
 import { getSubscriptionStatus } from './data/utils';
 import { ACTIVE, SCHEDULED, SUBSCRIPTION_STATUS_BADGE_MAP } from './data/constants';
+import { ADMINISTER_SUBSCRIPTIONS_TARGETS } from '../ProductTours/AdminOnboardingTours/constants';
 
 const SubscriptionCard = ({
   subscription,
@@ -54,7 +55,7 @@ const SubscriptionCard = ({
 
     return actions.map(action => (
       <Button
-        id={action.buttonText === 'Manage learners' ? 'manage-learners-button' : action.buttonText}
+        id={action.buttonText === 'Manage learners' ? ADMINISTER_SUBSCRIPTIONS_TARGETS.MANAGE_LEARNERS_BUTTON : action.buttonText}
         key={action.to}
         variant={action.variant}
         as={Link}

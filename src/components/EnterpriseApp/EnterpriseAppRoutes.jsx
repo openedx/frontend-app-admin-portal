@@ -3,7 +3,6 @@ import { Routes, Route, useParams } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import { features } from '../../config';
 
-import AdminPage from '../../containers/AdminPage';
 import AdminPageV2 from '../../containers/AdminPageV2';
 import CodeManagementPage from '../CodeManagement';
 import RequestCodesPage from '../RequestCodesPage';
@@ -40,13 +39,6 @@ const EnterpriseAppRoutes = ({
   return (
     <Routes>
       {enterpriseAppPage === ROUTE_NAMES.learners && (
-        <Route
-          path="/:actionSlug?"
-          element={features.ANALYTICS_SUPPORTED ? <AdminPage /> : <FeatureNotSupportedPage />}
-        />
-      )}
-
-      {(enterpriseAppPage === ROUTE_NAMES.learners_v2 && features.ADMIN_V2) && (
         <Route
           path="/:actionSlug?"
           element={features.ANALYTICS_SUPPORTED ? <AdminPageV2 /> : <FeatureNotSupportedPage />}
@@ -149,7 +141,7 @@ const EnterpriseAppRoutes = ({
           element={<LearnerDetailPage />}
         />,
         <Route
-          path="/*"
+          path="/"
           key="people-management"
           element={<PeopleManagementPage />}
         />,

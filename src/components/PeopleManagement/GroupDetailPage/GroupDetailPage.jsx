@@ -20,14 +20,14 @@ import { makePlural } from '../../../utils';
 import EVENT_NAMES from '../../../eventTracking';
 import ValidatedEmailsContextProvider from '../data/ValidatedEmailsContextProvider';
 import GroupInviteErrorToast from '../GroupInviteErrorToast';
+import { ORGANIZE_LEARNER_TARGETS } from '../../ProductTours/AdminOnboardingTours/constants';
 
 const GroupDetailPage = ({ enterpriseUUID }) => {
   const intl = useIntl();
   const { enterpriseSlug, groupUuid } = useParams();
-  const { data: enterpriseGroup } = useEnterpriseGroupUuid(groupUuid);
+  const { data: enterpriseGroup, isLoading } = useEnterpriseGroupUuid(groupUuid);
   const [isDeleteModalOpen, openDeleteModal, closeDeleteModal] = useToggle(false);
   const [isEditModalOpen, openEditModal, closeEditModal] = useToggle(false);
-  const [isLoading, setIsLoading] = useState(true);
   const [groupName, setGroupName] = useState(enterpriseGroup?.name);
   const [isAddMembersModalOpen, openAddMembersModal, closeAddMembersModal] = useToggle(false);
   const [isGroupInviteErrorModalOpen, openGroupInviteErrorModal, closeGroupInviteErrorModal] = useToggle(false);
@@ -46,7 +46,6 @@ const GroupDetailPage = ({ enterpriseUUID }) => {
 
   useEffect(() => {
     if (enterpriseGroup !== undefined) {
-      setIsLoading(false);
       handleNameUpdate(enterpriseGroup.name);
     }
   }, [enterpriseGroup]);
@@ -85,6 +84,7 @@ const GroupDetailPage = ({ enterpriseUUID }) => {
             handleNameUpdate={handleNameUpdate}
           />
           <Breadcrumb
+            id={ORGANIZE_LEARNER_TARGETS.GROUP_DETAIL_BREADCRUMBS}
             aria-label="people management breadcrumb navigation"
             links={[
               {
@@ -99,7 +99,7 @@ const GroupDetailPage = ({ enterpriseUUID }) => {
             ]}
             activeLabel={groupName}
           />
-          <Card orientation="horizontal">
+          <Card id={ORGANIZE_LEARNER_TARGETS.GROUP_DETAIL_CARD} orientation="horizontal">
             <Card.Body>
               <Card.Header
                 title={(
@@ -138,6 +138,7 @@ const GroupDetailPage = ({ enterpriseUUID }) => {
                 onClick={openDeleteModal}
               />
               <Hyperlink
+                id={ORGANIZE_LEARNER_TARGETS.VIEW_GROUP_PROGRESS}
                 className="btn btn-primary"
                 target="_blank"
                 destination={`/${enterpriseSlug}/admin/${ROUTE_NAMES.learners}?group_uuid=${groupUuid}#fullreport`}

@@ -319,8 +319,8 @@ export async function fetchContentAssignments(assignmentConfigurationUUID, optio
  *
  * @returns Camelcased response from the BnR subsidy requests.
  */
-export async function fetchBnrRequest(enterpriseUUID, options = {}) {
-  const response = await EnterpriseAccessApiService.fetchBnrSubsidyRequests(enterpriseUUID, options);
+export async function fetchBnrRequest(enterpriseUUID, policyUuid, options = {}) {
+  const response = await EnterpriseAccessApiService.fetchBnrSubsidyRequests(enterpriseUUID, policyUuid, options);
   return camelCaseObject(response.data);
 }
 
@@ -411,7 +411,7 @@ export async function retrieveBudgetDetailActivityOverview({
     promisesToFulfill.push(fetchContentAssignments(subsidyAccessPolicy.assignmentConfiguration.uuid));
   }
   if (isBnrEnabledSubsidy) {
-    promisesToFulfill.push(fetchBnrRequest(enterpriseUUID, {
+    promisesToFulfill.push(fetchBnrRequest(enterpriseUUID, subsidyAccessPolicy.uuid, {
       state: APPROVED_REQUEST_TYPE,
     }));
   }
@@ -419,11 +419,13 @@ export async function retrieveBudgetDetailActivityOverview({
   const result = {
     spentTransactions: responses[0].value,
   };
+  let responseIndex = 1;
   if (isBudgetAssignable) {
-    result.contentAssignments = responses[1].value;
+    result.contentAssignments = responses[responseIndex].value;
+    responseIndex += 1;
   }
   if (isBnrEnabledSubsidy) {
-    result.approvedBnrRequests = isBudgetAssignable ? responses[2].value : responses[1].value;
+    result.approvedBnrRequests = responses[responseIndex].value;
   }
   return result;
 }
@@ -714,10 +716,12 @@ export const startAndEnrollBySortLogic = (prev, next) => {
  * @param courseRuns
  * @param subsidyExpirationDatetime
  * @param isLateRedemptionAllowed
+ * @param catalogContainsRestrictedRunsData
  * @returns {*}
  */
 export const getAssignableCourseRuns = ({
-  courseRuns, subsidyExpirationDatetime,
+  courseRuns,
+  subsidyExpirationDatetime,
   isLateRedemptionAllowed,
   catalogContainsRestrictedRunsData,
 }) => {

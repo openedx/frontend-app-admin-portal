@@ -5,13 +5,14 @@ import { Error } from '@openedx/paragon/icons';
 import { getConfig } from '@edx/frontend-platform/config';
 
 import BaseModalPopup from '../assignments-status-chips/BaseModalPopup';
+import { REQUEST_RECENT_ACTIONS } from '../data';
 
 const RequestFailureModal = ({
   errorReason, isOpen, onClose, target, recentAction,
 }) => {
   if (!isOpen) { return null; }
-  const isDeclinedReason = recentAction === 'Declined';
-  const isApprovedReason = recentAction === 'Approved';
+  const isDeclinedReason = recentAction === REQUEST_RECENT_ACTIONS.declined;
+  const isApprovedReason = recentAction === REQUEST_RECENT_ACTIONS.approved;
   const modalContent = (
     <BaseModalPopup
       positionRef={target}
@@ -30,14 +31,14 @@ const RequestFailureModal = ({
         <div className="micro">
           <p className="h6">Suggested resolution steps</p>
           <ul className="text-gray pl-3">
-            <li>Wait and try to {isDeclinedReason ? 'decline' : 'approve' } this enrollment request again later</li>
+            <li>Wait and try to {isDeclinedReason ? 'decline' : 'approve'} this enrollment request again later</li>
             <li>If the issue continues, contact customer support</li>
             <li>
               Get more troubleshooting help at{' '}
               <Hyperlink
                 destination={
-                    getConfig().ENTERPRISE_SUPPORT_URL
-                  }
+                  getConfig().ENTERPRISE_SUPPORT_LEARNER_CREDIT_URL
+                }
                 target="_blank"
               >
                 Help Center

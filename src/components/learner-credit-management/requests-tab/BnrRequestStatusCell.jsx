@@ -4,6 +4,7 @@ import { Chip } from '@openedx/paragon';
 import { QuestionAnswerOutline, Block, Error } from '@openedx/paragon/icons';
 import { capitalizeFirstLetter } from '../../../utils';
 import RequestFailureModal from './RequestFailureModal';
+import { REQUEST_ERROR_REASON } from '../data';
 
 const BnrRequestStatusCell = ({ row }) => {
   const { requestStatus, latestAction } = row.original;
@@ -11,6 +12,7 @@ const BnrRequestStatusCell = ({ row }) => {
   const recentAction = latestAction?.recentAction;
   const [target, setTarget] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
+
   const getStatusConfig = useMemo(() => {
     const statusConfigs = {
       requested: {
@@ -44,7 +46,8 @@ const BnrRequestStatusCell = ({ row }) => {
   };
 
   // Determine what to display in the chip
-  const displayText = errorReason || getStatusConfig.label;
+  const formattedErrorReason = REQUEST_ERROR_REASON[errorReason];
+  const displayText = formattedErrorReason || getStatusConfig.label;
   const displayIcon = errorReason ? Error : getStatusConfig.icon;
   const displayVariant = errorReason ? 'dark' : '';
   const isClickable = !!errorReason;
@@ -66,7 +69,7 @@ const BnrRequestStatusCell = ({ row }) => {
 
       {errorReason && (
         <RequestFailureModal
-          errorReason={errorReason}
+          errorReason={formattedErrorReason}
           isOpen={isModalOpen}
           onClose={closeModal}
           target={target}

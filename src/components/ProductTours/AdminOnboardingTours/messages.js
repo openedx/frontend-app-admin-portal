@@ -5,6 +5,8 @@ export const TRACK_LEARNER_PROGRESS_TITLE = 'Track Learner Progress';
 export const VIEW_ENROLLMENTS_INSIGHT_TITLE = 'View enrollment insights';
 export const ADMINISTER_SUBSCRIPTIONS_TITLE = 'Administer subscriptions';
 export const ALLOCATE_LEARNING_BUDGET_TITLE = 'Allocate learning budget';
+export const CUSTOMIZE_REPORTS_TITLE = 'Customize Reports';
+export const SET_UP_PREFERENCES_TITLE = 'Set Up Preferences';
 
 const messages = defineMessages({
   collapsibleTitle: {
@@ -110,26 +112,46 @@ const messages = defineMessages({
     defaultMessage: 'Create learner groups, view all learners in your organization, and access individual learner profiles—all in one place.',
     description: 'Description for the organize learners flow step one',
   },
+  organizeLearnersStepOneNoMembersBody: {
+    id: 'adminPortal.productTours.adminOnboarding.organizeLearners.noLearners.body.1',
+    defaultMessage: 'Once learners join the organization, you can create learner groups, view all learners in your organization, and access individual learner profiles—all in one place.',
+    description: 'Description for the organize learners flow step one if there are no enterprise members',
+  },
   organizeLearnersStepTwoBody: {
     id: 'adminPortal.productTours.adminOnboarding.organizeLearners.body.2',
-    defaultMessage: 'Organize learners by creating groups for tracking and assignments.',
+    defaultMessage: 'View all learners in your organization. Search by name and access profiles to track progress and view learning access.',
     description: 'Description for the organize learners flow step two',
   },
   organizeLearnersStepThreeBody: {
     id: 'adminPortal.productTours.adminOnboarding.organizeLearners.body.3',
-    defaultMessage: 'When you\'re ready, use "Create Group" to get started.',
+    defaultMessage: '"View more" allows you to see the learner\'s full profile with enrollments, access type, and group'
+    + ' memberships at a glance.',
     description: 'Description for the organize learners flow step three',
   },
   organizeLearnersStepFourBody: {
     id: 'adminPortal.productTours.adminOnboarding.organizeLearners.body.4',
-    defaultMessage: 'View all learners in your organization. Search by name and access profiles to track progress and view learning access.',
+    defaultMessage: 'Organize learners by creating groups for tracking and assignments.',
     description: 'Description for the organize learners flow step four',
   },
   organizeLearnersStepFiveBody: {
-    id: 'adminPortal.productTours.adminOnboarding.organizeLearners.body.6',
-    defaultMessage: '"View more" allows you to see the learner\'s full profile with enrollments, access type, and group'
-    + ' memberships at a glance.',
-    description: 'Description for the organize learners flow step six',
+    id: 'adminPortal.productTours.adminOnboarding.organizeLearners.body.5',
+    defaultMessage: 'When you\'re ready, use "Create Group" to get started.',
+    description: 'Description for the organize learners flow step five',
+  },
+  organizeLearnersWithGroupsStepFourBody: {
+    id: 'adminPortal.productTours.adminOnboarding.organizeLearners.withGroups.body.4',
+    defaultMessage: 'View, manage, and create your learner groups here.',
+    description: 'Description for the organize learners flow with groups step four',
+  },
+  organizeLearnersWithGroupsStepFiveBody: {
+    id: 'adminPortal.productTours.adminOnboarding.organizeLearners.withGroups.body.5',
+    defaultMessage: '“Create Group" allows you to add more learner groups.',
+    description: 'Description for the organize learners flow with groups step five',
+  },
+  organizeLearnersWithGroupsStepSixBody: {
+    id: 'adminPortal.productTours.adminOnboarding.organizeLearners.withGroups.body.6',
+    defaultMessage: '"View group" allows you to edit group details, add and remove learners, or track learner\'s progress.',
+    description: 'Description for the organize learners flow with groups step six',
   },
   viewEnrollmentInsights: {
     id: 'adminPortal.productTours.adminOnboarding.viewEnrollmentInsights.title.1',
@@ -190,7 +212,7 @@ const messages = defineMessages({
   },
   administerSubscriptionsStepThreeBody: {
     id: 'adminPortal.productTours.adminOnboarding.administerSubscriptions.body.3',
-    defaultMessage: '"Manage learners" allows you to view more details about a plan. Let\'s take you there now',
+    defaultMessage: '"Manage learners" allows you to view more details about a plan. Let\'s view your learners now.',
     description: 'Description for the administer subscriptions flow step three',
   },
   administerSubscriptionsStepFourBody: {
@@ -277,6 +299,28 @@ const messages = defineMessages({
     id: 'adminPortal.productTours.adminOnboarding.allocateAssignmentBudget.body.11',
     defaultMessage: 'To view more budgets, return to Learner Credit Management using the breadcrumbs oor left-hand navigation.',
     description: 'Description for the allocate learning budgets flow step eleven',
+  },
+  viewCustomizeReportsTitle: {
+    id: 'adminPortal.productTours.adminOnboarding.customizeReports.title',
+    defaultMessage: 'Customize reports',
+    description: 'Title for the customize reports step',
+  },
+  viewCustomizeReports: {
+    id: 'adminPortal.productTours.adminOnboarding.customizeReports.title.1',
+    defaultMessage: 'Automate reporting on learner engagement, progress, and catalog activity. Set up reports to be delivered '
+      + 'to your email daily, weekly, or monthly for easy tracking.',
+    description: 'Description for the customize reports step',
+  },
+  viewSetUpPreferencesTitle: {
+    id: 'adminPortal.productTours.adminOnboarding.setUpPreferences.title',
+    defaultMessage: 'Set up preferences',
+    description: 'Title for the set up preferences step',
+  },
+  viewSetUpPreferences: {
+    id: 'adminPortal.productTours.adminOnboarding.setUpPreferences.title.1',
+    defaultMessage: 'Customize and configure your portal to fit your organization\'s needs. Set up branding, '
+      + 'manage learner access, enable SSO, and integrate learning platforms—all in one place.',
+    description: 'Description for the set up preferences step',
   },
 });
 

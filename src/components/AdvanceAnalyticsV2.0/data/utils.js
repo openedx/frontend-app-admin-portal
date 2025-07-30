@@ -193,8 +193,10 @@ export const sumEntitiesByMetric = (records, groupByKey, fieldsToSum = []) => {
   records?.forEach(record => {
     const key = record[groupByKey];
     if (!result[key]) {
-      // Create a shallow copy of the record to preserve other fields
-      result[key] = { ...record };
+      // Shallow copy of record excluding groupByKey + enrollType
+      const { enrollType, ...rest } = record;
+      result[key] = { ...rest };
+      result[key][groupByKey] = key; // re-add the grouping key explicitly
       // Initialize all summable fields to 0
       fieldsToSum.forEach(field => {
         result[key][field] = 0;
@@ -207,4 +209,16 @@ export const sumEntitiesByMetric = (records, groupByKey, fieldsToSum = []) => {
   });
 
   return Object.values(result);
+};
+
+/** * Generates a date string which is 90 days before today in 'YYYY-MM-DD' format.
+ * This is used as the default start date for analytics filters.
+ * @return {string} The date string in 'YYYY-MM-DD' format.
+ */
+export const get90DayPriorDate = () => {
+  const today = new Date();
+  const newStartDate = new Date(today.setDate(today.getDate() - 90))
+    .toISOString()
+    .split('T')[0];
+  return newStartDate;
 };

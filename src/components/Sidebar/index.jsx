@@ -20,8 +20,9 @@ import { ROUTE_NAMES } from '../EnterpriseApp/data/constants';
 import { TOUR_TARGETS } from '../ProductTours/constants';
 import {
   ANALYTICS_INSIGHTS_TARGETS,
-  TRACK_LEARNER_PROGRESS_TARGETS,
   ADMINISTER_SUBSCRIPTIONS_TARGETS,
+  CUSTOMIZE_REPORTS_SIDEBAR,
+  TRACK_LEARNER_PROGRESS_TARGETS,
 } from '../ProductTours/AdminOnboardingTours/constants';
 import { useOnMount } from '../../hooks';
 import { EnterpriseSubsidiesContext } from '../EnterpriseSubsidiesContext';
@@ -175,6 +176,7 @@ const Sidebar = ({
       to: `${baseUrl}/admin/${ROUTE_NAMES.reporting}`,
       icon: <Icon src={Description} />,
       hidden: !features.REPORTING_CONFIGURATIONS || !enableReportingConfigScreen,
+      id: CUSTOMIZE_REPORTS_SIDEBAR,
     },
     {
       title: 'Settings',

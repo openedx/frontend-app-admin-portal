@@ -15,6 +15,7 @@ interface Insights {
 
 interface AdminOnboardingToursProps {
   adminUuid: string,
+  enterpriseId: string;
   enterpriseSlug: string;
   insights: Insights;
   insightsLoading: boolean;
@@ -48,36 +49,29 @@ interface RootState {
 }
 
 const AdminOnboardingTours: FC<AdminOnboardingToursProps> = ({
-  adminUuid,
-  enterpriseSlug,
-  insights,
-  insightsLoading,
-  isOpen,
-  onClose,
-  setTarget,
-  targetSelector,
   enablePortalLearnerCreditManagementScreen,
   enterpriseUUID,
   enterpriseFeatures,
+  adminUuid, enterpriseId, enterpriseSlug, insights, insightsLoading, isOpen, onClose, setTarget, targetSelector,
 }) => {
   const intl = useIntl();
   const aiButtonVisible = (insights?.learner_engagement && insights?.learner_progress) && !insightsLoading;
   const [currentStep, setCurrentStep] = useState(0);
   const adminOnboardingSteps = AdminOnboardingTour({
+    enablePortalLearnerCreditManagementScreen,
+    enterpriseUUID,
+    enterpriseFeatures,
     adminUuid,
     aiButtonVisible,
     currentStep,
     setCurrentStep,
+    enterpriseId,
     enterpriseSlug,
     onClose,
     targetSelector,
-    enablePortalLearnerCreditManagementScreen,
-    enterpriseUUID,
-    enterpriseFeatures,
   });
 
-  // Reset step for use case where we need to navigate to a different page but still
-  // on the same flow
+  // Reset step for use case where we need to navigate to a different page but still on the same flow
   useEffect(() => {
     if (RESET_TARGETS.includes(targetSelector)) {
       setCurrentStep(0);
@@ -151,6 +145,7 @@ AdminOnboardingTours.propTypes = {
 };
 const mapStateToProps = (state: RootState) => ({
   adminUuid: state.enterpriseCustomerAdmin.uuid,
+  enterpriseId: state.portalConfiguration.enterpriseId,
   enterpriseSlug: state.portalConfiguration.enterpriseSlug,
   insights: state.dashboardInsights.insights,
   insightsLoading: state.dashboardInsights.loading,

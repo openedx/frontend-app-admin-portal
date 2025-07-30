@@ -9,7 +9,7 @@ import { EnterpriseSubsidiesContext } from '../EnterpriseSubsidiesContext';
 jest.mock('../AdvanceAnalyticsV2/AnalyticsV2Page', () => function AnalyticsV2PageMock() {
   return <div>AnalyticsV2Page Mock Component</div>;
 });
-jest.mock('../../containers/AdminPage', () => function AdminPageMock() {
+jest.mock('../../containers/AdminPageV2', () => function AdminPageV2Mock() {
   return <div>AdminPage Mock Component</div>;
 });
 jest.mock('../AdvanceAnalyticsV2.0/AnalyticsPage', () => function RevisedAnalyticsV2PageMock() {

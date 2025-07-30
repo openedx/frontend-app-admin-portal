@@ -50,12 +50,14 @@ import {
   mockEnterpriseOfferId,
   mockEnterpriseOfferMetadata,
   mockPerLearnerSpendLimitSubsidyAccessPolicy,
+  mockPerLearnerSpendLimitSubsidyAccessPolicyWithBnrEnabled,
   mockSpendLimitNoGroupsSubsidyAccessPolicy,
   mockSubsidyAccessPolicyUUID,
   mockSubsidySummary,
 } from '../data/tests/constants';
 import { getButtonElement, queryClient } from '../../test/testUtils';
 import { useAlgoliaSearch } from '../../algolia-search';
+import useBnrSubsidyRequests from '../data/hooks/useBnrSubsidyRequests';
 
 jest.mock('@edx/frontend-platform/auth', () => ({
   ...jest.requireActual('@edx/frontend-platform/auth'),
@@ -103,8 +105,10 @@ jest.mock('../data', () => ({
 
 jest.mock('../../../data/services/EnterpriseAccessApiService');
 
+jest.mock('../data/hooks/useBnrSubsidyRequests');
+
 const mockStore = configureMockStore([thunk]);
-const getMockStore = store => mockStore(store);
+const getMockStore = (store) => mockStore(store);
 const enterpriseSlug = 'test-enterprise';
 const enterpriseUUID = '1234';
 const initialStoreState = {
@@ -215,6 +219,31 @@ const mockFailedRedemptionLearnerAction = {
   errorReason: 'enrollment_error',
 };
 
+const mockApprovedRequest = {
+  uuid: 'test-approved-request-uuid',
+  email: mockLearnerEmail,
+  courseTitle: mockContentTitle,
+  courseId: mockCourseKey,
+  amount: 199,
+  requestDate: 'Oct 27, 2023',
+  requestStatus: 'approved',
+  lastActionStatus: 'waiting_for_learner',
+  lastActionErrorReason: undefined,
+  latestAction: { status: 'approved', timestamp: '2023-10-27' },
+};
+
+const createMockApprovedRequest = () => ({
+  ...mockApprovedRequest,
+  uuid: uuidv4(),
+  email: faker.internet.email(),
+});
+
+const mockEmptyApprovedRequests = {
+  itemCount: 0,
+  pageCount: 0,
+  results: [],
+};
+
 const defaultEnterpriseSubsidiesContextValue = {
   isLoading: false,
 };
@@ -311,6 +340,12 @@ describe('<BudgetDetailPage />', () => {
       catalogUuidsToCatalogQueryUuids: {
         [mockSubsidyAccessPolicyUUID]: 'test-catalog-query-uuid',
       },
+    });
+
+    useBnrSubsidyRequests.mockReturnValue({
+      isLoading: false,
+      bnrRequests: mockEmptyApprovedRequests,
+      fetchBnrRequests: jest.fn(),
     });
 
     useBudgetDetailActivityOverview.mockReturnValue({
@@ -1212,6 +1247,879 @@ describe('<BudgetDetailPage />', () => {
     await user.click(viewCourseCTA);
     expect(sendEnterpriseTrackEvent).toHaveBeenCalledTimes(2);
   }, 30000);
+
+  it('cancels a approved learner credit request', async () => {
+    const user = userEvent.setup();
+    EnterpriseAccessApiService.cancelApprovedBnrSubsidyRequest.mockResolvedValueOnce({ status: 200 });
+    const NUMBER_OF_APPROVE_REQUEST_TO_GENERATE = 60;
+    useParams.mockReturnValue({
+      enterpriseSlug: 'test-enterprise-slug',
+      enterpriseAppPage: 'test-enterprise-page',
+      budgetId: mockSubsidyAccessPolicyUUID,
+      activeTabKey: 'activity',
+    });
+    useSubsidyAccessPolicy.mockReturnValue({
+      isInitialLoading: false,
+      data: mockPerLearnerSpendLimitSubsidyAccessPolicyWithBnrEnabled,
+    });
+    useEnterpriseGroupLearners.mockReturnValue({
+      data: {
+        count: 0,
+        currentPage: 1,
+        next: null,
+        numPages: 1,
+        results: [],
+      },
+    });
+    useBudgetDetailActivityOverview.mockReturnValue({
+      isLoading: false,
+      data: {
+        approvedBnrRequests: { count: NUMBER_OF_APPROVE_REQUEST_TO_GENERATE },
+        contentAssignments: undefined,
+        spentTransactions: { count: 0 },
+      },
+    });
+    const mockFetchLearnerCreditRequests = jest.fn();
+    // Max page size is 25 rows. Generate one assignment with a known learner email and the others with random emails.
+    const mockRequestsList = [
+      mockApprovedRequest, // Use the mockApprovedRequest with known values
+      ...Array.from({ length: PAGE_SIZE - 1 }, createMockApprovedRequest),
+    ];
+    useBnrSubsidyRequests.mockReturnValue({
+      isLoading: false,
+      bnrRequests: {
+        itemCount: NUMBER_OF_APPROVE_REQUEST_TO_GENERATE,
+        results: mockRequestsList,
+        pageCount: Math.floor(NUMBER_OF_APPROVE_REQUEST_TO_GENERATE / PAGE_SIZE),
+      },
+      fetchBnrRequests: mockFetchLearnerCreditRequests,
+    });
+    useBudgetRedemptions.mockReturnValue({
+      isLoading: false,
+      budgetRedemptions: mockEmptyBudgetRedemptions,
+      fetchBudgetRedemptions: jest.fn(),
+    });
+    useEnterpriseRemovedGroupMembers.mockReturnValue({
+      isRemovedMembersLoading: false,
+      removedGroupMembersCount: 0,
+    });
+    renderWithRouter(<BudgetDetailPageWrapper />);
+
+    await waitFor(() => {
+      expect(screen.getByText('Pending')).toBeInTheDocument();
+    });
+
+    // First, open the dropdown menu
+    const dropdownToggle = screen.getByTestId('dropdown-toggle-test-approved-request-uuid');
+    expect(dropdownToggle).toBeInTheDocument();
+    await user.click(dropdownToggle);
+
+    // Then find and click the cancel approval item
+    const cancelIconButton = screen.getByTestId('cancel-approval-test-approved-request-uuid');
+    expect(cancelIconButton).toBeInTheDocument();
+    await user.click(cancelIconButton);
+    expect(sendEnterpriseTrackEvent).toHaveBeenCalledTimes(1);
+
+    const modalDialog = screen.getByRole('dialog');
+    expect(modalDialog).toBeInTheDocument();
+    expect(screen.getByText('Cancel approval?')).toBeInTheDocument();
+
+    const cancelDialogButton = getButtonElement('Cancel approval');
+    await user.click(cancelDialogButton);
+
+    await waitFor(() => {
+      expect(EnterpriseAccessApiService.cancelApprovedBnrSubsidyRequest).toHaveBeenCalledWith({
+        enterpriseId: enterpriseUUID,
+        subsidyRequestUUID: 'test-approved-request-uuid',
+      });
+    });
+
+    expect(sendEnterpriseTrackEvent).toHaveBeenCalledTimes(2);
+  }, 30000);
+
+  it('reminds an approved learner credit request', async () => {
+    const user = userEvent.setup();
+    EnterpriseAccessApiService.remindApprovedBnrSubsidyRequest.mockResolvedValueOnce({ status: 200 });
+    const NUMBER_OF_APPROVE_REQUEST_TO_GENERATE = 60;
+    useParams.mockReturnValue({
+      enterpriseSlug: 'test-enterprise-slug',
+      enterpriseAppPage: 'test-enterprise-page',
+      budgetId: mockSubsidyAccessPolicyUUID,
+      activeTabKey: 'activity',
+    });
+    useSubsidyAccessPolicy.mockReturnValue({
+      isInitialLoading: false,
+      data: mockPerLearnerSpendLimitSubsidyAccessPolicyWithBnrEnabled,
+    });
+    useEnterpriseGroupLearners.mockReturnValue({
+      data: {
+        count: 0,
+        currentPage: 1,
+        next: null,
+        numPages: 1,
+        results: [],
+      },
+    });
+    useBudgetDetailActivityOverview.mockReturnValue({
+      isLoading: false,
+      data: {
+        approvedBnrRequests: { count: NUMBER_OF_APPROVE_REQUEST_TO_GENERATE },
+        contentAssignments: undefined,
+        spentTransactions: { count: 0 },
+      },
+    });
+    const mockFetchLearnerCreditRequests = jest.fn();
+    // Max page size is 25 rows. Generate one assignment with a known learner email and the others with random emails.
+    const mockRequestsList = [
+      mockApprovedRequest, // Use the mockApprovedRequest with known values
+      ...Array.from({ length: PAGE_SIZE - 1 }, createMockApprovedRequest),
+    ];
+    useBnrSubsidyRequests.mockReturnValue({
+      isLoading: false,
+      bnrRequests: {
+        itemCount: NUMBER_OF_APPROVE_REQUEST_TO_GENERATE,
+        results: mockRequestsList,
+        pageCount: Math.floor(NUMBER_OF_APPROVE_REQUEST_TO_GENERATE / PAGE_SIZE),
+      },
+      fetchBnrRequests: mockFetchLearnerCreditRequests,
+    });
+    useBudgetRedemptions.mockReturnValue({
+      isLoading: false,
+      budgetRedemptions: mockEmptyBudgetRedemptions,
+      fetchBudgetRedemptions: jest.fn(),
+    });
+    useEnterpriseRemovedGroupMembers.mockReturnValue({
+      isRemovedMembersLoading: false,
+      removedGroupMembersCount: 0,
+    });
+    renderWithRouter(<BudgetDetailPageWrapper />);
+
+    await waitFor(() => {
+      expect(screen.getByText('Pending')).toBeInTheDocument();
+    });
+
+    // First, open the dropdown menu
+    const dropdownToggle = screen.getByTestId('dropdown-toggle-test-approved-request-uuid');
+    expect(dropdownToggle).toBeInTheDocument();
+    await user.click(dropdownToggle);
+
+    // Then find and click the remind approval item
+    const remindIconButton = screen.getByTestId('remind-approval-test-approved-request-uuid');
+    expect(remindIconButton).toBeInTheDocument();
+    await user.click(remindIconButton);
+    expect(sendEnterpriseTrackEvent).toHaveBeenCalledTimes(1);
+
+    const modalDialog = screen.getByRole('dialog');
+    expect(modalDialog).toBeInTheDocument();
+    expect(screen.getByText('Remind learner?')).toBeInTheDocument();
+
+    const remindDialogButton = getButtonElement('Send reminder');
+    await user.click(remindDialogButton);
+
+    await waitFor(() => {
+      expect(EnterpriseAccessApiService.remindApprovedBnrSubsidyRequest).toHaveBeenCalledWith({
+        subsidyRequestUUID: 'test-approved-request-uuid',
+        enterpriseId: enterpriseUUID,
+      });
+    });
+
+    expect(sendEnterpriseTrackEvent).toHaveBeenCalledTimes(2);
+  }, 30000);
+
+  it('renders with approved requests table data and verifies first field data', async () => {
+    const NUMBER_OF_APPROVE_REQUEST_TO_GENERATE = 60;
+    useParams.mockReturnValue({
+      enterpriseSlug: 'test-enterprise-slug',
+      enterpriseAppPage: 'test-enterprise-page',
+      budgetId: mockSubsidyAccessPolicyUUID,
+      activeTabKey: 'activity',
+    });
+    useSubsidyAccessPolicy.mockReturnValue({
+      isInitialLoading: false,
+      data: mockPerLearnerSpendLimitSubsidyAccessPolicyWithBnrEnabled,
+    });
+    useEnterpriseGroupLearners.mockReturnValue({
+      data: {
+        count: 0,
+        currentPage: 1,
+        next: null,
+        numPages: 1,
+        results: [],
+      },
+    });
+    useBudgetDetailActivityOverview.mockReturnValue({
+      isLoading: false,
+      data: {
+        approvedBnrRequests: { count: NUMBER_OF_APPROVE_REQUEST_TO_GENERATE },
+        contentAssignments: undefined,
+        spentTransactions: { count: 0 },
+      },
+    });
+    const mockFetchLearnerCreditRequests = jest.fn();
+    // Max page size is 25 rows. Generate one assignment with a known learner email and the others with random emails.
+    const mockRequestsList = [
+      mockApprovedRequest, // Use the mockApprovedRequest with known values
+      ...Array.from({ length: PAGE_SIZE - 1 }, createMockApprovedRequest),
+    ];
+    useBnrSubsidyRequests.mockReturnValue({
+      isLoading: false,
+      bnrRequests: {
+        itemCount: NUMBER_OF_APPROVE_REQUEST_TO_GENERATE,
+        results: mockRequestsList,
+        pageCount: Math.floor(NUMBER_OF_APPROVE_REQUEST_TO_GENERATE / PAGE_SIZE),
+      },
+      fetchBnrRequests: mockFetchLearnerCreditRequests,
+    });
+    useBudgetRedemptions.mockReturnValue({
+      isLoading: false,
+      budgetRedemptions: mockEmptyBudgetRedemptions,
+      fetchBudgetRedemptions: jest.fn(),
+    });
+    useEnterpriseRemovedGroupMembers.mockReturnValue({
+      isRemovedMembersLoading: false,
+      removedGroupMembersCount: 0,
+    });
+    renderWithRouter(<BudgetDetailPageWrapper />);
+
+    await waitFor(() => {
+      expect(screen.getByText('Pending')).toBeInTheDocument();
+    });
+
+    const pendingSection = within(
+      screen.getByText('Pending').closest('section'),
+    );
+
+    expect(pendingSection.getByText('Request details')).toBeInTheDocument();
+    expect(pendingSection.getByText('Amount')).toBeInTheDocument();
+    expect(pendingSection.getByText('Status')).toBeInTheDocument();
+    expect(pendingSection.getByText('Recent action')).toBeInTheDocument();
+
+    const tableElement = pendingSection.getByRole('table');
+    const firstDataRow = within(tableElement).getAllByRole('row')[1]; // Skip header row
+    const firstRowCells = within(firstDataRow).getAllByRole('cell');
+
+    const requestDetailsCell = firstRowCells[0];
+    expect(within(requestDetailsCell).getByText(mockLearnerEmail)).toBeInTheDocument();
+    expect(within(requestDetailsCell).getByText(mockContentTitle)).toBeInTheDocument();
+
+    const amountCell = firstRowCells[1];
+    expect(within(amountCell).getByText('-$1.99')).toBeInTheDocument();
+
+    const statusCell = firstRowCells[2];
+    expect(
+      within(statusCell).getByRole('button', { name: 'Waiting for learner' }),
+    ).toBeInTheDocument();
+
+    const recentActionCell = firstRowCells[3];
+    expect(within(recentActionCell).getByText('Approved: Oct 27, 2023')).toBeInTheDocument();
+  }, 30000);
+
+  it.skip.each([
+    { sortByColumnHeader: 'Amount', expectedSortBy: [{ id: 'amount', desc: false }] },
+    { sortByColumnHeader: 'Recent action', expectedSortBy: [{ id: 'recentAction', desc: true }] },
+  ])('renders sortable approved requests table data', async ({ sortByColumnHeader, expectedSortBy }) => {
+    const user = userEvent.setup();
+    const NUMBER_OF_APPROVE_REQUEST_TO_GENERATE = 60;
+    useParams.mockReturnValue({
+      enterpriseSlug: 'test-enterprise-slug',
+      enterpriseAppPage: 'test-enterprise-page',
+      budgetId: mockSubsidyAccessPolicyUUID,
+      activeTabKey: 'activity',
+    });
+    useSubsidyAccessPolicy.mockReturnValue({
+      isInitialLoading: false,
+      data: mockPerLearnerSpendLimitSubsidyAccessPolicyWithBnrEnabled,
+    });
+    useEnterpriseGroupLearners.mockReturnValue({
+      data: {
+        count: 0,
+        currentPage: 1,
+        next: null,
+        numPages: 1,
+        results: [],
+      },
+    });
+    useBudgetDetailActivityOverview.mockReturnValue({
+      isLoading: false,
+      data: {
+        approvedBnrRequests: { count: NUMBER_OF_APPROVE_REQUEST_TO_GENERATE },
+        contentAssignments: undefined,
+        spentTransactions: { count: 0 },
+      },
+    });
+    const mockFetchLearnerCreditRequests = jest.fn();
+    const mockRequestsList = [
+      mockApprovedRequest,
+      ...Array.from({ length: PAGE_SIZE - 1 }, createMockApprovedRequest),
+    ];
+    useBnrSubsidyRequests.mockReturnValue({
+      isLoading: false,
+      bnrRequests: {
+        itemCount: NUMBER_OF_APPROVE_REQUEST_TO_GENERATE,
+        results: mockRequestsList,
+        pageCount: Math.floor(NUMBER_OF_APPROVE_REQUEST_TO_GENERATE / PAGE_SIZE),
+      },
+      fetchBnrRequests: mockFetchLearnerCreditRequests,
+    });
+    useBudgetRedemptions.mockReturnValue({
+      isLoading: false,
+      budgetRedemptions: mockEmptyBudgetRedemptions,
+      fetchBudgetRedemptions: jest.fn(),
+    });
+    useEnterpriseRemovedGroupMembers.mockReturnValue({
+      isRemovedMembersLoading: false,
+      removedGroupMembersCount: 0,
+    });
+    renderWithRouter(<BudgetDetailPageWrapper />);
+
+    const pendingSection = within(screen.getByText('Pending').closest('section'));
+    const expectedDefaultTableFetchDataArgs = {
+      pageIndex: DEFAULT_PAGE,
+      pageSize: PAGE_SIZE,
+      filters: [{ id: 'requestStatus', value: ['approved'] }], // default filter for approved requests
+      sortBy: [{ id: 'recentAction', desc: true }], // default table sort order
+    };
+    const expectedDefaultTableFetchDataArgsAfterSort = {
+      ...expectedDefaultTableFetchDataArgs,
+      sortBy: expectedSortBy,
+    };
+
+    expect(mockFetchLearnerCreditRequests).toHaveBeenCalledTimes(1); // called once on initial render
+    expect(mockFetchLearnerCreditRequests).toHaveBeenCalledWith(
+      expect.objectContaining(expectedDefaultTableFetchDataArgs),
+    );
+
+    const columnHeader = pendingSection.getByText(sortByColumnHeader);
+    await user.click(columnHeader);
+
+    expect(mockFetchLearnerCreditRequests).toHaveBeenCalledWith(
+      expect.objectContaining(expectedDefaultTableFetchDataArgsAfterSort),
+    );
+  });
+
+  it('renders approved requests table with empty filter choices when no status counts', async () => {
+    const NUMBER_OF_APPROVE_REQUEST_TO_GENERATE = 10;
+    useParams.mockReturnValue({
+      enterpriseSlug: 'test-enterprise-slug',
+      enterpriseAppPage: 'test-enterprise-page',
+      budgetId: mockSubsidyAccessPolicyUUID,
+      activeTabKey: 'activity',
+    });
+    useSubsidyAccessPolicy.mockReturnValue({
+      isInitialLoading: false,
+      data: mockPerLearnerSpendLimitSubsidyAccessPolicyWithBnrEnabled,
+    });
+    useEnterpriseGroupLearners.mockReturnValue({
+      data: {
+        count: 0,
+        currentPage: 1,
+        next: null,
+        numPages: 1,
+        results: [],
+      },
+    });
+    useBudgetDetailActivityOverview.mockReturnValue({
+      isLoading: false,
+      data: {
+        approvedBnrRequests: { count: NUMBER_OF_APPROVE_REQUEST_TO_GENERATE },
+        contentAssignments: undefined,
+        spentTransactions: { count: 0 },
+      },
+    });
+    const mockFetchLearnerCreditRequests = jest.fn();
+    const mockRequestsListWithoutStatus = [
+      {
+        ...mockApprovedRequest,
+        lastActionStatus: null, // No status to test empty filter choices
+      },
+      ...Array.from({ length: PAGE_SIZE - 1 }, () => ({
+        ...createMockApprovedRequest(),
+        lastActionStatus: null,
+      })),
+    ];
+    useBnrSubsidyRequests.mockReturnValue({
+      isLoading: false,
+      bnrRequests: {
+        itemCount: NUMBER_OF_APPROVE_REQUEST_TO_GENERATE,
+        results: mockRequestsListWithoutStatus,
+        pageCount: Math.floor(NUMBER_OF_APPROVE_REQUEST_TO_GENERATE / PAGE_SIZE),
+      },
+      fetchBnrRequests: mockFetchLearnerCreditRequests,
+    });
+    useBudgetRedemptions.mockReturnValue({
+      isLoading: false,
+      budgetRedemptions: mockEmptyBudgetRedemptions,
+      fetchBudgetRedemptions: jest.fn(),
+    });
+    useEnterpriseRemovedGroupMembers.mockReturnValue({
+      isRemovedMembersLoading: false,
+      removedGroupMembersCount: 0,
+    });
+    renderWithRouter(<BudgetDetailPageWrapper />);
+
+    await waitFor(() => {
+      expect(screen.getByText('Pending')).toBeInTheDocument();
+    });
+
+    const pendingSection = within(screen.getByText('Pending').closest('section'));
+    expect(pendingSection.getByRole('table')).toBeInTheDocument();
+  });
+
+  it('renders approved requests table with refresh action and tests click', async () => {
+    const user = userEvent.setup();
+    const NUMBER_OF_APPROVE_REQUEST_TO_GENERATE = 5;
+    useParams.mockReturnValue({
+      enterpriseSlug: 'test-enterprise-slug',
+      enterpriseAppPage: 'test-enterprise-page',
+      budgetId: mockSubsidyAccessPolicyUUID,
+      activeTabKey: 'activity',
+    });
+    useSubsidyAccessPolicy.mockReturnValue({
+      isInitialLoading: false,
+      data: mockPerLearnerSpendLimitSubsidyAccessPolicyWithBnrEnabled,
+    });
+    useEnterpriseGroupLearners.mockReturnValue({
+      data: {
+        count: 0,
+        currentPage: 1,
+        next: null,
+        numPages: 1,
+        results: [],
+      },
+    });
+    useBudgetDetailActivityOverview.mockReturnValue({
+      isLoading: false,
+      data: {
+        approvedBnrRequests: { count: NUMBER_OF_APPROVE_REQUEST_TO_GENERATE },
+        contentAssignments: undefined,
+        spentTransactions: { count: 0 },
+      },
+    });
+    const mockFetchLearnerCreditRequests = jest.fn();
+    useBnrSubsidyRequests.mockReturnValue({
+      isLoading: false,
+      bnrRequests: {
+        itemCount: NUMBER_OF_APPROVE_REQUEST_TO_GENERATE,
+        results: [mockApprovedRequest],
+        pageCount: 1,
+      },
+      fetchBnrRequests: mockFetchLearnerCreditRequests,
+    });
+    useBudgetRedemptions.mockReturnValue({
+      isLoading: false,
+      budgetRedemptions: mockEmptyBudgetRedemptions,
+      fetchBudgetRedemptions: jest.fn(),
+    });
+    useEnterpriseRemovedGroupMembers.mockReturnValue({
+      isRemovedMembersLoading: false,
+      removedGroupMembersCount: 0,
+    });
+
+    renderWithRouter(<BudgetDetailPageWrapper />);
+
+    await waitFor(() => {
+      expect(screen.getByText('Pending')).toBeInTheDocument();
+    });
+
+    expect(screen.getByText('Refresh')).toBeInTheDocument();
+
+    const refreshButton = screen.getByText('Refresh');
+    await user.click(refreshButton);
+    expect(mockFetchLearnerCreditRequests).toHaveBeenCalledTimes(2);
+  });
+
+  it('renders approved requests table with empty filter choices when no status counts (tests line 61)', async () => {
+    const NUMBER_OF_APPROVE_REQUEST_TO_GENERATE = 5;
+    useParams.mockReturnValue({
+      enterpriseSlug: 'test-enterprise-slug',
+      enterpriseAppPage: 'test-enterprise-page',
+      budgetId: mockSubsidyAccessPolicyUUID,
+      activeTabKey: 'activity',
+    });
+    useSubsidyAccessPolicy.mockReturnValue({
+      isInitialLoading: false,
+      data: mockPerLearnerSpendLimitSubsidyAccessPolicyWithBnrEnabled,
+    });
+    useEnterpriseGroupLearners.mockReturnValue({
+      data: {
+        count: 0,
+        currentPage: 1,
+        next: null,
+        numPages: 1,
+        results: [],
+      },
+    });
+    useBudgetDetailActivityOverview.mockReturnValue({
+      isLoading: false,
+      data: {
+        approvedBnrRequests: { count: NUMBER_OF_APPROVE_REQUEST_TO_GENERATE },
+        contentAssignments: undefined,
+        spentTransactions: { count: 0 },
+      },
+    });
+    const mockFetchLearnerCreditRequests = jest.fn();
+
+    useBnrSubsidyRequests.mockReturnValue({
+      isLoading: false,
+      bnrRequests: {
+        itemCount: NUMBER_OF_APPROVE_REQUEST_TO_GENERATE,
+        results: [mockApprovedRequest],
+        pageCount: 1,
+        requestStatusCounts: null,
+      },
+      fetchBnrRequests: mockFetchLearnerCreditRequests,
+    });
+    useBudgetRedemptions.mockReturnValue({
+      isLoading: false,
+      budgetRedemptions: mockEmptyBudgetRedemptions,
+      fetchBudgetRedemptions: jest.fn(),
+    });
+    useEnterpriseRemovedGroupMembers.mockReturnValue({
+      isRemovedMembersLoading: false,
+      removedGroupMembersCount: 0,
+    });
+
+    renderWithRouter(<BudgetDetailPageWrapper />);
+
+    await waitFor(() => {
+      expect(screen.getByText('Pending')).toBeInTheDocument();
+    });
+
+    const pendingSection = within(screen.getByText('Pending').closest('section'));
+    expect(pendingSection.getByRole('table')).toBeInTheDocument();
+  });
+
+  it('renders failed cancellation status chip and handles interactions (tests lines 12, 16, 23, 31)', async () => {
+    const user = userEvent.setup();
+    const NUMBER_OF_APPROVE_REQUEST_TO_GENERATE = 1;
+    useParams.mockReturnValue({
+      enterpriseSlug: 'test-enterprise-slug',
+      enterpriseAppPage: 'test-enterprise-page',
+      budgetId: mockSubsidyAccessPolicyUUID,
+      activeTabKey: 'activity',
+    });
+    useSubsidyAccessPolicy.mockReturnValue({
+      isInitialLoading: false,
+      data: mockPerLearnerSpendLimitSubsidyAccessPolicyWithBnrEnabled,
+    });
+    useEnterpriseGroupLearners.mockReturnValue({
+      data: {
+        count: 0,
+        currentPage: 1,
+        next: null,
+        numPages: 1,
+        results: [],
+      },
+    });
+    useBudgetDetailActivityOverview.mockReturnValue({
+      isLoading: false,
+      data: {
+        approvedBnrRequests: { count: NUMBER_OF_APPROVE_REQUEST_TO_GENERATE },
+        contentAssignments: undefined,
+        spentTransactions: { count: 0 },
+      },
+    });
+    const mockFetchLearnerCreditRequests = jest.fn();
+
+    const mockFailedCancellationRequest = {
+      ...mockApprovedRequest,
+      lastActionErrorReason: 'failed_cancellation',
+      latestAction: {
+        ...mockApprovedRequest.latestAction,
+        errorReason: 'failed_cancellation',
+      },
+    };
+    useBnrSubsidyRequests.mockReturnValue({
+      isLoading: false,
+      bnrRequests: {
+        itemCount: NUMBER_OF_APPROVE_REQUEST_TO_GENERATE,
+        results: [mockFailedCancellationRequest],
+        pageCount: 1,
+      },
+      fetchBnrRequests: mockFetchLearnerCreditRequests,
+    });
+    useBudgetRedemptions.mockReturnValue({
+      isLoading: false,
+      budgetRedemptions: mockEmptyBudgetRedemptions,
+      fetchBudgetRedemptions: jest.fn(),
+    });
+    useEnterpriseRemovedGroupMembers.mockReturnValue({
+      isRemovedMembersLoading: false,
+      removedGroupMembersCount: 0,
+    });
+
+    renderWithRouter(<BudgetDetailPageWrapper />);
+
+    await waitFor(() => {
+      expect(screen.getByText('Pending')).toBeInTheDocument();
+    });
+
+    const failedCancellationChip = screen.getByText('Failed: Cancellation');
+    expect(failedCancellationChip).toBeInTheDocument();
+
+    await user.click(failedCancellationChip);
+
+    await waitFor(() => {
+      expect(screen.getByText('This approved request was not canceled. Something went wrong behind the scenes.')).toBeInTheDocument();
+    });
+
+    expect(screen.getByText('Help Center')).toBeInTheDocument();
+  });
+
+  it('renders request status cells with different statuses', async () => {
+    const NUMBER_OF_APPROVE_REQUEST_TO_GENERATE = 3;
+    useParams.mockReturnValue({
+      enterpriseSlug: 'test-enterprise-slug',
+      enterpriseAppPage: 'test-enterprise-page',
+      budgetId: mockSubsidyAccessPolicyUUID,
+      activeTabKey: 'activity',
+    });
+    useSubsidyAccessPolicy.mockReturnValue({
+      isInitialLoading: false,
+      data: mockPerLearnerSpendLimitSubsidyAccessPolicyWithBnrEnabled,
+    });
+    useEnterpriseGroupLearners.mockReturnValue({
+      data: {
+        count: 0,
+        currentPage: 1,
+        next: null,
+        numPages: 1,
+        results: [],
+      },
+    });
+    useBudgetDetailActivityOverview.mockReturnValue({
+      isLoading: false,
+      data: {
+        approvedBnrRequests: { count: NUMBER_OF_APPROVE_REQUEST_TO_GENERATE },
+        contentAssignments: undefined,
+        spentTransactions: { count: 0 },
+      },
+    });
+    const mockFetchLearnerCreditRequests = jest.fn();
+    const mockRequestsWithDifferentStatuses = [
+      {
+        ...mockApprovedRequest,
+        lastActionStatus: 'reminded',
+      },
+      {
+        ...createMockApprovedRequest(),
+        lastActionStatus: 'refunded',
+        lastActionErrorReason: 'failed_cancellation',
+      },
+      {
+        ...createMockApprovedRequest(),
+        lastActionStatus: 'completed',
+      },
+    ];
+    useBnrSubsidyRequests.mockReturnValue({
+      isLoading: false,
+      bnrRequests: {
+        itemCount: NUMBER_OF_APPROVE_REQUEST_TO_GENERATE,
+        results: mockRequestsWithDifferentStatuses,
+        pageCount: 1,
+      },
+      fetchBnrRequests: mockFetchLearnerCreditRequests,
+    });
+    useBudgetRedemptions.mockReturnValue({
+      isLoading: false,
+      budgetRedemptions: mockEmptyBudgetRedemptions,
+      fetchBudgetRedemptions: jest.fn(),
+    });
+    useEnterpriseRemovedGroupMembers.mockReturnValue({
+      isRemovedMembersLoading: false,
+      removedGroupMembersCount: 0,
+    });
+    renderWithRouter(<BudgetDetailPageWrapper />);
+
+    await waitFor(() => {
+      expect(screen.getByText('Pending')).toBeInTheDocument();
+    });
+
+    // Verify basic table structure and status rendering
+    const pendingSection = within(screen.getByText('Pending').closest('section'));
+    expect(pendingSection.getByRole('table')).toBeInTheDocument();
+    expect(screen.getAllByText('Waiting for learner')).toHaveLength(2);
+    expect(screen.getAllByText('Failed: Cancellation')).toHaveLength(1);
+  });
+
+  it('handles approved requests table pagination correctly', async () => {
+    const NUMBER_OF_APPROVE_REQUEST_TO_GENERATE = 50;
+    useParams.mockReturnValue({
+      enterpriseSlug: 'test-enterprise-slug',
+      enterpriseAppPage: 'test-enterprise-page',
+      budgetId: mockSubsidyAccessPolicyUUID,
+      activeTabKey: 'activity',
+    });
+    useSubsidyAccessPolicy.mockReturnValue({
+      isInitialLoading: false,
+      data: mockPerLearnerSpendLimitSubsidyAccessPolicyWithBnrEnabled,
+    });
+    useEnterpriseGroupLearners.mockReturnValue({
+      data: {
+        count: 0,
+        currentPage: 1,
+        next: null,
+        numPages: 1,
+        results: [],
+      },
+    });
+    useBudgetDetailActivityOverview.mockReturnValue({
+      isLoading: false,
+      data: {
+        approvedBnrRequests: { count: NUMBER_OF_APPROVE_REQUEST_TO_GENERATE },
+        contentAssignments: undefined,
+        spentTransactions: { count: 0 },
+      },
+    });
+    const mockFetchLearnerCreditRequests = jest.fn();
+    const mockRequestsList = Array.from({ length: PAGE_SIZE }, () => createMockApprovedRequest());
+    useBnrSubsidyRequests.mockReturnValue({
+      isLoading: false,
+      bnrRequests: {
+        itemCount: NUMBER_OF_APPROVE_REQUEST_TO_GENERATE,
+        results: mockRequestsList,
+        pageCount: 2,
+      },
+      fetchBnrRequests: mockFetchLearnerCreditRequests,
+    });
+    useBudgetRedemptions.mockReturnValue({
+      isLoading: false,
+      budgetRedemptions: mockEmptyBudgetRedemptions,
+      fetchBudgetRedemptions: jest.fn(),
+    });
+    useEnterpriseRemovedGroupMembers.mockReturnValue({
+      isRemovedMembersLoading: false,
+      removedGroupMembersCount: 0,
+    });
+
+    renderWithRouter(<BudgetDetailPageWrapper />);
+
+    await waitFor(() => {
+      expect(screen.getByText('Pending')).toBeInTheDocument();
+    });
+
+    // Verify table with pagination
+    const pendingSection = within(screen.getByText('Pending').closest('section'));
+    expect(pendingSection.getByRole('table')).toBeInTheDocument();
+    expect(pendingSection.getAllByRole('row')).toHaveLength(PAGE_SIZE + 1); // +1 for header row
+  });
+
+  it('handles approved requests table loading state', async () => {
+    useParams.mockReturnValue({
+      enterpriseSlug: 'test-enterprise-slug',
+      enterpriseAppPage: 'test-enterprise-page',
+      budgetId: mockSubsidyAccessPolicyUUID,
+      activeTabKey: 'activity',
+    });
+    useSubsidyAccessPolicy.mockReturnValue({
+      isInitialLoading: false,
+      data: mockPerLearnerSpendLimitSubsidyAccessPolicyWithBnrEnabled,
+    });
+    useEnterpriseGroupLearners.mockReturnValue({
+      data: {
+        count: 0,
+        currentPage: 1,
+        next: null,
+        numPages: 1,
+        results: [],
+      },
+    });
+    useBudgetDetailActivityOverview.mockReturnValue({
+      isLoading: false,
+      data: {
+        approvedBnrRequests: { count: 1 },
+        contentAssignments: undefined,
+        spentTransactions: { count: 0 },
+      },
+    });
+    const mockFetchLearnerCreditRequests = jest.fn();
+    useBnrSubsidyRequests.mockReturnValue({
+      isLoading: true, // Test loading state
+      bnrRequests: {
+        itemCount: 0,
+        results: [],
+        pageCount: 0,
+      },
+      fetchBnrRequests: mockFetchLearnerCreditRequests,
+    });
+    useBudgetRedemptions.mockReturnValue({
+      isLoading: false,
+      budgetRedemptions: mockEmptyBudgetRedemptions,
+      fetchBudgetRedemptions: jest.fn(),
+    });
+    useEnterpriseRemovedGroupMembers.mockReturnValue({
+      isRemovedMembersLoading: false,
+      removedGroupMembersCount: 0,
+    });
+    renderWithRouter(<BudgetDetailPageWrapper />);
+
+    await waitFor(() => {
+      expect(screen.getByText('Pending')).toBeInTheDocument();
+    });
+
+    // Verify loading state is handled (table should still render with loading indicator)
+    const pendingSection = within(screen.getByText('Pending').closest('section'));
+    expect(pendingSection.getByRole('table')).toBeInTheDocument();
+  });
+
+  it('renders budget detail activity tab contents with different states', async () => {
+    // Test when there are no approved requests but there are assignments
+    useParams.mockReturnValue({
+      enterpriseSlug: 'test-enterprise-slug',
+      enterpriseAppPage: 'test-enterprise-page',
+      budgetId: mockSubsidyAccessPolicyUUID,
+      activeTabKey: 'activity',
+    });
+    useSubsidyAccessPolicy.mockReturnValue({
+      isInitialLoading: false,
+      data: mockAssignableSubsidyAccessPolicy, // Use assignable policy instead of BNR
+    });
+    useEnterpriseGroupLearners.mockReturnValue({
+      data: {
+        count: 0,
+        currentPage: 1,
+        next: null,
+        numPages: 1,
+        results: [],
+      },
+    });
+    useBudgetDetailActivityOverview.mockReturnValue({
+      isLoading: false,
+      data: {
+        contentAssignments: { count: 5 },
+        spentTransactions: { count: 2 },
+      },
+    });
+    useBudgetContentAssignments.mockReturnValue({
+      isLoading: false,
+      contentAssignments: {
+        count: 5,
+        results: [mockLearnerContentAssignment],
+        learnerStateCounts: [{ learnerState: 'waiting', count: 1 }],
+        numPages: 1,
+        currentPage: 1,
+      },
+      fetchContentAssignments: jest.fn(),
+    });
+    useBudgetRedemptions.mockReturnValue({
+      isLoading: false,
+      budgetRedemptions: mockEmptyBudgetRedemptions,
+      fetchBudgetRedemptions: jest.fn(),
+    });
+    useEnterpriseRemovedGroupMembers.mockReturnValue({
+      isRemovedMembersLoading: false,
+      removedGroupMembersCount: 0,
+    });
+    renderWithRouter(<BudgetDetailPageWrapper />);
+
+    await waitFor(() => {
+      // Should render assigned section instead of pending for assignable budget
+      expect(screen.getByText('Assigned')).toBeInTheDocument();
+    });
+
+    // Verify that no pending section is shown for non-BNR budget
+    expect(screen.queryByText('Pending')).not.toBeInTheDocument();
+  });
 
   it.each([
     { sortByColumnHeader: 'Amount', expectedSortBy: [{ id: 'amount', desc: false }] },

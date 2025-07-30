@@ -175,6 +175,16 @@ declare global {
     groupUuid: string,
   };
 
+  type EnterpriseCustomerMember = {
+    enterprise_customer_user: {
+      user_id: string
+      email: string
+      joined_org: string
+      name: string
+    }
+    enrollments: number
+  };
+
   export type LearnerProfileType = {
     subscriptions: LearnerProfileSubscriptionType[],
     group_memberships: LearnerProfileGroupsType[],

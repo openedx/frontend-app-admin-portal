@@ -2,28 +2,33 @@ import { sendEnterpriseTrackEvent } from '@edx/frontend-enterprise-utils';
 import { logError } from '@edx/frontend-platform/logging';
 
 import {
+  ADMINISTER_SUBSCRIPTIONS_TARGETS,
   ANALYTICS_INSIGHTS_TARGETS,
+  CUSTOMIZE_REPORTS_SIDEBAR,
   ORGANIZE_LEARNER_TARGETS,
   TRACK_LEARNER_PROGRESS_TARGETS,
-  ADMINISTER_SUBSCRIPTIONS_TARGETS,
   ALLOCATE_LEARNING_BUDGETS_TARGETS,
 } from '../constants';
 
 import { TourStep } from '../../types';
 import LmsApiService from '../../../../data/services/LmsApiService';
-import LearnerProgressFlow from './LearnerProgressFlow';
-import AnalyticsFlow from './AnalyticsFlow';
-import OrganizeLearnersFlow from './OrganizeLearnersFlow';
 import AdministerSubscriptionsFlow from './AdministerSubscriptionsFlow';
 import AllocateLearningBudgetsFlow from './AllocateLearningBudgetsFlow';
+import AnalyticsFlow from './AnalyticsFlow';
+import CustomizeReportsFlow from './CustomizeReportsFlow';
+import LearnerProgressFlow from './LearnerProgressFlow';
+import OrganizeLearnersFlow from './OrganizeLearnersFlow';
+import SetUpPreferencesFlow from '../SetUpPreferencesFlow';
+import { TOUR_TARGETS } from '../../constants';
 
 interface AdminOnboardingTourProps {
   adminUuid: string;
   aiButtonVisible: boolean;
   currentStep: number;
-  setCurrentStep: (currentStep: number) => void;
+  enterpriseId: string;
   enterpriseSlug: string;
   onClose: () => void;
+  setCurrentStep: (currentStep: number) => void;
   targetSelector?: string;
   enablePortalLearnerCreditManagementScreen: boolean;
   enterpriseUUID: string;
@@ -34,16 +39,17 @@ interface AdminOnboardingTourProps {
 
 const AdminOnboardingTour = (
   {
-    adminUuid,
-    aiButtonVisible,
-    currentStep,
-    setCurrentStep,
-    enterpriseSlug,
-    onClose,
-    targetSelector,
     enablePortalLearnerCreditManagementScreen,
     enterpriseUUID,
     enterpriseFeatures,
+    adminUuid,
+    aiButtonVisible,
+    currentStep,
+    enterpriseSlug,
+    onClose,
+    setCurrentStep,
+    targetSelector,
+    enterpriseId,
   }: AdminOnboardingTourProps,
 ): Array<TourStep> => {
   function handleAdvanceTour(advanceEventName: string) {
@@ -79,8 +85,10 @@ const AdminOnboardingTour = (
       sendEnterpriseTrackEvent(enterpriseSlug, advanceEventName, { 'completed-step': newIndex });
     }
 
+    sendEnterpriseTrackEvent(enterpriseSlug, advanceEventName, { 'completed-step': newIndex });
     setCurrentStep(newIndex);
   }
+
   async function handleEndTour(endEventName: string, flowUuid: string) {
     try {
       onClose();
@@ -90,10 +98,13 @@ const AdminOnboardingTour = (
       logError(error);
     }
   }
+
+  const administerSubscriptionsFlow = AdministerSubscriptionsFlow({
+    currentStep, enterpriseSlug, handleEndTour, setCurrentStep, targetSelector,
+  });
   const analyticsFlow = AnalyticsFlow({ handleAdvanceTour, handleEndTour });
+  const customizeReportsFlow = CustomizeReportsFlow({ handleEndTour });
   const learnerProgressFlow = LearnerProgressFlow({ aiButtonVisible, handleAdvanceTour, handleEndTour });
-  const organizeLearnersFlow = OrganizeLearnersFlow({ handleAdvanceTour, handleEndTour });
-  const administerSubscriptionsFlow = AdministerSubscriptionsFlow({ handleAdvanceTour, handleEndTour });
   const allocateLearningBudgetsFlow = AllocateLearningBudgetsFlow({
     handleAdvanceTour,
     handleEndTour,
@@ -101,6 +112,8 @@ const AdminOnboardingTour = (
     enterpriseUUID,
     enterpriseFeatures,
   });
+  const organizeLearnersFlow = OrganizeLearnersFlow({ enterpriseId, handleAdvanceTour, handleEndTour });
+  const setUpPreferencesFlow = SetUpPreferencesFlow({ handleEndTour });
 
   // Map target selectors to their respective flows
   const flowMapping = {
@@ -121,6 +134,10 @@ const AdminOnboardingTour = (
       Object.values(ALLOCATE_LEARNING_BUDGETS_TARGETS)
         .map(target => [target, allocateLearningBudgetsFlow]),
     ),
+    // Customize reports flow target
+    [CUSTOMIZE_REPORTS_SIDEBAR]: customizeReportsFlow,
+    // Set up preferences flow target
+    [TOUR_TARGETS.SETTINGS_SIDEBAR]: setUpPreferencesFlow,
   };
 
   // we default to the first flow (learner progress)

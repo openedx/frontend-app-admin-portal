@@ -4,8 +4,6 @@ import { IntlProvider } from '@edx/frontend-platform/i18n';
 import AnalyticsFilters from '../AnalyticsFilters';
 import { GRANULARITY, CALCULATION, DATE_RANGE } from '../data/constants';
 
-const mockSetStartDate = jest.fn();
-const mockSetEndDate = jest.fn();
 const mockSetGroupUUID = jest.fn();
 const mockSetGranularity = jest.fn();
 const mockSetCalculation = jest.fn();
@@ -20,10 +18,6 @@ const mockGroups = [
 ];
 
 const defaultProps = {
-  startDate: '2021-05-01',
-  setStartDate: mockSetStartDate,
-  endDate: '2021-06-01',
-  setEndDate: mockSetEndDate,
   groupUUID: 'group-1',
   setGroupUUID: mockSetGroupUUID,
   currentDate: '2021-06-30',
@@ -131,7 +125,7 @@ describe('AnalyticsFilters Component', () => {
       target: { value: '2021-07-01' },
     });
 
-    expect(mockSetStartDate).toHaveBeenCalledWith('2021-07-01');
+    expect(screen.getByLabelText('Date range options')).toHaveValue(DATE_RANGE.CUSTOM);
   });
 
   test('changing end date calls handler', () => {
@@ -148,7 +142,7 @@ describe('AnalyticsFilters Component', () => {
       target: { value: '2021-07-31' },
     });
 
-    expect(mockSetEndDate).toHaveBeenCalledWith('2021-07-31');
+    expect(screen.getByLabelText('Date range options')).toHaveValue(DATE_RANGE.CUSTOM);
   });
 
   test('changing group calls handler', () => {
@@ -208,46 +202,34 @@ describe('AnalyticsFilters Component', () => {
         <AnalyticsFilters
           {...defaultProps}
           activeTab="engagement"
+          startDate=""
+          endDate=""
+          currentDate={new Date().toISOString().split('T')[0]}
         />
       </IntlProvider>,
     );
+    const defaultDate = new Date();
+    expect(screen.getByLabelText('Start date')).toHaveValue(new Date(defaultDate.setDate(defaultDate.getDate() - 90)).toISOString().split('T')[0]);
+    expect(screen.getByLabelText('End date')).toHaveValue(new Date().toISOString().split('T')[0]);
+    expect(screen.getByLabelText('Date range options')).toHaveValue(DATE_RANGE.LAST_90_DAYS);
 
-    const past7Date = new Date();
-    fireEvent.change(screen.getByLabelText('Date range options'), {
-      target: { value: DATE_RANGE.LAST_7_DAYS },
+    const dateRangeMap = new Map([
+      [DATE_RANGE.LAST_7_DAYS, 7],
+      [DATE_RANGE.LAST_30_DAYS, 30],
+      [DATE_RANGE.LAST_90_DAYS, 90],
+      [DATE_RANGE.YEAR_TO_DATE, 365],
+      [DATE_RANGE.CUSTOM, 0],
+    ]);
+
+    dateRangeMap.forEach((value, key) => {
+      fireEvent.change(screen.getByLabelText('Date range options'), {
+        target: { value: key },
+      });
+      const newStartDate = new Date();
+      expect(screen.getByLabelText('Start date')).toHaveValue(new Date(newStartDate.setDate(newStartDate.getDate() - value)).toISOString().split('T')[0]);
+      expect(screen.getByLabelText('End date')).toHaveValue(new Date().toISOString().split('T')[0]);
+      expect(screen.getByLabelText('Date range options')).toHaveValue(key);
     });
-    expect(mockSetStartDate).toHaveBeenCalledWith(new Date(past7Date.setDate(past7Date.getDate() - 7)).toISOString().split('T')[0]);
-    expect(mockSetEndDate).toHaveBeenCalledWith(new Date().toISOString().split('T')[0]);
-    mockSetStartDate.mockClear();
-    mockSetEndDate.mockClear();
-    const past30Date = new Date();
-    fireEvent.change(screen.getByLabelText('Date range options'), {
-      target: { value: DATE_RANGE.LAST_30_DAYS },
-    });
-    expect(mockSetStartDate).toHaveBeenCalledWith(new Date(past30Date.setDate(past30Date.getDate() - 30)).toISOString().split('T')[0]);
-    expect(mockSetEndDate).toHaveBeenCalledWith(new Date().toISOString().split('T')[0]);
-    mockSetStartDate.mockClear();
-    mockSetEndDate.mockClear();
-    const past90Date = new Date();
-    fireEvent.change(screen.getByLabelText('Date range options'), {
-      target: { value: DATE_RANGE.LAST_90_DAYS },
-    });
-    expect(mockSetStartDate).toHaveBeenCalledWith(new Date(past90Date.setDate(past90Date.getDate() - 90)).toISOString().split('T')[0]);
-    expect(mockSetEndDate).toHaveBeenCalledWith(new Date().toISOString().split('T')[0]);
-    mockSetStartDate.mockClear();
-    mockSetEndDate.mockClear();
-    const past365Date = new Date();
-    fireEvent.change(screen.getByLabelText('Date range options'), {
-      target: { value: DATE_RANGE.YEAR_TO_DATE },
-    });
-    expect(mockSetStartDate).toHaveBeenCalledWith(new Date(past365Date.setDate(past365Date.getDate() - 365)).toISOString().split('T')[0]);
-    expect(mockSetEndDate).toHaveBeenCalledWith(new Date().toISOString().split('T')[0]);
-    mockSetStartDate.mockClear();
-    mockSetEndDate.mockClear();
-    fireEvent.change(screen.getByLabelText('Date range options'), {
-      target: { value: '' },
-    });
-    expect(mockSetEndDate).toHaveBeenCalledWith(new Date().toISOString().split('T')[0]);
   });
 
   test('renders granularity and calculation options correctly', () => {
@@ -271,5 +253,23 @@ describe('AnalyticsFilters Component', () => {
     expect(calculation).toHaveTextContent('Running Total');
     expect(calculation).toHaveTextContent('Moving Average (3 Period)');
     expect(calculation).toHaveTextContent('Moving Average (7 Period)');
+  });
+
+  test('renders outcomes-specific filters', async () => {
+    render(
+      <IntlProvider locale="en">
+        <AnalyticsFilters
+          {...defaultProps}
+          activeTab="outcomes"
+        />
+      </IntlProvider>,
+    );
+
+    expect(screen.queryByLabelText('Calculation / Trends')).not.toBeInTheDocument();
+    expect(screen.queryByLabelText('Date granularity')).not.toBeInTheDocument();
+    expect(screen.queryByLabelText('Filter by budget')).not.toBeInTheDocument();
+    expect(screen.queryByLabelText('Filter by course type')).not.toBeInTheDocument();
+
+    expect(screen.getByLabelText('Filter by start date')).toBeDisabled();
   });
 });

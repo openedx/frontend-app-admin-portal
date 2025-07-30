@@ -144,3 +144,61 @@ export const LEARNER_CREDIT_ROUTE = '/:enterpriseSlug/admin/:enterpriseAppPage/:
 export const ENTERPRISE_RESTRICTION_TYPE = 'custom-b2b-enterprise';
 
 export const APPROVED_REQUEST_TYPE = 'approved';
+
+// BNR (Browse & Request) subsidy request constants
+export const BNR_REQUEST_PAGE_SIZE = 10;
+export const REQUEST_TAB_VISIBLE_STATES = [
+  'requested',
+  'declined',
+  'cancelled',
+  'errored',
+];
+
+export const REQUEST_STATUS_FILTER_CHOICES = [
+  {
+    name: 'Requested',
+    value: 'requested',
+  },
+  {
+    name: 'Declined',
+    value: 'declined',
+  },
+  {
+    name: 'Cancelled',
+    value: 'cancelled',
+  },
+];
+
+export const REQUEST_RECENT_ACTIONS = {
+  requested: 'requested',
+  pending: 'pending',
+  approved: 'approved',
+  declined: 'declined',
+  error: 'errored',
+  accepted: 'accepted',
+  cancelled: 'cancelled',
+  expired: 'expired',
+  reversed: 'reversed',
+  reminded: 'reminded',
+};
+
+export const REQUEST_STATUSES = {
+  requested: 'Requested',
+  pending: 'Pending',
+  approved: 'Waiting For Learner',
+  declined: 'Declined',
+  error: 'Errored',
+  accepted: 'Redeemed By Learner',
+  cancelled: 'Cancelled',
+  expired: 'Expired',
+  reversed: 'Refunded',
+  reminded: 'Waiting For Learner',
+};
+
+export const REQUEST_ERROR_REASON = {
+  failed_approval: 'Failed: Approval',
+  failed_decline: 'Failed: Declined',
+  failed_cancellation: 'Failed: Cancellation',
+  failed_redemption: 'Failed: Redemption',
+  failed_reversal: 'Failed: Reversal',
+};

@@ -82,7 +82,8 @@ const RequestsTable = ({
     <DataTable
       isFilterable
       manualFilters
-      isSortable
+      // Temporarily disabling sorting for release
+      isSortable={false}
       manualSortBy
       isPaginated
       manualPagination

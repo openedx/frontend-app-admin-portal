@@ -119,4 +119,5 @@ export const DATE_RANGE = {
   LAST_30_DAYS: 'last_30_days',
   LAST_90_DAYS: 'last_90_days',
   YEAR_TO_DATE: 'year_to_date',
+  CUSTOM: 'custom',
 };

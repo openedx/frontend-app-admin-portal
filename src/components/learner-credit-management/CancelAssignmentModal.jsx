@@ -20,9 +20,15 @@ const CancelAssignmentModal = ({
   } = useContext(BudgetDetailPageContext);
   const intl = useIntl();
   const handleOnClick = async () => {
-    await cancelContentAssignments();
-    trackEvent();
-    displayToastForAssignmentCancellation(uuidCount);
+    try {
+      await cancelContentAssignments();
+      trackEvent();
+      // Only show toast on successful cancellation
+      displayToastForAssignmentCancellation(uuidCount);
+    } catch (error) {
+      // Error is already handled in the hook, just track the event
+      trackEvent();
+    }
   };
 
   return (
