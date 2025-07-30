@@ -56,13 +56,15 @@ export interface EnterpriseAdminsResponse {
 }
 
 export interface EnterpriseAdminResponse {
-  uuid?: string;
-  enterprise_customer_user?: number;
-  last_login?: string | null;
-  completed_tour_flows?: any[];
-  onboarding_tour_dismissed?: boolean;
-  onboarding_tour_completed?: boolean;
-};
+  data: {
+    uuid?: string;
+    enterprise_customer_user?: number;
+    last_login?: string | null;
+    completed_tour_flows?: any[];
+    onboarding_tour_dismissed?: boolean;
+    onboarding_tour_completed?: boolean;
+  }
+}
 
 class LmsApiService {
   static apiClient = getAuthenticatedHttpClient;

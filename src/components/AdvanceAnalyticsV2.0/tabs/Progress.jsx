@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import { FormattedMessage } from '@edx/frontend-platform/i18n';
 import PropTypes from 'prop-types';
 import { ANALYTICS_TABS } from '../constants';
@@ -7,14 +8,11 @@ import { useAnalyticsFilters } from '../AnalyticsFiltersContext';
 import TopCoursesByCompletionTable from '../tables/TopCoursesByCompletionTable';
 import TopSubjectsByCompletionTable from '../tables/TopSubjectsByCompletionTable';
 import IndividualCompletionsTable from '../tables/IndividualCompletionsTable';
+import { get90DayPriorDate } from '../data/utils';
 
 const Progress = ({ enterpriseId }) => {
   // Filters
   const {
-    startDate,
-    setStartDate,
-    endDate,
-    setEndDate,
     granularity,
     setGranularity,
     calculation,
@@ -26,6 +24,8 @@ const Progress = ({ enterpriseId }) => {
     isGroupsLoading,
   } = useAnalyticsFilters();
 
+  const [startDate, setStartDate] = useState(get90DayPriorDate());
+  const [endDate, setEndDate] = useState(currentDate);
   // Stats Data
   const { data: statsData } = useEnterpriseAnalyticsAggregatesData({
     enterpriseCustomerUUID: enterpriseId,

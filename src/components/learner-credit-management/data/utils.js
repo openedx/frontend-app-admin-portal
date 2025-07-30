@@ -19,6 +19,7 @@ import {
   START_DATE_DEFAULT_TO_TODAY_THRESHOLD_DAYS,
   APPROVED_REQUEST_TYPE,
 } from './constants';
+import { capitalizeFirstLetter } from '../../../utils';
 
 /**
  * Transforms subsidy (offer or Subsidy) summary from API for display in the UI, guarding
@@ -808,3 +809,15 @@ export const getAssignableCourseRuns = ({
  * @returns {boolean} True if the budget is retired or expired, false otherwise
  */
 export const isBudgetRetiredOrExpired = (status) => [BUDGET_STATUSES.retired, BUDGET_STATUSES.expired].includes(status);
+
+export const transformRequestOverview = (requestStates) => {
+  const allowedStates = ['requested', 'cancelled', 'declined'];
+
+  return requestStates
+    .filter(({ state }) => allowedStates.includes(state))
+    .map(({ state, count }) => ({
+      name: capitalizeFirstLetter(state),
+      number: count,
+      value: state,
+    }));
+};
