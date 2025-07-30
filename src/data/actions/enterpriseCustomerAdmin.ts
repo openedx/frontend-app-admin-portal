@@ -9,13 +9,13 @@ import {
   DISMISS_ONBOARDING_TOUR_FAILURE,
   SET_ONBOARDING_TOUR_DISMISSED,
 } from '../constants/enterpriseCustomerAdmin';
-import LmsApiService, { EnterpriseAdminsResponse } from '../services/LmsApiService';
+import LmsApiService, { EnterpriseAdminPaginatedResponse } from '../services/LmsApiService';
 
 const fetchLoggedInEnterpriseAdminRequest = (): AnyAction => ({
   type: FETCH_ENTERPRISE_CUSTOMER_ADMIN_REQUEST,
 });
 
-const fetchLoggedInEnterpriseAdminSuccess = (response: EnterpriseAdminsResponse): AnyAction => ({
+const fetchLoggedInEnterpriseAdminSuccess = (response: EnterpriseAdminPaginatedResponse): AnyAction => ({
   type: FETCH_ENTERPRISE_CUSTOMER_ADMIN_SUCCESS,
   payload: {
     data: response.data?.results?.[0],

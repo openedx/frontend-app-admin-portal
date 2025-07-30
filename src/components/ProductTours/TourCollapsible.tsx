@@ -138,7 +138,6 @@ const TourCollapsible: FC<Props> = (
     if (completedTourFlows) {
       steps.forEach((step) => {
         const flowUuid = FLOW_UUID_MAPPING.get(step.title);
-        // @ts-ignore
         if (flowUuid && completedTourFlows?.includes(flowUuid)) {
           step.completed = true; // eslint-disable-line no-param-reassign
         }

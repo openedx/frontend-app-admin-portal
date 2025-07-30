@@ -30,9 +30,9 @@ export const Step: FC<StepProps> = ({
     <div className="d-flex align-items-center justify-content-between w-100">
       <div className="d-flex align-items-center">
         {completed ? (
-          <Icon className="mr-3" src={CheckCircle} />
+          <Icon className="mr-3" aria-label="completed-flow" src={CheckCircle} />
         ) : (
-          <Icon className="mr-3 text-gray-400" src={CheckCircleOutline} />
+          <Icon className="mr-3 text-gray-400" aria-label="incomplete-flow" src={CheckCircleOutline} />
         )}
         <Icon src={icon} className="mr-1" />
         <p className="mb-0 small font-weight-bold">{title}</p>
