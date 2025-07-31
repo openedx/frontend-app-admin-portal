@@ -177,6 +177,7 @@ const useBnrSubsidyRequests = ({
 
       const response = await EnterpriseAccessApiService.fetchBnrSubsidyRequestsOverviw(
         enterpriseId,
+        subsidyAccessPolicyId,
         options,
       );
       const data = camelCaseObject(response.data);
@@ -187,7 +188,7 @@ const useBnrSubsidyRequests = ({
     } finally {
       setIsLoading(false);
     }
-  }, [enterpriseId]);
+  }, [enterpriseId, subsidyAccessPolicyId]);
 
   const fetchBnrRequestsAndOverview = useCallback(async (args) => {
     await fetchBnrRequests(args);
