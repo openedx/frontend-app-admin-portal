@@ -163,7 +163,7 @@ describe('<Admin />', () => {
           />
         ))
         .toJSON();
-      expect(mockFetchDashboardAnalytics).toHaveBeenCalled();
+      waitFor(() => expect(mockFetchDashboardAnalytics).toHaveBeenCalled());
       expect(tree).toMatchSnapshot();
     });
 
