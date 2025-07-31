@@ -58,7 +58,7 @@ const BudgetOverviewContent = ({
   if (!subsidyAccessPolicy && (isLoadingSubsidySummary || isLoadingEnterpriseOffer)) {
     return (
       <div data-testid="budget-detail-skeleton">
-        <Skeleton height={180} />
+        <Skeleton height={180} id="assignment-budget-detail-card" />
         <span className="sr-only">
           <FormattedMessage
             id="lcm.budget.detail.page.overview.loading"
@@ -71,7 +71,7 @@ const BudgetOverviewContent = ({
   }
 
   return (
-    <Card>
+    <Card id="assignment-budget-detail-card">
       <Card.Section>
         <h2>{budgetDisplayName}</h2>
         <BudgetStatusSubtitle

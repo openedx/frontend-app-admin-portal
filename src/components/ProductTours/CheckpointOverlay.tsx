@@ -1,4 +1,5 @@
 import React, { useLayoutEffect, useState, FC } from 'react';
+import { ALLOCATE_LEARNING_BUDGETS_TARGETS } from './AdminOnboardingTours/constants';
 
 interface Rect {
   top: number;
@@ -51,16 +52,24 @@ const CheckpointOverlay: FC<CheckpointOverlayProps> = ({ target }) => {
           });
         }
       } else {
-        const targetElement = document.querySelector(selector);
+        // Add timeout for assignment-budget-detail-card to wait for page loading
+        const findAndSetElement = () => {
+          const targetElement = document.querySelector(selector);
+          if (targetElement) {
+            const boundingRect = targetElement.getBoundingClientRect();
+            setRect({
+              top: boundingRect.top,
+              left: boundingRect.left,
+              width: boundingRect.width,
+              height: boundingRect.height,
+            });
+          }
+        };
 
-        if (targetElement) {
-          const boundingRect = targetElement.getBoundingClientRect();
-          setRect({
-            top: boundingRect.top,
-            left: boundingRect.left,
-            width: boundingRect.width,
-            height: boundingRect.height,
-          });
+        if (selector === `#${ALLOCATE_LEARNING_BUDGETS_TARGETS.ASSIGNMENT_BUDGET_DETAIL_CARD}`) {
+          setTimeout(findAndSetElement, 0);
+        } else {
+          findAndSetElement();
         }
       }
     };

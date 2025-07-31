@@ -5,23 +5,25 @@ import {
   IconButton, Icon, OverlayTrigger, Tooltip, Stack,
 } from '@openedx/paragon';
 import {
-  CreditCard, InsertChartOutlined, Person, Question, Settings, TextSnippet, TrendingUp,
+  CreditCard, InsertChartOutlined, MoneyOutline, Person, Question, Settings, TextSnippet, TrendingUp,
 } from '@openedx/paragon/icons';
 import { useIntl } from '@edx/frontend-platform/i18n';
 
 import FloatingCollapsible from '../FloatingCollapsible';
 import messages, {
   ADMINISTER_SUBSCRIPTIONS_TITLE,
-  CUSTOMIZE_REPORTS_TITLE,
+  ALLOCATE_LEARNING_BUDGET_TITLE,
   ORGANIZE_LEARNERS_TITLE,
   SET_UP_PREFERENCES_TITLE,
   TRACK_LEARNER_PROGRESS_TITLE,
   VIEW_ENROLLMENTS_INSIGHT_TITLE,
+  CUSTOMIZE_REPORTS_TITLE,
 } from './AdminOnboardingTours/messages';
 import { dismissOnboardingTour, reopenOnboardingTour } from '../../data/actions/enterpriseCustomerAdmin';
 import { Step } from './AdminOnboardingTours/OnboardingSteps';
 import {
   ADMINISTER_SUBSCRIPTIONS_TARGETS,
+  ALLOCATE_LEARNING_BUDGETS_TARGETS,
   ANALYTICS_INSIGHTS_TARGETS,
   CUSTOMIZE_REPORTS_SIDEBAR,
   ORGANIZE_LEARNER_TARGETS,
@@ -57,6 +59,11 @@ const QUICK_START_GUIDE_STEPS: StepDefinition[] = [{
   title: VIEW_ENROLLMENTS_INSIGHT_TITLE,
   timeEstimate: 1,
   targetId: ANALYTICS_INSIGHTS_TARGETS.SIDEBAR,
+}, {
+  icon: MoneyOutline,
+  title: ALLOCATE_LEARNING_BUDGET_TITLE,
+  timeEstimate: 2,
+  targetId: ALLOCATE_LEARNING_BUDGETS_TARGETS.SIDEBAR,
 }, {
   icon: CreditCard,
   title: ADMINISTER_SUBSCRIPTIONS_TITLE,

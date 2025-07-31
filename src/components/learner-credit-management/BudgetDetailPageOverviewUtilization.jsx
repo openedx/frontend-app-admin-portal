@@ -98,6 +98,7 @@ const BudgetDetailPageOverviewUtilization = ({
     <Collapsible
       className="mt-4 budget-utilization-container"
       styling="basic"
+      id="assignment-budget-utilization-details"
       title={(
         <h6 className="mb-0">
           <FormattedMessage

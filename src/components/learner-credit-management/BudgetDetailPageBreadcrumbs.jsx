@@ -35,6 +35,7 @@ const BudgetDetailPageBreadcrumbs = ({ enterpriseId, enterpriseSlug, displayName
   return (
     <div className="small">
       <Breadcrumb
+        id="learner-credit-management-breadcrumbs"
         ariaLabel="Learner Credit Management breadcrumb navigation"
         links={[{
           label: intl.formatMessage({

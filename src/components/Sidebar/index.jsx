@@ -19,8 +19,8 @@ import { SubsidyRequestsContext } from '../subsidy-requests';
 import { ROUTE_NAMES } from '../EnterpriseApp/data/constants';
 import { TOUR_TARGETS } from '../ProductTours/constants';
 import {
-  ADMINISTER_SUBSCRIPTIONS_TARGETS,
   ANALYTICS_INSIGHTS_TARGETS,
+  ADMINISTER_SUBSCRIPTIONS_TARGETS,
   CUSTOMIZE_REPORTS_SIDEBAR,
   TRACK_LEARNER_PROGRESS_TARGETS,
 } from '../ProductTours/AdminOnboardingTours/constants';
