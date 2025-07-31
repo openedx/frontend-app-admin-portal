@@ -6,8 +6,9 @@ import { camelCaseObject } from '@edx/frontend-platform/utils';
 import { debounce } from 'lodash-es';
 
 import EnterpriseAccessApiService from '../../../../data/services/EnterpriseAccessApiService';
-import { REQUEST_STATUS_FILTER_CHOICES, REQUEST_TAB_VISIBLE_STATES } from '../constants';
+import { REQUEST_TAB_VISIBLE_STATES } from '../constants';
 import useBudgetId from './useBudgetId';
+import { transformRequestOverview } from '../utils';
 
 const initialBnrRequestsState = {
   results: [],
@@ -63,6 +64,18 @@ export const applyFiltersToOptions = (filters, options) => {
     });
   }
 };
+export const applyOverviewFiltersToOptions = (filters, options) => {
+  if (!filters || filters.length === 0) {
+    return;
+  }
+  const emailSearchQuery = filters.find(filter => filter.id === 'requestDetails')?.value;
+
+  if (emailSearchQuery) {
+    Object.assign(options, {
+      search: emailSearchQuery,
+    });
+  }
+};
 
 // Transform API response data to match DataTable the requirements
 const transformApiDataToTableData = (apiResults) => apiResults.map((item) => {
@@ -99,6 +112,7 @@ const useBnrSubsidyRequests = ({
   const [isLoading, setIsLoading] = useState(true);
   const [bnrRequests, setBnrRequests] = useState(initialBnrRequestsState);
   const { subsidyAccessPolicyId } = useBudgetId();
+  const [requestsOverview, setRequestsOverview] = useState([]);
 
   const fetchBnrRequests = useCallback(async (args) => {
     if (!isEnabled || !enterpriseId) {
@@ -152,15 +166,44 @@ const useBnrSubsidyRequests = ({
     }
   }, [isEnabled, enterpriseId, subsidyAccessPolicyId]);
 
+  const fetchBnrRequestsOverview = useCallback(async (filters = []) => {
+    try {
+      setIsLoading(true);
+      const options = {};
+
+      if (filters && filters.length > 0) {
+        applyOverviewFiltersToOptions(filters, options);
+      }
+
+      const response = await EnterpriseAccessApiService.fetchBnrSubsidyRequestsOverviw(
+        enterpriseId,
+        options,
+      );
+      const data = camelCaseObject(response.data);
+      const transformedOverview = transformRequestOverview(data);
+      setRequestsOverview(transformedOverview);
+    } catch (error) {
+      logError('Failed to fetch BNR subsidy requests overview', error);
+    } finally {
+      setIsLoading(false);
+    }
+  }, [enterpriseId]);
+
+  const fetchBnrRequestsAndOverview = useCallback(async (args) => {
+    await fetchBnrRequests(args);
+
+    const filters = args?.filters || [];
+    await fetchBnrRequestsOverview(filters);
+  }, [fetchBnrRequests, fetchBnrRequestsOverview]);
+
   const debouncedFetchBnrRequests = useMemo(
-    () => debounce(fetchBnrRequests, 300),
-    [fetchBnrRequests],
+    () => debounce(fetchBnrRequestsAndOverview, 300),
+    [fetchBnrRequestsAndOverview],
   );
 
-  // Use stored args when refreshing
   const refreshRequests = useCallback(() => {
-    fetchBnrRequests(currentArgsRef.current);
-  }, [fetchBnrRequests]);
+    debouncedFetchBnrRequests(currentArgsRef.current);
+  }, [debouncedFetchBnrRequests]);
 
   const updateRequestStatus = useCallback(({ request, newStatus }) => {
     setBnrRequests(prevState => ({
@@ -174,10 +217,11 @@ const useBnrSubsidyRequests = ({
   return {
     isLoading,
     bnrRequests,
-    requestsOverview: REQUEST_STATUS_FILTER_CHOICES,
+    requestsOverview,
     fetchBnrRequests: debouncedFetchBnrRequests,
     updateRequestStatus,
     refreshRequests,
+    fetchBnrRequestsOverview,
   };
 };
 

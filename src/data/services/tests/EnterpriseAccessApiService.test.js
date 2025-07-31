@@ -349,4 +349,123 @@ describe('EnterpriseAccessApiService', () => {
       disassociate_from_org: true,
     });
   });
+
+  test('fetchBnrSubsidyRequestsOverviw calls enterprise-access with enterpriseId only', () => {
+    EnterpriseAccessApiService.fetchBnrSubsidyRequestsOverviw(mockEnterpriseUUID);
+
+    const expectedParams = new URLSearchParams({
+      enterprise_customer_uuid: mockEnterpriseUUID,
+    });
+
+    expect(axios.get).toBeCalledWith(
+      `${enterpriseAccessBaseUrl}/api/v1/learner-credit-requests/overview/?${expectedParams.toString()}`,
+    );
+  });
+
+  test('fetchBnrSubsidyRequestsOverviw calls enterprise-access with enterpriseId and empty options', () => {
+    const options = {};
+
+    EnterpriseAccessApiService.fetchBnrSubsidyRequestsOverviw(mockEnterpriseUUID, options);
+
+    const expectedParams = new URLSearchParams({
+      enterprise_customer_uuid: mockEnterpriseUUID,
+    });
+
+    expect(axios.get).toBeCalledWith(
+      `${enterpriseAccessBaseUrl}/api/v1/learner-credit-requests/overview/?${expectedParams.toString()}`,
+    );
+  });
+
+  test('fetchBnrSubsidyRequestsOverviw calls enterprise-access with enterpriseId and search option', () => {
+    const options = {
+      search: 'test@example.com',
+    };
+
+    EnterpriseAccessApiService.fetchBnrSubsidyRequestsOverviw(mockEnterpriseUUID, options);
+
+    const expectedParams = new URLSearchParams({
+      enterprise_customer_uuid: mockEnterpriseUUID,
+      search: 'test@example.com',
+    });
+
+    expect(axios.get).toBeCalledWith(
+      `${enterpriseAccessBaseUrl}/api/v1/learner-credit-requests/overview/?${expectedParams.toString()}`,
+    );
+  });
+
+  test('fetchBnrSubsidyRequestsOverviw calls enterprise-access with enterpriseId and multiple options', () => {
+    const options = {
+      search: 'test@example.com',
+      state: 'requested,declined',
+      ordering: '-created',
+      custom_param: 'custom_value',
+    };
+
+    EnterpriseAccessApiService.fetchBnrSubsidyRequestsOverviw(mockEnterpriseUUID, options);
+
+    const expectedParams = new URLSearchParams({
+      enterprise_customer_uuid: mockEnterpriseUUID,
+      search: 'test@example.com',
+      state: 'requested,declined',
+      ordering: '-created',
+      custom_param: 'custom_value',
+    });
+
+    expect(axios.get).toBeCalledWith(
+      `${enterpriseAccessBaseUrl}/api/v1/learner-credit-requests/overview/?${expectedParams.toString()}`,
+    );
+  });
+
+  test('fetchBnrSubsidyRequestsOverviw calls enterprise-access with all possible query parameters', () => {
+    const options = {
+      page: '1',
+      page_size: '25',
+      state: 'requested',
+      search: 'learner@example.com',
+      ordering: 'created',
+      start_date: '2023-01-01',
+      end_date: '2023-12-31',
+    };
+
+    EnterpriseAccessApiService.fetchBnrSubsidyRequestsOverviw(mockEnterpriseUUID, options);
+
+    const expectedParams = new URLSearchParams({
+      enterprise_customer_uuid: mockEnterpriseUUID,
+      page: '1',
+      page_size: '25',
+      state: 'requested',
+      search: 'learner@example.com',
+      ordering: 'created',
+      start_date: '2023-01-01',
+      end_date: '2023-12-31',
+    });
+
+    expect(axios.get).toBeCalledWith(
+      `${enterpriseAccessBaseUrl}/api/v1/learner-credit-requests/overview/?${expectedParams.toString()}`,
+    );
+  });
+
+  test('fetchBnrSubsidyRequestsOverviw handles undefined options parameter', () => {
+    EnterpriseAccessApiService.fetchBnrSubsidyRequestsOverviw(mockEnterpriseUUID, undefined);
+
+    const expectedParams = new URLSearchParams({
+      enterprise_customer_uuid: mockEnterpriseUUID,
+    });
+
+    expect(axios.get).toBeCalledWith(
+      `${enterpriseAccessBaseUrl}/api/v1/learner-credit-requests/overview/?${expectedParams.toString()}`,
+    );
+  });
+
+  test('fetchBnrSubsidyRequestsOverviw handles null options parameter', () => {
+    EnterpriseAccessApiService.fetchBnrSubsidyRequestsOverviw(mockEnterpriseUUID, null);
+
+    const expectedParams = new URLSearchParams({
+      enterprise_customer_uuid: mockEnterpriseUUID,
+    });
+
+    expect(axios.get).toBeCalledWith(
+      `${enterpriseAccessBaseUrl}/api/v1/learner-credit-requests/overview/?${expectedParams.toString()}`,
+    );
+  });
 });

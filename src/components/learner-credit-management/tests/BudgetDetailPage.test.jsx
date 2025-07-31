@@ -1866,6 +1866,83 @@ describe('<BudgetDetailPage />', () => {
     expect(screen.getByText('Help Center')).toBeInTheDocument();
   });
 
+  it('renders failed redemption status chip and handles interactions', async () => {
+    const user = userEvent.setup();
+    const NUMBER_OF_APPROVE_REQUEST_TO_GENERATE = 1;
+    useParams.mockReturnValue({
+      enterpriseSlug: 'test-enterprise-slug',
+      enterpriseAppPage: 'test-enterprise-page',
+      budgetId: mockSubsidyAccessPolicyUUID,
+      activeTabKey: 'activity',
+    });
+    useSubsidyAccessPolicy.mockReturnValue({
+      isInitialLoading: false,
+      data: mockPerLearnerSpendLimitSubsidyAccessPolicyWithBnrEnabled,
+    });
+    useEnterpriseGroupLearners.mockReturnValue({
+      data: {
+        count: 0,
+        currentPage: 1,
+        next: null,
+        numPages: 1,
+        results: [],
+      },
+    });
+    useBudgetDetailActivityOverview.mockReturnValue({
+      isLoading: false,
+      data: {
+        approvedBnrRequests: { count: NUMBER_OF_APPROVE_REQUEST_TO_GENERATE },
+        contentAssignments: undefined,
+        spentTransactions: { count: 0 },
+      },
+    });
+    const mockFetchLearnerCreditRequests = jest.fn();
+
+    const mockFailedRedemptionRequest = {
+      ...mockApprovedRequest,
+      lastActionErrorReason: 'failed_redemption',
+      latestAction: {
+        ...mockApprovedRequest.latestAction,
+        errorReason: 'failed_redemption',
+      },
+    };
+    useBnrSubsidyRequests.mockReturnValue({
+      isLoading: false,
+      bnrRequests: {
+        itemCount: NUMBER_OF_APPROVE_REQUEST_TO_GENERATE,
+        results: [mockFailedRedemptionRequest],
+        pageCount: 1,
+      },
+      fetchBnrRequests: mockFetchLearnerCreditRequests,
+    });
+    useBudgetRedemptions.mockReturnValue({
+      isLoading: false,
+      budgetRedemptions: mockEmptyBudgetRedemptions,
+      fetchBudgetRedemptions: jest.fn(),
+    });
+    useEnterpriseRemovedGroupMembers.mockReturnValue({
+      isRemovedMembersLoading: false,
+      removedGroupMembersCount: 0,
+    });
+
+    renderWithRouter(<BudgetDetailPageWrapper />);
+
+    await waitFor(() => {
+      expect(screen.getByText('Pending')).toBeInTheDocument();
+    });
+
+    const failedRedemptionChip = screen.getByText('Failed: Redemption');
+    expect(failedRedemptionChip).toBeInTheDocument();
+
+    await user.click(failedRedemptionChip);
+
+    await waitFor(() => {
+      expect(screen.getByText('Something went wrong behind the scenes when the learner attempted to redeem the requested course. Associated Learner credit funds have been released into your available balance.')).toBeInTheDocument();
+    });
+
+    expect(screen.getByText('Help Center')).toBeInTheDocument();
+  });
+
   it('renders request status cells with different statuses', async () => {
     const NUMBER_OF_APPROVE_REQUEST_TO_GENERATE = 3;
     useParams.mockReturnValue({

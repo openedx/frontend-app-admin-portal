@@ -202,3 +202,11 @@ export const REQUEST_ERROR_REASON = {
   failed_redemption: 'Failed: Redemption',
   failed_reversal: 'Failed: Reversal',
 };
+
+export const REQUEST_ERROR_STATES = {
+  failed_approval: 'failed_approval',
+  failed_decline: 'failed_decline',
+  failed_cancellation: 'failed_cancellation',
+  failed_redemption: 'failed_redemption',
+  failed_reversal: 'failed_reversal',
+};

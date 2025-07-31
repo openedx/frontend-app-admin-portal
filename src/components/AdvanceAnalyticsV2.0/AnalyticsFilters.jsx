@@ -4,12 +4,20 @@ import { Form, IconButton, Icon } from '@openedx/paragon';
 import { FormattedMessage, useIntl } from '@edx/frontend-platform/i18n';
 import PropTypes from 'prop-types';
 import IconWithTooltip from '../IconWithTooltip';
-import { GRANULARITY, CALCULATION, DATE_RANGE } from './data/constants';
+import {
+  GRANULARITY, CALCULATION, DATE_RANGE, COURSE_TYPES,
+} from './data/constants';
 import { get90DayPriorDate } from './data/utils';
 
 export const DEFAULT_GROUP = '';
 
 const AnalyticsFilters = ({
+  startDate,
+  setStartDate,
+  endDate,
+  setEndDate,
+  courseType,
+  setCourseType,
   granularity,
   setGranularity,
   calculation,
@@ -27,8 +35,6 @@ const AnalyticsFilters = ({
   const [collapsed, setCollapsed] = useState(false);
   const isProgressOrOutcomesTab = activeTab === 'progress' || activeTab === 'outcomes';
   const [dateRangeValue, setDateRangeValue] = useState(DATE_RANGE.LAST_90_DAYS);
-  const [startDate, setStartDate] = useState();
-  const [endDate, setEndDate] = useState();
 
   const handleDateRangeChange = (selectedRange) => {
     setDateRangeValue(selectedRange);
@@ -397,10 +403,32 @@ const AnalyticsFilters = ({
                   <Form.Control
                     controlClassName="font-weight-normal analytics-filter-form-controls rounded-0"
                     as="select"
-                    disabled
-                    value=""
+                    onChange={(e) => setCourseType(e.target.value)}
+                    disabled={isFetching}
+                    defaultValue={COURSE_TYPES.ALL_COURSE_TYPES}
+                    value={courseType}
                   >
-                    <option value="">All course types</option>
+                    <option value={COURSE_TYPES.OPEN_COURSES}>
+                      {intl.formatMessage({
+                        id: 'advance.analytics.course.type.filter.option.open.courses',
+                        defaultMessage: 'Open Courses',
+                        description: 'Option for open courses in course type filter in the admin portal analytics page',
+                      })}
+                    </option>
+                    <option value={COURSE_TYPES.EXECUTIVE_EDUCATION}>
+                      {intl.formatMessage({
+                        id: 'advance.analytics.course.type.filter.option.executive.education',
+                        defaultMessage: 'Executive Education',
+                        description: 'Option for executive education in course type filter in the admin portal analytics page',
+                      })}
+                    </option>
+                    <option value={COURSE_TYPES.ALL_COURSE_TYPES}>
+                      {intl.formatMessage({
+                        id: 'advance.analytics.course.type.filter.option.all.courses',
+                        defaultMessage: 'All Courses',
+                        description: 'Option for all courses in course type filter in the admin portal analytics page',
+                      })}
+                    </option>
                   </Form.Control>
                 </Form.Group>
               </div>
@@ -413,6 +441,12 @@ const AnalyticsFilters = ({
 };
 
 AnalyticsFilters.propTypes = {
+  startDate: PropTypes.string,
+  setStartDate: PropTypes.func.isRequired,
+  endDate: PropTypes.string,
+  setEndDate: PropTypes.func.isRequired,
+  courseType: PropTypes.string,
+  setCourseType: PropTypes.func.isRequired,
   granularity: PropTypes.string.isRequired,
   setGranularity: PropTypes.func.isRequired,
   calculation: PropTypes.string.isRequired,
