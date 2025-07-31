@@ -1,5 +1,5 @@
 import React, { useLayoutEffect, useState, FC } from 'react';
-
+import { ALLOCATE_LEARNING_BUDGETS_TARGETS } from './AdminOnboardingTours/constants';
 interface Rect {
   top: number;
   left: number;
@@ -65,8 +65,8 @@ const CheckpointOverlay: FC<CheckpointOverlayProps> = ({ target }) => {
           }
         };
 
-        if (selector === '#assignment-budget-detail-card') {
-          setTimeout(findAndSetElement, 2000); // Wait 2 seconds for page to load
+        if (selector === `#${ALLOCATE_LEARNING_BUDGETS_TARGETS.ASSIGNMENT_BUDGET_DETAIL_CARD}`) {
+          setTimeout(findAndSetElement, 0);
         } else {
           findAndSetElement();
         }

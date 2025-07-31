@@ -1,12 +1,13 @@
-import React, { FC, useState, useEffect } from 'react';
+import React, { FC, useState, useEffect, useRef } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { ProductTour } from '@openedx/paragon';
 import { useIntl } from '@edx/frontend-platform/i18n';
+import { useLocation } from 'react-router-dom';
 import AdminOnboardingTour from './flows/AdminOnboardingTour';
 import CheckpointOverlay from '../CheckpointOverlay';
 import '../_ProductTours.scss';
-import { RESET_TARGETS } from './constants';
+import { RESET_TARGETS, ALLOCATE_LEARNING_BUDGETS_TARGETS } from './constants';
 
 interface Insights {
   learner_engagement?: any;
@@ -55,8 +56,10 @@ const AdminOnboardingTours: FC<AdminOnboardingToursProps> = ({
   adminUuid, enterpriseId, enterpriseSlug, insights, insightsLoading, isOpen, onClose, setTarget, targetSelector,
 }) => {
   const intl = useIntl();
+  const location = useLocation();
   const aiButtonVisible = (insights?.learner_engagement && insights?.learner_progress) && !insightsLoading;
   const [currentStep, setCurrentStep] = useState(0);
+  const prevPathnameRef = useRef(location.pathname);
   const adminOnboardingSteps = AdminOnboardingTour({
     enablePortalLearnerCreditManagementScreen,
     enterpriseUUID,
@@ -78,20 +81,50 @@ const AdminOnboardingTours: FC<AdminOnboardingToursProps> = ({
     }
   }, [targetSelector]);
 
+  // Handle target setting for both page transitions and step changes
   useEffect(() => {
-    if (adminOnboardingSteps[currentStep]) {
-      const nextTarget = adminOnboardingSteps[currentStep].target;
-      const targetWithoutPrefix = nextTarget.replace(/^[.#]/, '');
-      // Add timeout for assignment-budget-detail-card to wait for page loading
-      if (targetWithoutPrefix === 'assignment-budget-detail-card') {
-        setTimeout(() => {
+    const prevPathname = prevPathnameRef.current;
+    const currentPathname = location.pathname;
+    const isPageTransition = prevPathname !== currentPathname;
+    
+    if (isPageTransition) {
+      // Page transition: clear target immediately, then set after delay
+      setTarget('');
+      
+      setTimeout(() => {
+        if (adminOnboardingSteps[currentStep]) {
+          const nextTarget = adminOnboardingSteps[currentStep].target;
+          const targetWithoutPrefix = nextTarget.replace(/^[.#]/, '');
+          
+          if (targetWithoutPrefix === ALLOCATE_LEARNING_BUDGETS_TARGETS.ASSIGNMENT_BUDGET_DETAIL_CARD) {
+            setTimeout(() => {
+              setTarget(targetWithoutPrefix);
+            }, 1000);
+          } else {
+            setTarget(targetWithoutPrefix);
+          }
+        }
+      }, 200);
+      
+      prevPathnameRef.current = currentPathname;
+    } else {
+      // Step change on same page: set target immediately
+      let timeId: any;
+      if (adminOnboardingSteps[currentStep]) {
+        const nextTarget = adminOnboardingSteps[currentStep].target;
+        const targetWithoutPrefix = nextTarget.replace(/^[.#]/, '');
+        
+        if (targetWithoutPrefix === ALLOCATE_LEARNING_BUDGETS_TARGETS.ASSIGNMENT_BUDGET_DETAIL_CARD) {
+          timeId = setTimeout(() => {
+            setTarget(targetWithoutPrefix);
+          }, 1000);
+        } else {
           setTarget(targetWithoutPrefix);
-        }, 2000); // Wait 2 seconds for page to load
-      } else {
-        setTarget(targetWithoutPrefix);
+        }
       }
+      return () => clearTimeout(timeId);
     }
-  }, [currentStep, adminOnboardingSteps, setTarget]);
+  }, [location.pathname, currentStep, adminOnboardingSteps, setTarget]);
 
   const tours = [
     {
