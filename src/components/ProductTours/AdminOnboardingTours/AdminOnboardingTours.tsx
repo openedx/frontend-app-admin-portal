@@ -1,4 +1,6 @@
-import React, { FC, useState, useEffect, useRef } from 'react';
+import React, {
+  FC, useState, useEffect, useRef,
+} from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { ProductTour } from '@openedx/paragon';
@@ -82,20 +84,21 @@ const AdminOnboardingTours: FC<AdminOnboardingToursProps> = ({
   }, [targetSelector]);
 
   // Handle target setting for both page transitions and step changes
+  // eslint-disable-next-line consistent-return
   useEffect(() => {
     const prevPathname = prevPathnameRef.current;
     const currentPathname = location.pathname;
     const isPageTransition = prevPathname !== currentPathname;
-    
+
     if (isPageTransition) {
       // Page transition: clear target immediately, then set after delay
       setTarget('');
-      
+
       setTimeout(() => {
         if (adminOnboardingSteps[currentStep]) {
           const nextTarget = adminOnboardingSteps[currentStep].target;
           const targetWithoutPrefix = nextTarget.replace(/^[.#]/, '');
-          
+
           if (targetWithoutPrefix === ALLOCATE_LEARNING_BUDGETS_TARGETS.ASSIGNMENT_BUDGET_DETAIL_CARD) {
             setTimeout(() => {
               setTarget(targetWithoutPrefix);
@@ -105,7 +108,7 @@ const AdminOnboardingTours: FC<AdminOnboardingToursProps> = ({
           }
         }
       }, 200);
-      
+
       prevPathnameRef.current = currentPathname;
     } else {
       // Step change on same page: set target immediately
@@ -113,7 +116,7 @@ const AdminOnboardingTours: FC<AdminOnboardingToursProps> = ({
       if (adminOnboardingSteps[currentStep]) {
         const nextTarget = adminOnboardingSteps[currentStep].target;
         const targetWithoutPrefix = nextTarget.replace(/^[.#]/, '');
-        
+
         if (targetWithoutPrefix === ALLOCATE_LEARNING_BUDGETS_TARGETS.ASSIGNMENT_BUDGET_DETAIL_CARD) {
           timeId = setTimeout(() => {
             setTarget(targetWithoutPrefix);

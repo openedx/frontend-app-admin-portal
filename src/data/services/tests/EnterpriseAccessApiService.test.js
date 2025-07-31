@@ -350,11 +350,12 @@ describe('EnterpriseAccessApiService', () => {
     });
   });
 
-  test('fetchBnrSubsidyRequestsOverviw calls enterprise-access with enterpriseId only', () => {
-    EnterpriseAccessApiService.fetchBnrSubsidyRequestsOverviw(mockEnterpriseUUID);
+  test('fetchBnrSubsidyRequestsOverviw calls enterprise-access with enterpriseId and policyId only', () => {
+    EnterpriseAccessApiService.fetchBnrSubsidyRequestsOverviw(mockEnterpriseUUID, mockPolicyId);
 
     const expectedParams = new URLSearchParams({
       enterprise_customer_uuid: mockEnterpriseUUID,
+      policy_uuid: mockPolicyId,
     });
 
     expect(axios.get).toBeCalledWith(
@@ -362,13 +363,14 @@ describe('EnterpriseAccessApiService', () => {
     );
   });
 
-  test('fetchBnrSubsidyRequestsOverviw calls enterprise-access with enterpriseId and empty options', () => {
+  test('fetchBnrSubsidyRequestsOverviw calls enterprise-access with enterpriseId, policyId and empty options', () => {
     const options = {};
 
-    EnterpriseAccessApiService.fetchBnrSubsidyRequestsOverviw(mockEnterpriseUUID, options);
+    EnterpriseAccessApiService.fetchBnrSubsidyRequestsOverviw(mockEnterpriseUUID, mockPolicyId, options);
 
     const expectedParams = new URLSearchParams({
       enterprise_customer_uuid: mockEnterpriseUUID,
+      policy_uuid: mockPolicyId,
     });
 
     expect(axios.get).toBeCalledWith(
@@ -376,15 +378,16 @@ describe('EnterpriseAccessApiService', () => {
     );
   });
 
-  test('fetchBnrSubsidyRequestsOverviw calls enterprise-access with enterpriseId and search option', () => {
+  test('fetchBnrSubsidyRequestsOverviw calls enterprise-access with enterpriseId, policyId and search option', () => {
     const options = {
       search: 'test@example.com',
     };
 
-    EnterpriseAccessApiService.fetchBnrSubsidyRequestsOverviw(mockEnterpriseUUID, options);
+    EnterpriseAccessApiService.fetchBnrSubsidyRequestsOverviw(mockEnterpriseUUID, mockPolicyId, options);
 
     const expectedParams = new URLSearchParams({
       enterprise_customer_uuid: mockEnterpriseUUID,
+      policy_uuid: mockPolicyId,
       search: 'test@example.com',
     });
 
@@ -393,7 +396,7 @@ describe('EnterpriseAccessApiService', () => {
     );
   });
 
-  test('fetchBnrSubsidyRequestsOverviw calls enterprise-access with enterpriseId and multiple options', () => {
+  test('fetchBnrSubsidyRequestsOverviw calls enterprise-access with enterpriseId, policyId and multiple options', () => {
     const options = {
       search: 'test@example.com',
       state: 'requested,declined',
@@ -401,10 +404,11 @@ describe('EnterpriseAccessApiService', () => {
       custom_param: 'custom_value',
     };
 
-    EnterpriseAccessApiService.fetchBnrSubsidyRequestsOverviw(mockEnterpriseUUID, options);
+    EnterpriseAccessApiService.fetchBnrSubsidyRequestsOverviw(mockEnterpriseUUID, mockPolicyId, options);
 
     const expectedParams = new URLSearchParams({
       enterprise_customer_uuid: mockEnterpriseUUID,
+      policy_uuid: mockPolicyId,
       search: 'test@example.com',
       state: 'requested,declined',
       ordering: '-created',
@@ -427,10 +431,11 @@ describe('EnterpriseAccessApiService', () => {
       end_date: '2023-12-31',
     };
 
-    EnterpriseAccessApiService.fetchBnrSubsidyRequestsOverviw(mockEnterpriseUUID, options);
+    EnterpriseAccessApiService.fetchBnrSubsidyRequestsOverviw(mockEnterpriseUUID, mockPolicyId, options);
 
     const expectedParams = new URLSearchParams({
       enterprise_customer_uuid: mockEnterpriseUUID,
+      policy_uuid: mockPolicyId,
       page: '1',
       page_size: '25',
       state: 'requested',
@@ -446,10 +451,11 @@ describe('EnterpriseAccessApiService', () => {
   });
 
   test('fetchBnrSubsidyRequestsOverviw handles undefined options parameter', () => {
-    EnterpriseAccessApiService.fetchBnrSubsidyRequestsOverviw(mockEnterpriseUUID, undefined);
+    EnterpriseAccessApiService.fetchBnrSubsidyRequestsOverviw(mockEnterpriseUUID, mockPolicyId, undefined);
 
     const expectedParams = new URLSearchParams({
       enterprise_customer_uuid: mockEnterpriseUUID,
+      policy_uuid: mockPolicyId,
     });
 
     expect(axios.get).toBeCalledWith(
@@ -458,10 +464,11 @@ describe('EnterpriseAccessApiService', () => {
   });
 
   test('fetchBnrSubsidyRequestsOverviw handles null options parameter', () => {
-    EnterpriseAccessApiService.fetchBnrSubsidyRequestsOverviw(mockEnterpriseUUID, null);
+    EnterpriseAccessApiService.fetchBnrSubsidyRequestsOverviw(mockEnterpriseUUID, mockPolicyId, null);
 
     const expectedParams = new URLSearchParams({
       enterprise_customer_uuid: mockEnterpriseUUID,
+      policy_uuid: mockPolicyId,
     });
 
     expect(axios.get).toBeCalledWith(
