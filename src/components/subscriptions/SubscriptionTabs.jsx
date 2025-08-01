@@ -65,7 +65,6 @@ const SubscriptionTabs = ({ enterpriseSlug }) => {
     const tabs = [];
     tabs.push(
       <Tab
-        key={SUBSCRIPTION_TABS_VALUES[MANAGE_LEARNERS_TAB]}
         eventKey={SUBSCRIPTION_TABS_VALUES[MANAGE_LEARNERS_TAB]}
         title={intl.formatMessage({
           id: 'admin.portal.subscription.tabs.manage.learners',

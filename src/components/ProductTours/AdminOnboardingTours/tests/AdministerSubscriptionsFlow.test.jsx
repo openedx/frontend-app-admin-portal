@@ -4,8 +4,23 @@ import { useParams } from 'react-router';
 import { IntlProvider } from '@edx/frontend-platform/i18n';
 import { sendEnterpriseTrackEvent } from '@edx/frontend-enterprise-utils';
 
+import { SubsidyRequestsContext } from '../../../subsidy-requests';
 import AdministerSubscriptionsFlow from '../flows/AdministerSubscriptionsFlow';
 import { ADMIN_TOUR_EVENT_NAMES } from '../constants';
+
+const requestsDisabled = {
+  subsidyRequestConfiguration: {
+    subsidyRequestsEnabled: false,
+    subsidyType: 'license',
+  },
+};
+
+const requestsEnabled = {
+  subsidyRequestConfiguration: {
+    subsidyRequestsEnabled: true,
+    subsidyType: 'license',
+  },
+};
 
 jest.mock('react-router', () => ({
   useParams: jest.fn(),
@@ -21,9 +36,21 @@ jest.mock('@edx/frontend-enterprise-utils', () => {
 
 const renderHookWithIntl = (hookFn) => renderHook(hookFn, {
   wrapper: ({ children }) => (
-    <IntlProvider locale="en" messages={{}}>
-      {children}
-    </IntlProvider>
+    <SubsidyRequestsContext.Provider value={requestsDisabled}>
+      <IntlProvider locale="en" messages={{}}>
+        {children}
+      </IntlProvider>
+    </SubsidyRequestsContext.Provider>
+  ),
+});
+
+const renderHookWithCourseRequests = (hookFn) => renderHook(hookFn, {
+  wrapper: ({ children }) => (
+    <SubsidyRequestsContext.Provider value={requestsEnabled}>
+      <IntlProvider locale="en" messages={{}}>
+        {children}
+      </IntlProvider>
+    </SubsidyRequestsContext.Provider>
   ),
 });
 
@@ -59,6 +86,23 @@ describe('AdministerSubscriptionsFlow', () => {
       expect(result.current[2].target).toBe('#manage-learners-button');
     });
 
+    it('should return main subscription page flow with additional manage requests step', () => {
+      const { result } = renderHookWithCourseRequests(() => AdministerSubscriptionsFlow({
+        currentStep: 0,
+        enterpriseId,
+        enterpriseSlug: enterpriseId,
+        handleEndTour: mockHandleEndTour,
+        setCurrentStep: mockSetCurrentStep,
+        targetSelector: '',
+      }));
+
+      expect(result.current).toHaveLength(4);
+      expect(result.current[0].target).toBe('#subscriptions-sidebar');
+      expect(result.current[1].target).toBe('#subscription-plans-list');
+      expect(result.current[2].target).toBe('#tabs-subscription-management-tab-manage-requests');
+      expect(result.current[3].target).toBe('#manage-learners-button');
+    });
+
     it('should have correct step properties for main flow', () => {
       const { result } = renderHookWithIntl(() => AdministerSubscriptionsFlow({
         currentStep: 0,
@@ -80,6 +124,32 @@ describe('AdministerSubscriptionsFlow', () => {
       expect(result.current[2].placement).toBe('left');
       expect(typeof result.current[2].onEnd).toBe('function');
     });
+
+    it('should have correct step properties for main flow with requests', () => {
+      const { result } = renderHookWithCourseRequests(() => AdministerSubscriptionsFlow({
+        currentStep: 0,
+        enterpriseId,
+        enterpriseSlug: enterpriseId,
+        handleEndTour: mockHandleEndTour,
+        setCurrentStep: mockSetCurrentStep,
+        targetSelector: '',
+      }));
+
+      expect(result.current[0].title).toBe('Administer subscriptions');
+      expect(result.current[0].placement).toBe('right');
+      expect(typeof result.current[0].onAdvance).toBe('function');
+
+      expect(result.current[1].title).toBeUndefined();
+      expect(result.current[1].placement).toBe('top');
+      expect(typeof result.current[1].onAdvance).toBe('function');
+
+      expect(result.current[2].title).toBeUndefined();
+      expect(result.current[2].placement).toBe('bottom');
+      expect(typeof result.current[2].onAdvance).toBe('function');
+
+      expect(result.current[3].placement).toBe('left');
+      expect(typeof result.current[3].onEnd).toBe('function');
+    });
   });
 
   it('should call handleAdvanceTour on intermediate steps', () => {
@@ -95,7 +165,7 @@ describe('AdministerSubscriptionsFlow', () => {
     act(() => {
       result.current[0].onAdvance();
     });
-    expect(sendEnterpriseTrackEvent).toHaveBeenCalledWith(enterpriseId, ADMIN_TOUR_EVENT_NAMES.ENROLLMENT_INSIGHTS_ADVANCE_EVENT_NAME, { 'completed-step': 1 });
+    expect(sendEnterpriseTrackEvent).toHaveBeenCalledWith(enterpriseId, ADMIN_TOUR_EVENT_NAMES.ADMINISTER_SUBSCRIPTIONS_ADVANCE_EVENT_NAME, { 'completed-step': 1 });
   });
 
   describe('Detail subscription page flow', () => {
@@ -139,8 +209,8 @@ describe('AdministerSubscriptionsFlow', () => {
       });
 
       const lastStep = result.current[4];
-      expect(typeof lastStep.onAdvance).toBe('function');
-      expect(lastStep.onEnd).toBeUndefined();
+      expect(typeof lastStep.onEnd).toBe('function');
+      expect(lastStep.onAdvance).toBeUndefined();
     });
 
     it('should call handleEndTour on the final step', () => {
@@ -154,7 +224,7 @@ describe('AdministerSubscriptionsFlow', () => {
       }));
 
       act(() => {
-        result.current[4].onAdvance();
+        result.current[4].onEnd();
       });
       expect(mockHandleEndTour).toHaveBeenCalledTimes(1);
     });
