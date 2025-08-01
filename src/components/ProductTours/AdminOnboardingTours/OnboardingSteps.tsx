@@ -2,21 +2,23 @@ import React, { FC } from 'react';
 import {
   Icon, SelectableBox,
 } from '@openedx/paragon';
-import { CheckCircleOutline } from '@openedx/paragon/icons';
+import { CheckCircle, CheckCircleOutline } from '@openedx/paragon/icons';
 
 interface StepProps {
+  completed?: boolean,
   icon: React.ComponentType;
-  title: string;
-  timeEstimate: number;
   targetId: string;
+  timeEstimate: number;
+  title: string;
   onTourSelect?: (targetId: string) => void;
 }
 
 export const Step: FC<StepProps> = ({
+  completed,
   icon,
-  title,
-  timeEstimate,
   targetId,
+  timeEstimate,
+  title,
   onTourSelect,
 }) => (
   <SelectableBox
@@ -27,7 +29,11 @@ export const Step: FC<StepProps> = ({
   >
     <div className="d-flex align-items-center justify-content-between w-100">
       <div className="d-flex align-items-center">
-        <Icon className="mr-3 text-gray-400" src={CheckCircleOutline} />
+        {completed ? (
+          <Icon className="mr-3" aria-label="completed-flow" src={CheckCircle} />
+        ) : (
+          <Icon className="mr-3 text-gray-400" aria-label="incomplete-flow" src={CheckCircleOutline} />
+        )}
         <Icon src={icon} className="mr-1" />
         <p className="mb-0 small font-weight-bold">{title}</p>
       </div>

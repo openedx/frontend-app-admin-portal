@@ -3,10 +3,12 @@ import {
 } from '@testing-library/react';
 import '@testing-library/jest-dom';
 import { IntlProvider } from '@edx/frontend-platform/i18n';
+import { QueryClientProvider } from '@tanstack/react-query';
 import { Provider } from 'react-redux';
 import configureStore from 'redux-mock-store';
 
 import TourCollapsible from '../TourCollapsible';
+import { queryClient } from '../../test/testUtils';
 
 // Mock FloatingCollapsible component
 jest.mock('../../FloatingCollapsible', () => {
@@ -60,15 +62,17 @@ const setup = (storeState = defaultState, showCollapsible = false) => {
   store.dispatch = jest.fn();
 
   const wrapper = render(
-    <IntlProvider locale="en">
-      <Provider store={store}>
-        <TourCollapsible
-          onTourSelect={jest.fn()}
-          showCollapsible={showCollapsible}
-          setShowCollapsible={mockSetShowCollapsible}
-        />
-      </Provider>
-    </IntlProvider>,
+    <QueryClientProvider client={queryClient()}>
+      <IntlProvider locale="en">
+        <Provider store={store}>
+          <TourCollapsible
+            onTourSelect={jest.fn()}
+            showCollapsible={showCollapsible}
+            setShowCollapsible={mockSetShowCollapsible}
+          />
+        </Provider>
+      </IntlProvider>,
+    </QueryClientProvider>,
   );
 
   return {
