@@ -5,10 +5,11 @@ import { Step } from '../OnboardingSteps';
 
 describe('OnboardingSteps', () => {
   const defaultProps = {
+    completed: false,
     icon: TrendingUp,
-    title: 'Test Step',
-    timeEstimate: 2,
     targetId: 'test-target',
+    timeEstimate: 2,
+    title: 'Test Step',
     onTourSelect: jest.fn(),
   };
 
@@ -51,5 +52,15 @@ describe('OnboardingSteps', () => {
     renderStep();
     const title = screen.getByText('Test Step');
     expect(title).toBeInTheDocument();
+  });
+
+  it('renders completed step with correct icon', () => {
+    renderStep({ completed: true });
+    const completedIcon = screen.getByLabelText('completed-flow');
+    expect(completedIcon).toBeInTheDocument();
+
+    renderStep({ completed: false });
+    const incompleteIcon = screen.getByLabelText('incomplete-flow');
+    expect(incompleteIcon).toBeInTheDocument();
   });
 });

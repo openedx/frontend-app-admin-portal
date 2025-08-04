@@ -16,8 +16,9 @@ import AnalyticsFlow from './AnalyticsFlow';
 import CustomizeReportsFlow from './CustomizeReportsFlow';
 import LearnerProgressFlow from './LearnerProgressFlow';
 import OrganizeLearnersFlow from './OrganizeLearnersFlow';
-import SetUpPreferencesFlow from '../SetUpPreferencesFlow';
+import SetUpPreferencesFlow from './SetUpPreferencesFlow';
 import { TOUR_TARGETS } from '../../constants';
+import useFetchCompletedOnboardingFlows from '../data/useFetchCompletedOnboardingFlows';
 
 interface AdminOnboardingTourProps {
   adminUuid: string;
@@ -35,6 +36,7 @@ const AdminOnboardingTour = (
     adminUuid, aiButtonVisible, currentStep, enterpriseId, enterpriseSlug, onClose, setCurrentStep, targetSelector,
   }: AdminOnboardingTourProps,
 ): Array<TourStep> => {
+  const { refetch } = useFetchCompletedOnboardingFlows(adminUuid);
   function handleAdvanceTour(advanceEventName: string) {
     const newIndex = currentStep + 1;
     sendEnterpriseTrackEvent(enterpriseSlug, advanceEventName, { 'completed-step': newIndex });
@@ -42,7 +44,6 @@ const AdminOnboardingTour = (
   }
 
   function handleBackTour(backEventName: string) {
-    console.log('kira are we in the handleBack?');
     const newIndex = currentStep - 1;
     sendEnterpriseTrackEvent(enterpriseSlug, backEventName, { 'back-step': newIndex });
     setCurrentStep(newIndex);
@@ -53,6 +54,7 @@ const AdminOnboardingTour = (
       onClose();
       sendEnterpriseTrackEvent(enterpriseSlug, endEventName);
       await LmsApiService.updateCompletedTourFlows(adminUuid, flowUuid);
+      refetch();
     } catch (error) {
       logError(error);
     }
@@ -71,7 +73,6 @@ const AdminOnboardingTour = (
   });
   const setUpPreferencesFlow = SetUpPreferencesFlow({ handleEndTour });
 
-  console.log('kira flow ', organizeLearnersFlow);
   // Map target selectors to their respective flows
   const flowMapping = {
     [TRACK_LEARNER_PROGRESS_TARGETS.LEARNER_PROGRESS_SIDEBAR]: learnerProgressFlow,

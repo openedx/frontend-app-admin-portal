@@ -5,7 +5,7 @@ import { debounce } from 'lodash-es';
 
 import EnterpriseAccessApiService from '../../../../../data/services/EnterpriseAccessApiService';
 import useBnrSubsidyRequests, { applySortByToOptions, applyFiltersToOptions } from '../useBnrSubsidyRequests';
-import { REQUEST_STATUS_FILTER_CHOICES, REQUEST_TAB_VISIBLE_STATES } from '../../constants';
+import { REQUEST_TAB_VISIBLE_STATES } from '../../constants';
 
 // Mock dependencies
 jest.mock('@edx/frontend-platform/logging', () => ({
@@ -22,6 +22,11 @@ jest.mock('lodash-es', () => ({
 
 jest.mock('../../../../../data/services/EnterpriseAccessApiService', () => ({
   fetchBnrSubsidyRequests: jest.fn(),
+  fetchBnrSubsidyRequestsOverviw: jest.fn(),
+}));
+
+jest.mock('../../utils', () => ({
+  transformRequestOverview: jest.fn((data) => data),
 }));
 
 jest.mock('../useBudgetId', () => ({
@@ -106,11 +111,19 @@ const expectedTransformedData = [
     },
   },
 ];
+const mockOverviewResponse = {
+  data: {
+    approved: 10,
+    pending: 5,
+    declined: 2,
+  },
+};
 
 describe('useBnrSubsidyRequests', () => {
   beforeEach(() => {
     jest.clearAllMocks();
     EnterpriseAccessApiService.fetchBnrSubsidyRequests.mockResolvedValue(mockApiResponse);
+    EnterpriseAccessApiService.fetchBnrSubsidyRequestsOverviw.mockResolvedValue(mockOverviewResponse);
     camelCaseObject.mockImplementation((data) => data);
     debounce.mockImplementation((fn) => fn);
   });
@@ -129,7 +142,7 @@ describe('useBnrSubsidyRequests', () => {
         pageCount: 0,
         currentPage: 1,
       });
-      expect(result.current.requestsOverview).toBe(REQUEST_STATUS_FILTER_CHOICES);
+      expect(result.current.requestsOverview).toEqual([]);
       expect(typeof result.current.fetchBnrRequests).toBe('function');
       expect(typeof result.current.updateRequestStatus).toBe('function');
       expect(typeof result.current.refreshRequests).toBe('function');

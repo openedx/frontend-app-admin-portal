@@ -2,7 +2,7 @@ import React from 'react';
 import { renderHook } from '@testing-library/react';
 import { IntlProvider } from '@edx/frontend-platform/i18n';
 import messages from '../messages';
-import SetUpPreferencesFlow from '../SetUpPreferencesFlow';
+import SetUpPreferencesFlow from '../flows/SetUpPreferencesFlow';
 import { TOUR_TARGETS } from '../../constants';
 
 const mockFormatMessage = jest.fn((message) => message.defaultMessage || message.id || 'Mocked message');
@@ -43,7 +43,6 @@ describe('useSetUpPreferencesFlow', () => {
       target: `#${TOUR_TARGETS.SETTINGS_SIDEBAR}`,
       placement: 'right',
       body: messages.viewSetUpPreferences.defaultMessage,
-      onAdvance: mockHandleEndTour,
     });
   });
 

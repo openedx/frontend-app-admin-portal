@@ -121,3 +121,8 @@ export const DATE_RANGE = {
   YEAR_TO_DATE: 'year_to_date',
   CUSTOM: 'custom',
 };
+export const COURSE_TYPES = {
+  OPEN_COURSES: 'OCM',
+  EXECUTIVE_EDUCATION: 'Executive Education',
+  ALL_COURSE_TYPES: 'all_course_types',
+};

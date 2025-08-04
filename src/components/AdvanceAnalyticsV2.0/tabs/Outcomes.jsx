@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import { FormattedMessage } from '@edx/frontend-platform/i18n';
 import PropTypes from 'prop-types';
 import { sendEnterpriseTrackEvent } from '@edx/frontend-enterprise-utils';
@@ -14,14 +15,11 @@ import TopSkillsChart from '../charts/TopSkillsChart';
 import CompletionsOverTimeChart from '../charts/CompletionsOverTimeChart';
 import TopSkillsByCompletionChart from '../charts/TopSkillsByCompletionChart';
 import EVENT_NAMES from '../../../eventTracking';
+import { get90DayPriorDate } from '../data/utils';
 
 const Outcomes = ({ enterpriseId }) => {
   // Filters
   const {
-    startDate,
-    setStartDate,
-    endDate,
-    setEndDate,
     granularity,
     setGranularity,
     calculation,
@@ -32,6 +30,9 @@ const Outcomes = ({ enterpriseId }) => {
     groups,
     isGroupsLoading,
   } = useAnalyticsFilters();
+
+  const [startDate, setStartDate] = useState(get90DayPriorDate());
+  const [endDate, setEndDate] = useState(currentDate);
 
   // Stats Data
   const { isFetching: isStatsFetching, isError: isStatsError, data: statsData } = useEnterpriseAnalyticsAggregatesData({

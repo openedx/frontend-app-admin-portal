@@ -1,9 +1,14 @@
+import { useContext } from 'react';
 import { useIntl } from '@edx/frontend-platform/i18n';
 import { sendEnterpriseTrackEvent } from '@edx/frontend-enterprise-utils';
 import { useParams } from 'react-router';
+
+import { SubsidyRequestsContext } from '../../../subsidy-requests';
+import { SUPPORTED_SUBSIDY_TYPES } from '../../../../data/constants/subsidyRequests';
 import { ADMINISTER_SUBSCRIPTIONS_TARGETS, ADMIN_TOUR_EVENT_NAMES } from '../constants';
 import messages from '../messages';
 import { TourStep } from '../../types';
+import { configuration } from '../../../../config';
 
 interface CreateTourFlowsProps {
   currentStep: number;
@@ -26,6 +31,15 @@ const AdministerSubscriptionsFlow = ({
   const params = useParams();
   const subscriptionUuid = params['*']?.split('/')[1];
   const isOnDetailPage = !!subscriptionUuid;
+
+  const { subsidyRequestConfiguration } = useContext(SubsidyRequestsContext);
+  const isSubsidyRequestsEnabled = subsidyRequestConfiguration?.subsidyRequestsEnabled;
+  const subsidyType = subsidyRequestConfiguration?.subsidyType;
+  const isRequestsTabShown = isSubsidyRequestsEnabled && subsidyType === SUPPORTED_SUBSIDY_TYPES.license;
+  const onEnd = () => handleEndTour(
+    ADMIN_TOUR_EVENT_NAMES.ADMINISTER_SUBSCRIPTIONS_COMPLETED_EVENT_NAME,
+    configuration.ADMIN_ONBOARDING_UUIDS.FLOW_SUBSCRIPTIONS_UUID,
+  );
 
   function handleAdvanceTour(advanceEventName: string) {
     const newIndex = currentStep + 1;
@@ -54,8 +68,8 @@ const AdministerSubscriptionsFlow = ({
     setCurrentStep(newIndex);
   }
 
-  const onAnalyticsAdvance = () => handleAdvanceTour(ADMIN_TOUR_EVENT_NAMES.ENROLLMENT_INSIGHTS_ADVANCE_EVENT_NAME);
-  const onAnalyticsBack = () => handleBackTour(ADMIN_TOUR_EVENT_NAMES.ENROLLMENT_INSIGHTS_BACK_EVENT_NAME);
+  const onAdvance = () => handleAdvanceTour(ADMIN_TOUR_EVENT_NAMES.ADMINISTER_SUBSCRIPTIONS_ADVANCE_EVENT_NAME);
+  const onBack = () => handleBackTour(ADMIN_TOUR_EVENT_NAMES.ADMINISTER_SUBSCRIPTIONS_BACK_EVENT_NAME);
 
   if (isOnDetailPage) {
     return [
@@ -63,63 +77,74 @@ const AdministerSubscriptionsFlow = ({
         target: `#${ADMINISTER_SUBSCRIPTIONS_TARGETS.SUBSCRIPTION_PLANS_DETAIL_PAGE}`,
         placement: 'top',
         body: intl.formatMessage(messages.administerSubscriptionsStepFourBody),
-        onAdvance: onAnalyticsAdvance,
+        onAdvance,
       },
       {
         target: `#${ADMINISTER_SUBSCRIPTIONS_TARGETS.INVITE_LEARNERS_BUTTON}`,
         placement: 'left',
         body: intl.formatMessage(messages.administerSubscriptionsStepFiveBody),
-        onAdvance: onAnalyticsAdvance,
-        onBack: onAnalyticsBack,
+        onAdvance,
+        onBack,
       },
       {
         target: `#${ADMINISTER_SUBSCRIPTIONS_TARGETS.LICENSE_ALLOCATION_SECTION}`,
         placement: 'top',
         body: intl.formatMessage(messages.administerSubscriptionsStepSixBody),
-        onAdvance: onAnalyticsAdvance,
-        onBack: onAnalyticsBack,
+        onAdvance,
+        onBack,
       },
       {
         target: `#${ADMINISTER_SUBSCRIPTIONS_TARGETS.LICENSE_ALLOCATION_FILTERS}`,
         placement: 'right',
         body: intl.formatMessage(messages.administerSubscriptionsStepSevenBody),
-        onAdvance: onAnalyticsAdvance,
-        onBack: onAnalyticsBack,
+        onAdvance,
+        onBack,
       },
       {
         target: `#${ADMINISTER_SUBSCRIPTIONS_TARGETS.SUBSCRIPTIONS_NAVIGATION}`,
         placement: 'right',
         body: intl.formatMessage(messages.administerSubscriptionsStepEightBody),
-        onBack: onAnalyticsBack,
-        onEnd: handleEndTour,
+        onBack,
+        onEnd,
       },
     ];
   }
 
   // Main subscription page flow (steps 1-3)
-  return [
+  const mainPageFlow: Array<TourStep> = [
     {
       target: `#${ADMINISTER_SUBSCRIPTIONS_TARGETS.SIDEBAR}`,
       placement: 'right',
       title: intl.formatMessage(messages.administerSubscriptionsTitle),
       body: intl.formatMessage(messages.administerSubscriptionsStepOneBody),
-      onAdvance: onAnalyticsAdvance,
+      onAdvance,
     },
     {
       target: `#${ADMINISTER_SUBSCRIPTIONS_TARGETS.SUBSCRIPTION_PLANS_LIST}`,
       placement: 'top',
       body: intl.formatMessage(messages.administerSubscriptionsStepTwoBody),
-      onAdvance: onAnalyticsAdvance,
-      onBack: onAnalyticsBack,
+      onAdvance,
+      onBack,
     },
     {
       target: `#${ADMINISTER_SUBSCRIPTIONS_TARGETS.MANAGE_LEARNERS_BUTTON}`,
       placement: 'left',
       body: intl.formatMessage(messages.administerSubscriptionsStepThreeBody),
-      onBack: onAnalyticsBack,
-      onEnd: onAnalyticsAdvance,
+      onBack, 
+      onEnd: onAdvance,
     },
   ];
+
+  if (isRequestsTabShown) {
+    mainPageFlow.splice(2, 0, {
+      target: `#${ADMINISTER_SUBSCRIPTIONS_TARGETS.MANAGE_REQUESTS}`,
+      placement: 'bottom',
+      body: intl.formatMessage(messages.administerSubscriptionsStepNineBody),
+      onAdvance,
+      onBack,
+    });
+  }
+  return mainPageFlow;
 };
 
 export default AdministerSubscriptionsFlow;
