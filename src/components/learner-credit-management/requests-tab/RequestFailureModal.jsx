@@ -41,7 +41,7 @@ const RequestFailureModal = ({
                 }
                 target="_blank"
               >
-                Help Center
+                Help Center: Learner Selected Content
               </Hyperlink>
             </li>
           </ul>

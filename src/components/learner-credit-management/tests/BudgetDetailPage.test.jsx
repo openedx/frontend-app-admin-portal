@@ -1863,7 +1863,7 @@ describe('<BudgetDetailPage />', () => {
       expect(screen.getByText('This approved request was not canceled. Something went wrong behind the scenes.')).toBeInTheDocument();
     });
 
-    expect(screen.getByText('Help Center')).toBeInTheDocument();
+    expect(screen.getByText('Help Center: Learner Selected Content')).toBeInTheDocument();
   });
 
   it('renders failed redemption status chip and handles interactions', async () => {
@@ -1940,7 +1940,7 @@ describe('<BudgetDetailPage />', () => {
       expect(screen.getByText('Something went wrong behind the scenes when the learner attempted to redeem the requested course. Associated Learner credit funds have been released into your available balance.')).toBeInTheDocument();
     });
 
-    expect(screen.getByText('Help Center')).toBeInTheDocument();
+    expect(screen.getByText('Help Center: Learner Selected Content')).toBeInTheDocument();
   });
 
   it('renders request status cells with different statuses', async () => {
