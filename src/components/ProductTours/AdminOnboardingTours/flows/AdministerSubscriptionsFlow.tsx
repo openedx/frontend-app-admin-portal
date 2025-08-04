@@ -9,6 +9,7 @@ interface CreateTourFlowsProps {
   currentStep: number;
   enterpriseSlug: string;
   handleEndTour: (endEventName: string, flowUuid?: string) => void;
+  handleBackTour: (backEventName: string) => void;
   setCurrentStep: (step: number) => void;
   targetSelector?: string;
 }
@@ -17,6 +18,7 @@ const AdministerSubscriptionsFlow = ({
   currentStep,
   enterpriseSlug,
   handleEndTour,
+  handleBackTour,
   setCurrentStep,
   targetSelector,
 }: CreateTourFlowsProps): Array<TourStep> => {
@@ -53,6 +55,7 @@ const AdministerSubscriptionsFlow = ({
   }
 
   const onAnalyticsAdvance = () => handleAdvanceTour(ADMIN_TOUR_EVENT_NAMES.ENROLLMENT_INSIGHTS_ADVANCE_EVENT_NAME);
+  const onAnalyticsBack = () => handleBackTour(ADMIN_TOUR_EVENT_NAMES.ENROLLMENT_INSIGHTS_BACK_EVENT_NAME);
 
   if (isOnDetailPage) {
     return [
@@ -67,24 +70,28 @@ const AdministerSubscriptionsFlow = ({
         placement: 'left',
         body: intl.formatMessage(messages.administerSubscriptionsStepFiveBody),
         onAdvance: onAnalyticsAdvance,
+        onBack: onAnalyticsBack,
       },
       {
         target: `#${ADMINISTER_SUBSCRIPTIONS_TARGETS.LICENSE_ALLOCATION_SECTION}`,
         placement: 'top',
         body: intl.formatMessage(messages.administerSubscriptionsStepSixBody),
         onAdvance: onAnalyticsAdvance,
+        onBack: onAnalyticsBack,
       },
       {
         target: `#${ADMINISTER_SUBSCRIPTIONS_TARGETS.LICENSE_ALLOCATION_FILTERS}`,
         placement: 'right',
         body: intl.formatMessage(messages.administerSubscriptionsStepSevenBody),
         onAdvance: onAnalyticsAdvance,
+        onBack: onAnalyticsBack,
       },
       {
         target: `#${ADMINISTER_SUBSCRIPTIONS_TARGETS.SUBSCRIPTIONS_NAVIGATION}`,
         placement: 'right',
         body: intl.formatMessage(messages.administerSubscriptionsStepEightBody),
-        onAdvance: handleEndTour,
+        onBack: onAnalyticsBack,
+        onEnd: handleEndTour,
       },
     ];
   }
@@ -103,11 +110,13 @@ const AdministerSubscriptionsFlow = ({
       placement: 'top',
       body: intl.formatMessage(messages.administerSubscriptionsStepTwoBody),
       onAdvance: onAnalyticsAdvance,
+      onBack: onAnalyticsBack,
     },
     {
       target: `#${ADMINISTER_SUBSCRIPTIONS_TARGETS.MANAGE_LEARNERS_BUTTON}`,
       placement: 'left',
       body: intl.formatMessage(messages.administerSubscriptionsStepThreeBody),
+      onBack: onAnalyticsBack,
       onEnd: onAnalyticsAdvance,
     },
   ];

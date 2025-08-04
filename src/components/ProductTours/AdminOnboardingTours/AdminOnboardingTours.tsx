@@ -57,6 +57,8 @@ const AdminOnboardingTours: FC<AdminOnboardingToursProps> = ({
   }, [targetSelector]);
 
   useEffect(() => {
+    console.log('kira in useeffect');
+    // console.log('currentStep ', currentStep)
     if (adminOnboardingSteps[currentStep]) {
       const nextTarget = adminOnboardingSteps[currentStep].target;
       const targetWithoutPrefix = nextTarget.replace(/^[.#]/, '');

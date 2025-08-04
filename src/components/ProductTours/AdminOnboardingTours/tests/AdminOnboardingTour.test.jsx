@@ -113,4 +113,25 @@ describe('useAdminOnboardingTour', () => {
       { 'completed-step': 1 },
     );
   });
+
+  it('should call sendEnterpriseTrackEvent with correct parameters when tour advances', () => {
+    const props = {
+      currentStep: 2,
+      setCurrentStep: jest.fn(),
+      enterpriseSlug: 'test-enterprise',
+    };
+    const { result } = renderHook(() => useAdminOnboardingTour(props), { wrapper });
+
+    const secondStep = result.current[1];
+
+    act(() => {
+      secondStep.onBack();
+    });
+
+    expect(sendEnterpriseTrackEvent).toHaveBeenLastCalledWith(
+      defaultProps.enterpriseSlug,
+      ADMIN_TOUR_EVENT_NAMES.LEARNER_PROGRESS_BACK_EVENT_NAME,
+      { 'back-step': 1 },
+    );
+  });
 });

@@ -41,6 +41,13 @@ const AdminOnboardingTour = (
     setCurrentStep(newIndex);
   }
 
+  function handleBackTour(backEventName: string) {
+    console.log('kira are we in the handleBack?');
+    const newIndex = currentStep - 1;
+    sendEnterpriseTrackEvent(enterpriseSlug, backEventName, { 'back-step': newIndex });
+    setCurrentStep(newIndex);
+  }
+
   async function handleEndTour(endEventName: string, flowUuid: string) {
     try {
       onClose();
@@ -52,14 +59,19 @@ const AdminOnboardingTour = (
   }
 
   const administerSubscriptionsFlow = AdministerSubscriptionsFlow({
-    currentStep, enterpriseSlug, handleEndTour, setCurrentStep, targetSelector,
+    currentStep, enterpriseSlug, handleEndTour, handleBackTour, setCurrentStep, targetSelector,
   });
-  const analyticsFlow = AnalyticsFlow({ handleAdvanceTour, handleEndTour });
+  const analyticsFlow = AnalyticsFlow({ handleAdvanceTour, handleBackTour, handleEndTour });
   const customizeReportsFlow = CustomizeReportsFlow({ handleEndTour });
-  const learnerProgressFlow = LearnerProgressFlow({ aiButtonVisible, handleAdvanceTour, handleEndTour });
-  const organizeLearnersFlow = OrganizeLearnersFlow({ enterpriseId, handleAdvanceTour, handleEndTour });
+  const learnerProgressFlow = LearnerProgressFlow({
+    aiButtonVisible, handleAdvanceTour, handleBackTour, handleEndTour,
+  });
+  const organizeLearnersFlow = OrganizeLearnersFlow({
+    enterpriseId, handleAdvanceTour, handleBackTour, handleEndTour,
+  });
   const setUpPreferencesFlow = SetUpPreferencesFlow({ handleEndTour });
 
+  console.log('kira flow ', organizeLearnersFlow);
   // Map target selectors to their respective flows
   const flowMapping = {
     [TRACK_LEARNER_PROGRESS_TARGETS.LEARNER_PROGRESS_SIDEBAR]: learnerProgressFlow,

@@ -54,15 +54,19 @@ export const ADMIN_TOUR_EVENT_NAMES = {
   ENROLLMENT_INSIGHTS_ADVANCE_EVENT_NAME: 'edx.ui.enterprise.admin-portal.admin-onboarding-tours.enrollment-insights.advance',
   ENROLLMENT_INSIGHTS_COMPLETED_EVENT_NAME: 'edx.ui.enterprise.admin-portal.admin-onboarding-tours.enrollment-insights.completed',
   ENROLLMENT_INSIGHTS_DISMISS_EVENT_NAME: 'edx.ui.enterprise.admin-portal.admin-onboarding-tours.enrollment-insights.dismiss',
+  ENROLLMENT_INSIGHTS_BACK_EVENT_NAME: 'edx.ui.enterprise.admin-portal.admin-onboarding-tours.enrollment-insights.back',
   LEARNER_PROGRESS_ADVANCE_EVENT_NAME: 'edx.ui.enterprise.admin-portal.admin-onboarding-tours.learner-progress.advance',
   LEARNER_PROGRESS_COMPLETED_EVENT_NAME: 'edx.ui.enterprise.admin-portal.admin-onboarding-tours.learner-progress.completed',
   LEARNER_PROGRESS_DISMISS_EVENT_NAME: 'edx.ui.enterprise.admin-portal.admin-onboarding-tours.learner-progress.dismiss',
+  LEARNER_PROGRESS_BACK_EVENT_NAME: 'edx.ui.enterprise.admin-portal.admin-onboarding-tours.learner-progress.back',
   ORGANIZE_LEARNERS_ADVANCE_EVENT_NAME: 'edx.ui.enterprise.admin-portal.admin-onboarding-tours.organize-learners.advance',
   ORGANIZE_LEARNERS_COMPLETED_EVENT_NAME: 'edx.ui.enterprise.admin-portal.admin-onboarding-tours.organize-learners.completed',
   ORGANIZE_LEARNERS_DISMISS_EVENT_NAME: 'edx.ui.enterprise.admin-portal.admin-onboarding-tours.organize-learners.dismiss',
+  ORGANIZE_LEARNERS_BACK_EVENT_NAME: 'edx.ui.enterprise.admin-portal.admin-onboarding-tours.organize-learners.back',
   ADMINISTER_SUBSCRIPTIONS_ADVANCE_EVENT_NAME: 'edx.ui.enterprise.admin-portal.admin-onboarding-tours.administer-subscriptions.advance',
   ADMINISTER_SUBSCRIPTIONS_COMPLETED_EVENT_NAME: 'edx.ui.enterprise.admin-portal.admin-onboarding-tours.administer-subscriptions.completed',
   ADMINISTER_SUBSCRIPTIONS_DISMISS_EVENT_NAME: 'edx.ui.enterprise.admin-portal.admin-onboarding-tours.administer-subscriptions.dismiss',
+  ADMINISTER_SUBSCRIPTIONS_BACK_EVENT_NAME: 'edx.ui.enterprise.admin-portal.admin-onboarding-tours.administer-subscriptions.back',
 };
 
 export const ONBOARDING_WELCOME_MODAL_COOKIE_NAME = 'seen-onboarding-welcome-modal';
