@@ -61,7 +61,7 @@ const WaitingForLearner = ({ learnerEmail, trackEvent }) => {
                 onClick={helpCenterTrackEvent}
                 target="_blank"
               >
-                Help Center: Course Assignments
+                Help Center: Learner Selected Content
               </Hyperlink>.
             </p>
           </div>
