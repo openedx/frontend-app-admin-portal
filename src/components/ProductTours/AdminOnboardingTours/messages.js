@@ -4,6 +4,7 @@ export const ORGANIZE_LEARNERS_TITLE = 'Organize learners';
 export const TRACK_LEARNER_PROGRESS_TITLE = 'Track Learner Progress';
 export const VIEW_ENROLLMENTS_INSIGHT_TITLE = 'View enrollment insights';
 export const ADMINISTER_SUBSCRIPTIONS_TITLE = 'Administer subscriptions';
+export const ALLOCATE_LEARNING_BUDGET_TITLE = 'Allocate learning budget';
 export const CUSTOMIZE_REPORTS_TITLE = 'Customize Reports';
 export const SET_UP_PREFERENCES_TITLE = 'Set Up Preferences';
 
@@ -239,6 +240,66 @@ const messages = defineMessages({
     id: 'adminPortal.productTours.adminOnboarding.administerSubscriptions.body.8',
     defaultMessage: 'To view more plans, navigate back to Subscription Management using this button or the main menu.',
     description: 'Description for the administer subscriptions flow step eight',
+  },
+  allocateLearningBudgetTitle: {
+    id: 'adminPortal.productTours.adminOnboarding.allocateLearningBudget.title',
+    defaultMessage: ALLOCATE_LEARNING_BUDGET_TITLE,
+    description: 'Description for the allocate learning budgets flow step one title',
+  },
+  allocateLearningBudgetStepOneBody: {
+    id: 'adminPortal.productTours.adminOnboarding.allocateLearningBudget.body.1',
+    defaultMessage: 'Manage Learner Credit budgets to invite learners to enroll or assign courses directly.',
+    description: 'Description for the allocate learning budgets flow step one body',
+  },
+  allocateLearningBudgetStepTwoBody: {
+    id: 'adminPortal.productTours.adminOnboarding.allocateLearningBudget.body.2',
+    defaultMessage: 'Use search and filters to quickly find the budget you\'re looking for.',
+    description: 'Description for the allocate learning budgets flow step two',
+  },
+  allocateLearningBudgetStepThreeBody: {
+    id: 'adminPortal.productTours.adminOnboarding.allocateLearningBudget.body.3',
+    defaultMessage: 'Let\'s view your Assignment budget.',
+    description: 'Description for the allocate learning budgets flow step three',
+  },
+  allocateAssignmentBudgetStepFourBody: {
+    id: 'adminPortal.productTours.adminOnboarding.allocateAssignmentBudget.body.4',
+    defaultMessage: 'The budget detail card provides an overview of your budget, including its type, expiration date, and balance.',
+    description: 'Description for the allocate learning budgets flow step four',
+  },
+  allocateAssignmentBudgetStepFiveBody: {
+    id: 'adminPortal.productTours.adminOnboarding.allocateAssignmentBudget.body.5',
+    defaultMessage: '"New Assignment" allows you to assign courses from your catalog.',
+    description: 'Description for the allocate learning budgets flow step five',
+  },
+  allocateAssignmentBudgetStepSixBody: {
+    id: 'adminPortal.productTours.adminOnboarding.allocateAssignmentBudget.body.6',
+    defaultMessage: 'Expand "Utilization Details" to see a breakdown of spent funds and pending assignments.',
+    description: 'Description for the allocate learning budgets flow step six',
+  },
+  allocateAssignmentBudgetStepSevenBody: {
+    id: 'adminPortal.productTours.adminOnboarding.allocateAssignmentBudget.body.7',
+    defaultMessage: 'Track all budget activity, including pending assignments and enrollment spending.',
+    description: 'Description for the allocate learning budgets flow step seven',
+  },
+  allocateAssignmentBudgetStepEightBody: {
+    id: 'adminPortal.productTours.adminOnboarding.allocateAssignmentBudget.body.8',
+    defaultMessage: 'The Assigned table helps you monitor learner assignments, send reminders, or cancel as needed.',
+    description: 'Description for the allocate learning budgets flow step eight',
+  },
+  allocateAssignmentBudgetStepNineBody: {
+    id: 'adminPortal.productTours.adminOnboarding.allocateAssignmentBudget.body.9',
+    defaultMessage: 'The Spent table allows you to review spending details for this budget.',
+    description: 'Description for the allocate learning budgets flow step nine',
+  },
+  allocateAssignmentBudgetStepTenBody: {
+    id: 'adminPortal.productTours.adminOnboarding.allocateAssignmentBudget.body.10',
+    defaultMessage: 'Use the Catalog tab to browse available courses and assign them directly to learners.',
+    description: 'Description for the allocate learning budgets flow step ten',
+  },
+  allocateAssignmentBudgetStepElevenBody: {
+    id: 'adminPortal.productTours.adminOnboarding.allocateAssignmentBudget.body.11',
+    defaultMessage: 'To view more budgets, return to Learner Credit Management using the breadcrumbs oor left-hand navigation.',
+    description: 'Description for the allocate learning budgets flow step eleven',
   },
   administerSubscriptionsStepNineBody: {
     id: 'adminPortal.productTours.adminOnboarding.administerSubscriptions.body.9',

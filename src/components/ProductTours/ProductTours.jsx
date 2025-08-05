@@ -27,6 +27,7 @@ import {
 import TourCollapsible from './TourCollapsible';
 import {
   ADMINISTER_SUBSCRIPTIONS_TARGETS,
+  ALLOCATE_LEARNING_BUDGETS_TARGETS,
   ANALYTICS_INSIGHTS_TARGETS,
   ORGANIZE_LEARNER_TARGETS,
   TRACK_LEARNER_PROGRESS_TARGETS,
@@ -87,6 +88,8 @@ const ProductTours = ({
       navigate(`/${enterpriseSlug}/admin/${ROUTE_NAMES.analytics}/`);
     } else if (targetId === ADMINISTER_SUBSCRIPTIONS_TARGETS.SIDEBAR) {
       navigate(`/${enterpriseSlug}/admin/${ROUTE_NAMES.subscriptionManagement}/`);
+    } else if (targetId === ALLOCATE_LEARNING_BUDGETS_TARGETS.SIDEBAR) {
+      navigate(`/${enterpriseSlug}/admin/${ROUTE_NAMES.learnerCredit}/`);
     }
     setSelectedTourTarget(targetId);
     setIsAdminTourOpen(true);

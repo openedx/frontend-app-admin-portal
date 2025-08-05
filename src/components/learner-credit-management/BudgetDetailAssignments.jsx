@@ -144,7 +144,7 @@ const BudgetDetailAssignments = ({
   }
 
   return (
-    <section className="budget-detail-assignments">
+    <section className="budget-detail-assignments" id="assignment-budget-table">
       <BudgetDetailAssignmentsHeader status={status} />
       <BudgetAssignmentsTable
         isLoading={isLoading}
