@@ -143,7 +143,7 @@ describe('useAdminOnboardingTour', () => {
     );
   });
 
-  it('should call sendEnterpriseTrackEvent with correct parameters when tour advances', () => {
+  it('should call sendEnterpriseTrackEvent with correct parameters when tour goes back', () => {
     const props = {
       currentStep: 2,
       setCurrentStep: jest.fn(),
