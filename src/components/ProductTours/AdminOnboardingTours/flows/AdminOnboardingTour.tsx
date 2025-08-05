@@ -18,8 +18,9 @@ import AnalyticsFlow from './AnalyticsFlow';
 import CustomizeReportsFlow from './CustomizeReportsFlow';
 import LearnerProgressFlow from './LearnerProgressFlow';
 import OrganizeLearnersFlow from './OrganizeLearnersFlow';
-import SetUpPreferencesFlow from '../SetUpPreferencesFlow';
+import SetUpPreferencesFlow from './SetUpPreferencesFlow';
 import { TOUR_TARGETS } from '../../constants';
+import useFetchCompletedOnboardingFlows from '../data/useFetchCompletedOnboardingFlows';
 
 interface AdminOnboardingTourProps {
   adminUuid: string;
@@ -52,6 +53,7 @@ const AdminOnboardingTour = (
     enterpriseId,
   }: AdminOnboardingTourProps,
 ): Array<TourStep> => {
+  const { refetch } = useFetchCompletedOnboardingFlows(adminUuid);
   function handleAdvanceTour(advanceEventName: string) {
     const newIndex = currentStep + 1;
 
@@ -94,6 +96,7 @@ const AdminOnboardingTour = (
       onClose();
       sendEnterpriseTrackEvent(enterpriseSlug, endEventName);
       await LmsApiService.updateCompletedTourFlows(adminUuid, flowUuid);
+      refetch();
     } catch (error) {
       logError(error);
     }

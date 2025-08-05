@@ -194,6 +194,7 @@ const messages = defineMessages({
     + 'Use these insights to understand learner interests and skill development trends.',
     description: 'Description for the analytics tracking step six',
   },
+
   administerSubscriptionsTitle: {
     id: 'adminPortal.productTours.adminOnboarding.administerSubscriptions.title',
     defaultMessage: ADMINISTER_SUBSCRIPTIONS_TITLE,
@@ -299,6 +300,11 @@ const messages = defineMessages({
     id: 'adminPortal.productTours.adminOnboarding.allocateAssignmentBudget.body.11',
     defaultMessage: 'To view more budgets, return to Learner Credit Management using the breadcrumbs oor left-hand navigation.',
     description: 'Description for the allocate learning budgets flow step eleven',
+  },
+  administerSubscriptionsStepNineBody: {
+    id: 'adminPortal.productTours.adminOnboarding.administerSubscriptions.body.9',
+    defaultMessage: 'Review and manage course requests from your learners.',
+    description: 'Description for the administer subscriptions flow step nine',
   },
   viewCustomizeReportsTitle: {
     id: 'adminPortal.productTours.adminOnboarding.customizeReports.title',

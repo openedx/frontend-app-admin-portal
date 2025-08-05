@@ -39,21 +39,28 @@ export type EnterpriseGroupInviteResponse = Promise<AxiosResponse<GroupInviteSum
 
 export type FetchEnterpriseLearnerDataArgs = { enterpriseCustomer?: string, userId?: string, username?: string };
 
-export interface EnterpriseAdminResponse {
+export interface EnterpriseAdminPaginatedResponse {
   data: {
     count: number;
     next?: any;
     previous?: any;
-    results: Array<{
-      uuid?: string;
-      enterprise_customer_user?: number;
-      last_login?: string | null;
-      completed_tour_flows?: any[];
-      onboarding_tour_dismissed?: boolean;
-      onboarding_tour_completed?: boolean;
-    }>;
+    results: Array<EnterpriseAdminPayload>;
   };
 }
+
+export type EnterpriseAdminPayload = {
+  uuid?: string;
+  enterprise_customer_user?: number;
+  last_login?: string | null;
+  completed_tour_flows?: any[];
+  onboarding_tour_dismissed?: boolean;
+  onboarding_tour_completed?: boolean;
+};
+
+export interface EnterpriseAdminResponse {
+  data: EnterpriseAdminPayload;
+}
+
 class LmsApiService {
   static apiClient = getAuthenticatedHttpClient;
 
@@ -168,8 +175,13 @@ class LmsApiService {
       });
   }
 
-  static fetchLoggedInEnterpriseAdminProfile(): EnterpriseAdminResponse {
+  static fetchLoggedInEnterpriseAdminProfile(): EnterpriseAdminPaginatedResponse {
     const enterpriseAdminProfileUrl = `${LmsApiService.baseUrl}/enterprise/api/v1/enterprise-customer-admin/`;
+    return LmsApiService.apiClient().get(enterpriseAdminProfileUrl);
+  }
+
+  static fetchEnterpriseAdminProfile(adminUuid: string): EnterpriseAdminResponse {
+    const enterpriseAdminProfileUrl = `${LmsApiService.baseUrl}/enterprise/api/v1/enterprise-customer-admin/${adminUuid}/`;
     return LmsApiService.apiClient().get(enterpriseAdminProfileUrl);
   }
 

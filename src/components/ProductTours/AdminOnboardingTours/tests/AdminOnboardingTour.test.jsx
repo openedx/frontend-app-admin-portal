@@ -7,6 +7,9 @@ import useAdminOnboardingTour from '../flows/AdminOnboardingTour';
 import { ADMIN_TOUR_EVENT_NAMES } from '../constants';
 import useHydrateAdminOnboardingData from '../data/useHydrateAdminOnboardingData';
 import { queryClient } from '../../../test/testUtils';
+import { SubsidyRequestsContext } from '../../../subsidy-requests';
+
+const mockAdminUuid = 'test-admin-uuid';
 
 const mockMessages = {
   collapsibleTitle: {
@@ -22,6 +25,22 @@ const mockMessages = {
     defaultMessage: 'Track learner activity and progress.',
   },
 };
+
+const requestsDisabled = {
+  subsidyRequestConfiguration: {
+    subsidyRequestsEnabled: false,
+    subsidyType: 'license',
+  },
+};
+
+jest.mock('../../../../config', () => ({
+  ...jest.requireActual('../../../../config'),
+  configuration: {
+    ADMIN_ONBOARDING_UUIDS: {
+      FLOW_TRACK_LEARNER_PROGRESS_UUID: 'test-flow-uuid',
+    },
+  },
+}));
 
 jest.mock('../data/useHydrateAdminOnboardingData');
 
@@ -45,20 +64,30 @@ jest.mock('@edx/frontend-platform/i18n', () => ({
 }));
 
 const wrapper = ({ children }) => (
-  <QueryClientProvider client={queryClient()}>
-    {children}
-  </QueryClientProvider>
+  <SubsidyRequestsContext.Provider value={requestsDisabled}>
+    <QueryClientProvider client={queryClient()}>
+      {children}
+    </QueryClientProvider>
+  </SubsidyRequestsContext.Provider>
 );
+
+const mockOnClose = jest.fn();
 
 describe('useAdminOnboardingTour', () => {
   const defaultProps = {
+    adminUuid: mockAdminUuid,
     currentStep: 0,
-    setCurrentStep: jest.fn(),
     enterpriseSlug: 'test-enterprise',
+    onClose: mockOnClose,
+    setCurrentStep: jest.fn(),
   };
 
   beforeEach(() => {
     useHydrateAdminOnboardingData.mockReturnValue({ data: { hasEnterpriseMembers: true, hasEnterpriseGroups: true } });
+  });
+
+  afterEach(() => {
+    jest.clearAllMocks();
   });
 
   it('returns tour configuration with correct structure', () => {
@@ -111,6 +140,22 @@ describe('useAdminOnboardingTour', () => {
       defaultProps.enterpriseSlug,
       ADMIN_TOUR_EVENT_NAMES.LEARNER_PROGRESS_ADVANCE_EVENT_NAME,
       { 'completed-step': 1 },
+    );
+  });
+
+  it('should call sendEnterpriseTrackEvent with correct parameters when tour ends', () => {
+    const { result } = renderHook(() => useAdminOnboardingTour(defaultProps), { wrapper });
+
+    const lastStep = result.current[6];
+
+    act(() => {
+      lastStep.onEnd();
+    });
+
+    expect(mockOnClose).toHaveBeenCalled();
+    expect(sendEnterpriseTrackEvent).toHaveBeenCalledWith(
+      'test-enterprise',
+      ADMIN_TOUR_EVENT_NAMES.LEARNER_PROGRESS_COMPLETED_EVENT_NAME,
     );
   });
 });
