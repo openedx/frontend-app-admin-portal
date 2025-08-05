@@ -106,7 +106,7 @@ const BudgetDetailRedemptions = ({ enterpriseFeatures, enterpriseUUID }) => {
   });
 
   return (
-    <section data-testid="spent-section">
+    <section data-testid="spent-section" id="assignment-spent-budget-table">
       <h3 className="mb-3" ref={spentHeadingRef}>
         <FormattedMessage
           id="lcm.budget.detail.page.spent.heading"

@@ -38,6 +38,7 @@ export const useBudgetDetailTabs = ({
     const tabsArray = [];
     tabsArray.push(
       <Tab
+        id="track-budget-activity"
         key={BUDGET_DETAIL_ACTIVITY_TAB}
         eventKey={BUDGET_DETAIL_ACTIVITY_TAB}
         title={
@@ -57,6 +58,7 @@ export const useBudgetDetailTabs = ({
     if (showCatalog) {
       tabsArray.push(
         <Tab
+          id="assignment-budget-catalog-tab"
           key={BUDGET_DETAIL_CATALOG_TAB}
           eventKey={BUDGET_DETAIL_CATALOG_TAB}
           disabled={isCatalogTabDisabled}
