@@ -3,7 +3,7 @@ import { FormattedMessage } from '@edx/frontend-platform/i18n';
 import PropTypes from 'prop-types';
 import { sendEnterpriseTrackEvent } from '@edx/frontend-enterprise-utils';
 import { ANALYTICS_TABS } from '../constants';
-import { COURSE_TYPES } from '../data/constants';
+import { COURSE_TYPES, DEFAULT_COURSE_VALUE } from '../data/constants';
 import {
   useEnterpriseEngagementData,
   useEnterpriseAnalyticsAggregatesData,
@@ -42,6 +42,7 @@ const Engagements = ({ enterpriseId }) => {
   const [startDate, setStartDate] = useState(get90DayPriorDate());
   const [endDate, setEndDate] = useState(currentDate);
   const [courseType, setCourseType] = useState(COURSE_TYPES.ALL_COURSE_TYPES);
+  const [course, setCourse] = useState(DEFAULT_COURSE_VALUE);
 
   // Stats Data
   const { isFetching: isStatsFetching, isError: isStatsError, data: statsData } = useEnterpriseAnalyticsAggregatesData({
@@ -127,6 +128,8 @@ const Engagements = ({ enterpriseId }) => {
           setEndDate={setEndDate}
           courseType={courseType}
           setCourseType={setCourseType}
+          course={course}
+          setCourse={setCourse}
           granularity={granularity}
           setGranularity={setGranularity}
           calculation={calculation}
