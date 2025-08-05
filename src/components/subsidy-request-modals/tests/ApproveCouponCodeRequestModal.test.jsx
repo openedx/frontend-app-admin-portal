@@ -20,9 +20,9 @@ jest.mock('../../../data/services/EnterpriseAccessApiService', () => ({
 }));
 
 const ApproveCouponCodeRequestModalWrapper = ({ ...rest }) => (
-    <IntlProvider locale="en">
-      <ApproveCouponCodeRequestModal {...rest} />
-    </IntlProvider>
+  <IntlProvider locale="en">
+    <ApproveCouponCodeRequestModal {...rest} />
+  </IntlProvider>
 );
 
 describe('<ApproveCouponCodeRequestModal />', () => {

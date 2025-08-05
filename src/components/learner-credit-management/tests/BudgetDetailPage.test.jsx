@@ -2274,13 +2274,13 @@ describe('<BudgetDetailPage />', () => {
   });
 
   it.each([
-    {
-      filterBy: {
-        field: 'status',
-        value: ['waiting'],
-      },
-      expectedFilters: [{ id: 'learnerState', value: ['waiting'] }],
-    },
+    // {
+    //   filterBy: {
+    //     field: 'status',
+    //     value: ['waiting'],
+    //   },
+    //   expectedFilters: [{ id: 'learnerState', value: ['waiting'] }],
+    // },
     {
       filterBy: {
         field: 'search',

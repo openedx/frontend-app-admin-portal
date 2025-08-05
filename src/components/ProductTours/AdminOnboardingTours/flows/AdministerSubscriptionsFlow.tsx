@@ -130,7 +130,7 @@ const AdministerSubscriptionsFlow = ({
       target: `#${ADMINISTER_SUBSCRIPTIONS_TARGETS.MANAGE_LEARNERS_BUTTON}`,
       placement: 'left',
       body: intl.formatMessage(messages.administerSubscriptionsStepThreeBody),
-      onBack, 
+      onBack,
       onEnd: onAdvance,
     },
   ];
