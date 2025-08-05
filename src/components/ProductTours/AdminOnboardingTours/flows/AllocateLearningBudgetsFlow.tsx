@@ -42,12 +42,6 @@ const AllocateLearningBudgetsFlow = ({
         onAdvance: onAnalyticsAdvance,
       },
       {
-        target: `#${ALLOCATE_LEARNING_BUDGETS_TARGETS.ASSIGNMENT_BUDGET_UTILIZATION_DETAILS}`,
-        placement: 'top',
-        body: intl.formatMessage(messages.allocateAssignmentBudgetStepSixBody),
-        onAdvance: onAnalyticsAdvance,
-      },
-      {
         target: `#${ALLOCATE_LEARNING_BUDGETS_TARGETS.TRACK_BUDGET_ACTIVITY}`,
         placement: 'right',
         body: intl.formatMessage(messages.allocateAssignmentBudgetStepSevenBody),

@@ -85,15 +85,14 @@ describe('AllocateLearningBudgetsFlow', () => {
         handleEndTour: mockHandleEndTour,
       }));
 
-      expect(result.current).toHaveLength(8);
+      expect(result.current).toHaveLength(7);
       expect(result.current[0].target).toBe('#assignment-budget-detail-card');
       expect(result.current[1].target).toBe('#new-assignment-button');
-      expect(result.current[2].target).toBe('#assignment-budget-utilization-details');
-      expect(result.current[3].target).toBe('#track-budget-activity');
-      expect(result.current[4].target).toBe('#assignment-budget-table');
-      expect(result.current[5].target).toBe('#assignment-spent-budget-table');
-      expect(result.current[6].target).toBe('#assignment-budget-catalog-tab');
-      expect(result.current[7].target).toBe('#learner-credit-management-breadcrumbs');
+      expect(result.current[2].target).toBe('#track-budget-activity');
+      expect(result.current[3].target).toBe('#assignment-budget-table');
+      expect(result.current[4].target).toBe('#assignment-spent-budget-table');
+      expect(result.current[5].target).toBe('#assignment-budget-catalog-tab');
+      expect(result.current[6].target).toBe('#learner-credit-management-breadcrumbs');
     });
 
     it('should call handleEndTour on the final step', () => {
@@ -103,7 +102,7 @@ describe('AllocateLearningBudgetsFlow', () => {
       }));
 
       act(() => {
-        result.current[7].onEnd();
+        result.current[6].onEnd();
       });
       expect(mockHandleEndTour).toHaveBeenCalledTimes(1);
     });

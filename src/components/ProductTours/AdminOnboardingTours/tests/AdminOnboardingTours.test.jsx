@@ -4,6 +4,7 @@ import '@testing-library/jest-dom';
 import { Provider } from 'react-redux';
 import configureStore from 'redux-mock-store';
 import { IntlProvider } from '@edx/frontend-platform/i18n';
+import { MemoryRouter as Router } from 'react-router-dom';
 
 import userEvent from '@testing-library/user-event';
 import AdminOnboardingTours from '../AdminOnboardingTours';
@@ -91,11 +92,13 @@ describe('AdminOnboardingTours', () => {
     return render(
       <IntlProvider locale="en">
         <Provider store={store}>
-          <p id="step-1">Step 1</p>
-          <p id="step-2">Step 2</p>
-          <p id="step-3">Step 3</p>
-          <p id="step-4">Step 4</p>
-          <AdminOnboardingTours {...finalProps} />
+          <Router>
+            <p id="step-1">Step 1</p>
+            <p id="step-2">Step 2</p>
+            <p id="step-3">Step 3</p>
+            <p id="step-4">Step 4</p>
+            <AdminOnboardingTours {...finalProps} />
+          </Router>
         </Provider>
       </IntlProvider>,
     );
@@ -158,9 +161,11 @@ describe('AdminOnboardingTours', () => {
     rerender(
       <IntlProvider locale="en">
         <Provider store={store}>
-          <p id="step-1">Step 1</p>
-          <p id="step-2">Step 2</p>
-          <AdminOnboardingTours {...defaultProps} targetSelector={RESET_TARGETS[0]} />
+          <Router>
+            <p id="step-1">Step 1</p>
+            <p id="step-2">Step 2</p>
+            <AdminOnboardingTours {...defaultProps} targetSelector={RESET_TARGETS[0]} />
+          </Router>
         </Provider>
       </IntlProvider>,
     );
