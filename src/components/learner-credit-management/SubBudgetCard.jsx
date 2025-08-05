@@ -107,6 +107,7 @@ const BaseSubBudgetCard = ({
   const renderActions = (budgetId) => (
     <Button
       data-testid="view-budget"
+      id="learner-credit-view-budget-button"
       as={Link}
       to={`/${enterpriseSlug}/admin/${ROUTE_NAMES.learnerCredit}/${budgetId}`}
       variant={isRetiredOrExpired ? 'outline-primary' : 'primary'}
