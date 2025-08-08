@@ -8,11 +8,5 @@ const config = createConfig('jest', {
 });
 config.transformIgnorePatterns = ['node_modules/(?!(lodash-es|@(open)?edx)/)'];
 
-// This is temoporary changes to exclude the requests-tab folder from coverage
-config.coveragePathIgnorePatterns = [
-  '/src/components/learner-credit-management/requests-tab/',
-  'src/components/learner-credit-management/BudgetDetailRequestsTabContent.jsx',
-];
-
 
 module.exports = config;
