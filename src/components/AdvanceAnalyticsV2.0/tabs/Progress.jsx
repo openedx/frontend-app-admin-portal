@@ -9,6 +9,7 @@ import TopCoursesByCompletionTable from '../tables/TopCoursesByCompletionTable';
 import TopSubjectsByCompletionTable from '../tables/TopSubjectsByCompletionTable';
 import IndividualCompletionsTable from '../tables/IndividualCompletionsTable';
 import { get90DayPriorDate } from '../data/utils';
+import { DEFAULT_COURSE_VALUE } from '../data/constants';
 
 const Progress = ({ enterpriseId }) => {
   // Filters
@@ -26,6 +27,8 @@ const Progress = ({ enterpriseId }) => {
 
   const [startDate, setStartDate] = useState(get90DayPriorDate());
   const [endDate, setEndDate] = useState(currentDate);
+  const [course, setCourse] = useState(DEFAULT_COURSE_VALUE);
+
   // Stats Data
   const { data: statsData } = useEnterpriseAnalyticsAggregatesData({
     enterpriseCustomerUUID: enterpriseId,
@@ -72,6 +75,8 @@ const Progress = ({ enterpriseId }) => {
           setStartDate={setStartDate}
           endDate={endDate}
           setEndDate={setEndDate}
+          course={course}
+          setCourse={setCourse}
           granularity={granularity}
           setGranularity={setGranularity}
           calculation={calculation}

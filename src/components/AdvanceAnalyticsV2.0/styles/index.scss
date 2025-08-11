@@ -35,6 +35,59 @@
   height: 560px;
 }
 
+/* Course Filter Dropdown Styles */
+.course-filter-select {
+  .course-filter-select__control {
+    border-radius: 0;
+    border-color: black;
+    box-shadow: none;
+    min-height: 38px;
+    font-weight: normal;
+
+    &:hover {
+      border-color: black;
+    }
+
+    &--is-focused {
+      box-shadow: 0 0 0 1px black;
+    }
+  }
+
+  .course-filter-select__indicator-separator {
+    display: none;
+  }
+
+  .course-filter-select__dropdown-indicator {
+    color: black;
+
+    &:hover {
+      color: black;
+    }
+  }
+
+  .course-filter-select__option {
+    &:hover {
+      background-color: Highlight;
+      color: HighlightText;
+    }
+
+    &--is-focused {
+      background-color: Highlight;
+      color: HighlightText;
+    }
+
+    &--is-selected {
+      background-color: Highlight;
+      color: HighlightText;
+    }
+  }
+
+  .course-filter-select__menu {
+    z-index: 9999;
+    background-color: #F0EEEDFF !important;
+  }
+}
+
 @media (max-width: 991.98px) {
   .row {
       display: flex;
