@@ -66,7 +66,7 @@ describe('AnalyticsFilters Component', () => {
     expect(screen.getByLabelText('Calculation / Trends')).toBeInTheDocument();
     expect(screen.getByLabelText('Date granularity')).toBeInTheDocument();
     expect(screen.getByLabelText('Filter by budget')).toBeDisabled();
-    expect(screen.getByLabelText('Filter by course')).toBeDisabled();
+    expect(screen.getByLabelText('Filter by course')).toBeInTheDocument();
     expect(screen.getByLabelText('Filter by course type')).toBeInTheDocument();
     expect(screen.getByLabelText('Date range options')).toBeInTheDocument();
   });

@@ -16,6 +16,7 @@ import CompletionsOverTimeChart from '../charts/CompletionsOverTimeChart';
 import TopSkillsByCompletionChart from '../charts/TopSkillsByCompletionChart';
 import EVENT_NAMES from '../../../eventTracking';
 import { get90DayPriorDate } from '../data/utils';
+import { DEFAULT_COURSE_VALUE } from '../data/constants';
 
 const Outcomes = ({ enterpriseId }) => {
   // Filters
@@ -33,6 +34,7 @@ const Outcomes = ({ enterpriseId }) => {
 
   const [startDate, setStartDate] = useState(get90DayPriorDate());
   const [endDate, setEndDate] = useState(currentDate);
+  const [course, setCourse] = useState(DEFAULT_COURSE_VALUE);
 
   // Stats Data
   const { isFetching: isStatsFetching, isError: isStatsError, data: statsData } = useEnterpriseAnalyticsAggregatesData({
@@ -101,6 +103,8 @@ const Outcomes = ({ enterpriseId }) => {
           setStartDate={setStartDate}
           endDate={endDate}
           setEndDate={setEndDate}
+          course={course}
+          setCourse={setCourse}
           granularity={granularity}
           setGranularity={setGranularity}
           calculation={calculation}
