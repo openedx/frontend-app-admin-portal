@@ -2,7 +2,6 @@ import { useMemo } from 'react';
 import PropTypes from 'prop-types';
 import {
   DataTable,
-  TextFilter,
   CheckboxFilter,
 } from '@openedx/paragon';
 import { useIntl } from '@edx/frontend-platform/i18n';
@@ -12,13 +11,15 @@ import RequestDetailsCell from './RequestDetailsCell';
 import CustomTableControlBar from './CustomTableControlBar';
 import AmountCell from './AmountCell';
 import BnrRequestStatusCell from './BnrRequestStatusCell';
+import TableTextFilter from '../TableTextFilter';
+import { transformLearnerRequestStateCounts } from '../data/utils';
 
 const RequestsTable = ({
   onApprove,
   onDecline,
   data,
   fetchData,
-  requestStatusFilterChoices,
+  tableData,
   isLoading,
   pageCount,
   itemCount,
@@ -39,7 +40,7 @@ const RequestsTable = ({
           description: 'Header for the request details column in the requests table',
         }),
         accessor: 'requestDetails',
-        Filter: TextFilter,
+        Filter: TableTextFilter,
         // eslint-disable-next-line react/no-unstable-nested-components
         Cell: (props) => <RequestDetailsCell {...props} enterpriseSlug={enterpriseSlug} />,
       },
@@ -65,18 +66,18 @@ const RequestsTable = ({
       },
       {
         Header: intl.formatMessage({
-          id: 'admin.portal.subsidy.request.management.table.request.status.header',
-          defaultMessage: 'Request status',
-          description: 'Header for the request status column in the subsidy request management table.',
+          id: 'lcm.budget.detail.page.requests.table.columns.status',
+          defaultMessage: 'Status',
+          description: 'Column header for the status column in the requests table',
         }),
-        accessor: 'requestStatus',
+        accessor: 'learnerRequestState',
         Cell: BnrRequestStatusCell,
         Filter: CheckboxFilter,
         filter: 'includesValue',
-        filterChoices: requestStatusFilterChoices,
+        filterChoices: transformLearnerRequestStateCounts(tableData?.requestStatusCounts || []),
       },
     ]),
-    [requestStatusFilterChoices, intl, enterpriseSlug],
+    [tableData?.requestStatusCounts, intl, enterpriseSlug],
   );
   return (
     <DataTable
@@ -87,7 +88,7 @@ const RequestsTable = ({
       manualSortBy
       isPaginated
       manualPagination
-      defaultColumnValues={{ Filter: TextFilter }}
+      defaultColumnValues={{ Filter: TableTextFilter }}
       itemCount={itemCount}
       pageCount={pageCount}
       fetchData={fetchData}
@@ -143,13 +144,14 @@ RequestsTable.propTypes = {
     courseId: PropTypes.string,
     amount: PropTypes.number,
     requestDate: PropTypes.string,
-    requestStatus: PropTypes.string,
+    learnerRequestState: PropTypes.string,
   })),
-  requestStatusFilterChoices: PropTypes.arrayOf(PropTypes.shape({
-    number: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
-    name: PropTypes.string,
-    value: PropTypes.string,
-  })).isRequired,
+  tableData: PropTypes.shape({
+    requestStatusCounts: PropTypes.arrayOf(PropTypes.shape({
+      learnerRequestState: PropTypes.string.isRequired,
+      count: PropTypes.number.isRequired,
+    })),
+  }),
   onApprove: PropTypes.func.isRequired,
   onDecline: PropTypes.func.isRequired,
   initialTableOptions: PropTypes.shape().isRequired,

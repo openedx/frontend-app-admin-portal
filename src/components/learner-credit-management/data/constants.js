@@ -180,19 +180,7 @@ export const REQUEST_RECENT_ACTIONS = {
   expired: 'expired',
   reversed: 'reversed',
   reminded: 'reminded',
-};
-
-export const REQUEST_STATUSES = {
-  requested: 'Requested',
-  pending: 'Pending',
-  approved: 'Waiting For Learner',
-  declined: 'Declined',
-  error: 'Errored',
-  accepted: 'Redeemed By Learner',
-  cancelled: 'Cancelled',
-  expired: 'Expired',
-  reversed: 'Refunded',
-  reminded: 'Waiting For Learner',
+  failed: 'failed',
 };
 
 export const REQUEST_ERROR_REASON = {
@@ -209,4 +197,28 @@ export const REQUEST_ERROR_STATES = {
   failed_cancellation: 'failed_cancellation',
   failed_redemption: 'failed_redemption',
   failed_reversal: 'failed_reversal',
+};
+
+// Learner credit request state constants based on the API payload
+export const LEARNER_CREDIT_REQUEST_STATES = {
+  requested: 'requested',
+  waiting: 'waiting',
+  failed: 'failed',
+  notifying: 'notifying',
+  accepted: 'accepted',
+  cancelled: 'cancelled',
+  expired: 'expired',
+  reversed: 'reversed',
+};
+
+// Human-readable labels for learner credit request states
+export const LEARNER_CREDIT_REQUEST_STATE_LABELS = {
+  [LEARNER_CREDIT_REQUEST_STATES.requested]: 'Requested',
+  [LEARNER_CREDIT_REQUEST_STATES.waiting]: 'Waiting For Learner',
+  [LEARNER_CREDIT_REQUEST_STATES.failed]: 'Failed',
+  [LEARNER_CREDIT_REQUEST_STATES.notifying]: 'Notifying',
+  [LEARNER_CREDIT_REQUEST_STATES.accepted]: 'Redeemed By Learner',
+  [LEARNER_CREDIT_REQUEST_STATES.cancelled]: 'Cancelled',
+  [LEARNER_CREDIT_REQUEST_STATES.expired]: 'Expired',
+  [LEARNER_CREDIT_REQUEST_STATES.reversed]: 'Refunded',
 };
