@@ -92,6 +92,7 @@ const expectedTransformedData = [
       errorReason: null,
       created: '2023-10-27T10:00:00Z',
     },
+    learnerRequestState: undefined,
   },
   {
     uuid: 'request-2',
@@ -109,6 +110,7 @@ const expectedTransformedData = [
       errorReason: 'Payment failed',
       created: '2023-10-27T11:00:00Z',
     },
+    learnerRequestState: undefined,
   },
 ];
 const mockOverviewResponse = {
@@ -141,6 +143,7 @@ describe('useBnrSubsidyRequests', () => {
         itemCount: 0,
         pageCount: 0,
         currentPage: 1,
+        learnerRequestStateCounts: [],
       });
       expect(result.current.requestsOverview).toEqual([]);
       expect(typeof result.current.fetchBnrRequests).toBe('function');
@@ -219,6 +222,7 @@ describe('useBnrSubsidyRequests', () => {
         pageCount: 1,
         results: expectedTransformedData,
         currentPage: 1,
+        learnerRequestStateCounts: [],
       });
     });
 
@@ -302,7 +306,7 @@ describe('useBnrSubsidyRequests', () => {
           page: 1,
           page_size: 25,
           state: REQUEST_TAB_VISIBLE_STATES.join(','),
-          ordering: 'amount,-requestDate',
+          ordering: 'course_price,-requestDate',
         },
       );
     });
@@ -357,7 +361,41 @@ describe('useBnrSubsidyRequests', () => {
         pageCount: 0,
         results: [],
         currentPage: 1,
+        learnerRequestStateCounts: [],
       });
+    });
+
+    it('should handle latest action status filters and sorting correctly', async () => {
+      const { result } = renderHook(() => useBnrSubsidyRequests({
+        enterpriseId: mockEnterpriseId,
+        isEnabled: true,
+      }));
+
+      await act(async () => {
+        await result.current.fetchBnrRequests({
+          pageIndex: 0,
+          pageSize: 25,
+          filters: [
+            { id: 'lastActionStatus', value: ['approved', 'requested'] },
+          ],
+          sortBy: [
+            { id: 'lastActionStatus', desc: false },
+            { id: 'recentAction', desc: true },
+          ],
+        });
+      });
+
+      expect(EnterpriseAccessApiService.fetchBnrSubsidyRequests).toHaveBeenCalledWith(
+        mockEnterpriseId,
+        mockPolicyId,
+        {
+          page: 1,
+          page_size: 25,
+          state: REQUEST_TAB_VISIBLE_STATES.join(','),
+          latest_action_status__in: 'approved,requested',
+          ordering: 'latest_action_status,-latest_action_time',
+        },
+      );
     });
   });
 
@@ -433,7 +471,7 @@ describe('useBnrSubsidyRequests', () => {
           page_size: 10,
           state: REQUEST_TAB_VISIBLE_STATES.join(','),
           search: 'test',
-          ordering: '-amount',
+          ordering: '-course_price',
         },
       );
     });
@@ -470,7 +508,7 @@ describe('useBnrSubsidyRequests', () => {
           page_size: 25,
           state: 'approved',
           search: 'test@example.com',
-          ordering: '-amount',
+          ordering: '-course_price',
         },
       );
     });
@@ -549,7 +587,7 @@ describe('applySortByToOptions', () => {
   it('should apply single sort option correctly', () => {
     const options = {};
     applySortByToOptions([{ id: 'amount', desc: false }], options);
-    expect(options).toEqual({ ordering: 'amount' });
+    expect(options).toEqual({ ordering: 'course_price' });
   });
 
   it('should apply descending sort correctly', () => {
@@ -564,7 +602,7 @@ describe('applySortByToOptions', () => {
       { id: 'amount', desc: false },
       { id: 'requestDate', desc: true },
     ], options);
-    expect(options).toEqual({ ordering: 'amount,-requestDate' });
+    expect(options).toEqual({ ordering: 'course_price,-requestDate' });
   });
 
   it('should log error for unknown column accessor', () => {
@@ -585,7 +623,32 @@ describe('applySortByToOptions', () => {
       { id: 'requestDate', desc: true },
     ], options);
 
-    expect(options).toEqual({ ordering: 'amount,-requestDate' });
+    expect(options).toEqual({ ordering: 'course_price,-requestDate' });
+  });
+
+  it('should map latest action fields for sorting', () => {
+    const options = {};
+    applySortByToOptions([
+      { id: 'lastActionStatus', desc: false },
+      { id: 'recentAction', desc: true },
+    ], options);
+    expect(options).toEqual({ ordering: 'latest_action_status,-latest_action_time' });
+  });
+
+  it('should map learner request state field for sorting', () => {
+    const options = {};
+    applySortByToOptions([
+      { id: 'learnerRequestState', desc: false },
+    ], options);
+    expect(options).toEqual({ ordering: 'learner_request_state' });
+  });
+
+  it('should map learner request state field for descending sorting', () => {
+    const options = {};
+    applySortByToOptions([
+      { id: 'learnerRequestState', desc: true },
+    ], options);
+    expect(options).toEqual({ ordering: '-learner_request_state' });
   });
 });
 
@@ -648,5 +711,30 @@ describe('applyFiltersToOptions', () => {
       { id: 'requestDetails', value: 'test@example.com' },
     ], options);
     expect(options).toEqual({ search: 'test@example.com' });
+  });
+
+  it('should apply latest_action_status for single value', () => {
+    const options = {};
+    applyFiltersToOptions([
+      { id: 'lastActionStatus', value: ['approved'] },
+    ], options);
+    expect(options).toEqual({ latest_action_status: 'approved' });
+  });
+
+  it('should apply latest_action_status__in for multiple values', () => {
+    const options = {};
+    applyFiltersToOptions([
+      { id: 'lastActionStatus', value: ['approved', 'requested'] },
+    ], options);
+    expect(options).toEqual({ latest_action_status__in: 'approved,requested' });
+  });
+
+  it('should combine latest_action_status filter with search', () => {
+    const options = {};
+    applyFiltersToOptions([
+      { id: 'requestDetails', value: 'user@example.com' },
+      { id: 'lastActionStatus', value: ['requested'] },
+    ], options);
+    expect(options).toEqual({ search: 'user@example.com', latest_action_status: 'requested' });
   });
 });
