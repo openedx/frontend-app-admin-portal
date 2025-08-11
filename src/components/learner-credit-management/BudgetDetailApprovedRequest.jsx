@@ -76,28 +76,11 @@ const BudgetDetailApprovedRequest = ({ enterpriseId }) => {
     [fetchBnrRequests],
   );
 
-  // Transform the data to match the expected table format
-  // Generate status counts from the actual results data
-  const statusCounts = {};
-  (bnrRequests.results || []).forEach((request) => {
-    const { lastActionStatus } = request;
-    if (lastActionStatus) {
-      statusCounts[lastActionStatus] = (statusCounts[lastActionStatus] || 0) + 1;
-    }
-  });
-
-  const requestStatusCounts = Object.entries(statusCounts).map(
-    ([lastActionStatus, count]) => ({
-      lastActionStatus,
-      count,
-    }),
-  );
-
   const approvedRequests = {
     count: bnrRequests.itemCount || 0,
     numPages: bnrRequests.pageCount || 1,
     results: bnrRequests.results || [],
-    requestStatusCounts,
+    requestStatusCounts: bnrRequests.learnerRequestStateCounts || [],
   };
 
   return (
