@@ -4,7 +4,7 @@ import { Field, reduxForm } from 'redux-form';
 import { Link, Navigate } from 'react-router-dom';
 import { Alert, Button, Spinner } from '@openedx/paragon';
 import { Error } from '@openedx/paragon/icons';
-import { injectIntl, intlShape } from '@edx/frontend-platform/i18n';
+import { useIntl } from '@edx/frontend-platform/i18n';
 
 import RenderField from '../RenderField';
 
@@ -13,21 +13,21 @@ import {
 } from '../../utils';
 import messages from './messages';
 
-class RequestCodesForm extends React.Component {
-  constructor(props) {
-    super(props);
-    this.renderRedirect = this.renderRedirect.bind(this);
-  }
+const RequestCodesForm = ({
+  url,
+  error = null,
+  handleSubmit,
+  submitting,
+  invalid,
+  submitSucceeded,
+  submitFailed,
+}) => {
+  const intl = useIntl();
+  // Remove `/request` from the url so it renders Code Management page again
+  const getPathToCodeManagement = () => url.split('/').slice(0, -1).join('/');
 
-  getPathToCodeManagement() {
-    const { url } = this.props;
-
-    // Remove `/request` from the url so it renders Code Management page again
-    return url.split('/').slice(0, -1).join('/');
-  }
-
-  renderErrorMessage() {
-    const { error: { message }, intl } = this.props;
+  const renderErrorMessage = () => {
+    const { message } = error;
 
     return (
       <Alert
@@ -39,111 +39,93 @@ class RequestCodesForm extends React.Component {
         <p>{intl.formatMessage(messages.errorRetry)} {message}</p>
       </Alert>
     );
-  }
+  };
 
-  renderRedirect() {
-    return (
-      <Navigate
-        to={this.getPathToCodeManagement()}
-        state={{ hasRequestedCodes: true }}
-        replace
-      />
-    );
-  }
+  const renderRedirect = () => (
+    <Navigate
+      to={getPathToCodeManagement()}
+      state={{ hasRequestedCodes: true }}
+      replace
+    />
+  );
 
-  render() {
-    const {
-      handleSubmit,
-      submitting,
-      invalid,
-      submitSucceeded,
-      submitFailed,
-      error,
-      intl,
-    } = this.props;
-
-    return (
-      <>
-        {submitFailed && error && this.renderErrorMessage()}
-        <div className="request-codes-form row">
-          <div className="col-12 col-md-6 col-lg-4">
-            <form onSubmit={handleSubmit}>
-              <Field
-                name="emailAddress"
-                className="emailAddress"
-                type="email"
-                component={RenderField}
-                label={(
-                  <>
-                    {intl.formatMessage(messages.emailLabel)}
-                    <span className="required">*</span>
-                  </>
-                )}
-                validate={[isRequired, isValidEmail]}
-                required
-                data-hj-suppress
-              />
-              <Field
-                name="enterpriseName"
-                className="enterpriseName"
-                type="text"
-                component={RenderField}
-                label={(
-                  <>
-                    {intl.formatMessage(messages.companyLabel)}
-                    <span className="required">*</span>
-                  </>
-                )}
-                validate={[isRequired]}
-                required
-                disabled
-                data-hj-suppress
-              />
-              <Field
-                name="numberOfCodes"
-                className="numberOfCodes"
-                type="number"
-                component={RenderField}
-                label={intl.formatMessage(messages.numberOfCodesLabel)}
-                validate={[isNotValidNumberString]}
-                data-hj-suppress
-              />
-              <Field
-                name="notes"
-                className="notes"
-                type="text"
-                component={RenderField}
-                label={intl.formatMessage(messages.notesLabel)}
-                validate={[maxLength512]}
-                data-hj-suppress
-              />
-              <Button
-                type="submit"
-                disabled={invalid || submitting}
-                className="btn-primary"
-              >
+  return (
+    <>
+      {submitFailed && error && renderErrorMessage()}
+      <div className="request-codes-form row">
+        <div className="col-12 col-md-6 col-lg-4">
+          <form onSubmit={handleSubmit}>
+            <Field
+              name="emailAddress"
+              className="emailAddress"
+              type="email"
+              component={RenderField}
+              label={(
                 <>
-                  {submitting && <Spinner animation="border" className="mr-2" variant="light" size="sm" />}
-                  {intl.formatMessage(messages.submitButton)}
+                  {intl.formatMessage(messages.emailLabel)}
+                  <span className="required">*</span>
                 </>
-              </Button>
-              <Link
-                className="btn btn-link ml-3 form-cancel-btn"
-                to={this.getPathToCodeManagement()}
-              >
-                {intl.formatMessage(messages.cancelButton)}
-              </Link>
-            </form>
-          </div>
+                )}
+              validate={[isRequired, isValidEmail]}
+              required
+              data-hj-suppress
+            />
+            <Field
+              name="enterpriseName"
+              className="enterpriseName"
+              type="text"
+              component={RenderField}
+              label={(
+                <>
+                  {intl.formatMessage(messages.companyLabel)}
+                  <span className="required">*</span>
+                </>
+                )}
+              validate={[isRequired]}
+              required
+              disabled
+              data-hj-suppress
+            />
+            <Field
+              name="numberOfCodes"
+              className="numberOfCodes"
+              type="number"
+              component={RenderField}
+              label={intl.formatMessage(messages.numberOfCodesLabel)}
+              validate={[isNotValidNumberString]}
+              data-hj-suppress
+            />
+            <Field
+              name="notes"
+              className="notes"
+              type="text"
+              component={RenderField}
+              label={intl.formatMessage(messages.notesLabel)}
+              validate={[maxLength512]}
+              data-hj-suppress
+            />
+            <Button
+              type="submit"
+              disabled={invalid || submitting}
+              className="btn-primary"
+            >
+              <>
+                {submitting && <Spinner animation="border" className="mr-2" variant="light" size="sm" />}
+                {intl.formatMessage(messages.submitButton)}
+              </>
+            </Button>
+            <Link
+              className="btn btn-link ml-3 form-cancel-btn"
+              to={getPathToCodeManagement()}
+            >
+              {intl.formatMessage(messages.cancelButton)}
+            </Link>
+          </form>
         </div>
-        {submitSucceeded && this.renderRedirect()}
-      </>
-    );
-  }
-}
-
-RequestCodesForm.defaultProps = {
-  error: null,
+      </div>
+      {submitSucceeded && renderRedirect()}
+    </>
+  );
 };
 
 RequestCodesForm.propTypes = {
@@ -162,8 +144,6 @@ RequestCodesForm.propTypes = {
     enterpriseName: PropTypes.string.isRequired,
     numberOfCodes: PropTypes.string.isRequired,
   }).isRequired,
-  // injected
-  intl: intlShape.isRequired,
 };
 
-export default reduxForm({ form: 'request-codes-form' })(injectIntl(RequestCodesForm));
+export default reduxForm({ form: 'request-codes-form' })(RequestCodesForm);
