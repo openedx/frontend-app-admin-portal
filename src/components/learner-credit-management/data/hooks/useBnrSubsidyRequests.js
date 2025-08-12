@@ -20,9 +20,11 @@ const initialBnrRequestsState = {
 // Map table column accessors to API field names for sorting
 const API_FIELDS_BY_TABLE_COLUMN_ACCESSOR = {
   requestDetails: 'requestDetails',
-  amount: 'amount',
+  amount: 'course_price',
   requestDate: 'requestDate',
   requestStatus: 'requestStatus',
+  lastActionStatus: 'latest_action_status',
+  recentAction: 'latest_action_time',
 };
 
 export const applySortByToOptions = (sortBy, options) => {
@@ -51,6 +53,7 @@ export const applyFiltersToOptions = (filters, options) => {
   }
   const emailSearchQuery = filters.find(filter => filter.id === 'requestDetails')?.value;
   const statusFilter = filters.find(filter => filter.id === 'requestStatus')?.value;
+  const lastActionStatusFilter = filters.find(filter => filter.id === 'lastActionStatus')?.value;
 
   if (emailSearchQuery) {
     Object.assign(options, {
@@ -62,6 +65,18 @@ export const applyFiltersToOptions = (filters, options) => {
     Object.assign(options, {
       state: statusFilter.join(','),
     });
+  }
+
+  if (lastActionStatusFilter && lastActionStatusFilter.length > 0) {
+    if (lastActionStatusFilter.length === 1) {
+      Object.assign(options, {
+        latest_action_status: lastActionStatusFilter[0],
+      });
+    } else {
+      Object.assign(options, {
+        latest_action_status__in: lastActionStatusFilter.join(','),
+      });
+    }
   }
 };
 export const applyOverviewFiltersToOptions = (filters, options) => {
