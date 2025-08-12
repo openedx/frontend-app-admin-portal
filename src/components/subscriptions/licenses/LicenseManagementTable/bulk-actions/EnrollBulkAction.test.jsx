@@ -8,6 +8,7 @@ import configureMockStore from 'redux-mock-store';
 import { Provider } from 'react-redux';
 import '@testing-library/jest-dom/extend-expect';
 
+import { IntlProvider } from '@edx/frontend-platform/i18n';
 import { sendEnterpriseTrackEvent } from '@edx/frontend-enterprise-utils';
 import { SUBSCRIPTION_TABLE_EVENTS } from '../../../../../eventTracking';
 
@@ -52,7 +53,9 @@ const initialStore = mockStore({
 
 const EnrollBulkActionWithProvider = ({ store = initialStore, ...rest }) => (
   <Provider store={store}>
-    <EnrollBulkAction {...rest} />
+    <IntlProvider locale="en">
+      <EnrollBulkAction {...rest} />
+    </IntlProvider>
   </Provider>
 );
 

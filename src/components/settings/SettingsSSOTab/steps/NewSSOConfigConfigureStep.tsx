@@ -352,6 +352,7 @@ const SSOConfigConfigureStep = () => {
             stacked
             icon={Info}
           >
+            {/* @ts-ignore */}
             <Alert.Heading className="mt-1">
               <FormattedMessage
                 id="adminPortal.settings.ssoConfigConfigureStep.configurationError.title"
@@ -388,6 +389,7 @@ const SSOConfigConfigureStep = () => {
             stacked
             icon={Info}
           >
+            {/* @ts-ignore */}
             <Alert.Heading className="mt-1">
               <FormattedMessage
                 id="adminPortal.settings.ssoConfigConfigureStep.metadataError.title"

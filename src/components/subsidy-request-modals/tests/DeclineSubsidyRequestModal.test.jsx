@@ -1,9 +1,8 @@
 import React from 'react';
-import {
-  render,
-  waitFor,
-} from '@testing-library/react';
+import { render, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
+import { IntlProvider } from '@edx/frontend-platform/i18n';
+
 import DeclineSubsidyRequestModal from '../DeclineSubsidyRequestModal';
 
 const TEST_ENTERPRISE_UUID = 'test-enterprise-uuid';
@@ -38,11 +37,13 @@ describe('<DeclineSubsidyRequestModal />', () => {
     const mockDeclineRequestFn = jest.fn();
 
     const { getByTestId } = render(
-      <DeclineSubsidyRequestModal
-        {...basicProps}
-        onSuccess={mockHandleSuccess}
-        declineRequestFn={mockDeclineRequestFn}
-      />,
+      <IntlProvider locale="en">
+        <DeclineSubsidyRequestModal
+          {...basicProps}
+          onSuccess={mockHandleSuccess}
+          declineRequestFn={mockDeclineRequestFn}
+        />
+      </IntlProvider>,
     );
 
     if (!shouldNotifyLearner) {
@@ -74,7 +75,10 @@ describe('<DeclineSubsidyRequestModal />', () => {
     const user = userEvent.setup();
     const mockHandleClose = jest.fn();
     const { getByTestId } = render(
-      <DeclineSubsidyRequestModal {...basicProps} onClose={mockHandleClose} />,
+      <IntlProvider locale="en">
+
+        <DeclineSubsidyRequestModal {...basicProps} onClose={mockHandleClose} />
+      </IntlProvider>,
     );
 
     const closeBtn = getByTestId('decline-subsidy-request-modal-close-btn');
@@ -90,10 +94,12 @@ describe('<DeclineSubsidyRequestModal />', () => {
     const mockDeclineRequestFn = jest.fn().mockRejectedValue(new Error('something went wrong'));
 
     const { getByTestId } = render(
-      <DeclineSubsidyRequestModal
-        {...basicProps}
-        declineRequestFn={mockDeclineRequestFn}
-      />,
+      <IntlProvider locale="en">
+        <DeclineSubsidyRequestModal
+          {...basicProps}
+          declineRequestFn={mockDeclineRequestFn}
+        />
+      </IntlProvider>,
     );
 
     const declineBtn = getByTestId('decline-subsidy-request-modal-decline-btn');

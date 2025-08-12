@@ -69,13 +69,15 @@ describe('<ExistingSSOConfigs />', () => {
     const user = userEvent.setup();
     render(
       <Provider store={store}>
-        <ExistingSSOConfigs
-          configs={activeConfig}
-          refreshBool
-          setRefreshBool={mockSetRefreshBool}
-          enterpriseId={enterpriseId}
-          providerData={providerData}
-        />
+        <IntlProvider locale="en">
+          <ExistingSSOConfigs
+            configs={activeConfig}
+            refreshBool
+            setRefreshBool={mockSetRefreshBool}
+            enterpriseId={enterpriseId}
+            providerData={providerData}
+          />
+        </IntlProvider>
       </Provider>,
     );
     expect(screen.getByText('cool ranch')).toBeInTheDocument();
@@ -98,14 +100,17 @@ describe('<ExistingSSOConfigs />', () => {
     const user = userEvent.setup();
     render(
       <Provider store={store}>
-        <ExistingSSOConfigs
-          configs={inactiveConfig}
-          refreshBool
-          setRefreshBool={mockSetRefreshBool}
-          enterpriseId={enterpriseId}
-          providerData={providerData}
-        />
+        <IntlProvider locale="en">
+          <ExistingSSOConfigs
+            configs={inactiveConfig}
+            refreshBool
+            setRefreshBool={mockSetRefreshBool}
+            enterpriseId={enterpriseId}
+            providerData={providerData}
+          />
+        </IntlProvider>
       </Provider>,
+
     );
     expect(screen.getByText('nacho cheese')).toBeInTheDocument();
     expect(screen.getByText('Inactive')).toBeInTheDocument();
@@ -122,13 +127,15 @@ describe('<ExistingSSOConfigs />', () => {
     const user = userEvent.setup();
     render(
       <Provider store={store}>
-        <ExistingSSOConfigs
-          configs={incompleteConfig}
-          refreshBool
-          setRefreshBool={mockSetRefreshBool}
-          enterpriseId={enterpriseId}
-          providerData={providerData}
-        />
+        <IntlProvider locale="en">
+          <ExistingSSOConfigs
+            configs={incompleteConfig}
+            refreshBool
+            setRefreshBool={mockSetRefreshBool}
+            enterpriseId={enterpriseId}
+            providerData={providerData}
+          />
+        </IntlProvider>
       </Provider>,
     );
     expect(screen.getByText('bbq')).toBeInTheDocument();
@@ -142,13 +149,15 @@ describe('<ExistingSSOConfigs />', () => {
   it('renders multiple config cards', () => {
     render(
       <Provider store={store}>
-        <ExistingSSOConfigs
-          configs={activeConfig.concat(inactiveConfig)}
-          refreshBool
-          setRefreshBool={mockSetRefreshBool}
-          enterpriseId={enterpriseId}
-          providerData={providerData}
-        />
+        <IntlProvider locale="en">
+          <ExistingSSOConfigs
+            configs={activeConfig.concat(inactiveConfig)}
+            refreshBool
+            setRefreshBool={mockSetRefreshBool}
+            enterpriseId={enterpriseId}
+            providerData={providerData}
+          />
+        </IntlProvider>
       </Provider>,
     );
     expect(screen.getByText('cool ranch')).toBeInTheDocument();
@@ -158,13 +167,15 @@ describe('<ExistingSSOConfigs />', () => {
     const user = userEvent.setup();
     render(
       <Provider store={store}>
-        <ExistingSSOConfigs
-          configs={incompleteConfig}
-          refreshBool
-          setRefreshBool={mockSetRefreshBool}
-          enterpriseId={enterpriseId}
-          providerData={providerData}
-        />
+        <IntlProvider locale="en">
+          <ExistingSSOConfigs
+            configs={incompleteConfig}
+            refreshBool
+            setRefreshBool={mockSetRefreshBool}
+            enterpriseId={enterpriseId}
+            providerData={providerData}
+          />
+        </IntlProvider>
       </Provider>,
     );
     await user.click(screen.getByTestId(`existing-sso-config-card-dropdown-${incompleteConfig[0].id}`));
@@ -179,13 +190,15 @@ describe('<ExistingSSOConfigs />', () => {
     });
     render(
       <Provider store={store}>
-        <ExistingSSOConfigs
-          configs={incompleteConfig}
-          refreshBool
-          setRefreshBool={mockSetRefreshBool}
-          enterpriseId={enterpriseId}
-          providerData={providerData}
-        />
+        <IntlProvider locale="en">
+          <ExistingSSOConfigs
+            configs={incompleteConfig}
+            refreshBool
+            setRefreshBool={mockSetRefreshBool}
+            enterpriseId={enterpriseId}
+            providerData={providerData}
+          />
+        </IntlProvider>
       </Provider>,
     );
     await user.click(screen.getByTestId(`existing-sso-config-card-dropdown-${incompleteConfig[0].id}`));
@@ -200,13 +213,15 @@ describe('<ExistingSSOConfigs />', () => {
     });
     render(
       <Provider store={store}>
-        <ExistingSSOConfigs
-          configs={incompleteConfig}
-          refreshBool
-          setRefreshBool={mockSetRefreshBool}
-          enterpriseId={enterpriseId}
-          providerData={providerData}
-        />
+        <IntlProvider locale="en">
+          <ExistingSSOConfigs
+            configs={incompleteConfig}
+            refreshBool
+            setRefreshBool={mockSetRefreshBool}
+            enterpriseId={enterpriseId}
+            providerData={providerData}
+          />
+        </IntlProvider>
       </Provider>,
     );
     await user.click(screen.getByTestId(`existing-sso-config-card-dropdown-${incompleteConfig[0].id}`));
