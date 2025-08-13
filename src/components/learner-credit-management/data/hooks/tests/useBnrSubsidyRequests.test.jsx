@@ -439,6 +439,85 @@ describe('useBnrSubsidyRequests', () => {
     });
   });
 
+  describe('fetchApprovedRequests', () => {
+    it('should fetch approved requests with correct filter', async () => {
+      const { result } = renderHook(() => useBnrSubsidyRequests({
+        enterpriseId: mockEnterpriseId,
+        isEnabled: true,
+      }));
+
+      const fetchArgs = {
+        pageIndex: 0,
+        pageSize: 25,
+        filters: [
+          { id: 'requestDetails', value: 'test@example.com' },
+          { id: 'requestStatus', value: ['pending', 'declined'] },
+        ],
+        sortBy: [{ id: 'amount', desc: true }],
+      };
+
+      await act(async () => {
+        await result.current.fetchApprovedRequests(fetchArgs);
+      });
+
+      // Verify fetchBnrRequests was called with the correct arguments
+      // The requestStatus filter should be replaced with approved status
+      expect(EnterpriseAccessApiService.fetchBnrSubsidyRequests).toHaveBeenCalledWith(
+        mockEnterpriseId,
+        mockPolicyId,
+        {
+          page: 1,
+          page_size: 25,
+          state: 'approved',
+          search: 'test@example.com',
+          ordering: '-amount',
+        },
+      );
+    });
+
+    it('should fetch approved requests without passed arguments using currentArgsRef', async () => {
+      const { result } = renderHook(() => useBnrSubsidyRequests({
+        enterpriseId: mockEnterpriseId,
+        isEnabled: true,
+      }));
+
+      // First fetch with some arguments to set currentArgsRef
+      const initialArgs = {
+        pageIndex: 1,
+        pageSize: 10,
+        filters: [
+          { id: 'requestDetails', value: 'initial@example.com' },
+          { id: 'requestStatus', value: ['pending'] },
+        ],
+        sortBy: [{ id: 'requestDate', desc: false }],
+      };
+
+      await act(async () => {
+        await result.current.fetchBnrRequests(initialArgs);
+      });
+
+      jest.clearAllMocks();
+
+      // Then call fetchApprovedRequests without arguments
+      await act(async () => {
+        await result.current.fetchApprovedRequests();
+      });
+
+      // Verify it used the stored arguments with approved filter
+      expect(EnterpriseAccessApiService.fetchBnrSubsidyRequests).toHaveBeenCalledWith(
+        mockEnterpriseId,
+        mockPolicyId,
+        {
+          page: 2,
+          page_size: 10,
+          state: 'approved',
+          search: 'initial@example.com',
+          ordering: 'requestDate',
+        },
+      );
+    });
+  });
+
   describe('debouncing', () => {
     it('should setup debounced fetch function', () => {
       renderHook(() => useBnrSubsidyRequests({
