@@ -3,6 +3,7 @@ import { useParams } from 'react-router';
 import { ALLOCATE_LEARNING_BUDGETS_TARGETS, ADMIN_TOUR_EVENT_NAMES } from '../constants';
 import messages from '../messages';
 import { TourStep } from '../../types';
+import { useBudgetDetailActivityOverview } from '../../../learner-credit-management/data';
 
 interface CreateTourFlowsProps {
   handleAdvanceTour: (advanceEventName: string) => void;
@@ -17,17 +18,21 @@ interface CreateTourFlowsProps {
 const AllocateLearningBudgetsFlow = ({
   handleAdvanceTour,
   handleEndTour,
-}: CreateTourFlowsProps): Array<TourStep> => {
-  const intl = useIntl();
-  const params = useParams();
+  intl,
+  hasSpentTransactions,
+  hasContentAssignments,
+  isOnAssignmentPage,
+}: CreateTourFlowsProps & {
+  intl: any;
+  hasSpentTransactions: boolean;
+  hasContentAssignments: boolean;
+  isOnAssignmentPage: boolean;
+}): Array<TourStep> => {
   const onAnalyticsAdvance = () => {
     handleAdvanceTour(ADMIN_TOUR_EVENT_NAMES.ALLOCATE_ASSIGNMENT_ADVANCE_EVENT_NAME);
   };
 
-  const assignmentUuid = params['*'];
-  const isOnAssignmentPage = !!assignmentUuid;
-
-  if (isOnAssignmentPage) {
+  if (isOnAssignmentPage && hasSpentTransactions && hasContentAssignments) {
     return [
       {
         target: `#${ALLOCATE_LEARNING_BUDGETS_TARGETS.ASSIGNMENT_BUDGET_DETAIL_CARD}`,
@@ -74,6 +79,41 @@ const AllocateLearningBudgetsFlow = ({
     ];
   }
 
+  if (isOnAssignmentPage && !hasSpentTransactions && !hasContentAssignments) {
+    return [
+      {
+        target: `#${ALLOCATE_LEARNING_BUDGETS_TARGETS.ASSIGNMENT_BUDGET_DETAIL_CARD}`,
+        placement: 'top',
+        body: intl.formatMessage(messages.allocateAssignmentBudgetStepFourBody),
+        onAdvance: onAnalyticsAdvance,
+      },
+      {
+        target: `#${ALLOCATE_LEARNING_BUDGETS_TARGETS.NEW_ASSIGNMENT_BUDGET_BUTTON}`,
+        placement: 'bottom',
+        body: intl.formatMessage(messages.allocateAssignmentBudgetStepFiveBody),
+        onAdvance: onAnalyticsAdvance,
+      },
+      {
+        target: `#${ALLOCATE_LEARNING_BUDGETS_TARGETS.NO_ASSIGNMENT_BUDGET_ACTIVITY}`,
+        placement: 'top',
+        body: intl.formatMessage(messages.allocateAssignmentBudgetZeroStateStepSixBody),
+        onAdvance: onAnalyticsAdvance,
+      },
+      {
+        target: `#${ALLOCATE_LEARNING_BUDGETS_TARGETS.ASSIGNMENT_BUDGET_CATALOG_TAB}`,
+        placement: 'top',
+        body: intl.formatMessage(messages.allocateAssignmentBudgetStepTenBody),
+        onAdvance: onAnalyticsAdvance,
+      },
+      {
+        target: `#${ALLOCATE_LEARNING_BUDGETS_TARGETS.LEARNER_CREDIT_MANAGEMENT_BREADCRUMBS}`,
+        placement: 'top',
+        body: intl.formatMessage(messages.allocateAssignmentBudgetStepElevenBody),
+        onEnd: handleEndTour,
+      },
+    ];
+  }
+
   // Main allocate learning budgets page flow (steps 1-3)
   return [
     {
@@ -92,4 +132,30 @@ const AllocateLearningBudgetsFlow = ({
   ];
 };
 
-export default AllocateLearningBudgetsFlow;
+const useAllocateLearningBudgetsFlow = (props: CreateTourFlowsProps): Array<TourStep> => {
+  const intl = useIntl();
+  const params = useParams();
+  const isTopDownAssignmentEnabled = props.enterpriseFeatures.topDownAssignmentRealTimeLcm;
+
+  const {
+    data: budgetActivityOverview,
+  } = useBudgetDetailActivityOverview({
+    enterpriseUUID: props.enterpriseUUID,
+    isTopDownAssignmentEnabled,
+  });
+
+  const hasSpentTransactions = budgetActivityOverview?.spentTransactions?.count > 0;
+  const hasContentAssignments = budgetActivityOverview?.contentAssignments?.count > 0;
+  const assignmentUuid = params['*'];
+  const isOnAssignmentPage = !!assignmentUuid;
+
+  return AllocateLearningBudgetsFlow({
+    ...props,
+    intl,
+    hasSpentTransactions,
+    hasContentAssignments,
+    isOnAssignmentPage,
+  });
+};
+
+export default useAllocateLearningBudgetsFlow;

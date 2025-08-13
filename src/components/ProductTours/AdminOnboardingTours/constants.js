@@ -47,6 +47,7 @@ export const ALLOCATE_LEARNING_BUDGETS_TARGETS = {
   SIDEBAR: 'learner-credit-link',
   VIEW_BUDGET: 'learner-credit-view-budget-button',
   ASSIGNMENT_BUDGET_DETAIL_CARD: 'assignment-budget-detail-card',
+  NO_ASSIGNMENT_BUDGET_ACTIVITY: 'no-budget-activity',
   NEW_ASSIGNMENT_BUDGET_BUTTON: 'new-assignment-button',
   TRACK_BUDGET_ACTIVITY: 'track-budget-activity',
   ASSIGNMENT_BUDGET_TABLE: 'assignment-budget-table',

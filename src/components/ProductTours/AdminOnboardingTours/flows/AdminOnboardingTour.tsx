@@ -13,7 +13,7 @@ import {
 import { TourStep } from '../../types';
 import LmsApiService from '../../../../data/services/LmsApiService';
 import AdministerSubscriptionsFlow from './AdministerSubscriptionsFlow';
-import AllocateLearningBudgetsFlow from './AllocateLearningBudgetsFlow';
+import useAllocateLearningBudgetsFlow from './AllocateLearningBudgetsFlow';
 import AnalyticsFlow from './AnalyticsFlow';
 import CustomizeReportsFlow from './CustomizeReportsFlow';
 import LearnerProgressFlow from './LearnerProgressFlow';
@@ -108,7 +108,7 @@ const AdminOnboardingTour = (
   const analyticsFlow = AnalyticsFlow({ handleAdvanceTour, handleEndTour });
   const customizeReportsFlow = CustomizeReportsFlow({ handleEndTour });
   const learnerProgressFlow = LearnerProgressFlow({ aiButtonVisible, handleAdvanceTour, handleEndTour });
-  const allocateLearningBudgetsFlow = AllocateLearningBudgetsFlow({
+  const allocateLearningBudgetsFlow = useAllocateLearningBudgetsFlow({
     handleAdvanceTour,
     handleEndTour,
     enablePortalLearnerCreditManagementScreen,
