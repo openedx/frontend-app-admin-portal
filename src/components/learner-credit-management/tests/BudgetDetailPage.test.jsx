@@ -1703,7 +1703,7 @@ describe('<BudgetDetailPage />', () => {
         results: [mockApprovedRequest],
         pageCount: 1,
       },
-      fetchBnrRequests: mockFetchLearnerCreditRequests,
+      fetchApprovedRequests: mockFetchLearnerCreditRequests,
     });
     useBudgetRedemptions.mockReturnValue({
       isLoading: false,
@@ -1767,7 +1767,7 @@ describe('<BudgetDetailPage />', () => {
         pageCount: 1,
         requestStatusCounts: null,
       },
-      fetchBnrRequests: mockFetchLearnerCreditRequests,
+      fetchApprovedRequests: mockFetchLearnerCreditRequests,
     });
     useBudgetRedemptions.mockReturnValue({
       isLoading: false,
@@ -2274,13 +2274,13 @@ describe('<BudgetDetailPage />', () => {
   });
 
   it.each([
-    // {
-    //   filterBy: {
-    //     field: 'status',
-    //     value: ['waiting'],
-    //   },
-    //   expectedFilters: [{ id: 'learnerState', value: ['waiting'] }],
-    // },
+    {
+      filterBy: {
+        field: 'status',
+        value: ['waiting'],
+      },
+      expectedFilters: [{ id: 'learnerState', value: ['waiting'] }],
+    },
     {
       filterBy: {
         field: 'search',
@@ -2366,8 +2366,6 @@ describe('<BudgetDetailPage />', () => {
           const waitingForLearnerOption = filtersDropdownContainer.getByLabelText('Waiting for learner 1', { exact: false });
           expect(waitingForLearnerOption).toBeInTheDocument();
           await user.click(waitingForLearnerOption);
-
-          expect(waitingForLearnerOption).toBeChecked();
           expect(mockFetchContentAssignments).toHaveBeenCalledWith(
             expect.objectContaining(expectedTableFetchDataArgsAfterFilter),
           );

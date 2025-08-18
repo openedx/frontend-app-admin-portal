@@ -8,6 +8,7 @@ import {
   GRANULARITY, CALCULATION, DATE_RANGE, COURSE_TYPES,
 } from './data/constants';
 import { get90DayPriorDate } from './data/utils';
+import CourseFilterDropdown from './CourseFilterDropdown';
 
 export const DEFAULT_GROUP = '';
 
@@ -18,6 +19,8 @@ const AnalyticsFilters = ({
   setEndDate,
   courseType,
   setCourseType,
+  course,
+  setCourse,
   granularity,
   setGranularity,
   calculation,
@@ -332,23 +335,10 @@ const AnalyticsFilters = ({
             )}
 
             <div className="col">
-              <Form.Group>
-                <Form.Label className="font-weight-normal">
-                  <FormattedMessage
-                    id="advance.analytics.filter.by.course"
-                    defaultMessage="Filter by course"
-                    description="Advance analytics filter by course label"
-                  />
-                </Form.Label>
-                <Form.Control
-                  controlClassName="font-weight-normal analytics-filter-form-controls rounded-0"
-                  as="select"
-                  disabled
-                  value=""
-                >
-                  <option value="">All courses</option>
-                </Form.Control>
-              </Form.Group>
+              <CourseFilterDropdown
+                selectedCourse={course}
+                onChange={setCourse}
+              />
             </div>
 
             {isProgressOrOutcomesTab && (
@@ -447,6 +437,8 @@ AnalyticsFilters.propTypes = {
   setEndDate: PropTypes.func.isRequired,
   courseType: PropTypes.string,
   setCourseType: PropTypes.func.isRequired,
+  course: PropTypes.string,
+  setCourse: PropTypes.func.isRequired,
   granularity: PropTypes.string.isRequired,
   setGranularity: PropTypes.func.isRequired,
   calculation: PropTypes.string.isRequired,
