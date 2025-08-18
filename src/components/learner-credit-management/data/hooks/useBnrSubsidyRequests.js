@@ -9,6 +9,7 @@ import EnterpriseAccessApiService from '../../../../data/services/EnterpriseAcce
 import { REQUEST_TAB_VISIBLE_STATES } from '../constants';
 import useBudgetId from './useBudgetId';
 import { transformRequestOverview } from '../utils';
+import { SUBSIDY_REQUEST_STATUS } from '../../../../data/constants/subsidyRequests';
 
 const initialBnrRequestsState = {
   results: [],
@@ -215,6 +216,20 @@ const useBnrSubsidyRequests = ({
     }));
   }, []);
 
+  const fetchApprovedRequests = useCallback(
+    (passedArgs) => {
+      const args = passedArgs || currentArgsRef.current || {};
+      const filters = args.filters || [];
+      // Add an approved status filter in the format expected by the hook
+      const updatedFilters = [
+        ...filters.filter((f) => f.id !== 'requestStatus'),
+        { id: 'requestStatus', value: [SUBSIDY_REQUEST_STATUS.APPROVED] },
+      ];
+      return fetchBnrRequests({ ...args, filters: updatedFilters });
+    },
+    [fetchBnrRequests],
+  );
+
   return {
     isLoading,
     bnrRequests,
@@ -223,6 +238,7 @@ const useBnrSubsidyRequests = ({
     updateRequestStatus,
     refreshRequests,
     fetchBnrRequestsOverview,
+    fetchApprovedRequests,
   };
 };
 
