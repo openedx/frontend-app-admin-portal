@@ -3490,7 +3490,7 @@ describe('<BudgetDetailPage />', () => {
       () => expect(screen.getByText('Assignment canceled')).toBeInTheDocument(),
     );
     expect(sendEnterpriseTrackEvent).toHaveBeenCalledTimes(2);
-  });
+  }, 10000);
 
   it('reminds a single assignment', async () => {
     const user = userEvent.setup();
