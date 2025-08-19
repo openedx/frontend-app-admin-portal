@@ -1703,7 +1703,7 @@ describe('<BudgetDetailPage />', () => {
         results: [mockApprovedRequest],
         pageCount: 1,
       },
-      fetchBnrRequests: mockFetchLearnerCreditRequests,
+      fetchApprovedRequests: mockFetchLearnerCreditRequests,
     });
     useBudgetRedemptions.mockReturnValue({
       isLoading: false,
@@ -1767,7 +1767,7 @@ describe('<BudgetDetailPage />', () => {
         pageCount: 1,
         requestStatusCounts: null,
       },
-      fetchBnrRequests: mockFetchLearnerCreditRequests,
+      fetchApprovedRequests: mockFetchLearnerCreditRequests,
     });
     useBudgetRedemptions.mockReturnValue({
       isLoading: false,
