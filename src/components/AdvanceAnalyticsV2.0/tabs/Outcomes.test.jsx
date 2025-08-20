@@ -79,6 +79,7 @@ jest.mock('../data/hooks', () => ({
   useEnterpriseAnalyticsAggregatesData: jest.fn(),
   useEnterpriseAnalyticsData: jest.fn(),
   useEnterpriseCompletionsData: jest.fn(),
+  useEnterpriseCourses: jest.fn(),
 }));
 
 const findReact = (dom, traverseUp = 0) => {
@@ -129,6 +130,15 @@ describe('Rendering tests', () => {
     hooks.useEnterpriseCompletionsData.mockReturnValue({
       isFetching: false,
       data: mockCompletionsChartsData,
+    });
+
+    hooks.useEnterpriseCourses.mockReturnValue({
+      isFetching: false,
+      isError: false,
+      data: [
+        { value: 'course-v1:edX+TST101+2024', label: 'Test Course 1' },
+        { value: 'course-v1:edX+TST102+2024', label: 'Test Course 2' },
+      ],
     });
 
     render(

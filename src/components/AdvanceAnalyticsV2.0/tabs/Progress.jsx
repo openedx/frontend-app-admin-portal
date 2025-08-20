@@ -2,14 +2,18 @@ import { useState } from 'react';
 import { FormattedMessage } from '@edx/frontend-platform/i18n';
 import PropTypes from 'prop-types';
 import { ANALYTICS_TABS } from '../constants';
-import { useEnterpriseCompletionsData, useEnterpriseAnalyticsAggregatesData } from '../data/hooks';
+import {
+  useEnterpriseCompletionsData,
+  useEnterpriseAnalyticsAggregatesData,
+  useEnterpriseCourses,
+} from '../data/hooks';
 import AnalyticsFilters from '../AnalyticsFilters';
 import { useAnalyticsFilters } from '../AnalyticsFiltersContext';
 import TopCoursesByCompletionTable from '../tables/TopCoursesByCompletionTable';
 import TopSubjectsByCompletionTable from '../tables/TopSubjectsByCompletionTable';
 import IndividualCompletionsTable from '../tables/IndividualCompletionsTable';
 import { get90DayPriorDate } from '../data/utils';
-import { DEFAULT_COURSE_VALUE } from '../data/constants';
+import { ALL_COURSES } from '../data/constants';
 
 const Progress = ({ enterpriseId }) => {
   // Filters
@@ -27,13 +31,14 @@ const Progress = ({ enterpriseId }) => {
 
   const [startDate, setStartDate] = useState(get90DayPriorDate());
   const [endDate, setEndDate] = useState(currentDate);
-  const [course, setCourse] = useState(DEFAULT_COURSE_VALUE);
+  const [course, setCourse] = useState(ALL_COURSES);
 
   // Stats Data
   const { data: statsData } = useEnterpriseAnalyticsAggregatesData({
     enterpriseCustomerUUID: enterpriseId,
     startDate,
     endDate,
+    course,
   });
 
   // Completions data
@@ -46,6 +51,17 @@ const Progress = ({ enterpriseId }) => {
     endDate,
     granularity,
     calculation,
+    groupUUID,
+    course,
+  });
+
+  // Enterprise Courses Data
+  const {
+    isFetching: isEnterpriseCoursesFetching, data: enterpriseCourses,
+  } = useEnterpriseCourses({
+    enterpriseCustomerUUID: enterpriseId,
+    startDate,
+    endDate,
     groupUUID,
   });
 
@@ -87,6 +103,8 @@ const Progress = ({ enterpriseId }) => {
           groups={groups}
           isGroupsLoading={isGroupsLoading}
           activeTab={ANALYTICS_TABS.PROGRESS}
+          isEnterpriseCoursesFetching={isEnterpriseCoursesFetching}
+          enterpriseCourses={enterpriseCourses}
         />
       </div>
 
@@ -128,6 +146,7 @@ const Progress = ({ enterpriseId }) => {
             endDate={endDate || currentDate}
             enterpriseId={enterpriseId}
             groupUUID={groupUUID}
+            course={course}
           />
         </div>
       </div>
