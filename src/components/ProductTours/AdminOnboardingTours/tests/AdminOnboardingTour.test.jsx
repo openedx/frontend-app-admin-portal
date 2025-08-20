@@ -1,9 +1,10 @@
-import { act, renderHook } from '@testing-library/react';
+import { useEffect } from 'react';
+import { act, render } from '@testing-library/react';
 import '@testing-library/jest-dom';
 import { QueryClientProvider } from '@tanstack/react-query';
 import { sendEnterpriseTrackEvent } from '@edx/frontend-enterprise-utils';
 
-import useAdminOnboardingTour from '../flows/AdminOnboardingTour';
+import AdminOnboardingTour from '../flows/AdminOnboardingTour';
 import { ADMIN_TOUR_EVENT_NAMES } from '../constants';
 import useHydrateAdminOnboardingData from '../data/useHydrateAdminOnboardingData';
 import { queryClient } from '../../../test/testUtils';
@@ -73,17 +74,39 @@ const wrapper = ({ children }) => (
 
 const mockOnClose = jest.fn();
 
-describe('useAdminOnboardingTour', () => {
+const TestComponent = ({ props, onResult }) => {
+  const result = AdminOnboardingTour(props);
+
+  // Call the callback with the result so we can access it in tests
+  useEffect(() => {
+    onResult(result);
+  }, [result, onResult]);
+
+  return <div data-testid="result">Tour loaded</div>;
+};
+
+describe('AdminOnboardingTour', () => {
   const defaultProps = {
     adminUuid: mockAdminUuid,
+    aiButtonVisible: false,
     currentStep: 0,
+    enterpriseId: 'test-enterprise-id',
     enterpriseSlug: 'test-enterprise',
     onClose: mockOnClose,
     setCurrentStep: jest.fn(),
+    targetSelector: undefined,
+    enablePortalLearnerCreditManagementScreen: true,
+    enterpriseUUID: 'test-enterprise-uuid',
+    enterpriseFeatures: {
+      topDownAssignmentRealTimeLcm: true,
+    },
   };
+
+  let tourResult = null;
 
   beforeEach(() => {
     useHydrateAdminOnboardingData.mockReturnValue({ data: { hasEnterpriseMembers: true, hasEnterpriseGroups: true } });
+    tourResult = null;
   });
 
   afterEach(() => {
@@ -91,29 +114,62 @@ describe('useAdminOnboardingTour', () => {
   });
 
   it('returns tour configuration with correct structure', () => {
-    const { result } = renderHook(() => useAdminOnboardingTour(defaultProps), { wrapper });
-    expect(result.current.length === 7);
+    render(
+      <TestComponent
+        props={defaultProps}
+        onResult={(result) => { tourResult = result; }}
+      />,
+      { wrapper },
+    );
+    expect(tourResult.length).toBeGreaterThan(0);
   });
 
   it('includes title and body with FormattedMessage components', () => {
-    const { result } = renderHook(() => useAdminOnboardingTour(defaultProps), { wrapper });
-    expect(result.current[0].title).toBeDefined();
-    expect(result.current[0].body).toBeDefined();
+    render(
+      <TestComponent
+        props={defaultProps}
+        onResult={(result) => { tourResult = result; }}
+      />,
+      { wrapper },
+    );
+    expect(tourResult[0].title).toBeDefined();
+    expect(tourResult[0].body).toBeDefined();
   });
 
   it('includes onAdvance function', () => {
-    const { result } = renderHook(() => useAdminOnboardingTour(defaultProps), { wrapper });
-    expect(typeof result.current[0].onAdvance).toBe('function');
+    render(
+      <TestComponent
+        props={defaultProps}
+        onResult={(result) => { tourResult = result; }}
+      />,
+      { wrapper },
+    );
+    expect(typeof tourResult[0].onAdvance).toBe('function');
   });
 
   it('handles missing enterpriseSlug gracefully', () => {
-    const { result } = renderHook(() => useAdminOnboardingTour({}), { wrapper });
-
-    expect(result.current[0]).toBeDefined();
+    const propsWithMissingSlug = {
+      ...defaultProps,
+      enterpriseSlug: undefined,
+    };
+    render(
+      <TestComponent
+        props={propsWithMissingSlug}
+        onResult={(result) => { tourResult = result; }}
+      />,
+      { wrapper },
+    );
+    expect(tourResult[0]).toBeDefined();
   });
 
   it('returns all required properties', () => {
-    const { result } = renderHook(() => useAdminOnboardingTour(defaultProps), { wrapper });
+    render(
+      <TestComponent
+        props={defaultProps}
+        onResult={(result) => { tourResult = result; }}
+      />,
+      { wrapper },
+    );
     const requiredProps = [
       'target',
       'title',
@@ -123,14 +179,19 @@ describe('useAdminOnboardingTour', () => {
     ];
 
     requiredProps.forEach(prop => {
-      expect(result.current[0]).toHaveProperty(prop);
+      expect(tourResult[0]).toHaveProperty(prop);
     });
   });
 
   it('should call sendEnterpriseTrackEvent with correct parameters when tour advances', () => {
-    const { result } = renderHook(() => useAdminOnboardingTour(defaultProps), { wrapper });
-
-    const firstStep = result.current[0];
+    render(
+      <TestComponent
+        props={defaultProps}
+        onResult={(result) => { tourResult = result; }}
+      />,
+      { wrapper },
+    );
+    const firstStep = tourResult[0];
 
     act(() => {
       firstStep.onAdvance();
@@ -145,13 +206,18 @@ describe('useAdminOnboardingTour', () => {
 
   it('should call sendEnterpriseTrackEvent with correct parameters when tour goes back', () => {
     const props = {
+      ...defaultProps,
       currentStep: 2,
-      setCurrentStep: jest.fn(),
-      enterpriseSlug: 'test-enterprise',
     };
-    const { result } = renderHook(() => useAdminOnboardingTour(props), { wrapper });
 
-    const secondStep = result.current[1];
+    render(
+      <TestComponent
+        props={props}
+        onResult={(result) => { tourResult = result; }}
+      />,
+      { wrapper },
+    );
+    const secondStep = tourResult[1];
 
     act(() => {
       secondStep.onBack();
@@ -164,9 +230,14 @@ describe('useAdminOnboardingTour', () => {
     );
   });
   it('should call sendEnterpriseTrackEvent with correct parameters when tour ends', () => {
-    const { result } = renderHook(() => useAdminOnboardingTour(defaultProps), { wrapper });
-
-    const lastStep = result.current[6];
+    render(
+      <TestComponent
+        props={defaultProps}
+        onResult={(result) => { tourResult = result; }}
+      />,
+      { wrapper },
+    );
+    const lastStep = tourResult[tourResult.length - 1];
 
     act(() => {
       lastStep.onEnd();
