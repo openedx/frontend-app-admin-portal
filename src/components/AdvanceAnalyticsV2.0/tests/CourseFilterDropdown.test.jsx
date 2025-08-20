@@ -34,7 +34,7 @@ describe('CourseFilterDropdown', () => {
 
     render(
       <IntlProvider locale="en">
-        <CourseFilterDropdown selectedCourse="" onChange={onChangeMock} />
+        <CourseFilterDropdown enterpriseCourses={undefined} isFetching selectedCourse="" onChange={onChangeMock} />
       </IntlProvider>,
     );
 
@@ -42,18 +42,15 @@ describe('CourseFilterDropdown', () => {
   });
 
   it('renders dropdown options from hook', async () => {
-    useEnterpriseCourses.mockReturnValue({
-      data: [
-        { value: 'all', label: 'All Courses' },
-        { value: 'test-course-key-2', label: 'Critical Thinking Basics' },
-        { value: 'test-course-key-3', label: 'Fundamentals of Neuroscience' },
-      ],
-      isLoading: false,
-    });
+    const mockedCoursesData = [
+      { value: 'all', label: 'All Courses' },
+      { value: 'test-course-key-2', label: 'Critical Thinking Basics' },
+      { value: 'test-course-key-3', label: 'Fundamentals of Neuroscience' },
+    ];
 
     render(
       <IntlProvider locale="en">
-        <CourseFilterDropdown selectedCourse="" onChange={onChangeMock} />
+        <CourseFilterDropdown enterpriseCourses={mockedCoursesData} selectedCourse="" onChange={onChangeMock} />
       </IntlProvider>,
     );
 

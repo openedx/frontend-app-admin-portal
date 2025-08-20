@@ -3,12 +3,13 @@ import { FormattedMessage } from '@edx/frontend-platform/i18n';
 import PropTypes from 'prop-types';
 import { sendEnterpriseTrackEvent } from '@edx/frontend-enterprise-utils';
 import { ANALYTICS_TABS } from '../constants';
-import { COURSE_TYPES, DEFAULT_COURSE_VALUE } from '../data/constants';
+import { COURSE_TYPES, ALL_COURSES } from '../data/constants';
 import {
   useEnterpriseEngagementData,
   useEnterpriseAnalyticsAggregatesData,
   useEnterpriseAnalyticsData,
   useEnterpriseEnrollmentsData,
+  useEnterpriseCourses,
 } from '../data/hooks';
 import AnalyticsFilters from '../AnalyticsFilters';
 import { useAnalyticsFilters } from '../AnalyticsFiltersContext';
@@ -42,7 +43,7 @@ const Engagements = ({ enterpriseId }) => {
   const [startDate, setStartDate] = useState(get90DayPriorDate());
   const [endDate, setEndDate] = useState(currentDate);
   const [courseType, setCourseType] = useState(COURSE_TYPES.ALL_COURSE_TYPES);
-  const [course, setCourse] = useState(DEFAULT_COURSE_VALUE);
+  const [course, setCourse] = useState(ALL_COURSES);
 
   // Stats Data
   const { isFetching: isStatsFetching, isError: isStatsError, data: statsData } = useEnterpriseAnalyticsAggregatesData({
@@ -50,6 +51,7 @@ const Engagements = ({ enterpriseId }) => {
     startDate,
     endDate,
     courseType,
+    course,
   });
 
   // Skills Data
@@ -61,6 +63,7 @@ const Engagements = ({ enterpriseId }) => {
     startDate,
     endDate,
     courseType,
+    course,
   });
 
   // Engagements Data
@@ -75,6 +78,7 @@ const Engagements = ({ enterpriseId }) => {
     calculation,
     groupUUID,
     courseType,
+    course,
   });
 
   // Enrollments Data
@@ -86,6 +90,18 @@ const Engagements = ({ enterpriseId }) => {
     endDate,
     granularity,
     calculation,
+    groupUUID,
+    courseType,
+    course,
+  });
+
+  // Enterprise Courses Data
+  const {
+    isFetching: isEnterpriseCoursesFetching, data: enterpriseCourses,
+  } = useEnterpriseCourses({
+    enterpriseCustomerUUID: enterpriseId,
+    startDate,
+    endDate,
     groupUUID,
     courseType,
   });
@@ -140,6 +156,8 @@ const Engagements = ({ enterpriseId }) => {
           groups={groups}
           isGroupsLoading={isGroupsLoading}
           activeTab={ANALYTICS_TABS.ENGAGEMENTS}
+          isEnterpriseCoursesFetching={isEnterpriseCoursesFetching}
+          enterpriseCourses={enterpriseCourses}
         />
       </div>
 
@@ -181,6 +199,8 @@ const Engagements = ({ enterpriseId }) => {
             startDate={startDate || statsData?.minEnrollmentDate}
             endDate={endDate || currentDate}
             enterpriseId={enterpriseId}
+            courseType={courseType}
+            course={course}
           />
         </div>
       </div>
