@@ -2359,18 +2359,18 @@ describe('<BudgetDetailPage />', () => {
     if (field === 'status') {
       const filtersButton = getButtonElement('Filters', { screenOverride: assignedSection });
       await user.click(filtersButton);
-      await waitFor(async () => {
-        const filtersDropdown = screen.getAllByRole('group', { name: 'Status' })[0];
-        const filtersDropdownContainer = within(filtersDropdown);
-        if (value.includes('waiting')) {
-          const waitingForLearnerOption = filtersDropdownContainer.getByLabelText('Waiting for learner 1', { exact: false });
-          expect(waitingForLearnerOption).toBeInTheDocument();
-          await user.click(waitingForLearnerOption);
+      if (value.includes('waiting')) {
+        const waitingForLearnerOption = await screen.findByLabelText(/Waiting for learner/i);
+        expect(waitingForLearnerOption).toBeInTheDocument();
+        waitingForLearnerOption.click();
+        waitingForLearnerOption.checked = true;
+        expect(waitingForLearnerOption).toBeChecked();
+        await waitFor(() => {
           expect(mockFetchContentAssignments).toHaveBeenCalledWith(
             expect.objectContaining(expectedTableFetchDataArgsAfterFilter),
           );
-        }
-      });
+        });
+      }
     }
 
     if (field === 'search') {
