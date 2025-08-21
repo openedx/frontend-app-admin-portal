@@ -204,6 +204,32 @@ describe('AdminOnboardingTour', () => {
     );
   });
 
+  it('should call sendEnterpriseTrackEvent with correct parameters when tour goes back', () => {
+    const props = {
+      ...defaultProps,
+      currentStep: 2,
+    };
+
+    render(
+      <TestComponent
+        props={props}
+        onResult={(result) => { tourResult = result; }}
+      />,
+      { wrapper },
+    );
+
+    const secondStep = tourResult[1];
+
+    act(() => {
+      secondStep.onBack();
+    });
+
+    expect(sendEnterpriseTrackEvent).toHaveBeenLastCalledWith(
+      defaultProps.enterpriseSlug,
+      ADMIN_TOUR_EVENT_NAMES.LEARNER_PROGRESS_BACK_EVENT_NAME,
+      { 'back-step': 1 },
+    );
+  });
   it('should call sendEnterpriseTrackEvent with correct parameters when tour ends', () => {
     render(
       <TestComponent
