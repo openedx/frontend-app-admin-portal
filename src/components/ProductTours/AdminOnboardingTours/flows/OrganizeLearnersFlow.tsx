@@ -28,19 +28,21 @@ const OrganizeLearnersFlow = ({
   );
   const onOrganizeBack = () => handleBackTour(ADMIN_TOUR_EVENT_NAMES.ORGANIZE_LEARNERS_BACK_EVENT_NAME);
 
-  const createGroupStepBody = <FormattedMessage
-    {...messages.organizeLearnersStepFiveBody}
-    values={{
-      a: (chunks) => (
-        <Hyperlink
-          destination={ENTERPRISE_HELP_GROUPING}
-          target="_blank"
-        >
-          {chunks}
-        </Hyperlink>
-      ),
-    }}
-  />
+  const createGroupStepBody = (
+    <FormattedMessage
+      {...messages.organizeLearnersStepFiveBody}
+      values={{
+        a: (chunks) => (
+          <Hyperlink
+            destination={ENTERPRISE_HELP_GROUPING}
+            target="_blank"
+          >
+            {chunks}
+          </Hyperlink>
+        ),
+      }}
+    />
+  );
 
   const tourNoMembers: Array<TourStep> = [{
     target: `#${ORGANIZE_LEARNER_TARGETS.PEOPLE_MANAGEMENT_SIDEBAR}`,
