@@ -271,6 +271,12 @@ const messages = defineMessages({
     defaultMessage: '"New Assignment" allows you to assign courses from your catalog.',
     description: 'Description for the allocate learning budgets flow step five',
   },
+  allocateAssignmentBudgetZeroStateStepSixBody: {
+    id: 'adminPortal.productTours.adminOnboarding.allocateAssignmentBudgetZeroState.body.6',
+    defaultMessage: 'Once learners are using this budget, you\'ll be able to track all activity, including enrollment'
+    + ' spending on the "Activity" tab.',
+    description: 'Description for the allocate learning budgets flow step six zero state',
+  },
   allocateAssignmentBudgetStepSixBody: {
     id: 'adminPortal.productTours.adminOnboarding.allocateAssignmentBudget.body.6',
     defaultMessage: 'Expand "Utilization Details" to see a breakdown of spent funds and pending assignments.',
@@ -298,7 +304,7 @@ const messages = defineMessages({
   },
   allocateAssignmentBudgetStepElevenBody: {
     id: 'adminPortal.productTours.adminOnboarding.allocateAssignmentBudget.body.11',
-    defaultMessage: 'To view more budgets, return to Learner Credit Management using the breadcrumbs oor left-hand navigation.',
+    defaultMessage: 'To view more budgets, return to Learner Credit Management using the breadcrumbs or left-hand navigation.',
     description: 'Description for the allocate learning budgets flow step eleven',
   },
   administerSubscriptionsStepNineBody: {

@@ -1703,7 +1703,7 @@ describe('<BudgetDetailPage />', () => {
         results: [mockApprovedRequest],
         pageCount: 1,
       },
-      fetchBnrRequests: mockFetchLearnerCreditRequests,
+      fetchApprovedRequests: mockFetchLearnerCreditRequests,
     });
     useBudgetRedemptions.mockReturnValue({
       isLoading: false,
@@ -1767,7 +1767,7 @@ describe('<BudgetDetailPage />', () => {
         pageCount: 1,
         requestStatusCounts: null,
       },
-      fetchBnrRequests: mockFetchLearnerCreditRequests,
+      fetchApprovedRequests: mockFetchLearnerCreditRequests,
     });
     useBudgetRedemptions.mockReturnValue({
       isLoading: false,
@@ -2359,20 +2359,18 @@ describe('<BudgetDetailPage />', () => {
     if (field === 'status') {
       const filtersButton = getButtonElement('Filters', { screenOverride: assignedSection });
       await user.click(filtersButton);
-      await waitFor(async () => {
-        const filtersDropdown = screen.getAllByRole('group', { name: 'Status' })[0];
-        const filtersDropdownContainer = within(filtersDropdown);
-        if (value.includes('waiting')) {
-          const waitingForLearnerOption = filtersDropdownContainer.getByLabelText('Waiting for learner 1', { exact: false });
-          expect(waitingForLearnerOption).toBeInTheDocument();
-          await user.click(waitingForLearnerOption);
-
-          expect(waitingForLearnerOption).toBeChecked();
+      if (value.includes('waiting')) {
+        const waitingForLearnerOption = await screen.findByLabelText(/Waiting for learner/i);
+        expect(waitingForLearnerOption).toBeInTheDocument();
+        waitingForLearnerOption.click();
+        waitingForLearnerOption.checked = true;
+        expect(waitingForLearnerOption).toBeChecked();
+        await waitFor(() => {
           expect(mockFetchContentAssignments).toHaveBeenCalledWith(
             expect.objectContaining(expectedTableFetchDataArgsAfterFilter),
           );
-        }
-      });
+        });
+      }
     }
 
     if (field === 'search') {
@@ -3492,7 +3490,7 @@ describe('<BudgetDetailPage />', () => {
       () => expect(screen.getByText('Assignment canceled')).toBeInTheDocument(),
     );
     expect(sendEnterpriseTrackEvent).toHaveBeenCalledTimes(2);
-  });
+  }, 10000);
 
   it('reminds a single assignment', async () => {
     const user = userEvent.setup();

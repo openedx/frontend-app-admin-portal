@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useCallback } from 'react';
+import React, { useEffect, useRef } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { Hyperlink } from '@openedx/paragon';
@@ -7,7 +7,6 @@ import { useNavigate, useLocation } from 'react-router-dom';
 import { FormattedMessage } from '@edx/frontend-platform/i18n';
 
 import useBnrSubsidyRequests from './data/hooks/useBnrSubsidyRequests';
-import { SUBSIDY_REQUEST_STATUS } from '../../data/constants/subsidyRequests';
 import BudgetDetailApprovedRequestTable from './BudgetDetailApprovedRequestTable';
 
 const BudgetDetailApprovedRequestHeader = () => {
@@ -61,20 +60,7 @@ const BudgetDetailApprovedRequestHeader = () => {
 };
 
 const BudgetDetailApprovedRequest = ({ enterpriseId }) => {
-  const { isLoading, bnrRequests, fetchBnrRequests } = useBnrSubsidyRequests({ enterpriseId });
-
-  const fetchApprovedRequests = useCallback(
-    (args = {}) => {
-      const filters = args.filters || [];
-      // Add an approved status filter in the format expected by the hook
-      const updatedFilters = [
-        ...filters.filter((f) => f.id !== 'requestStatus'),
-        { id: 'requestStatus', value: [SUBSIDY_REQUEST_STATUS.APPROVED] },
-      ];
-      return fetchBnrRequests({ ...args, filters: updatedFilters });
-    },
-    [fetchBnrRequests],
-  );
+  const { isLoading, bnrRequests, fetchApprovedRequests } = useBnrSubsidyRequests({ enterpriseId });
 
   // Transform the data to match the expected table format
   // Generate status counts from the actual results data
