@@ -73,7 +73,6 @@ describe('useAllocateLearningBudgetsFlow', () => {
       const props = {
         handleAdvanceTour: mockHandleAdvanceTour,
         handleEndTour: mockHandleEndTour,
-        enablePortalLearnerCreditManagementScreen: true,
         enterpriseUUID: 'test-enterprise-uuid',
         enterpriseFeatures: {
           topDownAssignmentRealTimeLcm: true,
@@ -91,7 +90,6 @@ describe('useAllocateLearningBudgetsFlow', () => {
       const props = {
         handleAdvanceTour: mockHandleAdvanceTour,
         handleEndTour: mockHandleEndTour,
-        enablePortalLearnerCreditManagementScreen: true,
         enterpriseUUID: 'test-enterprise-uuid',
         enterpriseFeatures: {
           topDownAssignmentRealTimeLcm: true,
@@ -111,7 +109,6 @@ describe('useAllocateLearningBudgetsFlow', () => {
       const props = {
         handleAdvanceTour: mockHandleAdvanceTour,
         handleEndTour: mockHandleEndTour,
-        enablePortalLearnerCreditManagementScreen: true,
         enterpriseUUID: 'test-enterprise-uuid',
         enterpriseFeatures: {
           topDownAssignmentRealTimeLcm: true,
@@ -145,7 +142,6 @@ describe('useAllocateLearningBudgetsFlow', () => {
       const props = {
         handleAdvanceTour: mockHandleAdvanceTour,
         handleEndTour: mockHandleEndTour,
-        enablePortalLearnerCreditManagementScreen: true,
         enterpriseUUID: 'test-enterprise-uuid',
         enterpriseFeatures: {
           topDownAssignmentRealTimeLcm: true,
@@ -177,7 +173,6 @@ describe('useAllocateLearningBudgetsFlow', () => {
       const props = {
         handleAdvanceTour: mockHandleAdvanceTour,
         handleEndTour: mockHandleEndTour,
-        enablePortalLearnerCreditManagementScreen: true,
         enterpriseUUID: 'test-enterprise-uuid',
         enterpriseFeatures: {
           topDownAssignmentRealTimeLcm: true,
@@ -207,7 +202,6 @@ describe('useAllocateLearningBudgetsFlow', () => {
       const props = {
         handleAdvanceTour: mockHandleAdvanceTour,
         handleEndTour: mockHandleEndTour,
-        enablePortalLearnerCreditManagementScreen: true,
         enterpriseUUID: 'test-enterprise-uuid',
         enterpriseFeatures: {
           topDownAssignmentRealTimeLcm: true,

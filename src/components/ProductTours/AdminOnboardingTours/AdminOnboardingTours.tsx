@@ -27,7 +27,6 @@ interface AdminOnboardingToursProps {
   setTarget: Function,
   targetSelector: string;
   enablePortalLearnerCreditManagementScreen: boolean;
-  enterpriseUUID: string;
   enterpriseFeatures: {
     topDownAssignmentRealTimeLcm: boolean;
   };
@@ -52,9 +51,8 @@ interface RootState {
 }
 
 const AdminOnboardingTours: FC<AdminOnboardingToursProps> = ({
-  enablePortalLearnerCreditManagementScreen,
-  enterpriseUUID,
   enterpriseFeatures,
+  enablePortalLearnerCreditManagementScreen,
   adminUuid, enterpriseId, enterpriseSlug, insights, insightsLoading, isOpen, onClose, setTarget, targetSelector,
 }) => {
   const intl = useIntl();
@@ -62,10 +60,9 @@ const AdminOnboardingTours: FC<AdminOnboardingToursProps> = ({
   const aiButtonVisible = (insights?.learner_engagement && insights?.learner_progress) && !insightsLoading;
   const [currentStep, setCurrentStep] = useState(0);
   const prevPathnameRef = useRef(location.pathname);
-  const adminOnboardingSteps = AdminOnboardingTour({
-    enablePortalLearnerCreditManagementScreen,
-    enterpriseUUID,
+    const adminOnboardingSteps = AdminOnboardingTour({
     enterpriseFeatures,
+    enablePortalLearnerCreditManagementScreen,
     adminUuid,
     aiButtonVisible,
     currentStep,
@@ -186,7 +183,6 @@ const mapStateToProps = (state: RootState) => ({
   insights: state.dashboardInsights.insights,
   insightsLoading: state.dashboardInsights.loading,
   enablePortalLearnerCreditManagementScreen: state.portalConfiguration.enablePortalLearnerCreditManagementScreen,
-  enterpriseUUID: state.portalConfiguration.enterpriseId,
   enterpriseFeatures: state.portalConfiguration.enterpriseFeatures,
 });
 export default connect(mapStateToProps)(AdminOnboardingTours);

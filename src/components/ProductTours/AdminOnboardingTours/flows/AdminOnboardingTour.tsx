@@ -26,26 +26,24 @@ interface AdminOnboardingTourProps {
   adminUuid: string;
   aiButtonVisible: boolean;
   currentStep: number;
+  enablePortalLearnerCreditManagementScreen: boolean;
+  enterpriseFeatures: {
+    topDownAssignmentRealTimeLcm: boolean;
+  }
   enterpriseId: string;
   enterpriseSlug: string;
   onClose: () => void;
   setCurrentStep: (currentStep: number) => void;
   targetSelector?: string;
-  enablePortalLearnerCreditManagementScreen: boolean;
-  enterpriseUUID: string;
-  enterpriseFeatures: {
-    topDownAssignmentRealTimeLcm: boolean;
-  }
 }
 
 const AdminOnboardingTour = (
   {
-    enablePortalLearnerCreditManagementScreen,
-    enterpriseUUID,
-    enterpriseFeatures,
     adminUuid,
     aiButtonVisible,
     currentStep,
+    enablePortalLearnerCreditManagementScreen,
+    enterpriseFeatures,
     enterpriseSlug,
     onClose,
     setCurrentStep,
@@ -56,37 +54,6 @@ const AdminOnboardingTour = (
   const { refetch } = useFetchCompletedOnboardingFlows(adminUuid);
   function handleAdvanceTour(advanceEventName: string) {
     const newIndex = currentStep + 1;
-
-    const manageLearnersButton = document.getElementById('manage-learners-button');
-    if (manageLearnersButton && targetSelector === 'manage-learners-button') {
-      manageLearnersButton.click();
-      setCurrentStep(0);
-      sendEnterpriseTrackEvent(enterpriseSlug, advanceEventName, { 'completed-step': newIndex });
-      return;
-    }
-
-    const viewBudgetButton = document.getElementById(ALLOCATE_LEARNING_BUDGETS_TARGETS.VIEW_BUDGET);
-    if (viewBudgetButton && targetSelector === ALLOCATE_LEARNING_BUDGETS_TARGETS.VIEW_BUDGET) {
-      viewBudgetButton.click();
-      setCurrentStep(0);
-      sendEnterpriseTrackEvent(enterpriseSlug, advanceEventName, { 'completed-step': newIndex });
-      return;
-    }
-
-    const detailPageTargets = [
-      ADMINISTER_SUBSCRIPTIONS_TARGETS.SUBSCRIPTION_PLANS_DETAIL_PAGE,
-      ADMINISTER_SUBSCRIPTIONS_TARGETS.INVITE_LEARNERS_BUTTON,
-      ADMINISTER_SUBSCRIPTIONS_TARGETS.LICENSE_ALLOCATION_SECTION,
-      ADMINISTER_SUBSCRIPTIONS_TARGETS.LICENSE_ALLOCATION_FILTERS,
-      ADMINISTER_SUBSCRIPTIONS_TARGETS.SUBSCRIPTIONS_NAVIGATION,
-    ];
-
-    if (detailPageTargets.includes(targetSelector as string)) {
-      sendEnterpriseTrackEvent(enterpriseSlug, advanceEventName, { 'completed-step': 3 + newIndex });
-    } else {
-      sendEnterpriseTrackEvent(enterpriseSlug, advanceEventName, { 'completed-step': newIndex });
-    }
-
     sendEnterpriseTrackEvent(enterpriseSlug, advanceEventName, { 'completed-step': newIndex });
     setCurrentStep(newIndex);
   }
@@ -120,13 +87,16 @@ const AdminOnboardingTour = (
     enterpriseId, handleAdvanceTour, handleBackTour, handleEndTour,
   });
   const allocateLearningBudgetsFlow = useAllocateLearningBudgetsFlow({
-    handleAdvanceTour,
+    currentStep, 
+    enterpriseFeatures,
+    enterpriseId,
+    enterpriseSlug, 
     handleBackTour,
     handleEndTour,
-    enablePortalLearnerCreditManagementScreen,
-    enterpriseUUID,
-    enterpriseFeatures,
+    setCurrentStep,
+    targetSelector,
   });
+  
   const setUpPreferencesFlow = SetUpPreferencesFlow({ handleEndTour });
 
   // Map target selectors to their respective flows

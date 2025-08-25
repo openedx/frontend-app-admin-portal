@@ -11,6 +11,7 @@ import {
 } from '@openedx/paragon';
 import { connect } from 'react-redux';
 import { Helmet } from 'react-helmet';
+import { useSubsidyAccessPolicy } from './data';
 
 import { useIntl, FormattedMessage } from '@edx/frontend-platform/i18n';
 import Hero from '../Hero';

@@ -1,35 +1,61 @@
+import { isEmpty } from 'lodash-es';
 import { useIntl } from '@edx/frontend-platform/i18n';
+import { sendEnterpriseTrackEvent } from '@edx/frontend-enterprise-utils';
 import { useParams } from 'react-router';
 import { ALLOCATE_LEARNING_BUDGETS_TARGETS, ADMIN_TOUR_EVENT_NAMES } from '../constants';
 import messages from '../messages';
 import { TourStep } from '../../types';
-import { useBudgetDetailActivityOverview } from '../../../learner-credit-management/data';
+import { orderBudgets, useBudgetDetailActivityOverview, useSubsidyAccessPolicy } from '../../../learner-credit-management/data';
+import { useEnterpriseBudgets } from '../../../EnterpriseSubsidiesContext/data/hooks';
 
 interface CreateTourFlowsProps {
-  handleAdvanceTour: (advanceEventName: string) => void;
-  handleBackTour: (backEventName: string) => void;
-  handleEndTour: (endEventName: string, flowUuid?: string) => void;
+  currentStep: number;
   enablePortalLearnerCreditManagementScreen: boolean;
-  enterpriseUUID: string;
   enterpriseFeatures: {
     topDownAssignmentRealTimeLcm: boolean;
   };
+  enterpriseId: string;
+  enterpriseSlug: string;
+  handleBackTour: (backEventName: string) => void;
+  handleEndTour: (endEventName: string, flowUuid?: string) => void;
+  setCurrentStep: (currentStep: number) => void;
+  targetSelector?: string;
 }
 
 const AllocateLearningBudgetsFlow = ({
-  handleAdvanceTour,
+  currentStep,
+  enterpriseSlug,
   handleBackTour,
   handleEndTour,
-  intl,
   hasSpentTransactions,
   hasContentAssignments,
+  intl,
   isOnAssignmentPage,
+  policyType,
+  setCurrentStep,
+  targetSelector,
 }: CreateTourFlowsProps & {
   intl: any;
+  isOnAssignmentPage: boolean;
   hasSpentTransactions: boolean;
   hasContentAssignments: boolean;
-  isOnAssignmentPage: boolean;
+  policyType: string;
 }): Array<TourStep> => {
+  function handleAdvanceTour(advanceEventName: string) {
+    const newIndex = currentStep + 1;
+
+    const viewBudgetButton = document.getElementById(ALLOCATE_LEARNING_BUDGETS_TARGETS.VIEW_BUDGET);
+    if (viewBudgetButton && targetSelector === ALLOCATE_LEARNING_BUDGETS_TARGETS.VIEW_BUDGET) {
+      viewBudgetButton.click();
+      setCurrentStep(0);
+      sendEnterpriseTrackEvent(enterpriseSlug, advanceEventName, { 'completed-step': newIndex });
+      return;
+    }
+
+    sendEnterpriseTrackEvent(enterpriseSlug, advanceEventName, { 'completed-step': newIndex });
+    setCurrentStep(newIndex);
+  }
+
   const onAllocateAdvance = () => {
     handleAdvanceTour(ADMIN_TOUR_EVENT_NAMES.ALLOCATE_ASSIGNMENT_ADVANCE_EVENT_NAME);
   };
@@ -123,7 +149,7 @@ const AllocateLearningBudgetsFlow = ({
     ];
   }
 
-  // Main allocate learning budgets page flow (steps 1-3)
+  // Main allocate learning budgets page flow (steps 1-2)
   return [
     {
       target: `#${ALLOCATE_LEARNING_BUDGETS_TARGETS.SIDEBAR}`,
@@ -135,7 +161,7 @@ const AllocateLearningBudgetsFlow = ({
     {
       target: `#${ALLOCATE_LEARNING_BUDGETS_TARGETS.VIEW_BUDGET}`,
       placement: 'left',
-      body: intl.formatMessage(messages.allocateLearningBudgetStepThreeBody),
+      body: policyType === "Assignment" ? intl.formatMessage(messages.allocateLearningBudgetStepThreeBodyAssignment) : intl.formatMessage(messages.allocateLearningBudgetStepThreeBodyBnE),
       onBack: onAllocateBack,
       onEnd: onAllocateAdvance,
     },
@@ -150,9 +176,45 @@ const useAllocateLearningBudgetsFlow = (props: CreateTourFlowsProps): Array<Tour
   const {
     data: budgetActivityOverview,
   } = useBudgetDetailActivityOverview({
-    enterpriseUUID: props.enterpriseUUID,
+    enterpriseUUID: props.enterpriseId,
     isTopDownAssignmentEnabled,
   });
+
+  const { data: budgetsOverview } = useEnterpriseBudgets({
+    enablePortalLearnerCreditManagementScreen: props.enablePortalLearnerCreditManagementScreen,
+    enterpriseId: props.enterpriseId,
+    isTopDownAssignmentEnabled,
+  });
+  const {
+    budgets = [],
+  } = budgetsOverview || {};
+  const orderedBudgets = orderBudgets(intl, budgets);
+  const { data: subsidyAccessPolicy } = useSubsidyAccessPolicy(orderedBudgets[0]?.id);
+  let policyType;
+  if (subsidyAccessPolicy) {
+    if (subsidyAccessPolicy?.policyType === "AssignedLearnerCreditAccessPolicy") {
+      policyType = "Assignment";
+    }
+    else if (subsidyAccessPolicy.groupAssociations?.length > 0) {
+      policyType = "Invite only B&E";
+    }
+    else {
+      policyType = "B&E";
+    }
+  }
+
+
+
+  // if (subsidyAccessPolicy?.policyType === "PerLearnerEnrollmentCreditAccessPolicy") {
+  //   // Browse and enroll budget 
+
+  // } else if (subsidyAccessPolicy?.policyType === "PerLearnerSpendCreditAccessPolicy") {
+  //   // Browse and request budget 
+
+  // } else if (subsidyAccessPolicy?.policyType === "AssignedLearnerCreditAccessPolicy") {
+  //   // Admin assign budget 
+
+  // }
 
   const hasSpentTransactions = budgetActivityOverview?.spentTransactions?.count > 0;
   const hasContentAssignments = budgetActivityOverview?.contentAssignments?.count > 0;
@@ -165,6 +227,7 @@ const useAllocateLearningBudgetsFlow = (props: CreateTourFlowsProps): Array<Tour
     hasSpentTransactions,
     hasContentAssignments,
     isOnAssignmentPage,
+    policyType,
   });
 };
 
