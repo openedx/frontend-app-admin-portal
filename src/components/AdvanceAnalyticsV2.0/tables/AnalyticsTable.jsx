@@ -18,6 +18,8 @@ const AnalyticsTable = ({
   endDate,
   enterpriseId,
   groupUUID,
+  courseType,
+  course,
 }) => {
   const intl = useIntl();
   const [currentPage, setCurrentPage] = useState(0);
@@ -34,6 +36,8 @@ const AnalyticsTable = ({
     // pages index from 1 in backend, frontend components index from 0
     currentPage: currentPage + 1,
     pageSize,
+    courseType,
+    course,
   });
 
   const CSVDownloadURL = EnterpriseDataApiService.getAnalyticsCSVDownloadURL(
@@ -113,6 +117,8 @@ const AnalyticsTable = ({
 
 AnalyticsTable.defaultProps = {
   groupUUID: undefined,
+  courseType: undefined,
+  course: undefined,
 };
 
 AnalyticsTable.propTypes = {
@@ -124,6 +130,11 @@ AnalyticsTable.propTypes = {
   startDate: PropTypes.string.isRequired,
   endDate: PropTypes.string.isRequired,
   groupUUID: PropTypes.string,
+  courseType: PropTypes.string,
+  course: PropTypes.shape({
+    value: PropTypes.string.isRequired,
+    label: PropTypes.string.isRequired,
+  }),
 };
 
 export default AnalyticsTable;

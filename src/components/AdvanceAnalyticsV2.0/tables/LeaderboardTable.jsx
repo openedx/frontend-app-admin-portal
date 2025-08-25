@@ -3,7 +3,9 @@ import { useIntl } from '@edx/frontend-platform/i18n';
 import PropTypes from 'prop-types';
 import AnalyticsTable from './AnalyticsTable';
 
-const Leaderboard = ({ startDate, endDate, enterpriseId }) => {
+const Leaderboard = ({
+  startDate, endDate, enterpriseId, courseType, course,
+}) => {
   const intl = useIntl();
 
   return (
@@ -24,6 +26,8 @@ const Leaderboard = ({ startDate, endDate, enterpriseId }) => {
           startDate={startDate}
           endDate={endDate}
           enterpriseId={enterpriseId}
+          courseType={courseType}
+          course={course}
           enableCSVDownload
           tableColumns={[
             {
@@ -79,6 +83,11 @@ Leaderboard.propTypes = {
   enterpriseId: PropTypes.string.isRequired,
   startDate: PropTypes.string.isRequired,
   endDate: PropTypes.string.isRequired,
+  courseType: PropTypes.string,
+  course: PropTypes.shape({
+    value: PropTypes.string.isRequired,
+    label: PropTypes.string.isRequired,
+  }),
 };
 
 export default Leaderboard;
