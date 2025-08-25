@@ -6,6 +6,7 @@ import AIAnalyticsSummary from './AIAnalyticsSummary';
 import AIAnalyticsSummarySkeleton from './AIAnalyticsSummarySkeleton';
 import AdminCards from '../../containers/AdminCardsV2';
 import AdminCardsSkeleton from './AdminCardsSkeleton';
+import { TRACK_LEARNER_PROGRESS_TARGETS } from '../ProductTours/AdminOnboardingTours/constants';
 
 const AnalyticsOverview = ({
   insightsLoading,
@@ -30,7 +31,7 @@ const AnalyticsOverview = ({
   const shouldShowOverviewHeading = insightsLoading || !hasCompleteInsights;
 
   return (
-    <>
+    <div id={TRACK_LEARNER_PROGRESS_TARGETS.LPR_OVERVIEW}>
       <div className="row">
         {shouldShowOverviewHeading && (
           <div className="col">
@@ -59,7 +60,7 @@ const AnalyticsOverview = ({
           <AdminCards />
         )}
       </div>
-    </>
+    </div>
   );
 };
 
