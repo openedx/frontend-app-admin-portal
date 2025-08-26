@@ -1,9 +1,8 @@
 import React from 'react';
-import {
-  render,
-  waitFor,
-} from '@testing-library/react';
+import { render, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
+import { IntlProvider } from '@edx/frontend-platform/i18n';
+
 import { ApproveCouponCodeRequestModal } from '../ApproveCouponCodeRequestModal';
 import EnterpriseAccessApiService from '../../../data/services/EnterpriseAccessApiService';
 import * as hooks from '../data/hooks';
@@ -19,6 +18,12 @@ jest.mock('../data/hooks');
 jest.mock('../../../data/services/EnterpriseAccessApiService', () => ({
   approveCouponCodeRequests: jest.fn(),
 }));
+
+const ApproveCouponCodeRequestModalWrapper = ({ ...rest }) => (
+  <IntlProvider locale="en">
+    <ApproveCouponCodeRequestModal {...rest} />
+  </IntlProvider>
+);
 
 describe('<ApproveCouponCodeRequestModal />', () => {
   const basicProps = {
@@ -66,7 +71,7 @@ describe('<ApproveCouponCodeRequestModal />', () => {
     });
 
     const { getByTestId } = render(
-      <ApproveCouponCodeRequestModal {...basicProps} />,
+      <ApproveCouponCodeRequestModalWrapper {...basicProps} />,
     );
 
     expect(getByTestId('approve-coupon-code-request-modal-skeleton'));
@@ -74,7 +79,7 @@ describe('<ApproveCouponCodeRequestModal />', () => {
 
   it('should disable the approve button if no coupon code has been selected', () => {
     const { getByTestId } = render(
-      <ApproveCouponCodeRequestModal {...basicProps} />,
+      <ApproveCouponCodeRequestModalWrapper {...basicProps} />,
     );
 
     const approveBtn = getByTestId('approve-coupon-code-request-modal-approve-btn');
@@ -94,7 +99,7 @@ describe('<ApproveCouponCodeRequestModal />', () => {
     });
 
     const { getByTestId, queryByTestId } = render(
-      <ApproveCouponCodeRequestModal {...basicProps} />,
+      <ApproveCouponCodeRequestModalWrapper {...basicProps} />,
     );
 
     expect(queryByTestId('approve-coupon-code-request-modal-coupon-0')).toBeNull();
@@ -110,7 +115,7 @@ describe('<ApproveCouponCodeRequestModal />', () => {
     const user = userEvent.setup();
     const handleSuccess = jest.fn();
     const { getByTestId } = render(
-      <ApproveCouponCodeRequestModal {...basicProps} onSuccess={handleSuccess} />,
+      <ApproveCouponCodeRequestModalWrapper {...basicProps} onSuccess={handleSuccess} />,
     );
 
     const couponChoiceRadio = getByTestId('approve-coupon-code-request-modal-coupon-0');
@@ -136,7 +141,7 @@ describe('<ApproveCouponCodeRequestModal />', () => {
     EnterpriseAccessApiService.approveCouponCodeRequests.mockRejectedValue(new Error('something went wrong'));
 
     const { getByTestId } = render(
-      <ApproveCouponCodeRequestModal {...basicProps} />,
+      <ApproveCouponCodeRequestModalWrapper {...basicProps} />,
     );
 
     const couponChoiceRadio = getByTestId('approve-coupon-code-request-modal-coupon-0');
@@ -168,7 +173,7 @@ describe('<ApproveCouponCodeRequestModal />', () => {
     });
 
     const { getByTestId } = render(
-      <ApproveCouponCodeRequestModal {...basicProps} />,
+      <ApproveCouponCodeRequestModalWrapper {...basicProps} />,
     );
 
     expect(getByTestId('approve-coupon-code-request-modal-no-coupons-alert'));

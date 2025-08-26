@@ -14,6 +14,7 @@ interface CreateTourFlowsProps {
   currentStep: number;
   enterpriseSlug: string;
   handleEndTour: (endEventName: string, flowUuid?: string) => void;
+  handleBackTour: (backEventName: string) => void;
   setCurrentStep: (step: number) => void;
   targetSelector?: string;
 }
@@ -22,6 +23,7 @@ const AdministerSubscriptionsFlow = ({
   currentStep,
   enterpriseSlug,
   handleEndTour,
+  handleBackTour,
   setCurrentStep,
   targetSelector,
 }: CreateTourFlowsProps): Array<TourStep> => {
@@ -67,6 +69,7 @@ const AdministerSubscriptionsFlow = ({
   }
 
   const onAdvance = () => handleAdvanceTour(ADMIN_TOUR_EVENT_NAMES.ADMINISTER_SUBSCRIPTIONS_ADVANCE_EVENT_NAME);
+  const onBack = () => handleBackTour(ADMIN_TOUR_EVENT_NAMES.ADMINISTER_SUBSCRIPTIONS_BACK_EVENT_NAME);
 
   if (isOnDetailPage) {
     return [
@@ -81,23 +84,27 @@ const AdministerSubscriptionsFlow = ({
         placement: 'left',
         body: intl.formatMessage(messages.administerSubscriptionsStepFiveBody),
         onAdvance,
+        onBack,
       },
       {
         target: `#${ADMINISTER_SUBSCRIPTIONS_TARGETS.LICENSE_ALLOCATION_SECTION}`,
         placement: 'top',
         body: intl.formatMessage(messages.administerSubscriptionsStepSixBody),
         onAdvance,
+        onBack,
       },
       {
         target: `#${ADMINISTER_SUBSCRIPTIONS_TARGETS.LICENSE_ALLOCATION_FILTERS}`,
         placement: 'right',
         body: intl.formatMessage(messages.administerSubscriptionsStepSevenBody),
         onAdvance,
+        onBack,
       },
       {
         target: `#${ADMINISTER_SUBSCRIPTIONS_TARGETS.SUBSCRIPTIONS_NAVIGATION}`,
         placement: 'right',
         body: intl.formatMessage(messages.administerSubscriptionsStepEightBody),
+        onBack,
         onEnd,
       },
     ];
@@ -117,11 +124,13 @@ const AdministerSubscriptionsFlow = ({
       placement: 'top',
       body: intl.formatMessage(messages.administerSubscriptionsStepTwoBody),
       onAdvance,
+      onBack,
     },
     {
       target: `#${ADMINISTER_SUBSCRIPTIONS_TARGETS.MANAGE_LEARNERS_BUTTON}`,
       placement: 'left',
       body: intl.formatMessage(messages.administerSubscriptionsStepThreeBody),
+      onBack,
       onEnd: onAdvance,
     },
   ];
@@ -132,6 +141,7 @@ const AdministerSubscriptionsFlow = ({
       placement: 'bottom',
       body: intl.formatMessage(messages.administerSubscriptionsStepNineBody),
       onAdvance,
+      onBack,
     });
   }
   return mainPageFlow;

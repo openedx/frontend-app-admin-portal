@@ -9,6 +9,7 @@ import { Provider } from 'react-redux';
 import dayjs from 'dayjs';
 import '@testing-library/jest-dom/extend-expect';
 
+import { IntlProvider } from '@edx/frontend-platform/i18n';
 import { sendEnterpriseTrackEvent } from '@edx/frontend-enterprise-utils';
 import { SUBSCRIPTION_TABLE_EVENTS } from '../../../../../eventTracking';
 
@@ -44,7 +45,9 @@ const initialStore = mockStore({
 
 const RemindBulkActionWithProvider = ({ store = initialStore, ...rest }) => (
   <Provider store={store}>
-    <RemindBulkAction {...rest} />
+    <IntlProvider locale="en">
+      <RemindBulkAction {...rest} />
+    </IntlProvider>
   </Provider>
 );
 

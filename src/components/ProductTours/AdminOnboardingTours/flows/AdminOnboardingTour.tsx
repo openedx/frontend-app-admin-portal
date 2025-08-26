@@ -91,6 +91,12 @@ const AdminOnboardingTour = (
     setCurrentStep(newIndex);
   }
 
+  function handleBackTour(backEventName: string) {
+    const newIndex = currentStep - 1;
+    sendEnterpriseTrackEvent(enterpriseSlug, backEventName, { 'back-step': newIndex });
+    setCurrentStep(newIndex);
+  }
+
   async function handleEndTour(endEventName: string, flowUuid: string) {
     try {
       onClose();
@@ -103,19 +109,24 @@ const AdminOnboardingTour = (
   }
 
   const administerSubscriptionsFlow = AdministerSubscriptionsFlow({
-    currentStep, enterpriseSlug, handleEndTour, setCurrentStep, targetSelector,
+    currentStep, enterpriseSlug, handleEndTour, handleBackTour, setCurrentStep, targetSelector,
   });
-  const analyticsFlow = AnalyticsFlow({ handleAdvanceTour, handleEndTour });
+  const analyticsFlow = AnalyticsFlow({ handleAdvanceTour, handleBackTour, handleEndTour });
   const customizeReportsFlow = CustomizeReportsFlow({ handleEndTour });
-  const learnerProgressFlow = LearnerProgressFlow({ aiButtonVisible, handleAdvanceTour, handleEndTour });
+  const learnerProgressFlow = LearnerProgressFlow({
+    aiButtonVisible, handleAdvanceTour, handleBackTour, handleEndTour,
+  });
+  const organizeLearnersFlow = OrganizeLearnersFlow({
+    enterpriseId, handleAdvanceTour, handleBackTour, handleEndTour,
+  });
   const allocateLearningBudgetsFlow = useAllocateLearningBudgetsFlow({
     handleAdvanceTour,
+    handleBackTour,
     handleEndTour,
     enablePortalLearnerCreditManagementScreen,
     enterpriseUUID,
     enterpriseFeatures,
   });
-  const organizeLearnersFlow = OrganizeLearnersFlow({ enterpriseId, handleAdvanceTour, handleEndTour });
   const setUpPreferencesFlow = SetUpPreferencesFlow({ handleEndTour });
 
   // Map target selectors to their respective flows
