@@ -126,7 +126,7 @@ export const COURSE_TYPES = {
   EXECUTIVE_EDUCATION: 'Executive Education',
   ALL_COURSE_TYPES: 'all_course_types',
 };
-export const DEFAULT_COURSE_VALUE = {
+export const ALL_COURSES = {
   value: 'all',
   label: 'All Courses',
 };

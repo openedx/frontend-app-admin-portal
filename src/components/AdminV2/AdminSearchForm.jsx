@@ -14,6 +14,7 @@ import { formatTimestamp, updateUrl } from '../../utils';
 import IconWithTooltip from '../IconWithTooltip';
 import { withLocation, withNavigate } from '../../hoc';
 import EVENT_NAMES from '../../eventTracking';
+import { TRACK_LEARNER_PROGRESS_TARGETS } from '../ProductTours/AdminOnboardingTours/constants';
 
 const AdminSearchForm = ({
   searchEnrollmentsList,
@@ -69,12 +70,47 @@ const AdminSearchForm = ({
   const courseDates = Array.from(new Set(tableData.map(en => en.course_start_date).sort().reverse()));
   const columnWidth = (budgets?.length || groups?.length) ? 'col-md-3' : 'col-md-6';
 
-  return (
-    <div className="row">
-      <div className="col-12 pr-md-0 mb-0">
-        <div className="row w-100 m-0">
-          {groups?.length ? (
-            <div className="col-12 col-md-3 my-2 my-md-0 px-0 px-md-2 px-lg-3">
+    return (
+      <div className="row" id={TRACK_LEARNER_PROGRESS_TARGETS.FILTER}>
+        <div className="col-12 pr-md-0 mb-0">
+          <div className="row w-100 m-0">
+            {groups?.length ? (
+              <div className="col-12 col-md-3 my-2 my-md-0 px-0 px-md-2 px-lg-3">
+                <Form.Group>
+                  <Form.Label className="search-label mb-2">
+                    <FormattedMessage
+                      id="admin.portal.lpr.filter.by.group.dropdown.label"
+                      defaultMessage="Filter by group"
+                      description="Label for the group filter dropdown in the admin portal LPR page."
+                    />
+                  </Form.Label>
+                  <Form.Control
+                    data-testid="admin-search-form-control"
+                    className="w-100 groups-dropdown"
+                    as="select"
+                    value={searchGroupQuery}
+                    onChange={e => this.onGroupSelect(e)}
+                  >
+                    <option value="">
+                      {intl.formatMessage({
+                        id: 'admin.portal.lpr.v2.filter.by.group.dropdown.option.all.groups',
+                        defaultMessage: 'All groups',
+                        description: 'Label for the all groups option in the group filter dropdown in the admin portal LPR page.',
+                      })}
+                    </option>
+                    {groups.map(group => (
+                      <option
+                        value={group.uuid}
+                        key={group.uuid}
+                      >
+                        {group.name}
+                      </option>
+                    ))}
+                  </Form.Control>
+                </Form.Group>
+              </div>
+            ) : null}
+            <div className="col-12 col-md-3 px-0 pl-0 pr-md-2 pr-lg-3">
               <Form.Group>
                 <Form.Label className="search-label mb-2">
                   <FormattedMessage

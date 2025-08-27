@@ -7,6 +7,7 @@ import {
   useEnterpriseAnalyticsAggregatesData,
   useEnterpriseAnalyticsData,
   useEnterpriseCompletionsData,
+  useEnterpriseCourses,
 } from '../data/hooks';
 import AnalyticsFilters from '../AnalyticsFilters';
 import { useAnalyticsFilters } from '../AnalyticsFiltersContext';
@@ -16,7 +17,7 @@ import CompletionsOverTimeChart from '../charts/CompletionsOverTimeChart';
 import TopSkillsByCompletionChart from '../charts/TopSkillsByCompletionChart';
 import EVENT_NAMES from '../../../eventTracking';
 import { get90DayPriorDate } from '../data/utils';
-import { DEFAULT_COURSE_VALUE } from '../data/constants';
+import { ALL_COURSES } from '../data/constants';
 
 const Outcomes = ({ enterpriseId }) => {
   // Filters
@@ -34,13 +35,14 @@ const Outcomes = ({ enterpriseId }) => {
 
   const [startDate, setStartDate] = useState(get90DayPriorDate());
   const [endDate, setEndDate] = useState(currentDate);
-  const [course, setCourse] = useState(DEFAULT_COURSE_VALUE);
+  const [course, setCourse] = useState(ALL_COURSES);
 
   // Stats Data
   const { isFetching: isStatsFetching, isError: isStatsError, data: statsData } = useEnterpriseAnalyticsAggregatesData({
     enterpriseCustomerUUID: enterpriseId,
     startDate,
     endDate,
+    course,
   });
 
   // Skills Data
@@ -51,6 +53,7 @@ const Outcomes = ({ enterpriseId }) => {
     key: ANALYTICS_TABS.SKILLS,
     startDate,
     endDate,
+    course,
   });
 
   // Completions Data
@@ -63,6 +66,17 @@ const Outcomes = ({ enterpriseId }) => {
     endDate,
     granularity,
     calculation,
+    groupUUID,
+    course,
+  });
+
+  // Enterprise Courses Data
+  const {
+    isFetching: isEnterpriseCoursesFetching, data: enterpriseCourses,
+  } = useEnterpriseCourses({
+    enterpriseCustomerUUID: enterpriseId,
+    startDate,
+    endDate,
     groupUUID,
   });
 
@@ -115,6 +129,8 @@ const Outcomes = ({ enterpriseId }) => {
           groups={groups}
           isGroupsLoading={isGroupsLoading}
           activeTab={ANALYTICS_TABS.OUTCOMES}
+          isEnterpriseCoursesFetching={isEnterpriseCoursesFetching}
+          enterpriseCourses={enterpriseCourses}
         />
       </div>
 

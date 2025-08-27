@@ -334,6 +334,16 @@ const messages = defineMessages({
       + 'manage learner access, enable SSO, and integrate learning platforms—all in one place.',
     description: 'Description for the set up preferences step',
   },
+  completeTourModalTitle: {
+    id: 'adminPortal.productTours.adminOnboarding.completeTour.modalTitle',
+    defaultMessage: 'Great job!',
+    description: 'Description for the complete tour modal title',
+  },
+  completeTourModal: {
+    id: 'adminPortal.productTours.adminOnboarding.completeTour.modal',
+    defaultMessage: 'You\'ve completed the Quick Start Guide and are ready to administer learning. Need a refresher? Access this guide anytime from the help icon below.',
+    description: 'Description for the complete tour modal',
+  },
 });
 
 export default messages;

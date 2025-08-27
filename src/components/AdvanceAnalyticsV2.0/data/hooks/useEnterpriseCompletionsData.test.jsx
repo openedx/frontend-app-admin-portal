@@ -2,7 +2,7 @@ import { renderHook } from '@testing-library/react';
 import { useQuery } from '@tanstack/react-query';
 import * as utils from '../utils';
 import useEnterpriseCompletionsData from './useEnterpriseCompletionsData';
-import { generateKey } from '../constants';
+import { generateKey, ALL_COURSES } from '../constants';
 
 jest.mock('@tanstack/react-query');
 jest.mock('../utils', () => ({
@@ -35,6 +35,7 @@ describe('useEnterpriseCompletionsData', () => {
       startDate,
       endDate,
       groupUUID: undefined,
+      course: undefined,
     });
 
     expect(useQuery).toHaveBeenCalledWith(expect.objectContaining({
@@ -114,5 +115,50 @@ describe('useEnterpriseCompletionsData', () => {
     expect(result.current).toEqual(rawResponse);
     expect(utils.applyGranularity).not.toHaveBeenCalled();
     expect(utils.applyCalculation).not.toHaveBeenCalled();
+  });
+
+  it('includes courseKey when course is not ALL_COURSES', () => {
+    const mockedCourse = { value: 'course-v1:edX+ABC123+2025', label: 'Test Course' };
+
+    useQuery.mockReturnValue({ data: null, isFetching: false });
+
+    renderHook(() => useEnterpriseCompletionsData({
+      enterpriseCustomerUUID,
+      startDate,
+      endDate,
+      course: mockedCourse,
+    }));
+
+    const expectedKey = generateKey('completions', enterpriseCustomerUUID, {
+      startDate,
+      endDate,
+      groupUUID: undefined,
+      courseKey: mockedCourse.value,
+    });
+
+    expect(useQuery).toHaveBeenCalledWith(expect.objectContaining({
+      queryKey: expectedKey,
+    }));
+  });
+
+  it('does not include courseKey when course is ALL_COURSES', () => {
+    useQuery.mockReturnValue({ data: null, isFetching: false });
+
+    renderHook(() => useEnterpriseCompletionsData({
+      enterpriseCustomerUUID,
+      startDate,
+      endDate,
+      course: ALL_COURSES,
+    }));
+
+    const expectedKey = generateKey('completions', enterpriseCustomerUUID, {
+      startDate,
+      endDate,
+      groupUUID: undefined,
+    });
+
+    expect(useQuery).toHaveBeenCalledWith(expect.objectContaining({
+      queryKey: expectedKey,
+    }));
   });
 });
