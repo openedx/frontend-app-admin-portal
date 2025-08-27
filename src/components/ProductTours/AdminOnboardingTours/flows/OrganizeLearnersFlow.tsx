@@ -44,6 +44,22 @@ const OrganizeLearnersFlow = ({
     />
   );
 
+  const newGroupStepBody = (
+    <FormattedMessage
+      {...messages.organizeLearnersWithGroupsStepFiveBody}
+      values={{
+        a: (chunks) => (
+          <Hyperlink
+            destination={ENTERPRISE_HELP_GROUPING}
+            target="_blank"
+          >
+            {chunks}
+          </Hyperlink>
+        ),
+      }}
+    />
+  );
+
   const tourNoMembers: Array<TourStep> = [{
     target: `#${ORGANIZE_LEARNER_TARGETS.PEOPLE_MANAGEMENT_SIDEBAR}`,
     placement: 'right',
@@ -111,7 +127,7 @@ const OrganizeLearnersFlow = ({
   }, {
     target: `#${ORGANIZE_LEARNER_TARGETS.CREATE_GROUP_BUTTON}`,
     placement: 'left',
-    body: intl.formatMessage(messages.organizeLearnersWithGroupsStepFiveBody),
+    body: newGroupStepBody,
     onAdvance: onOrganizeAdvance,
     onBack: onOrganizeBack,
   }, {
