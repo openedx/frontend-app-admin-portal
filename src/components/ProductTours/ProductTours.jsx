@@ -31,6 +31,7 @@ import {
   ANALYTICS_INSIGHTS_TARGETS,
   ORGANIZE_LEARNER_TARGETS,
   TRACK_LEARNER_PROGRESS_TARGETS,
+  CUSTOMIZE_REPORTS_SIDEBAR,
 } from './AdminOnboardingTours/constants';
 import { ROUTE_NAMES } from '../EnterpriseApp/data/constants';
 import OnboardingWelcomeModal from './AdminOnboardingTours/OnboardingWelcomeModal';
@@ -90,6 +91,8 @@ const ProductTours = ({
       navigate(`/${enterpriseSlug}/admin/${ROUTE_NAMES.subscriptionManagement}/`);
     } else if (targetId === ALLOCATE_LEARNING_BUDGETS_TARGETS.SIDEBAR) {
       navigate(`/${enterpriseSlug}/admin/${ROUTE_NAMES.learnerCredit}/`);
+    } else if (targetId === CUSTOMIZE_REPORTS_SIDEBAR) {
+      navigate(`/${enterpriseSlug}/admin/${ROUTE_NAMES.reporting}/`);
     }
     setSelectedTourTarget(targetId);
     setIsAdminTourOpen(true);
