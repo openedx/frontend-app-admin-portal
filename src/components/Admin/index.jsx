@@ -1,39 +1,39 @@
-import React, { useRef, useState, useEffect } from 'react';
-import PropTypes from 'prop-types';
-import { Helmet } from 'react-helmet';
-import { isEmpty } from 'lodash-es';
+import { FormattedDate, FormattedMessage, useIntl } from '@edx/frontend-platform/i18n';
+import { logError } from '@edx/frontend-platform/logging';
 import {
   Alert, Icon, Tab, Tabs,
 } from '@openedx/paragon';
 import { Error, Undo } from '@openedx/paragon/icons';
+import { isEmpty } from 'lodash-es';
+import PropTypes from 'prop-types';
+import { useEffect, useRef, useState } from 'react';
+import { Helmet } from 'react-helmet';
 import { Link } from 'react-router-dom';
-import { FormattedDate, FormattedMessage, useIntl } from '@edx/frontend-platform/i18n';
-import { logError } from '@edx/frontend-platform/logging';
 
-import Hero from '../Hero';
-import EnrollmentsTable from '../EnrollmentsTable';
-import RegisteredLearnersTable from '../RegisteredLearnersTable';
-import EnrolledLearnersTable from '../EnrolledLearnersTable';
-import EnrolledLearnersForInactiveCoursesTable from '../EnrolledLearnersForInactiveCoursesTable';
-import CompletedLearnersTable from '../CompletedLearnersTable';
-import PastWeekPassedLearnersTable from '../PastWeekPassedLearnersTable';
-import LearnerActivityTable from '../LearnerActivityTable';
-import DownloadCsvButton from '../../containers/DownloadCsvButton';
 import AdminCards from '../../containers/AdminCards';
-import AdminSearchForm from './AdminSearchForm';
+import DownloadCsvButton from '../../containers/DownloadCsvButton';
+import CompletedLearnersTable from '../CompletedLearnersTable';
+import EnrolledLearnersForInactiveCoursesTable from '../EnrolledLearnersForInactiveCoursesTable';
+import EnrolledLearnersTable from '../EnrolledLearnersTable';
+import EnrollmentsTable from '../EnrollmentsTable';
 import EnterpriseAppSkeleton from '../EnterpriseApp/EnterpriseAppSkeleton';
+import Hero from '../Hero';
+import LearnerActivityTable from '../LearnerActivityTable';
+import PastWeekPassedLearnersTable from '../PastWeekPassedLearnersTable';
 import { TRACK_LEARNER_PROGRESS_TARGETS } from '../ProductTours/AdminOnboardingTours/constants';
+import RegisteredLearnersTable from '../RegisteredLearnersTable';
+import AdminSearchForm from './AdminSearchForm';
 
 import EnterpriseDataApiService from '../../data/services/EnterpriseDataApiService';
 import { formatTimestamp, getFilteredQueryParams } from '../../utils';
 
-import AdminCardsSkeleton from './AdminCardsSkeleton';
-import { SubscriptionData } from '../subscriptions';
-import EmbeddedSubscription from './EmbeddedSubscription';
 import { withLocation, withParams } from '../../hoc';
+import BudgetExpiryAlertAndModal from '../BudgetExpiryAlertAndModal';
+import { SubscriptionData } from '../subscriptions';
+import AdminCardsSkeleton from './AdminCardsSkeleton';
 import AIAnalyticsSummary from './AIAnalyticsSummary';
 import AIAnalyticsSummarySkeleton from './AIAnalyticsSummarySkeleton';
-import BudgetExpiryAlertAndModal from '../BudgetExpiryAlertAndModal';
+import EmbeddedSubscription from './EmbeddedSubscription';
 import ModuleActivityReport from './tabs/ModuleActivityReport';
 
 const Admin = ({
@@ -87,9 +87,7 @@ const Admin = ({
   };
 
   useEffect(() => {
-    console.log('Admin component mounted');
     if (enterpriseId) {
-      console.log(`Fetching data for enterpriseId: ${enterpriseId}`);
       fetchDashboardAnalytics(enterpriseId);
       fetchDashboardInsights(enterpriseId);
       fetchEnterpriseBudgets(enterpriseId);

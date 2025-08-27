@@ -1,19 +1,20 @@
 /* eslint-disable camelcase */
-import React, { useEffect } from 'react';
-import PropTypes from 'prop-types';
 import classNames from 'classnames';
+import PropTypes from 'prop-types';
+import { useEffect } from 'react';
 
 import { Form } from '@openedx/paragon';
 import { Info } from '@openedx/paragon/icons';
 
-import { FormattedMessage, useIntl } from '@edx/frontend-platform/i18n';
 import { sendEnterpriseTrackEvent } from '@edx/frontend-enterprise-utils';
+import { FormattedMessage, useIntl } from '@edx/frontend-platform/i18n';
 
-import SearchBar from '../SearchBar';
+import EVENT_NAMES from '../../eventTracking';
+import { withLocation, withNavigate } from '../../hoc';
 import { formatTimestamp, updateUrl } from '../../utils';
 import IconWithTooltip from '../IconWithTooltip';
-import { withLocation, withNavigate } from '../../hoc';
-import EVENT_NAMES from '../../eventTracking';
+import { TRACK_LEARNER_PROGRESS_TARGETS } from '../ProductTours/AdminOnboardingTours/constants';
+import SearchBar from '../SearchBar';
 
 const AdminSearchForm = ({
   searchEnrollmentsList,
@@ -70,7 +71,7 @@ const AdminSearchForm = ({
   const columnWidth = (budgets?.length || groups?.length) ? 'col-md-3' : 'col-md-6';
 
   return (
-    <div className="row">
+    <div className="row" id={TRACK_LEARNER_PROGRESS_TARGETS.FILTER}>
       <div className="col-12 pr-md-0 mb-0">
         <div className="row w-100 m-0">
           {groups?.length ? (
@@ -109,6 +110,7 @@ const AdminSearchForm = ({
               </Form.Group>
             </div>
           ) : null}
+
           <div className="col-12 col-md-3 px-0 pl-0 pr-md-2 pr-lg-3">
             <Form.Group>
               <Form.Label className="search-label mb-2">
