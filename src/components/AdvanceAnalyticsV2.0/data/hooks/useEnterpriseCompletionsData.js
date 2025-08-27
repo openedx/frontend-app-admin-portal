@@ -2,7 +2,7 @@ import { useQuery } from '@tanstack/react-query';
 import { cloneDeep } from 'lodash-es';
 
 import { useMemo } from 'react';
-import { ANALYTICS_TABS, generateKey } from '../constants';
+import { ANALYTICS_TABS, generateKey, ALL_COURSES } from '../constants';
 import { applyGranularity, applyCalculation } from '../utils';
 import EnterpriseDataApiService from '../../../../data/services/EnterpriseDataApiService';
 
@@ -61,9 +61,15 @@ const useEnterpriseCompletionsData = ({
   granularity = undefined,
   calculation = undefined,
   groupUUID = undefined,
+  course = undefined,
   queryOptions = {},
 }) => {
   const requestOptions = { startDate, endDate, groupUUID };
+
+  if (course?.value && course?.value !== ALL_COURSES.value) {
+    requestOptions.courseKey = course.value;
+  }
+
   const response = useQuery({
     queryKey: generateKey('completions', enterpriseCustomerUUID, requestOptions),
     queryFn: () => EnterpriseDataApiService.fetchAdminAnalyticsData(
