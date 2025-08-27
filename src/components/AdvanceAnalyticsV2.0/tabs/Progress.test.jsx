@@ -21,6 +21,7 @@ jest.mock('../AnalyticsFiltersContext', () => ({
 jest.mock('../data/hooks', () => ({
   useEnterpriseAnalyticsAggregatesData: jest.fn(),
   useEnterpriseCompletionsData: jest.fn(),
+  useEnterpriseCourses: jest.fn(),
 }));
 
 jest.mock('../tables/TopCoursesByCompletionTable', () => function MockTopCoursesByCompletionTable() {
@@ -69,6 +70,15 @@ describe('Progress Component', () => {
         topCoursesByCompletions: [],
         topSubjectsByCompletions: [],
       },
+    });
+
+    hooks.useEnterpriseCourses.mockReturnValue({
+      isFetching: false,
+      isError: false,
+      data: [
+        { value: 'course-v1:edX+TST101+2024', label: 'Test Course 1' },
+        { value: 'course-v1:edX+TST102+2024', label: 'Test Course 2' },
+      ],
     });
 
     render(
