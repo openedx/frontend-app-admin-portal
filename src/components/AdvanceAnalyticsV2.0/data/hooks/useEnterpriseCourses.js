@@ -58,7 +58,8 @@ const useEnterpriseCourses = ({
   });
 
   return useMemo(() => ({
-    data: transformCourseOptions(response.data),
+    data: transformCourseOptions(response?.data),
+    isFetching: response?.isFetching,
   }), [response]);
 };
 
