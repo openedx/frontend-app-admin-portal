@@ -1,14 +1,15 @@
-import React, { useContext, useState } from 'react';
+import { useContext, useState } from 'react';
 import { StatefulButton, Icon, Spinner } from '@openedx/paragon';
 import { Download, Check } from '@openedx/paragon/icons';
-import { injectIntl, intlShape } from '@edx/frontend-platform/i18n';
+import { useIntl } from '@edx/frontend-platform/i18n';
 
 import { logError } from '@edx/frontend-platform/logging';
 import { saveAs } from 'file-saver';
 import { SubscriptionDetailContext } from '../SubscriptionDetailContextProvider';
 import LicenseManagerApiService from '../../../data/services/LicenseManagerAPIService';
 
-const DownloadCsvButton = ({ intl }) => {
+const DownloadCsvButton = () => {
+  const intl = useIntl();
   const { subscription } = useContext(SubscriptionDetailContext);
   const [buttonState, setButtonState] = useState('default');
 
@@ -71,8 +72,4 @@ const DownloadCsvButton = ({ intl }) => {
   );
 };
 
-DownloadCsvButton.propTypes = {
-  intl: intlShape.isRequired,
-};
-
-export default injectIntl(DownloadCsvButton);
+export default DownloadCsvButton;
