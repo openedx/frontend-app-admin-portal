@@ -1,9 +1,9 @@
-import React, { useContext, useEffect, useMemo } from 'react';
+import { useContext, useEffect, useMemo } from 'react';
 import { connectStateResults } from 'react-instantsearch-dom';
 import PropTypes from 'prop-types';
 
 import { SearchPagination, SearchContext } from '@edx/frontend-enterprise-catalog-search';
-import { FormattedMessage, injectIntl } from '@edx/frontend-platform/i18n';
+import { FormattedMessage } from '@edx/frontend-platform/i18n';
 import {
   Alert, CardView, DataTable, TextFilter,
 } from '@openedx/paragon';
@@ -141,4 +141,4 @@ BaseCatalogSearchResults.propTypes = {
   setNoContent: PropTypes.func,
 };
 
-export default connectStateResults(injectIntl(BaseCatalogSearchResults));
+export default connectStateResults(BaseCatalogSearchResults);
