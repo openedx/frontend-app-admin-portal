@@ -33,6 +33,9 @@ const AnalyticsFilters = ({
   isFetching,
   isGroupsLoading,
   activeTab,
+  isEnterpriseCoursesFetching,
+  enterpriseCourses,
+
 }) => {
   const intl = useIntl();
   const [collapsed, setCollapsed] = useState(false);
@@ -336,6 +339,8 @@ const AnalyticsFilters = ({
 
             <div className="col">
               <CourseFilterDropdown
+                isFetching={isEnterpriseCoursesFetching}
+                enterpriseCourses={enterpriseCourses}
                 selectedCourse={course}
                 onChange={setCourse}
               />
@@ -437,7 +442,7 @@ AnalyticsFilters.propTypes = {
   setEndDate: PropTypes.func.isRequired,
   courseType: PropTypes.string,
   setCourseType: PropTypes.func.isRequired,
-  course: PropTypes.string,
+  course: PropTypes.shape({}).isRequired,
   setCourse: PropTypes.func.isRequired,
   granularity: PropTypes.string.isRequired,
   setGranularity: PropTypes.func.isRequired,
@@ -451,6 +456,8 @@ AnalyticsFilters.propTypes = {
   isFetching: PropTypes.bool.isRequired,
   isGroupsLoading: PropTypes.bool.isRequired,
   activeTab: PropTypes.string.isRequired,
+  isEnterpriseCoursesFetching: PropTypes.bool,
+  enterpriseCourses: PropTypes.arrayOf(PropTypes.shape({ })),
 };
 
 export default AnalyticsFilters;

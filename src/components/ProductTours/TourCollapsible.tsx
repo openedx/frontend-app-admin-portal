@@ -31,6 +31,7 @@ import {
 import { TOUR_TARGETS } from './constants';
 import useFetchCompletedOnboardingFlows from './AdminOnboardingTours/data/useFetchCompletedOnboardingFlows';
 import { configuration } from '../../config';
+import TourCompleteModal from './TourCompleteModal';
 
 interface Props {
   adminUuid: string;
@@ -65,7 +66,8 @@ const TourCollapsible: FC<Props> = (
 ) => {
   const intl = useIntl();
   const [onboardingSteps, setOnboardingSteps] = useState<StepDefinition[] | undefined>();
-  const { data: completedTourFlows } = useFetchCompletedOnboardingFlows(adminUuid);
+  const [showCompletedModal, setShowCompletedModal] = useState(false);
+  const { data: onboardingTourData } = useFetchCompletedOnboardingFlows(adminUuid);
 
   const handleDismiss = () => {
     setShowCollapsible(false);
@@ -142,19 +144,34 @@ const TourCollapsible: FC<Props> = (
       }
     });
 
-    if (completedTourFlows) {
+    if (onboardingTourData?.completedTourFlows) {
       steps.forEach((step) => {
         const flowUuid = FLOW_UUID_MAPPING.get(step.title);
-        if (flowUuid && completedTourFlows?.includes(flowUuid)) {
+        if (flowUuid && onboardingTourData?.completedTourFlows?.includes(flowUuid)) {
           step.completed = true; // eslint-disable-line no-param-reassign
         }
       });
+
+      if (onboardingTourData?.completedTourFlows.length === steps.length
+        && !onboardingTourData?.onboardingTourCompleted) {
+        setShowCompletedModal(true);
+      }
     }
     setOnboardingSteps(steps);
-  }, [completedTourFlows, enableReportingConfigScreen, enableSubscriptionManagementScreen]);
+  }, [
+    onboardingTourData?.completedTourFlows,
+    onboardingTourData?.onboardingTourCompleted,
+    enableReportingConfigScreen,
+    enableSubscriptionManagementScreen,
+  ]);
 
   return (
     <>
+      {showCompletedModal && (
+        <TourCompleteModal
+          adminUuid={adminUuid}
+        />
+      )}
       {showCollapsible && (
         <FloatingCollapsible
           title={intl.formatMessage(messages.collapsibleTitle)}

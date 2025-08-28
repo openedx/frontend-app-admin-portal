@@ -64,4 +64,32 @@ describe('EnterpriseDataApiService', () => {
     EnterpriseDataApiService.fetchAdminAnalyticsData(mockEnterpriseUUID, 'enrollments', requestOptions);
     expect(axiosMock.history.get[0].url).toBe(analyticsEnrollmentsURL);
   });
+  test('fetchEnterpriseCourses calls correct API endpoint and transforms response', async () => {
+    const requestOptions = {
+      startDate: '2025-01-01',
+      endDate: '2025-12-31',
+      courseType: 'OCM',
+      groupUUID: 'group-xyz',
+    };
+
+    const mockApiResponse = [
+      {
+        course_key: 'course-v1:edX+TST101+2025',
+        course_title: 'Test Course',
+      },
+    ];
+
+    const snakeParams = new URLSearchParams({
+      start_date: '2025-01-01',
+      end_date: '2025-12-31',
+      course_type: 'OCM',
+      group_uuid: 'group-xyz',
+    });
+
+    const expectedURL = `${EnterpriseDataApiService.enterpriseAdminAnalyticsV2BaseUrl}${mockEnterpriseUUID}/enrolled-courses?${snakeParams.toString()}`;
+    axiosMock.onGet(expectedURL).reply(200, mockApiResponse);
+    const response = await EnterpriseDataApiService.fetchEnterpriseCourses(mockEnterpriseUUID, requestOptions);
+    expect(axiosMock.history.get[0].url).toBe(expectedURL);
+    expect(response).toEqual(camelCaseObject(mockApiResponse));
+  });
 });

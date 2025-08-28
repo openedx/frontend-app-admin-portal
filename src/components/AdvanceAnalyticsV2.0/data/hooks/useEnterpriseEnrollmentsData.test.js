@@ -2,7 +2,7 @@ import { renderHook } from '@testing-library/react';
 import { useQuery } from '@tanstack/react-query';
 import * as utils from '../utils';
 import useEnterpriseEnrollmentsData from './useEnterpriseEnrollmentsData';
-import { generateKey, COURSE_TYPES } from '../constants';
+import { generateKey, COURSE_TYPES, ALL_COURSES } from '../constants';
 
 jest.mock('@tanstack/react-query');
 jest.mock('../utils', () => ({
@@ -170,5 +170,59 @@ describe('useEnterpriseEnrollmentsData', () => {
     }));
 
     expect(result.current).toEqual(rawResponse);
+  });
+
+  it('includes courseKey when course is not ALL_COURSES', () => {
+    const mockedCourse = { value: 'course-v1:edX+ABC123+2025', label: 'Test Course' };
+
+    useQuery.mockReturnValue({ data: null, isFetching: false });
+
+    renderHook(() => useEnterpriseEnrollmentsData({
+      enterpriseCustomerUUID,
+      startDate,
+      endDate,
+      groupUUID: undefined,
+      courseType: COURSE_TYPES.ALL_COURSE_TYPES,
+      currentPage: 1,
+      course: mockedCourse,
+    }));
+
+    const expectedKey = generateKey('enrollments', enterpriseCustomerUUID, {
+      startDate,
+      endDate,
+      currentPage: 1,
+      groupUUID: undefined,
+      courseType: undefined,
+      courseKey: mockedCourse.value,
+    });
+
+    expect(useQuery).toHaveBeenCalledWith(expect.objectContaining({
+      queryKey: expectedKey,
+      queryFn: expect.any(Function),
+      staleTime: 0.5 * 60 * 60 * 1000,
+      cacheTime: 0.75 * 60 * 60 * 1000,
+      keepPreviousData: true,
+    }));
+  });
+
+  it('does not include courseKey when course is ALL_COURSES', () => {
+    useQuery.mockReturnValue({ data: null, isFetching: false });
+
+    renderHook(() => useEnterpriseEnrollmentsData({
+      enterpriseCustomerUUID,
+      startDate,
+      endDate,
+      course: ALL_COURSES,
+    }));
+
+    const expectedKey = generateKey('enrollments', enterpriseCustomerUUID, {
+      startDate,
+      endDate,
+      groupUUID: undefined,
+    });
+
+    expect(useQuery).toHaveBeenCalledWith(expect.objectContaining({
+      queryKey: expectedKey,
+    }));
   });
 });

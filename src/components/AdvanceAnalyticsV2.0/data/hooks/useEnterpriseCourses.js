@@ -1,31 +1,66 @@
-/**
- * Placeholder for Enterprise Courses Hook
- *
- * This hook is a temporary placeholder while the Enterprise Courses API is under development.
- * It returns an empty array and sets `isLoading` to false to prevent any loading states.
- *
- * Once the API is ready, replace this placeholder with the actual data-fetching logic
- * and use `transformCourseOptions` to format the response into { value, label } pairs.
- */
-
 import { useMemo } from 'react';
+import { useQuery } from '@tanstack/react-query';
+import EnterpriseDataApiService from '../../../../data/services/EnterpriseDataApiService';
+import { COURSE_TYPES, generateKey, ALL_COURSES } from '../constants';
 
 /**
- * Transforms course API response into select-compatible options.
+ * Transforms course API response into search/select compatible options.
  * @param {Array} courses - Array of course objects from the API.
  * @returns {Array} An array of { value, label } objects.
  */
-export const transformCourseOptions = (courses = []) => courses.map(course => ({
-  value: course?.course_key ?? '',
-  label: course?.course_title ?? '',
-}));
+export const transformCourseOptions = (courses = []) => {
+  const transformedCourses = courses.map(course => ({
+    value: course?.courseKey ?? '',
+    label: course?.courseTitle ?? '',
+  }));
+
+  return [ALL_COURSES, ...transformedCourses];
+};
 
 /**
- * Returns empty data and loading: false while API is under development.
+ * Fetches available courses for a given enterprise customer and filters.
+ *
+ * @param {String} enterpriseCustomerUUID - Required: Enterprise customer UUID.
+ * @param {String} groupUUID - Optional group UUID.
+ * @param {String} startDate - Optional start date (YYYY-MM-DD).
+ * @param {String} endDate - Optional end date (YYYY-MM-DD).
+ * @param {String} courseType - Optional course type filter.
+ * @param {Object} queryOptions - Additional React Query options.
  */
-const useEnterpriseCourses = () => useMemo(() => ({
-  data: transformCourseOptions([]),
-  isLoading: false,
-}), []);
+const useEnterpriseCourses = ({
+  enterpriseCustomerUUID,
+  startDate,
+  endDate,
+  groupUUID = undefined,
+  courseType = undefined,
+  queryOptions = {},
+}) => {
+  const requestOptions = {
+    startDate,
+    endDate,
+    groupUUID,
+  };
+
+  if (courseType && courseType !== COURSE_TYPES.ALL_COURSE_TYPES) {
+    requestOptions.courseType = courseType;
+  }
+
+  const response = useQuery({
+    queryKey: generateKey('enterprise-course', enterpriseCustomerUUID, requestOptions),
+    queryFn: () => EnterpriseDataApiService.fetchEnterpriseCourses(
+      enterpriseCustomerUUID,
+      requestOptions,
+    ),
+    staleTime: 0.5 * (1000 * 60 * 60), // 30 minutes. The time in milliseconds after data is considered stale.
+    cacheTime: 0.75 * (1000 * 60 * 60), // 45 minutes. Cache data will be garbage collected after this duration.
+    keepPreviousData: true,
+    ...queryOptions,
+  });
+
+  return useMemo(() => ({
+    data: transformCourseOptions(response?.data),
+    isFetching: response?.isFetching,
+  }), [response]);
+};
 
 export default useEnterpriseCourses;
