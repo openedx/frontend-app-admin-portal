@@ -1,12 +1,12 @@
 import { defineMessages } from '@edx/frontend-platform/i18n';
 
 export const ORGANIZE_LEARNERS_TITLE = 'Organize learners';
-export const TRACK_LEARNER_PROGRESS_TITLE = 'Track Learner Progress';
+export const TRACK_LEARNER_PROGRESS_TITLE = 'Track learner progress';
 export const VIEW_ENROLLMENTS_INSIGHT_TITLE = 'View enrollment insights';
 export const ADMINISTER_SUBSCRIPTIONS_TITLE = 'Administer subscriptions';
 export const ALLOCATE_LEARNING_BUDGET_TITLE = 'Allocate learning budget';
-export const CUSTOMIZE_REPORTS_TITLE = 'Customize Reports';
-export const SET_UP_PREFERENCES_TITLE = 'Set Up Preferences';
+export const CUSTOMIZE_REPORTS_TITLE = 'Customize reports';
+export const SET_UP_PREFERENCES_TITLE = 'Set up preferences';
 
 const messages = defineMessages({
   collapsibleTitle: {
@@ -185,7 +185,7 @@ const messages = defineMessages({
   viewEnrollmentInsightsStepFiveBody: {
     id: 'adminPortal.productTours.adminOnboarding.viewEnrollmentInsights.body.5',
     defaultMessage: 'See your top learners ranked by learning hours. Download the CSV for more detailed insights. Only '
-    + 'learners who completed a course and at least one engagement activity are included',
+    + 'learners who completed a course and at least one engagement activity are included.',
     description: 'Description for the analytics tracking step five',
   },
   viewEnrollmentInsightsStepSixBody: {
@@ -203,7 +203,7 @@ const messages = defineMessages({
   administerSubscriptionsStepOneBody: {
     id: 'adminPortal.productTours.adminOnboarding.administerSubscriptions.body.1',
     defaultMessage: 'Manage your subscription plans and give learners access to self-enroll in courses. '
-    + 'Invite learners, track, usage, and manage licenses--all in one place.',
+    + 'Invite learners, track usage, and manage licenses--all in one place.',
     description: 'Description for the administer subscriptions flow step one',
   },
   administerSubscriptionsStepTwoBody: {
