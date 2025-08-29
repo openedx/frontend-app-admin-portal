@@ -7,7 +7,7 @@ import {
   Button,
   Hyperlink,
   Skeleton,
-} from '@edx/paragon';
+} from '@openedx/paragon';
 import { getConfig } from '@edx/frontend-platform/config';
 
 import { useCourseDetails } from './data/hooks';

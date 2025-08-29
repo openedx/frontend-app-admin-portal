@@ -3,23 +3,32 @@ import React, {
 } from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
-import { Icon } from '@edx/paragon';
+import { Icon } from '@openedx/paragon';
+import { useIntl } from '@edx/frontend-platform/i18n';
 import {
-  BookOpen, CreditCard, Description, InsertChartOutlined, MoneyOutline, Settings, Support, Tag, TrendingUp,
-} from '@edx/paragon/icons';
-
-import { logError } from '@edx/frontend-platform/logging';
+  BookOpen, CreditCard, Description, InsertChartOutlined, MoneyOutline,
+  Person, Settings, Support, Tag, TrendingUp,
+} from '@openedx/paragon/icons';
+import { getAuthenticatedUser } from '@edx/frontend-platform/auth';
 import { getConfig } from '@edx/frontend-platform/config';
-import IconLink from './IconLink';
+import { logError } from '@edx/frontend-platform/logging';
 
+import IconLink from './IconLink';
 import { configuration, features } from '../../config';
 import { SubsidyRequestsContext } from '../subsidy-requests';
 import { ROUTE_NAMES } from '../EnterpriseApp/data/constants';
 import { TOUR_TARGETS } from '../ProductTours/constants';
+import {
+  ANALYTICS_INSIGHTS_TARGETS,
+  ADMINISTER_SUBSCRIPTIONS_TARGETS,
+  CUSTOMIZE_REPORTS_SIDEBAR,
+  TRACK_LEARNER_PROGRESS_TARGETS,
+} from '../ProductTours/AdminOnboardingTours/constants';
 import { useOnMount } from '../../hooks';
 import { EnterpriseSubsidiesContext } from '../EnterpriseSubsidiesContext';
 import { EnterpriseAppContext } from '../EnterpriseApp/EnterpriseAppContextProvider';
 import LmsApiService from '../../data/services/LmsApiService';
+import { GROUP_TYPE_BUDGET } from '../PeopleManagement/constants';
 
 const Sidebar = ({
   baseUrl,
@@ -33,58 +42,78 @@ const Sidebar = ({
   enableAnalyticsScreen,
   onWidthChange,
   isMobile,
-  enterpriseGroupsV1,
+  onMount,
 }) => {
-  const navRef = useRef();
-  const widthRef = useRef();
+  const sidebarRef = useRef();
+  const sidebarContentRef = useRef();
+  const sidebarNavRef = useRef();
+  const sidebarWidthRef = useRef();
   const { enterpriseCuration: { enterpriseCuration, isNewArchivedContent } } = useContext(EnterpriseAppContext);
   const { subsidyRequestsCounts } = useContext(SubsidyRequestsContext);
   const { canManageLearnerCredit } = useContext(EnterpriseSubsidiesContext);
   const { FEATURE_CONTENT_HIGHLIGHTS } = getConfig();
-  const [isSubGroup, setIsSubGroup] = useState(false);
-  const hideHighlightsForGroups = enterpriseGroupsV1 && isSubGroup;
+  const isEdxStaff = getAuthenticatedUser().administrator;
+  const [hasBudgetGroup, setHasBudgetGroup] = useState(false);
+  const hideHighlightsForGroups = hasBudgetGroup && !isEdxStaff;
+  const intl = useIntl();
 
   const getSidebarWidth = useCallback(() => {
-    if (navRef && navRef.current) {
-      const { width } = navRef.current.getBoundingClientRect();
+    if (sidebarRef && sidebarRef.current) {
+      const { width } = sidebarRef.current.getBoundingClientRect();
       return width;
     }
     return null;
   }, []);
 
   useOnMount(() => {
+    if (!sidebarContentRef.current || !sidebarNavRef.current) {
+      return;
+    }
+    const sidebarContentPadding = {
+      top: parseInt(global.getComputedStyle(sidebarContentRef.current).paddingTop, 10),
+      bottom: parseInt(global.getComputedStyle(sidebarContentRef.current).paddingBottom, 10),
+    };
+    const sidebarNavHeight = sidebarNavRef.current.getBoundingClientRect().height;
+    const sidebarHeight = sidebarNavHeight + sidebarContentPadding.top + sidebarContentPadding.bottom;
+    onMount({ sidebarHeight });
+  });
+
+  useOnMount(() => {
     if (isExpandedByToggle) {
       // If sidebar is already expanded via the toggle on mount
       const sideBarWidth = getSidebarWidth();
-      widthRef.current = sideBarWidth;
+      sidebarWidthRef.current = sideBarWidth;
       onWidthChange(sideBarWidth);
     }
+  });
+
+  useOnMount(() => {
     async function fetchGroupsData() {
       try {
-        const response = await LmsApiService.fetchEnterpriseGroup();
+        const response = await LmsApiService.fetchEnterpriseGroups();
         // we only want to hide the feature if a customer has a group this does not
         // apply to all contexts/include all users
         response.data.results.forEach((group) => {
-          if (group.applies_to_all_contexts === false) {
-            setIsSubGroup(true);
+          if (group.group_type === GROUP_TYPE_BUDGET) {
+            setHasBudgetGroup(true);
           }
         });
       } catch (error) {
         logError(error);
       }
     }
-    if (enterpriseGroupsV1) {
+    if (!isEdxStaff) {
       fetchGroupsData();
     }
   });
 
   useEffect(() => {
     const sideBarWidth = getSidebarWidth();
-    if (widthRef.current !== sideBarWidth) {
+    if (sidebarWidthRef.current !== sideBarWidth) {
       if (!isExpanded) {
         onWidthChange(sideBarWidth);
       }
-      widthRef.current = sideBarWidth;
+      sidebarWidthRef.current = sideBarWidth;
     }
   }, [getSidebarWidth, isExpanded, isExpandedByToggle, isMobile, onWidthChange]);
 
@@ -93,12 +122,14 @@ const Sidebar = ({
       title: 'Learner Progress Report',
       to: `${baseUrl}/admin/${ROUTE_NAMES.learners}`,
       icon: <Icon src={TrendingUp} />,
+      id: TRACK_LEARNER_PROGRESS_TARGETS.LEARNER_PROGRESS_SIDEBAR,
     },
     {
       title: 'Analytics',
       to: `${baseUrl}/admin/${ROUTE_NAMES.analytics}`,
       icon: <Icon src={InsertChartOutlined} />,
       hidden: !features.ANALYTICS || !enableAnalyticsScreen,
+      id: ANALYTICS_INSIGHTS_TARGETS.SIDEBAR,
     },
     {
       title: 'Code Management',
@@ -113,6 +144,7 @@ const Sidebar = ({
       icon: <Icon src={CreditCard} />,
       hidden: !enableSubscriptionManagementScreen,
       notification: !!subsidyRequestsCounts.subscriptionLicenses,
+      id: ADMINISTER_SUBSCRIPTIONS_TARGETS.SIDEBAR,
     },
     {
       title: 'Learner Credit Management',
@@ -122,7 +154,17 @@ const Sidebar = ({
       hidden: !canManageLearnerCredit,
     },
     {
-      title: 'Highlights',
+      title: 'People Management',
+      id: TOUR_TARGETS.PEOPLE_MANAGEMENT,
+      to: `${baseUrl}/admin/${ROUTE_NAMES.peopleManagement}`,
+      icon: <Icon src={Person} />,
+    },
+    {
+      title: intl.formatMessage({
+        id: 'sidebar.menu.item.highlights.title',
+        defaultMessage: 'Highlights',
+        description: 'Sidebar menu item title for highlights.',
+      }),
       id: TOUR_TARGETS.CONTENT_HIGHLIGHTS,
       to: `${baseUrl}/admin/${ROUTE_NAMES.contentHighlights}`,
       icon: <Icon src={BookOpen} />,
@@ -134,6 +176,7 @@ const Sidebar = ({
       to: `${baseUrl}/admin/${ROUTE_NAMES.reporting}`,
       icon: <Icon src={Description} />,
       hidden: !features.REPORTING_CONFIGURATIONS || !enableReportingConfigScreen,
+      id: CUSTOMIZE_REPORTS_SIDEBAR,
     },
     {
       title: 'Settings',
@@ -160,6 +203,7 @@ const Sidebar = ({
     <nav
       id="sidebar"
       aria-label="sidebar"
+      data-testid="nav-sidebar"
       className={classNames([
         'sidebar',
         'border-right',
@@ -176,10 +220,10 @@ const Sidebar = ({
       onFocus={() => !isSidebarExpanded && expandSidebar()}
       onMouseLeave={() => shouldSidebarCollapse && collapseSidebar()}
       onBlur={() => shouldSidebarCollapse && collapseSidebar()}
-      ref={navRef}
+      ref={sidebarRef}
     >
-      <div className="sidebar-content py-2">
-        <ul className="nav nav-pills flex-column m-0">
+      <div className="sidebar-content py-2" ref={sidebarContentRef}>
+        <ul className="nav nav-pills flex-column m-0" ref={sidebarNavRef}>
           {getMenuItems().filter(item => !item.hidden).map(({
             id, to, title, icon, notification, external,
           }) => (
@@ -209,7 +253,6 @@ Sidebar.defaultProps = {
   enableAnalyticsScreen: false,
   onWidthChange: () => {},
   isMobile: false,
-  enterpriseGroupsV1: false,
 };
 
 Sidebar.propTypes = {
@@ -223,8 +266,8 @@ Sidebar.propTypes = {
   enableSubscriptionManagementScreen: PropTypes.bool,
   enableAnalyticsScreen: PropTypes.bool,
   onWidthChange: PropTypes.func,
+  onMount: PropTypes.func.isRequired,
   isMobile: PropTypes.bool,
-  enterpriseGroupsV1: PropTypes.bool,
 };
 
 export default Sidebar;

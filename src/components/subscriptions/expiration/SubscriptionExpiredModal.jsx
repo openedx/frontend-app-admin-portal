@@ -1,7 +1,8 @@
 import React, { useContext } from 'react';
 import PropTypes from 'prop-types';
-import { ModalDialog, ActionRow } from '@edx/paragon';
+import { ModalDialog, ActionRow } from '@openedx/paragon';
 
+import { FormattedMessage } from '@edx/frontend-platform/i18n';
 import { configuration } from '../../../config';
 import Img from '../../Img';
 import { formatTimestamp } from '../../../utils';
@@ -23,19 +24,32 @@ const SubscriptionExpiredModal = ({
       onClose={onClose}
       isOpen={isOpen}
       hasCloseButton={false}
+      isOverflowVisible={false}
     >
       <ModalDialog.Body>
         <Img className="w-25 my-5 mx-auto d-block" src={configuration.LOGO_URL} alt="edX logo" />
         <p>
-          Your subscription contract expired on <b>{formatTimestamp({ timestamp: expirationDate })}</b>.
-          The edX customer support team is here to help! Get in touch today to renew your subscription
-          and access your subscription management details.
+          <FormattedMessage
+            id="adminPortal.subscriptionExpiration.modal.body"
+            defaultMessage="Your subscription contract expired on <b>{expirationDate}</b>.
+             The edX customer support team is here to help! Get in touch today to renew your subscription and access your subscription management details."
+            description="Body text for the subscription expired modal in the admin portal."
+            values={{
+              expirationDate: formatTimestamp({ timestamp: expirationDate }),
+              // eslint-disable-next-line react/no-unstable-nested-components
+              b: (chunks) => <b>{chunks}</b>,
+            }}
+          />
         </p>
       </ModalDialog.Body>
       <ModalDialog.Footer>
         <ActionRow>
           <ModalDialog.CloseButton variant="tertiary">
-            Dismiss
+            <FormattedMessage
+              id="adminPortal.subscriptionExpiration.modal.dismissButton"
+              defaultMessage="Dismiss"
+              description="Dismiss button text for the subscription expiring modal in the admin portal."
+            />
           </ModalDialog.CloseButton>
           <ContactCustomerSupportButton onClick={onAction} />
         </ActionRow>

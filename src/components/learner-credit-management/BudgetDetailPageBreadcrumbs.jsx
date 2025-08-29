@@ -1,16 +1,18 @@
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { Breadcrumb } from '@edx/paragon';
+import { Breadcrumb } from '@openedx/paragon';
 import { Link } from 'react-router-dom';
 import React from 'react';
 import { sendEnterpriseTrackEvent } from '@edx/frontend-enterprise-utils';
+import { useIntl } from '@edx/frontend-platform/i18n';
 import { ROUTE_NAMES } from '../EnterpriseApp/data/constants';
 import EVENT_NAMES from '../../eventTracking';
 import { useBudgetId, useSubsidyAccessPolicy } from './data';
 
-const BudgetDetailPageBreadcrumbs = ({ enterpriseId, enterpriseSlug, budgetDisplayName }) => {
+const BudgetDetailPageBreadcrumbs = ({ enterpriseId, enterpriseSlug, displayName }) => {
   const { subsidyAccessPolicyId } = useBudgetId();
   const { data: subsidyAccessPolicy } = useSubsidyAccessPolicy(subsidyAccessPolicyId);
+  const intl = useIntl();
 
   const trackEventMetadata = {};
   if (subsidyAccessPolicy) {
@@ -33,13 +35,18 @@ const BudgetDetailPageBreadcrumbs = ({ enterpriseId, enterpriseSlug, budgetDispl
   return (
     <div className="small">
       <Breadcrumb
+        id="learner-credit-management-breadcrumbs"
         ariaLabel="Learner Credit Management breadcrumb navigation"
         links={[{
-          label: 'Budgets',
+          label: intl.formatMessage({
+            id: 'lcm.budget.detail.page.breadcrumb.budgets',
+            defaultMessage: 'Budgets',
+            description: 'Breadcrumb label for the budgets page',
+          }),
           to: `/${enterpriseSlug}/admin/${ROUTE_NAMES.learnerCredit}`,
         }]}
         linkAs={Link}
-        activeLabel={budgetDisplayName}
+        activeLabel={displayName}
         clickHandler={() => sendEnterpriseTrackEvent(
           enterpriseId,
           EVENT_NAMES.LEARNER_CREDIT_MANAGEMENT.BREADCRUMB_FROM_BUDGET_DETAIL_TO_BUDGETS,
@@ -58,7 +65,7 @@ const mapStateToProps = state => ({
 BudgetDetailPageBreadcrumbs.propTypes = {
   enterpriseId: PropTypes.string.isRequired,
   enterpriseSlug: PropTypes.string.isRequired,
-  budgetDisplayName: PropTypes.string.isRequired,
+  displayName: PropTypes.string.isRequired,
 };
 
 export default connect(mapStateToProps)(BudgetDetailPageBreadcrumbs);

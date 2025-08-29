@@ -2,7 +2,7 @@ import React, { useContext } from 'react';
 import { useContextSelector } from 'use-context-selector';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
-import { Button, DataTableContext } from '@edx/paragon';
+import { Button, DataTableContext } from '@openedx/paragon';
 
 import { ContentHighlightsContext } from '../ContentHighlightsContext';
 

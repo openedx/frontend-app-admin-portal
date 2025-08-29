@@ -3,8 +3,8 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import {
   Stack, OverlayTrigger, IconButton, Icon, Popover,
-} from '@edx/paragon';
-import { InfoOutline } from '@edx/paragon/icons';
+} from '@openedx/paragon';
+import { InfoOutline } from '@openedx/paragon/icons';
 import { sendEnterpriseTrackEvent } from '@edx/frontend-enterprise-utils';
 
 /**

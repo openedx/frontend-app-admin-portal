@@ -1,17 +1,14 @@
 import React from 'react';
 import dayjs from 'dayjs';
 import {
-  screen,
-  render,
-  cleanup,
-  act,
-  waitFor,
+  act, cleanup, render, screen, waitFor,
 } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import configureMockStore from 'redux-mock-store';
 import { Provider } from 'react-redux';
 import { logError } from '@edx/frontend-platform/logging';
 
+import { IntlProvider } from '@edx/frontend-platform/i18n';
 import LicenseManagerApiService from '../../../../../data/services/LicenseManagerAPIService';
 import LicenseManagementRemindModal from '../LicenseManagementRemindModal';
 import { ASSIGNED } from '../../../data/constants';
@@ -53,9 +50,11 @@ const sampleUser = {
 };
 
 const LicenseManagementRemindModalWithStore = (props) => (
-  <Provider store={store}>
-    <LicenseManagementRemindModal {...props} />
-  </Provider>
+  <IntlProvider locale="en">
+    <Provider store={store}>
+      <LicenseManagementRemindModal {...props} />
+    </Provider>
+  </IntlProvider>
 );
 
 describe('<LicenseManagementRemindModal />', () => {
@@ -102,40 +101,34 @@ describe('<LicenseManagementRemindModal />', () => {
 
   describe('when submit button is clicked', () => {
     it('displays done on submit', async () => {
+      const user = userEvent.setup();
       LicenseManagerApiService.licenseBulkRemind.mockResolvedValue({ data: {} });
       const props = { ...basicProps, usersToRemind: [sampleUser], totalToRemind: 1 };
-
-      act(() => {
-        render(LicenseManagementRemindModalWithStore({ ...props }));
-      });
-
+      render(LicenseManagementRemindModalWithStore({ ...props }));
       const button = screen.getByText('Remind (1)');
-      await act(async () => { userEvent.click(button); });
-      expect(onSubmitMock).toBeCalledTimes(1);
-      expect(onSuccessMock).toBeCalledTimes(1);
+      await user.click(button);
+      expect(onSubmitMock).toHaveBeenCalledTimes(1);
+      expect(onSuccessMock).toHaveBeenCalledTimes(1);
 
       expect(screen.queryByText('Remind (1)')).toBeFalsy();
       expect(screen.queryByText('Done')).toBeTruthy();
-      expect(logError).toBeCalledTimes(0);
+      expect(logError).toHaveBeenCalledTimes(0);
     });
 
     it('displays alert if licenseRemind has error', async () => {
+      const user = userEvent.setup();
       LicenseManagerApiService.licenseBulkRemind.mockRejectedValue(new Error('something went wrong'));
       const props = { ...basicProps, usersToRemind: [sampleUser], totalToRemind: 1 };
-
-      act(() => {
-        render(LicenseManagementRemindModalWithStore({ ...props }));
-      });
-
+      render(LicenseManagementRemindModalWithStore({ ...props }));
       const button = screen.getByText('Remind (1)');
-      await act(async () => { userEvent.click(button); });
-      expect(onSubmitMock).toBeCalledTimes(1);
-      expect(onSuccessMock).toBeCalledTimes(0);
+      await user.click(button);
+      expect(onSubmitMock).toHaveBeenCalledTimes(1);
+      expect(onSuccessMock).toHaveBeenCalledTimes(0);
 
       await waitFor(() => {
         expect(screen.getByRole('alert')).toBeTruthy();
       });
-      expect(logError).toBeCalledTimes(1);
+      expect(logError).toHaveBeenCalledTimes(1);
     });
   });
 
@@ -146,22 +139,26 @@ describe('<LicenseManagementRemindModal />', () => {
     });
 
     it('calls licenseRemindAll when reminding all users and there are no active filters', async () => {
+      const user = userEvent.setup();
       const props = {
         ...basicProps, remindAllUsers: true, totalToRemind: null, activeFilters: [],
       };
-
-      act(() => {
-        render(LicenseManagementRemindModalWithStore({ ...props }));
-      });
-
+      render(LicenseManagementRemindModalWithStore({ ...props }));
       const button = screen.getByText('Remind all');
-      await act(async () => { userEvent.click(button); });
+      await user.click(button);
       expect(LicenseManagerApiService.licenseRemindAll).toHaveBeenCalled();
     });
 
     it('calls licenseBulkRemind with emails when users are passed in', async () => {
+      const user = userEvent.setup();
       const props = {
-        ...basicProps, usersToRemind: [sampleUser], totalToRemind: 1, activeFilters: [],
+        ...basicProps,
+        usersToRemind: [sampleUser],
+        totalToRemind: 1,
+        activeFilters: [{ // part of the test is that these activeFilters are not sent in the request body
+          name: 'statusBadge',
+          filterValue: [ASSIGNED],
+        }],
       };
 
       act(() => {
@@ -169,7 +166,7 @@ describe('<LicenseManagementRemindModal />', () => {
       });
 
       const button = screen.getByText('Remind (1)');
-      await act(async () => { userEvent.click(button); });
+      await user.click(button);
       expect(LicenseManagerApiService.licenseBulkRemind).toHaveBeenCalledWith(
         props.subscription.uuid,
         {
@@ -181,22 +178,20 @@ describe('<LicenseManagementRemindModal />', () => {
     });
 
     it('calls licenseBulkRemind with filters when reminding all users and filters are applied', async () => {
+      const user = userEvent.setup();
       const props = {
         ...basicProps,
         remindAllUsers: true,
+        usersToRemind: [sampleUser], // part of the test here is that the emails are not sent in the request body
         totalToRemind: null,
         activeFilters: [{
           name: 'statusBadge',
           filterValue: [ASSIGNED],
         }],
       };
-
-      act(() => {
-        render(LicenseManagementRemindModalWithStore({ ...props }));
-      });
-
+      render(LicenseManagementRemindModalWithStore({ ...props }));
       const button = screen.getByText('Remind all');
-      await act(async () => { userEvent.click(button); });
+      await user.click(button);
       expect(LicenseManagerApiService.licenseBulkRemind).toHaveBeenCalledWith(
         props.subscription.uuid,
         {

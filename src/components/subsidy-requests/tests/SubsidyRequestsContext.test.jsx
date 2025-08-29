@@ -1,4 +1,4 @@
-import { renderHook } from '@testing-library/react-hooks/dom';
+import { renderHook } from '@testing-library/react';
 import { useSubsidyRequestsContext } from '../SubsidyRequestsContext';
 import * as hooks from '../data/hooks';
 import { SUBSIDY_TYPES } from '../../../data/constants/subsidyTypes';
@@ -76,7 +76,7 @@ describe('useSubsidyRequestsContext', () => {
       }),
     );
     expect(result.current.enterpriseSubsidyTypesForRequests).toEqual([
-      SUBSIDY_TYPES.license,
+      SUBSIDY_TYPES.budget, SUBSIDY_TYPES.license,
     ]);
   });
 });

@@ -1,10 +1,11 @@
 import React, { useContext } from 'react';
+import { injectIntl, intlShape } from '@edx/frontend-platform/i18n';
 import { SubscriptionDetailContext } from '../SubscriptionDetailContextProvider';
 import { SubsidyRequestsContext } from '../../subsidy-requests';
 import NewFeatureAlertBrowseAndRequest from '../../NewFeatureAlertBrowseAndRequest';
 import { SUPPORTED_SUBSIDY_TYPES } from '../../../data/constants/subsidyRequests';
 
-const LicenseAllocationHeader = () => {
+const LicenseAllocationHeader = ({ intl }) => {
   const {
     subscription,
   } = useContext(SubscriptionDetailContext);
@@ -17,14 +18,28 @@ const LicenseAllocationHeader = () => {
   return (
     <>
       {isBrowseAndRequestFeatureAlertShown && <NewFeatureAlertBrowseAndRequest />}
-      <h2 className="mb-2">License Allocation</h2>
+      <h2 className="mb-2">{intl.formatMessage({
+        id: 'admin.portal.license.allocation.header',
+        defaultMessage: 'License Allocation',
+        description: 'Header for the license allocation section.',
+      })}
+      </h2>
       <p className="lead">
-        {subscription.licenses?.allocated}
-        {' of '}
-        {subscription.licenses?.total} licenses allocated
+        {intl.formatMessage({
+          id: 'admin.portal.license.allocation.allocated.licenses.count',
+          defaultMessage: '{allocated} of {total} licenses allocated',
+          description: 'Text for the number of licenses allocated.',
+        }, {
+          allocated: subscription.licenses?.allocated,
+          total: subscription.licenses?.total,
+        })}
       </p>
     </>
   );
 };
 
-export default LicenseAllocationHeader;
+LicenseAllocationHeader.propTypes = {
+  intl: intlShape.isRequired,
+};
+
+export default injectIntl(LicenseAllocationHeader);

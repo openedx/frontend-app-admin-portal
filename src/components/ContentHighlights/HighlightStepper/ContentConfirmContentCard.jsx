@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Delete } from '@edx/paragon/icons';
-import { IconButton, Icon } from '@edx/paragon';
+import { Delete } from '@openedx/paragon/icons';
+import { IconButton, Icon } from '@openedx/paragon';
 import { connect } from 'react-redux';
 import { sendEnterpriseTrackEvent } from '@edx/frontend-enterprise-utils';
 import ContentHighlightCardItem from '../ContentHighlightCardItem';

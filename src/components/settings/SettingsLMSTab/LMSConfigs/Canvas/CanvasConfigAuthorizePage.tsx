@@ -2,8 +2,8 @@ import React from 'react';
 
 import {
   Alert, Container, Form, Image,
-} from '@edx/paragon';
-import { Info } from '@edx/paragon/icons';
+} from '@openedx/paragon';
+import { Info } from '@openedx/paragon/icons';
 
 import { CANVAS_TYPE, INVALID_LINK, INVALID_NAME } from '../../../data/constants';
 import ValidatedFormControl from '../../../../forms/ValidatedFormControl';

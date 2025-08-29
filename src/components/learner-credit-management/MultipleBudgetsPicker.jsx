@@ -1,17 +1,14 @@
 import React, { useMemo } from 'react';
 import PropTypes from 'prop-types';
 import {
-  DataTable,
-  CardView,
-  TextFilter,
-  CheckboxFilter,
-  Row,
-  Col,
-} from '@edx/paragon';
-import groupBy from 'lodash/groupBy';
+  CardView, Col, DataTable, Row, TextFilter,
+} from '@openedx/paragon';
+import { groupBy } from 'lodash-es';
 
+import { FormattedMessage, useIntl } from '@edx/frontend-platform/i18n';
 import BudgetCard from './BudgetCard';
-import { getBudgetStatus, orderBudgets } from './data/utils';
+import { getBudgetStatus, getTranslatedBudgetStatus, orderBudgets } from './data/utils';
+import BudgetCheckboxFilter from './BudgetCheckboxFilter';
 
 const MultipleBudgetsPicker = ({
   budgets,
@@ -19,11 +16,12 @@ const MultipleBudgetsPicker = ({
   enterpriseSlug,
   enableLearnerPortal,
 }) => {
-  const orderedBudgets = orderBudgets(budgets);
-
+  const intl = useIntl();
+  const orderedBudgets = orderBudgets(intl, budgets);
   const rows = useMemo(
     () => orderedBudgets.map(budget => {
       const budgetLabel = getBudgetStatus({
+        intl,
         startDateStr: budget.start,
         endDateStr: budget.end,
         isBudgetRetired: budget.isRetired,
@@ -37,19 +35,33 @@ const MultipleBudgetsPicker = ({
         enableLearnerPortal,
       });
     }),
-    [orderedBudgets, enterpriseUUID, enterpriseSlug, enableLearnerPortal],
+    [orderedBudgets, enterpriseUUID, enterpriseSlug, enableLearnerPortal, intl],
   );
 
   const budgetLabels = orderedBudgets.map(budget => (
     getBudgetStatus({
+      intl,
       startDateStr: budget.start,
       endDateStr: budget.end,
       isBudgetRetired: budget.isRetired,
     })
   ));
   const budgetLabelsByStatus = groupBy(budgetLabels, 'status');
+  const preSelectedBudgetFilters = [];
+  if (budgetLabelsByStatus.Active) {
+    preSelectedBudgetFilters.push('Active');
+  }
+
+  if (budgetLabelsByStatus.Scheduled) {
+    preSelectedBudgetFilters.push('Scheduled');
+  }
+
+  if (budgetLabelsByStatus.Expiring) {
+    preSelectedBudgetFilters.push('Expiring');
+  }
+
   const reducedChoices = Object.keys(budgetLabelsByStatus).map(budgetLabel => ({
-    name: budgetLabel,
+    name: getTranslatedBudgetStatus(intl, budgetLabel),
     number: budgetLabelsByStatus[budgetLabel].length,
     value: budgetLabel,
   }));
@@ -57,22 +69,41 @@ const MultipleBudgetsPicker = ({
   return (
     <>
       <Row className="mb-4">
-        <Col lg="12"><h2>Budgets</h2></Col>
+        <Col lg="12">
+          <h2>
+            <FormattedMessage
+              id="lcm.budgets.budgets"
+              defaultMessage="Budgets"
+              description="Header for the budget picker page."
+            />
+          </h2>
+        </Col>
       </Row>
       <DataTable
         defaultColumnValues={{ Filter: TextFilter }}
         isFilterable
         itemCount={orderedBudgets.length || 0}
         data={rows}
+        initialState={{
+          filters: [{
+            id: 'status',
+            value: preSelectedBudgetFilters,
+          }],
+        }}
         columns={[
           {
             Header: 'budget name',
             accessor: 'name',
           },
           {
-            Header: 'Status',
+            Header: intl.formatMessage({
+              id: 'lcm.budgets.budgets.filters.status',
+              defaultMessage: 'Status',
+              description: 'Header for the status column in the budget picker page.',
+            }),
             accessor: 'status',
-            Filter: CheckboxFilter,
+            filter: 'includesValue',
+            Filter: BudgetCheckboxFilter,
             filterChoices: reducedChoices,
           },
         ]}

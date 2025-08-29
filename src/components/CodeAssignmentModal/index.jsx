@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { reduxForm, SubmissionError } from 'redux-form';
 import {
   Button, ModalDialog, ActionRow, Form, Spinner,
-} from '@edx/paragon';
+} from '@openedx/paragon';
 import { injectIntl, intlShape } from '@edx/frontend-platform/i18n';
 
 import isEmail from 'validator/lib/isEmail';
@@ -402,6 +402,7 @@ export class BaseCodeAssignmentModal extends React.Component {
         onClose={onClose}
         className="code-assignment"
         hasCloseButton
+        isOverflowVisible={false}
       >
         <ModalDialog.Header>
           <ModalDialog.Title>

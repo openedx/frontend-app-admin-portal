@@ -1,5 +1,5 @@
 import { QueryClientProvider } from '@tanstack/react-query';
-import { renderHook } from '@testing-library/react-hooks';
+import { renderHook, waitFor } from '@testing-library/react';
 
 import useBudgetDetailActivityOverview from '../useBudgetDetailActivityOverview';
 import useBudgetId from '../useBudgetId';
@@ -46,7 +46,7 @@ describe('useBudgetDetailActivityOverview', () => {
       },
     });
 
-    const { result, waitForNextUpdate } = renderHook(
+    const { result } = renderHook(
       () => useBudgetDetailActivityOverview({
         enterpriseUUID: mockEnterpriseUUID,
         isTopDownAssignmentEnabled: true,
@@ -66,7 +66,9 @@ describe('useBudgetDetailActivityOverview', () => {
       }),
     );
 
-    await waitForNextUpdate();
+    await waitFor(() => {
+      expect(result.current.isLoading).toBe(false);
+    });
 
     expect(result.current).toEqual(
       expect.objectContaining({
@@ -124,7 +126,7 @@ describe('useBudgetDetailActivityOverview', () => {
       });
     }
 
-    const { result, waitForNextUpdate } = renderHook(
+    const { result } = renderHook(
       () => useBudgetDetailActivityOverview({
         enterpriseUUID: mockEnterpriseUUID,
         isTopDownAssignmentEnabled,
@@ -146,7 +148,9 @@ describe('useBudgetDetailActivityOverview', () => {
       expect(mockListContentAssignments).not.toHaveBeenCalled();
     }
 
-    await waitForNextUpdate();
+    await waitFor(() => {
+      expect(result.current.isLoading).toBe(false);
+    });
 
     const expectedData = {
       spentTransactions: {

@@ -1,11 +1,11 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
-import { Chip, Hyperlink } from '@edx/paragon';
-import { Timelapse } from '@edx/paragon/icons';
+import { Chip, Hyperlink } from '@openedx/paragon';
+import { Timelapse } from '@openedx/paragon/icons';
 import { getConfig } from '@edx/frontend-platform/config';
 
 import BaseModalPopup from './BaseModalPopup';
-import { ASSIGNMENT_ENROLLMENT_DEADLINE, useAssignmentStatusChip } from '../data';
+import { ASSIGNMENT_ENROLLMENT_DEADLINE, useStatusChip } from '../data';
 import EVENT_NAMES from '../../../eventTracking';
 
 const WaitingForLearner = ({ learnerEmail, trackEvent }) => {
@@ -20,7 +20,7 @@ const WaitingForLearner = ({ learnerEmail, trackEvent }) => {
     closeChipModal,
     isChipModalOpen,
     helpCenterTrackEvent,
-  } = useAssignmentStatusChip({
+  } = useStatusChip({
     chipInteractionEventName: BUDGET_DETAILS_ASSIGNED_DATATABLE_CHIP_WAITING_FOR_LEARNER,
     chipHelpCenterEventName: BUDGET_DETAILS_ASSIGNED_DATATABLE_CHIP_WAITING_FOR_LEARNER_HELP_CENTER,
     trackEvent,

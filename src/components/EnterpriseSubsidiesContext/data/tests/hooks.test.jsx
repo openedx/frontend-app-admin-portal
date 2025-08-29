@@ -1,7 +1,8 @@
-import { renderHook } from '@testing-library/react-hooks/dom';
+import { renderHook, waitFor } from '@testing-library/react';
 import { logError } from '@edx/frontend-platform/logging';
 import dayjs from 'dayjs';
 import { QueryClientProvider } from '@tanstack/react-query';
+import { IntlProvider } from '@edx/frontend-platform/i18n';
 
 import { useCoupons, useCustomerAgreement, useEnterpriseBudgets } from '../hooks';
 import EcommerceApiService from '../../../../data/services/EcommerceApiService';
@@ -31,7 +32,9 @@ const TEST_ENTERPRISE_UUID = 'test-enterprise-uuid';
 describe('useEnterpriseBudgets', () => {
   const wrapper = ({ children }) => (
     <QueryClientProvider client={queryClient()}>
-      {children}
+      <IntlProvider locale="en">
+        {children}
+      </IntlProvider>
     </QueryClientProvider>
   );
 
@@ -59,7 +62,7 @@ describe('useEnterpriseBudgets', () => {
   });
 
   it('should not fetch any budgets if enablePortalLearnerCreditManagementScreen is false', async () => {
-    const { result, waitForNextUpdate } = renderHook(
+    const { result } = renderHook(
       () => useEnterpriseBudgets({
         enablePortalLearnerCreditManagementScreen: false,
         isTopDownAssignmentEnabled: false,
@@ -72,17 +75,17 @@ describe('useEnterpriseBudgets', () => {
     expect(SubsidyApiService.getSubsidyByCustomerUUID).not.toHaveBeenCalled();
     expect(EnterpriseAccessApiService.listSubsidyAccessPolicies).not.toHaveBeenCalled();
 
-    await waitForNextUpdate();
-
-    expect(result.current).toEqual(
-      expect.objectContaining({
-        isLoading: false,
-        data: {
-          canManageLearnerCredit: false,
-          budgets: [],
-        },
-      }),
-    );
+    await waitFor(() => {
+      expect(result.current).toEqual(
+        expect.objectContaining({
+          isLoading: false,
+          data: {
+            canManageLearnerCredit: false,
+            budgets: [],
+          },
+        }),
+      );
+    });
   });
 
   it('should always fetch enterprise offers from ecommerce', async () => {
@@ -109,25 +112,24 @@ describe('useEnterpriseBudgets', () => {
       },
     });
 
-    const { result, waitForNextUpdate } = renderHook(
+    const { result } = renderHook(
       () => useEnterpriseBudgets({
         enablePortalLearnerCreditManagementScreen: true,
       }),
       { wrapper },
     );
 
-    await waitForNextUpdate();
-
-    expect(fetchEnterpriseOffersSpy).toHaveBeenCalledTimes(1);
-    expect(result.current).toEqual(
-      expect.objectContaining({
-        isLoading: false,
-        data: {
-          budgets: mockBudgets,
-          canManageLearnerCredit: true,
-        },
-      }),
-    );
+    await waitFor(() => {
+      expect(result.current).toEqual(
+        expect.objectContaining({
+          isLoading: false,
+          data: {
+            budgets: mockBudgets,
+            canManageLearnerCredit: true,
+          },
+        }),
+      );
+    });
   });
 
   it('should fetch Subsidy-associated budgets from enterprise-subsidy when LC2 feature flag is disabled', async () => {
@@ -140,13 +142,14 @@ describe('useEnterpriseBudgets', () => {
         isActive: true,
       },
     ];
+
     getSubsidyByCustomerUUIDSpy.mockResolvedValue({
       data: {
         results: mockEnterpriseSubsidyResponse,
       },
     });
 
-    const { result, waitForNextUpdate } = renderHook(
+    const { result } = renderHook(
       () => useEnterpriseBudgets({
         enablePortalLearnerCreditManagementScreen: true,
         enterpriseId: TEST_ENTERPRISE_UUID,
@@ -155,14 +158,14 @@ describe('useEnterpriseBudgets', () => {
       { wrapper },
     );
 
-    await waitForNextUpdate();
-
-    expect(getSubsidyByCustomerUUIDSpy).toHaveBeenCalledTimes(1);
-    expect(getSubsidyByCustomerUUIDSpy).toHaveBeenCalledWith(
-      TEST_ENTERPRISE_UUID,
-      { subsidyType: 'learner_credit' },
-    );
-    expect(listSubsidyAccessPoliciesSpy).not.toHaveBeenCalled();
+    await waitFor(() => {
+      expect(getSubsidyByCustomerUUIDSpy).toHaveBeenCalledTimes(1);
+      expect(getSubsidyByCustomerUUIDSpy).toHaveBeenCalledWith(
+        TEST_ENTERPRISE_UUID,
+        { subsidyType: 'learner_credit' },
+      );
+      expect(listSubsidyAccessPoliciesSpy).not.toHaveBeenCalled();
+    });
 
     const expectedBudgets = [
       {
@@ -183,7 +186,7 @@ describe('useEnterpriseBudgets', () => {
       },
     ];
 
-    expect(result.current).toEqual(
+    await waitFor(() => expect(result.current).toEqual(
       expect.objectContaining({
         isLoading: false,
         data: {
@@ -191,7 +194,7 @@ describe('useEnterpriseBudgets', () => {
           canManageLearnerCredit: true,
         },
       }),
-    );
+    ));
   });
 
   it('should fetch Subsidy Access Policies (budgets) from enterprise-access when LC2 feature flag is enabled', async () => {
@@ -207,6 +210,8 @@ describe('useEnterpriseBudgets', () => {
           amountRedeemedUsd: 200,
           amountAllocatedUsd: 100,
         },
+        retired: false,
+        retiredAt: '2025-06-25T19:56:09Z',
       },
     ];
     fetchEnterpriseOffersSpy.mockResolvedValue({
@@ -220,7 +225,7 @@ describe('useEnterpriseBudgets', () => {
       },
     });
 
-    const { result, waitForNextUpdate } = renderHook(
+    const { result } = renderHook(
       () => useEnterpriseBudgets({
         enablePortalLearnerCreditManagementScreen: true,
         enterpriseId: TEST_ENTERPRISE_UUID,
@@ -229,11 +234,11 @@ describe('useEnterpriseBudgets', () => {
       { wrapper },
     );
 
-    await waitForNextUpdate();
-
-    expect(listSubsidyAccessPoliciesSpy).toHaveBeenCalledTimes(1);
-    expect(listSubsidyAccessPoliciesSpy).toHaveBeenCalledWith(TEST_ENTERPRISE_UUID);
-    expect(getSubsidyByCustomerUUIDSpy).not.toHaveBeenCalled();
+    await waitFor(() => {
+      expect(listSubsidyAccessPoliciesSpy).toHaveBeenCalledTimes(1);
+      expect(listSubsidyAccessPoliciesSpy).toHaveBeenCalledWith(TEST_ENTERPRISE_UUID);
+      expect(getSubsidyByCustomerUUIDSpy).not.toHaveBeenCalled();
+    });
 
     const expectedBudgets = [
       {
@@ -244,6 +249,9 @@ describe('useEnterpriseBudgets', () => {
         isCurrent: true,
         source: BUDGET_TYPES.policy,
         isAssignable: false,
+        isRetired: false,
+        isRetiredOrExpired: false,
+        retiredAt: '2025-06-25T19:56:09Z',
         aggregates: {
           available: 700,
           spent: 200,
@@ -252,7 +260,7 @@ describe('useEnterpriseBudgets', () => {
       },
     ];
 
-    expect(result.current).toEqual(
+    await waitFor(() => expect(result.current).toEqual(
       expect.objectContaining({
         isLoading: false,
         data: {
@@ -260,7 +268,7 @@ describe('useEnterpriseBudgets', () => {
           canManageLearnerCredit: true,
         },
       }),
-    );
+    ));
   });
 
   it.each([
@@ -275,7 +283,7 @@ describe('useEnterpriseBudgets', () => {
     getSubsidyByCustomerUUIDSpy.mockRejectedValue(mockListSubsidiesError);
     listSubsidyAccessPoliciesSpy.mockRejectedValue(mockListPoliciesError);
 
-    const { result, waitForNextUpdate } = renderHook(
+    const { result } = renderHook(
       () => useEnterpriseBudgets({
         enablePortalLearnerCreditManagementScreen: true,
         enterpriseId: TEST_ENTERPRISE_UUID,
@@ -284,10 +292,9 @@ describe('useEnterpriseBudgets', () => {
       { wrapper },
     );
 
-    await waitForNextUpdate();
-
-    // Assert the failed enterprise offers API call
-    expect(logError).toHaveBeenCalledWith(mockListOffersError);
+    await waitFor(() => {
+      expect(logError).toHaveBeenCalledWith(mockListOffersError);
+    });
 
     if (isTopDownAssignmentEnabled) {
       // Assert the failed API call to list subsidy access policies from enterprise-access
@@ -318,7 +325,7 @@ describe('useEnterpriseBudgets', () => {
     );
   });
 
-  it.each('should set `canManageLearnerCredit` to false if no budgets are found', async () => {
+  it('should set `canManageLearnerCredit` to false if no budgets are found', async () => {
     fetchEnterpriseOffersSpy.mockResolvedValue({
       data: {
         results: [],
@@ -335,7 +342,7 @@ describe('useEnterpriseBudgets', () => {
       },
     });
 
-    const { result, waitForNextUpdate } = renderHook(
+    const { result } = renderHook(
       () => useEnterpriseBudgets({
         enablePortalLearnerCreditManagementScreen: true,
         enterpriseId: TEST_ENTERPRISE_UUID,
@@ -343,17 +350,17 @@ describe('useEnterpriseBudgets', () => {
       { wrapper },
     );
 
-    await waitForNextUpdate();
-
-    expect(result.current).toEqual(
-      expect.objectContaining({
-        isLoading: false,
-        data: {
-          budgets: [],
-          canManageLearnerCredit: false,
-        },
-      }),
-    );
+    await waitFor(() => {
+      expect(result.current).toEqual(
+        expect.objectContaining({
+          isLoading: false,
+          data: {
+            budgets: [],
+            canManageLearnerCredit: false,
+          },
+        }),
+      );
+    });
   });
 
   it('should return the active enterprise offer or subsidy when multiple available', async () => {
@@ -403,7 +410,7 @@ describe('useEnterpriseBudgets', () => {
       },
     });
 
-    const { result, waitForNextUpdate } = renderHook(
+    const { result } = renderHook(
       () => useEnterpriseBudgets({
         enablePortalLearnerCreditManagementScreen: true,
         enterpriseId: TEST_ENTERPRISE_UUID,
@@ -411,14 +418,14 @@ describe('useEnterpriseBudgets', () => {
       { wrapper },
     );
 
-    await waitForNextUpdate();
-
-    expect(getSubsidyByCustomerUUIDSpy).toHaveBeenCalledTimes(1);
-    expect(getSubsidyByCustomerUUIDSpy).toHaveBeenCalledWith(
-      TEST_ENTERPRISE_UUID,
-      { subsidyType: 'learner_credit' },
-    );
-    expect(result.current).toEqual(
+    await waitFor(() => {
+      expect(getSubsidyByCustomerUUIDSpy).toHaveBeenCalledTimes(1);
+      expect(getSubsidyByCustomerUUIDSpy).toHaveBeenCalledWith(
+        TEST_ENTERPRISE_UUID,
+        { subsidyType: 'learner_credit' },
+      );
+    });
+    await waitFor(() => expect(result.current).toEqual(
       expect.objectContaining({
         isLoading: false,
         data: {
@@ -426,12 +433,12 @@ describe('useEnterpriseBudgets', () => {
           canManageLearnerCredit: true,
         },
       }),
-    );
+    ));
   });
 });
 
 describe('useCustomerAgreement', () => {
-  afterEach(() => {
+  beforeEach(() => {
     jest.clearAllMocks();
   });
 
@@ -444,11 +451,15 @@ describe('useCustomerAgreement', () => {
         results: [mockCustomerAgreement],
       },
     });
-    const { result, waitForNextUpdate } = renderHook(() => useCustomerAgreement({
+    const { result } = renderHook(() => useCustomerAgreement({
       enterpriseId: TEST_ENTERPRISE_UUID,
     }));
 
-    await waitForNextUpdate();
+    await waitFor(() => {
+      expect(LicenseManagerApiService.fetchCustomerAgreementData).toHaveBeenCalledWith({
+        enterprise_customer_uuid: TEST_ENTERPRISE_UUID,
+      });
+    });
 
     expect(LicenseManagerApiService.fetchCustomerAgreementData).toHaveBeenCalledWith({
       enterprise_customer_uuid: TEST_ENTERPRISE_UUID,
@@ -465,11 +476,15 @@ describe('useCustomerAgreement', () => {
         results: [],
       },
     });
-    const { result, waitForNextUpdate } = renderHook(() => useCustomerAgreement({
+    const { result } = renderHook(() => useCustomerAgreement({
       enterpriseId: TEST_ENTERPRISE_UUID,
     }));
 
-    await waitForNextUpdate();
+    await waitFor(() => {
+      expect(LicenseManagerApiService.fetchCustomerAgreementData).toHaveBeenCalledWith({
+        enterprise_customer_uuid: TEST_ENTERPRISE_UUID,
+      });
+    });
 
     expect(LicenseManagerApiService.fetchCustomerAgreementData).toHaveBeenCalled();
     expect(result.current).toEqual({
@@ -480,7 +495,7 @@ describe('useCustomerAgreement', () => {
 });
 
 describe('useCoupons', () => {
-  afterEach(() => {
+  beforeEach(() => {
     jest.clearAllMocks();
   });
 
@@ -491,11 +506,12 @@ describe('useCoupons', () => {
         results: mockCoupons,
       },
     });
-    const { result, waitForNextUpdate } = renderHook(() => useCoupons());
+    const { result } = renderHook(() => useCoupons());
 
-    await waitForNextUpdate();
+    await waitFor(() => {
+      expect(EcommerceApiService.fetchCouponOrders).toHaveBeenCalled();
+    });
 
-    expect(EcommerceApiService.fetchCouponOrders).toHaveBeenCalled();
     expect(result.current).toEqual({
       coupons: mockCoupons,
       isLoading: false,

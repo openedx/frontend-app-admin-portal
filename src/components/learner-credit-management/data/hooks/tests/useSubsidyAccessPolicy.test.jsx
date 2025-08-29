@@ -1,5 +1,6 @@
 import { QueryClientProvider } from '@tanstack/react-query';
-import { renderHook } from '@testing-library/react-hooks';
+import { renderHook, waitFor } from '@testing-library/react';
+import { IntlProvider } from '@edx/frontend-platform/i18n';
 
 import useSubsidyAccessPolicy from '../useSubsidyAccessPolicy'; // Import the hook
 import EnterpriseAccessApiService from '../../../../../data/services/EnterpriseAccessApiService';
@@ -20,7 +21,9 @@ jest.mock('../../../../../data/services/EnterpriseAccessApiService', () => ({
 }));
 
 const wrapper = ({ children }) => (
-  <QueryClientProvider client={queryClient()}>{children}</QueryClientProvider>
+  <IntlProvider locale="en">
+    <QueryClientProvider client={queryClient()}>{children}</QueryClientProvider>
+  </IntlProvider>
 );
 
 describe('useSubsidyAccessPolicy', () => {
@@ -41,20 +44,21 @@ describe('useSubsidyAccessPolicy', () => {
         // Other properties...
       },
     });
-    const { result, waitForNextUpdate } = renderHook(
+    const { result } = renderHook(
       () => useSubsidyAccessPolicy(mockSubsidyAccessPolicyUUID),
       { wrapper },
     );
 
-    await waitForNextUpdate();
-
-    expect(result.current.isLoading).toBe(false);
+    await waitFor(() => {
+      expect(result.current.isLoading).toBe(false);
+    });
     expect(result.current.isError).toBe(false);
     expect(result.current.data).toEqual({
       uuid: mockSubsidyAccessPolicyUUID,
       policyType: isAssignable ? 'AssignedLearnerCreditAccessPolicy' : 'PerLearnerCreditSpendLimitAccessPolicy',
       isAssignable,
       assignmentConfiguration: isAssignable ? mockAssignmentConfiguration : undefined,
+      isRetiredOrExpired: true,
       // Other expected properties...
     });
   });
@@ -63,14 +67,14 @@ describe('useSubsidyAccessPolicy', () => {
     // Mock an error response from the API
     jest.spyOn(EnterpriseAccessApiService, 'retrieveSubsidyAccessPolicy').mockRejectedValueOnce(new Error('Mock API Error'));
 
-    const { result, waitForNextUpdate } = renderHook(
+    const { result } = renderHook(
       () => useSubsidyAccessPolicy(mockSubsidyAccessPolicyUUID),
       { wrapper },
     );
 
-    await waitForNextUpdate();
-
-    expect(result.current.isLoading).toBe(false);
+    await waitFor(() => {
+      expect(result.current.isLoading).toBe(false);
+    });
     expect(result.current.isError).toBe(true);
     expect(result.current.error.message).toBe('Mock API Error');
   });
@@ -87,6 +91,7 @@ describe('useSubsidyAccessPolicy', () => {
         policyType: 'AssignedLearnerCreditAccessPolicy',
         assignmentConfiguration: mockAssignmentConfiguration,
         isAssignable: true,
+        isRetiredOrExpired: true,
         // Other expected properties...
       },
     },
@@ -103,11 +108,12 @@ describe('useSubsidyAccessPolicy', () => {
         // Other properties...
       },
     });
-    const { result, waitForNextUpdate } = renderHook(() => useSubsidyAccessPolicy(subsidyAccessPolicyId), { wrapper });
+    const { result } = renderHook(() => useSubsidyAccessPolicy(subsidyAccessPolicyId), { wrapper });
 
     if (expectedData) {
-      await waitForNextUpdate();
-      expect(result.current.isLoading).toBe(false);
+      await waitFor(() => {
+        expect(result.current.isLoading).toBe(false);
+      });
     } else {
       expect(result.current.isLoading).toBe(true);
     }

@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import {
   Button, Card, Row, Col,
-} from '@edx/paragon';
+} from '@openedx/paragon';
 import { sendEnterpriseTrackEvent } from '@edx/frontend-enterprise-utils';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
@@ -31,7 +31,7 @@ const NoBudgetActivityEmptyState = ({ enterpriseId }) => {
   const isLargeOrGreater = useIsLargeOrGreater();
 
   return (
-    <Card>
+    <Card id="no-budget-activity">
       <Card.Section className={classNames('text-center', { 'bg-light-300': isLargeOrGreater })}>
         <h3 className={classNames({ 'mb-4.5': isLargeOrGreater })}>
           No budget activity yet? Assign a course!

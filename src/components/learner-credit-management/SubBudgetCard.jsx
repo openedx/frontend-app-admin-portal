@@ -6,15 +6,18 @@ import classNames from 'classnames';
 import {
   Card,
   Button,
-  Col,
   Badge,
   Stack,
-  Skeleton,
-} from '@edx/paragon';
+} from '@openedx/paragon';
 
+import { FormattedMessage, useIntl } from '@edx/frontend-platform/i18n';
 import { BUDGET_STATUSES, ROUTE_NAMES } from '../EnterpriseApp/data/constants';
-import { formatPrice, getBudgetStatus } from './data/utils';
+import {
+  getBudgetStatus, getTranslatedBudgetStatus, getTranslatedBudgetTerm,
+} from './data';
+import { isBudgetRetiredOrExpired } from './data/utils';
 import { useEnterpriseBudgets } from '../EnterpriseSubsidiesContext/data/hooks';
+import SubBudgetCardUtilization from './SubBudgetCardUtilization';
 
 const BaseBackgroundFetchingWrapper = ({
   enterpriseId,
@@ -64,98 +67,111 @@ const BaseSubBudgetCard = ({
   enablePortalLearnerCreditManagementScreen,
   isLoading,
   isAssignable,
+  isBnREnabled,
   isRetired,
+  retiredAt,
 }) => {
   const { isFetching: isFetchingBudgets } = useEnterpriseBudgets({
     enablePortalLearnerCreditManagementScreen,
     enterpriseId,
     isTopDownAssignmentEnabled,
   });
+  const intl = useIntl();
   const budgetLabel = getBudgetStatus({
+    intl,
     startDateStr: start,
     endDateStr: end,
     isBudgetRetired: isRetired,
+    retiredDateStr: retiredAt,
   });
-  const formattedDate = budgetLabel?.date ? dayjs(budgetLabel?.date).format('MMMM D, YYYY') : undefined;
+  const {
+    status, term, badgeVariant, date,
+  } = budgetLabel;
+  const formattedDate = date ? intl.formatDate(
+    dayjs(date).toDate(),
+    {
+      month: 'long',
+      day: 'numeric',
+      year: 'numeric',
+    },
+  ) : undefined;
+  const isRetiredOrExpired = isBudgetRetiredOrExpired(status);
+
+  const hasBudgetAggregatesSection = () => {
+    const statusesWithoutAggregates = [
+      BUDGET_STATUSES.scheduled,
+    ];
+    return !statusesWithoutAggregates.includes(status);
+  };
 
   const renderActions = (budgetId) => (
     <Button
       data-testid="view-budget"
+      id="learner-credit-view-budget-button"
       as={Link}
       to={`/${enterpriseSlug}/admin/${ROUTE_NAMES.learnerCredit}/${budgetId}`}
-      variant={[BUDGET_STATUSES.expired, BUDGET_STATUSES.retired].includes(budgetLabel.status) ? 'outline-primary' : 'primary'}
+      variant={isRetiredOrExpired ? 'outline-primary' : 'primary'}
     >
-      View budget
+      {isRetiredOrExpired ? (
+        <FormattedMessage
+          id="lcm.budgets.budget.card.view.budget.history"
+          defaultMessage="View budget history"
+          description="Button text to view budget history"
+        />
+      ) : (
+        <FormattedMessage
+          id="lcm.budgets.budget.card.view.budget"
+          defaultMessage="View budget"
+          description="Button text to view a budget"
+        />
+      )}
     </Button>
   );
 
   const renderCardHeader = (budgetType, budgetId) => {
     const subtitle = (
       <Stack direction="horizontal" gap={2.5}>
-        <Badge variant={budgetLabel.badgeVariant}>{budgetLabel.status}</Badge>
-        {(budgetLabel.term && formattedDate) && (
+        <Badge variant={badgeVariant}>{getTranslatedBudgetStatus(intl, status)}</Badge>
+        {(term && formattedDate) && (
           <span data-testid="budget-date">
-            {budgetLabel.term} {formattedDate}
+            {getTranslatedBudgetTerm(intl, term)} {formattedDate}
           </span>
         )}
       </Stack>
     );
 
+    const showActions = status !== BUDGET_STATUSES.scheduled;
+
     return (
       <Card.Header
         title={<BackgroundFetchingWrapper>{budgetType}</BackgroundFetchingWrapper>}
         subtitle={<BackgroundFetchingWrapper>{subtitle}</BackgroundFetchingWrapper>}
-        actions={
-            budgetLabel.status !== BUDGET_STATUSES.scheduled
-              ? renderActions(budgetId)
-              : undefined
-          }
-        className={classNames('align-items-center', {
-          'mb-4.5': budgetLabel.status !== BUDGET_STATUSES.active,
-        })}
+        actions={showActions ? renderActions(budgetId) : undefined}
+        className={classNames('align-items-center', { 'mb-4.5': !hasBudgetAggregatesSection() })}
       />
     );
   };
-
-  const renderCardSection = () => (
-    <Card.Section
-      title={<h4>Balance</h4>}
-      muted
-    >
-      <Col className="d-flex justify-content-start w-md-75">
-        <Col xs="6" md="auto" className="mb-3 mb-md-0 ml-n4.5">
-          <div className="small font-weight-bold">Available</div>
-          <span className="small">
-            {isFetchingBudgets ? <Skeleton /> : formatPrice(available)}
-          </span>
-        </Col>
-        {isAssignable && (
-          <Col xs="6" md="auto" className="mb-3 mb-md-0">
-            <div className="small font-weight-bold">Assigned</div>
-            <span className="small">
-              {isFetchingBudgets ? <Skeleton /> : formatPrice(pending)}
-            </span>
-          </Col>
-        )}
-        <Col xs="6" md="auto" className="mb-3 mb-md-0">
-          <div className="small font-weight-bold">Spent</div>
-          <span className="small">
-            {isFetchingBudgets ? <Skeleton /> : formatPrice(spent)}
-          </span>
-        </Col>
-      </Col>
-    </Card.Section>
-  );
 
   return (
     <Card
       orientation="horizontal"
       isLoading={isLoading}
+      data-testid="balance-detail-section"
     >
       <Card.Body>
         <Stack gap={4.5}>
           {renderCardHeader(displayName || 'Overview', id)}
-          {budgetLabel.status === BUDGET_STATUSES.active && renderCardSection()}
+          {hasBudgetAggregatesSection() && (
+            <SubBudgetCardUtilization
+              isFetchingBudgets={isFetchingBudgets}
+              isAssignable={isAssignable}
+              isBnREnabled={isBnREnabled}
+              status={status}
+              available={available}
+              pending={pending}
+              spent={spent}
+            />
+          )}
         </Stack>
       </Card.Body>
     </Card>
@@ -176,7 +192,9 @@ BaseSubBudgetCard.propTypes = {
   pending: PropTypes.number,
   displayName: PropTypes.string,
   isAssignable: PropTypes.bool,
+  isBnREnabled: PropTypes.bool,
   isRetired: PropTypes.bool,
+  retiredAt: PropTypes.string,
 };
 
 BaseSubBudgetCard.defaultProps = {

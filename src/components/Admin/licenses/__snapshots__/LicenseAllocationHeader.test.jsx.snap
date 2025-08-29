@@ -6,7 +6,7 @@ exports[`LicenseAllocationHeader renders without crashing 1`] = `
 >
   <h4
     style={
-      Object {
+      {
         "display": "inline-block",
       }
     }
@@ -16,20 +16,12 @@ exports[`LicenseAllocationHeader renders without crashing 1`] = `
   <span
     className="mr-2 ml-2 badge badge-light"
   >
-    Unassigned: 
-    1
-     of 
-    2
-     total
+    Unassigned: 1 of 2 total
   </span>
   <span
     className="badge badge-light"
   >
-    Activated: 
-    1
-     of 
-    2
-     assigned
+    Activated: 1 of 2 assigned
   </span>
 </div>
 `;

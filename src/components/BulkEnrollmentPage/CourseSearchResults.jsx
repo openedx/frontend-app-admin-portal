@@ -5,8 +5,8 @@ import React, {
 } from 'react';
 import PropTypes from 'prop-types';
 import { connectStateResults } from 'react-instantsearch-dom';
-import { Alert, DataTable, Skeleton } from '@edx/paragon';
-import { Error, ErrorOutline } from '@edx/paragon/icons';
+import { Alert, DataTable, Skeleton } from '@openedx/paragon';
+import { Error, ErrorOutline } from '@openedx/paragon/icons';
 import { SearchContext, SearchPagination } from '@edx/frontend-enterprise-catalog-search';
 
 import { CourseNameCell, FormattedDateCell } from './table/CourseSearchResultsCells';
@@ -17,7 +17,7 @@ import { BaseSelectWithContext } from './table/BulkEnrollSelect';
 import { NUM_CONTENT_ITEMS_PER_PAGE } from './stepper/constants';
 import { setSelectedRowsAction } from './data/actions';
 
-const ERROR_MESSAGE = 'An error occured while retrieving data';
+const ERROR_MESSAGE = 'An error occurred while retrieving data';
 export const NO_DATA_MESSAGE = 'There are no course results';
 export const ENROLL_TEXT = 'Enroll learners';
 export const TABLE_HEADERS = {

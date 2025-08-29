@@ -5,8 +5,6 @@ import { IntlProvider } from '@edx/frontend-platform/i18n';
 import EnterpriseList from './index';
 import mockEnterpriseList from './EnterpriseList.mocks';
 
-jest.mock('lodash.debounce', () => jest.fn((fn) => fn));
-
 jest.mock('../../data/services/LmsApiService', () => ({
   fetchEnterpriseList: () => Promise.resolve({
     data: mockEnterpriseList,
@@ -14,7 +12,7 @@ jest.mock('../../data/services/LmsApiService', () => ({
 }));
 
 const EnterpriseListWrapper = () => (
-  <IntlProvider>
+  <IntlProvider locale="en">
     <EnterpriseList clearPortalConfiguration={() => { }} />
   </IntlProvider>
 );

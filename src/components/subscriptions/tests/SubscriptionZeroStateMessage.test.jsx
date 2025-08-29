@@ -1,7 +1,6 @@
 import {
   screen,
   render,
-  act,
 } from '@testing-library/react';
 import '@testing-library/jest-dom/extend-expect';
 import userEvent from '@testing-library/user-event';
@@ -56,6 +55,7 @@ describe('SubscriptionZeroStateMessage', () => {
   });
 
   it('Inviting learners should refresh learner data', async () => {
+    const user = userEvent.setup();
     const subscriptionPlan = generateSubscriptionPlan();
     const {
       forceRefreshSubscription,
@@ -75,7 +75,7 @@ describe('SubscriptionZeroStateMessage', () => {
 
     // Click invite button
     const inviteButton = screen.getByText(INVITE_LEARNERS_BUTTON_TEXT);
-    await act(async () => { userEvent.click(inviteButton); });
+    await user.click(inviteButton);
     expect(forceRefreshSubscription).toHaveBeenCalled();
     expect(forceRefreshUsersOverview).toHaveBeenCalled();
     expect(forceRefreshUsers).toHaveBeenCalled();

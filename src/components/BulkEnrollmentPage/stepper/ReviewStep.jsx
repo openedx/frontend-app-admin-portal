@@ -1,5 +1,5 @@
 import React, { useContext } from 'react';
-import { Row } from '@edx/paragon';
+import { Row } from '@openedx/paragon';
 import PropTypes from 'prop-types';
 
 import { BulkEnrollContext } from '../BulkEnrollmentContext';

@@ -1,8 +1,9 @@
 import React, { useContext } from 'react';
-import { Col, Row } from '@edx/paragon';
+import { Col, Row, Skeleton } from '@openedx/paragon';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 
+import { FormattedMessage } from '@edx/frontend-platform/i18n';
 import ContactCustomerSupportButton from '../../ContactCustomerSupportButton';
 import { NoAvailableCodesBanner, NoAvailableLicensesBanner } from '../../subsidy-request-management-alerts';
 import SettingsAccessLinkManagement from './SettingsAccessLinkManagement';
@@ -14,6 +15,7 @@ import { SubsidyRequestsContext } from '../../subsidy-requests';
 import { SUPPORTED_SUBSIDY_TYPES } from '../../../data/constants/subsidyRequests';
 import { getSubsidyTypeLabelAndRoute } from './data/utils';
 import { EnterpriseSubsidiesContext } from '../../EnterpriseSubsidiesContext';
+import { useLearnerCreditBrowseAndRequest } from './data/hooks';
 
 const SettingsAccessTab = ({
   enterpriseId,
@@ -29,6 +31,8 @@ const SettingsAccessTab = ({
     updateSubsidyRequestConfiguration,
     enterpriseSubsidyTypesForRequests,
   } = useContext(SubsidyRequestsContext);
+
+  const { isLoadingPolicies, hasBnrEnabledPolicy } = useLearnerCreditBrowseAndRequest(enterpriseId);
 
   const {
     coupons,
@@ -54,47 +58,92 @@ const SettingsAccessTab = ({
 
   const subsidyTypeLabelAndRoute = getSubsidyTypeLabelAndRoute(configuredRequestSubsidyType, enterpriseSlug);
 
+  const renderSubsidyTypeSelection = () => {
+    if (isLoadingPolicies) {
+      return <Skeleton loading={isLoadingPolicies} height={80} />;
+    }
+
+    if (hasBnrEnabledPolicy) {
+      return <SettingsAccessConfiguredSubsidyType subsidyType={SUPPORTED_SUBSIDY_TYPES.budget} />;
+    }
+
+    if (hasConfiguredSubsidyType) {
+      return (
+        <SettingsAccessConfiguredSubsidyType subsidyType={subsidyRequestConfiguration.subsidyType} />
+      );
+    }
+
+    return (
+      <SettingsAccessSubsidyTypeSelection
+        subsidyRequestConfiguration={subsidyRequestConfiguration}
+        subsidyTypes={enterpriseSubsidyTypesForRequests}
+        disabled={hasConfiguredSubsidyType}
+        updateSubsidyRequestConfiguration={updateSubsidyRequestConfiguration}
+      />
+    );
+  };
+
   return (
     <div className="settings-access-tab mt-4">
       {isNoAvailableCodesBannerVisible && <NoAvailableCodesBanner coupons={coupons} />}
       {isNoAvailableLicensesBannerVisible && <NoAvailableLicensesBanner subscriptions={subscriptions} />}
       <Row>
         <Col>
-          <h2>Enable browsing on-demand</h2>
+          <h2>
+            <FormattedMessage
+              id="adminPortal.settings.configureAccess.title"
+              defaultMessage="Enable browsing on-demand"
+              description="Message displayed at the top of the 'Configure Access' tab in settings page."
+            />
+          </h2>
         </Col>
       </Row>
       <Row className="mb-4 justify-content-between">
         <Col lg={8} xl={9}>
           <p>
-            Allow learners without a subsidy to browse the catalog and request enrollment to courses.
+            <FormattedMessage
+              id="adminPortal.settings.configureAccess.description"
+              defaultMessage="Allow learners without a subsidy to browse the catalog and request enrollment to courses."
+              description="Description displayed under the 'Enable browsing on-demand' title in the 'Configure Access' tab in settings page."
+            />
           </p>
         </Col>
         <Col md="auto">
           <ContactCustomerSupportButton variant="outline-primary">
-            Contact support
+            <FormattedMessage
+              id="adminPortal.settings.configureAccess.contactSupport"
+              defaultMessage="Contact support"
+              description="Label for the 'Contact support' button in the 'Configure Access' tab in settings page."
+            />
           </ContactCustomerSupportButton>
         </Col>
       </Row>
       {enterpriseSubsidyTypesForRequests.length > 1 && (
         <div className="mb-4">
-          <h3>Subsidy type</h3>
-          {hasConfiguredSubsidyType ? (
-            <SettingsAccessConfiguredSubsidyType subsidyType={subsidyRequestConfiguration.subsidyType} />
-          ) : (
-            <SettingsAccessSubsidyTypeSelection
-              subsidyRequestConfiguration={subsidyRequestConfiguration}
-              subsidyTypes={enterpriseSubsidyTypesForRequests}
-              disabled={hasConfiguredSubsidyType}
-              updateSubsidyRequestConfiguration={updateSubsidyRequestConfiguration}
+          <h3>
+            <FormattedMessage
+              id="adminPortal.settings.configureAccess.subsidyType"
+              defaultMessage="Subsidy type"
+              description="Label for the 'Subsidy type' section in the 'Configure Access' tab in settings page."
             />
-          )}
+          </h3>
+          {renderSubsidyTypeSelection()}
         </div>
       )}
       <div className="mb-5">
-        <h3>Select access channel</h3>
+        <h3>
+          <FormattedMessage
+            id="adminPortal.settings.configureAccess.accessChannel.title"
+            defaultMessage="Select access channel"
+            description="Label for the 'Access channel' section in the 'Configure Access' tab in settings page."
+          />
+        </h3>
         <p>
-          Channels determine how learners access the catalog(s).
-          You can select one or both and change your selection at any time.
+          <FormattedMessage
+            id="adminPortal.settings.configureAccess.accessChannel.description"
+            defaultMessage="Channels determine how learners access the catalog(s). You can select one or both and change your selection at any time."
+            description="Description for the 'Access channel' section in the 'Configure Access' tab in settings page."
+          />
         </p>
         {isUniversalLinkEnabled && (
           <div className="mb-4">
@@ -110,7 +159,7 @@ const SettingsAccessTab = ({
           />
         )}
       </div>
-      {subsidyTypeLabelAndRoute && (
+      {(subsidyTypeLabelAndRoute && !hasBnrEnabledPolicy) && (
         <div>
           <div className="d-flex justify-content-between">
             <h3>Manage course requests</h3>

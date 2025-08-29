@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import {
   Button,
-} from '@edx/paragon';
+} from '@openedx/paragon';
 import RemindButton from '../RemindButton';
 import RevokeButton from '../RevokeButton';
 import { ACTIONS, COUPON_FILTERS, COUPON_FILTER_TYPES } from './constants';

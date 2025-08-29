@@ -1,10 +1,12 @@
 import React from 'react';
 import { MemoryRouter } from 'react-router-dom';
+import { IntlProvider } from '@edx/frontend-platform/i18n';
 import renderer from 'react-test-renderer';
 import configureMockStore from 'redux-mock-store';
 import thunk from 'redux-thunk';
 import { Provider } from 'react-redux';
-import { mount } from 'enzyme';
+import '@testing-library/jest-dom';
+import { render } from '@testing-library/react';
 
 import LearnerActivityTable from '.';
 
@@ -83,43 +85,50 @@ const learnerActivityStore = mockStore({
 
 const LearnerActivityEmptyTableWrapper = props => (
   <MemoryRouter>
-    <Provider store={learnerActivityEmptyStore}>
-      <LearnerActivityTable
-        {...props}
-      />
-    </Provider>
+    <IntlProvider locale="en">
+      <Provider store={learnerActivityEmptyStore}>
+        <LearnerActivityTable
+          {...props}
+        />
+      </Provider>
+    </IntlProvider>
   </MemoryRouter>
 );
 
 const LearnerActivityTableWrapper = props => (
   <MemoryRouter>
-    <Provider store={learnerActivityStore}>
-      <LearnerActivityTable
-        {...props}
-      />
-    </Provider>
+    <IntlProvider locale="en">
+      <Provider store={learnerActivityStore}>
+        <LearnerActivityTable
+          {...props}
+        />
+      </Provider>
+    </IntlProvider>
   </MemoryRouter>
 );
 
-const verifyLearnerActivityTableRendered = (tableId, activity, columnTitles, rowsData) => {
-  const wrapper = mount((
+const verifyLearnerActivityTableRendered = async (tableId, activity, columnTitles, rowsData) => {
+  const { container } = render((
     <LearnerActivityTableWrapper id={tableId} activity={activity} />
   ));
   // Verify that table has correct number of columns
-  expect(wrapper.find(`.${tableId} thead th`).length).toEqual(columnTitles.length);
+  const tableColumns = await container.querySelectorAll(`.${tableId} thead th`);
+  expect(tableColumns.length).toEqual(columnTitles.length);
 
   // Verify only expected columns are shown
-  wrapper.find(`.${tableId} thead th`).forEach((column, index) => {
-    expect(column.text()).toContain(columnTitles[index]);
+  tableColumns.forEach((column, index) => {
+    expect(column).toHaveTextContent(columnTitles[index]);
   });
 
   // Verify that table has correct number of rows
-  expect(wrapper.find(`.${tableId} tbody tr`).length).toEqual(2);
+  const tableRows = await container.querySelectorAll(`.${tableId} tbody tr`);
+  expect(tableRows.length).toEqual(2);
 
   // Verify each row in table has correct data
-  wrapper.find(`.${tableId} tbody tr`).forEach((row, rowIndex) => {
-    row.find('td').forEach((cell, colIndex) => {
-      expect(cell.text()).toEqual(rowsData[rowIndex][colIndex]);
+  tableRows.forEach((row, rowIndex) => {
+    const rowCells = row.querySelectorAll('td');
+    rowCells.forEach((cell, colIndex) => {
+      expect(cell.textContent).toEqual(rowsData[rowIndex][colIndex]);
     });
   });
 };

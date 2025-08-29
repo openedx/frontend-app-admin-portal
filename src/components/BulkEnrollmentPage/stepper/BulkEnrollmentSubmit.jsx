@@ -1,29 +1,19 @@
-import React, {
-  useContext,
-  useState,
-} from 'react';
+import React, { useContext, useState } from 'react';
 import {
-  Button,
-  Form,
-  AlertModal,
-  ActionRow,
-  useToggle,
-  MailtoLink,
-  Stack,
-  Toast,
-} from '@edx/paragon';
+  ActionRow, AlertModal, Button, Form, MailtoLink, Stack, Toast, useToggle,
+} from '@openedx/paragon';
 import PropTypes from 'prop-types';
 import { logError } from '@edx/frontend-platform/logging';
 import {
+  ALERT_MODAL_BODY_TEXT,
+  ALERT_MODAL_TITLE_TEXT,
+  CUSTOMER_SUPPORT_HYPERLINK_TEST_ID,
   FINAL_BUTTON_TEST_ID,
   FINAL_BUTTON_TEXT,
   NOTIFY_CHECKBOX_TEST_ID,
-  CUSTOMER_SUPPORT_HYPERLINK_TEST_ID,
-  ALERT_MODAL_TITLE_TEXT,
-  ALERT_MODAL_BODY_TEXT,
-  SUPPORT_HYPERLINK_TEXT,
-  SUPPORT_EMAIL_SUBJECT,
   SUPPORT_EMAIL_BODY,
+  SUPPORT_EMAIL_SUBJECT,
+  SUPPORT_HYPERLINK_TEXT,
 } from './constants';
 import LicenseManagerApiService from '../../../data/services/LicenseManagerAPIService';
 import { BulkEnrollContext } from '../BulkEnrollmentContext';
@@ -42,6 +32,7 @@ export const BulkEnrollmentAlertModal = ({
         <Button variant="primary" onClick={toggleClose}>OK</Button>
       </ActionRow>
     )}
+    isOverflowVisible={false}
   >
     <p>
       {ALERT_MODAL_BODY_TEXT}

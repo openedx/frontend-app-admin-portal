@@ -3,8 +3,8 @@ import PropTypes from 'prop-types';
 import { v4 as uuidv4 } from 'uuid';
 import {
   Button, Stack, Icon,
-} from '@edx/paragon';
-import { Person } from '@edx/paragon/icons';
+} from '@openedx/paragon';
+import { Person } from '@openedx/paragon/icons';
 
 import { MAX_INITIAL_LEARNER_EMAILS_DISPLAYED_COUNT, hasLearnerEmailsSummaryListTruncation } from '../cards/data';
 
@@ -12,7 +12,7 @@ const InviteModalSummaryLearnerList = ({
   learnerEmails,
 }) => {
   const [isTruncated, setIsTruncated] = useState(hasLearnerEmailsSummaryListTruncation(learnerEmails));
-  const truncatedLearnerEmails = learnerEmails.slice(0, MAX_INITIAL_LEARNER_EMAILS_DISPLAYED_COUNT - 1);
+  const truncatedLearnerEmails = learnerEmails.slice(0, MAX_INITIAL_LEARNER_EMAILS_DISPLAYED_COUNT);
   const displayedLearnerEmails = isTruncated ? truncatedLearnerEmails : learnerEmails;
 
   useEffect(() => {

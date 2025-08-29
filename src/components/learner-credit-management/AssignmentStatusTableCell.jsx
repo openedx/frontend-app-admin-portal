@@ -1,4 +1,4 @@
-import { Chip } from '@edx/paragon';
+import { Chip } from '@openedx/paragon';
 import PropTypes from 'prop-types';
 import { sendEnterpriseTrackEvent } from '@edx/frontend-enterprise-utils';
 import { connect } from 'react-redux';
@@ -10,7 +10,11 @@ import FailedSystem from './assignments-status-chips/FailedSystem';
 import NotifyingLearner from './assignments-status-chips/NotifyingLearner';
 import WaitingForLearner from './assignments-status-chips/WaitingForLearner';
 import { capitalizeFirstLetter } from '../../utils';
-import { useBudgetId, useSubsidyAccessPolicy } from './data';
+import {
+  useBudgetId,
+  useSubsidyAccessPolicy,
+} from './data';
+import IncompleteAssignment from './assignments-status-chips/IncompleteAssignment';
 
 const AssignmentStatusTableCell = ({ enterpriseId, row }) => {
   const { original } = row;
@@ -24,7 +28,6 @@ const AssignmentStatusTableCell = ({ enterpriseId, row }) => {
   const {
     subsidyUuid, assignmentConfiguration, isSubsidyActive, isAssignable, catalogUuid, aggregates,
   } = subsidyAccessPolicy;
-
   const sharedTrackEventMetadata = {
     learnerState,
     subsidyUuid,
@@ -70,7 +73,13 @@ const AssignmentStatusTableCell = ({ enterpriseId, row }) => {
     return null;
   }
 
-  // Display the appropriate status chip based on the learner state.
+  // Always display "Incomplete assignment" status chip for retired/expired budgets
+  if (subsidyAccessPolicy?.isRetiredOrExpired) {
+    return (
+      <IncompleteAssignment trackEvent={sendGenericTrackEvent} />
+    );
+  }
+
   if (learnerState === 'notifying') {
     return (
       <NotifyingLearner learnerEmail={learnerEmail} trackEvent={sendGenericTrackEvent} />

@@ -1,7 +1,8 @@
 import { useParams, generatePath } from 'react-router-dom';
 
 import useBudgetId from './useBudgetId';
-import { LEARNER_CREDIT_ROUTE } from '../../constants';
+
+import { LEARNER_CREDIT_ROUTE } from '../constants';
 
 const usePathToCatalogTab = () => {
   const { budgetId } = useBudgetId();

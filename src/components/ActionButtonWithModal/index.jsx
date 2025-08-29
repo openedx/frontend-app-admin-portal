@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
-import { Button } from '@edx/paragon';
+import { Button } from '@openedx/paragon';
 
 const ActionButtonWithModal = ({
   buttonClassName,

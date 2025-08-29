@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Form, Icon } from '@edx/paragon';
-import { Search } from '@edx/paragon/icons';
+import { Form, Icon } from '@openedx/paragon';
+import { Search } from '@openedx/paragon/icons';
 
 const formatHeaderForLabel = (Header) => {
   if (typeof Header === 'function') {

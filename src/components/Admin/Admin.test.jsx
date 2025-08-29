@@ -1,16 +1,20 @@
 import React from 'react';
 import { Provider } from 'react-redux';
 import renderer from 'react-test-renderer';
-import { mount } from 'enzyme';
-import { MemoryRouter, Link } from 'react-router-dom';
+import { render, screen, waitFor } from '@testing-library/react';
+import { userEvent } from '@testing-library/user-event';
+import { MemoryRouter } from 'react-router-dom';
 import configureMockStore from 'redux-mock-store';
 import thunk from 'redux-thunk';
 import { sendEnterpriseTrackEvent } from '@edx/frontend-enterprise-utils';
 import { IntlProvider } from '@edx/frontend-platform/i18n';
 
+import '@testing-library/jest-dom/extend-expect';
+import dayjs from 'dayjs';
 import EnterpriseDataApiService from '../../data/services/EnterpriseDataApiService';
 import Admin from './index';
 import { CSV_CLICK_SEGMENT_EVENT_NAME } from '../DownloadCsvButton';
+import { useEnterpriseBudgets } from '../EnterpriseSubsidiesContext/data/hooks';
 
 jest.mock('@edx/frontend-enterprise-utils', () => {
   const originalModule = jest.requireActual('@edx/frontend-enterprise-utils');
@@ -20,10 +24,36 @@ jest.mock('@edx/frontend-enterprise-utils', () => {
   });
 });
 
+jest.mock('../EnterpriseSubsidiesContext/data/hooks', () => ({
+  ...jest.requireActual('../EnterpriseSubsidiesContext/data/hooks'),
+  useEnterpriseBudgets: jest.fn().mockReturnValue({
+    data: [],
+  }),
+}));
+
+const mockModuleActivityReportResponse = {
+  results: [
+    {
+      module_id: 'module-1',
+      user_id: 999,
+    },
+    {
+      module_id: 'module-2',
+      user_id: 1000,
+    },
+  ],
+};
+
+const scrollIntoViewMock = jest.fn();
+window.HTMLElement.prototype.scrollIntoView = scrollIntoViewMock;
+
 const mockStore = configureMockStore([thunk]);
 const store = mockStore({
   portalConfiguration: {
     enterpriseId: 'test-enterprise-id',
+    enterpriseFeatures: {
+      topDownAssignmentRealTimeLcm: true,
+    },
   },
   table: {},
   csv: {},
@@ -39,6 +69,14 @@ const store = mockStore({
   dashboardInsights: {
     loading: null,
     insights: null,
+  },
+  enterpriseBudgets: {
+    loading: null,
+    budgets: null,
+  },
+  enterpriseGroups: {
+    loading: null,
+    groups: [],
   },
 });
 
@@ -64,8 +102,20 @@ const AdminWrapper = props => (
             pathname: '/',
           }}
           {...props}
+          budgets={[{
+            subsidy_access_policy_uuid: '8d6503dd-e40d-42b8-442b-37dd4c5450e3',
+            subsidy_access_policy_display_name: 'Everything',
+          }]}
+          groups={[{
+            enterprise_group_uuid: '7d6503dd-e40d-42b8-442b-37dd4c5450e3',
+            enterprise_group_name: 'Test Group',
+          }]}
           fetchDashboardInsights={() => {}}
           clearDashboardInsights={() => {}}
+          fetchEnterpriseBudgets={() => {}}
+          clearEnterpriseBudgets={() => {}}
+          fetchEnterpriseGroups={() => {}}
+          clearEnterpriseGroups={() => {}}
         />
       </IntlProvider>
     </Provider>
@@ -83,6 +133,8 @@ describe('<Admin />', () => {
     lastUpdatedDate: '2018-07-31T23:14:35Z',
     numberOfUsers: 3,
     insights: null,
+    budgets: [],
+    groups: [],
   };
 
   describe('renders correctly', () => {
@@ -356,41 +408,98 @@ describe('<Admin />', () => {
         expect(tree).toMatchSnapshot();
       });
     });
+
+    describe('with enterprise budgets data', () => {
+      it('renders budgets correctly', () => {
+        const budgetUUID = '8d6503dd-e40d-42b8-442b-37dd4c5450e3';
+        const budgets = [{
+          subsidy_access_policy_uuid: budgetUUID,
+          subsidy_access_policy_display_name: 'Everything',
+        }];
+        const tree = renderer
+          .create((
+            <AdminWrapper
+              {...baseProps}
+              budgets={budgets}
+            />
+          ))
+          .toJSON();
+
+        expect(tree).toMatchSnapshot();
+      });
+    });
+
+    describe('with enterprise module activity data', () => {
+      it('renders module activity data correctly', () => {
+        const mockfetchEnterpriseModuleActivityReport = jest.spyOn(EnterpriseDataApiService, 'fetchEnterpriseModuleActivityReport');
+        mockfetchEnterpriseModuleActivityReport.mockResolvedValue({ data: mockModuleActivityReportResponse });
+        const tree = renderer
+          .create((
+            <AdminWrapper
+              {...baseProps}
+            />
+          ))
+          .toJSON();
+
+        expect(tree).toMatchSnapshot();
+      });
+    });
+
+    describe('with enterprise groups data', () => {
+      it('renders groups correctly', () => {
+        const groups = [{
+          enterprise_group_uuid: 'test-group-uuid',
+          enterprise_group_name: 'test-group-name',
+        }];
+        const tree = renderer
+          .create((
+            <AdminWrapper
+              {...baseProps}
+              groups={groups}
+            />
+          ))
+          .toJSON();
+
+        expect(tree).toMatchSnapshot();
+      });
+    });
   });
 
   describe('handle changes to enterpriseId prop', () => {
-    it('handles non-empty change in enterpriseId prop', () => {
+    it('handles non-empty change in enterpriseId prop', async () => {
       const mockFetchDashboardAnalytics = jest.fn();
-      const wrapper = mount((
+      const { rerender } = render(
         <AdminWrapper
           fetchDashboardAnalytics={mockFetchDashboardAnalytics}
           enterpriseId="test-enterprise-id"
-        />
-      ));
-
-      wrapper.setProps({
-        enterpriseId: 'test-enterprise-id-2',
-      });
-
-      expect(wrapper.prop('enterpriseId')).toEqual('test-enterprise-id-2');
-      expect(mockFetchDashboardAnalytics).toBeCalled();
+        />,
+      );
+      rerender(<AdminWrapper
+        fetchDashboardAnalytics={mockFetchDashboardAnalytics}
+        enterpriseId="test-enterprise-id-2"
+      />);
+      const component = await screen.getByTestId('dashboard-root');
+      await waitFor(() => expect(component).toHaveAttribute('data-enterprise-id', 'test-enterprise-id-2'));
+      await waitFor(() => expect(mockFetchDashboardAnalytics).toHaveBeenCalled());
     });
 
-    it('handles empty change in enterpriseId prop', () => {
+    it('handles empty change in enterpriseId prop', async () => {
       const mockFetchDashboardAnalytics = jest.fn();
-      const wrapper = mount((
+      const { rerender } = render((
         <AdminWrapper
           fetchDashboardAnalytics={mockFetchDashboardAnalytics}
           enterpriseId="test-enterprise-id"
         />
       ));
-
-      wrapper.setProps({
-        enterpriseId: null,
-      });
-
-      expect(wrapper.prop('enterpriseId')).toEqual(null);
-      expect(mockFetchDashboardAnalytics).toBeCalled();
+      rerender(
+        <AdminWrapper
+          fetchDashboardAnalytics={mockFetchDashboardAnalytics}
+          enterpriseId={null}
+        />,
+      );
+      const component = await screen.getByTestId('dashboard-root');
+      await waitFor(() => expect(component).not.toHaveAttribute('data-enterprise-id'));
+      await waitFor(() => expect(mockFetchDashboardAnalytics).toHaveBeenCalled());
     });
   });
 
@@ -443,9 +552,10 @@ describe('<Admin />', () => {
     Object.keys(actionSlugs).forEach((key) => {
       const actionMetadata = actionSlugs[key];
 
-      it(key, () => {
+      it(key, async () => {
         spy = jest.spyOn(EnterpriseDataApiService, actionMetadata.csvFetchMethod);
-        const wrapper = mount((
+        const user = userEvent.setup();
+        render((
           <AdminWrapper
             {...baseProps}
             enterpriseId="test-enterprise-id"
@@ -462,7 +572,8 @@ describe('<Admin />', () => {
             }}
           />
         ));
-        wrapper.find('.download-btn').hostNodes().simulate('click');
+        const downloadBtn = await screen.findByTestId('download-csv-btn');
+        await user.click(downloadBtn);
         expect(spy).toHaveBeenCalledWith(...actionMetadata.csvFetchParams);
         expect(sendEnterpriseTrackEvent).toHaveBeenCalledWith(
           enterpriseId,
@@ -472,9 +583,10 @@ describe('<Admin />', () => {
       });
     });
   });
+
   describe('reset form button', () => {
     it('should not be present if there is no query', () => {
-      const wrapper = mount((
+      render((
         <AdminWrapper
           {...baseProps}
           location={
@@ -482,10 +594,10 @@ describe('<Admin />', () => {
           }
         />
       ));
-      expect(wrapper.text()).not.toContain('Reset Filters');
+      expect(screen.queryByText('Reset Filters')).not.toBeInTheDocument();
     });
     it('should not be present if only query is ordering', () => {
-      const wrapper = mount((
+      const { container } = render((
         <AdminWrapper
           {...baseProps}
           location={
@@ -493,10 +605,10 @@ describe('<Admin />', () => {
           }
         />
       ));
-      expect(wrapper.text()).not.toContain('Reset Filters');
+      expect(container).not.toHaveTextContent('Reset Filters');
     });
     it('should not be present if query is null', () => {
-      const wrapper = mount((
+      const { container } = render((
         <AdminWrapper
           {...baseProps}
           location={
@@ -504,11 +616,11 @@ describe('<Admin />', () => {
           }
         />
       ));
-      expect(wrapper.text()).not.toContain('Reset Filters');
+      expect(container).not.toContain('Reset Filters');
     });
-    it('should be present if there is a querystring', () => {
+    it('should be present if there is a querystring', async () => {
       const path = '/lael/';
-      const wrapper = mount((
+      const { container } = render((
         <AdminWrapper
           {...baseProps}
           location={
@@ -516,14 +628,14 @@ describe('<Admin />', () => {
           }
         />
       ));
-      expect(wrapper.text()).toContain('Reset Filters');
-      const link = wrapper.find(Link).find('#reset-filters');
-      expect(link.first().props().to).toEqual(path);
+      expect(container).toHaveTextContent('Reset Filters');
+      const link = await screen.findByTestId('reset-filters');
+      expect(link).toHaveAttribute('href', path);
     });
-    it('should be present if there is a querystring mixed with ordering', () => {
+    it('should be present if there is a querystring mixed with ordering', async () => {
       const path = '/lael/';
       const nonSearchQuery = 'ordering=xyz';
-      const wrapper = mount((
+      const { container } = render((
         <AdminWrapper
           {...baseProps}
           location={
@@ -531,14 +643,14 @@ describe('<Admin />', () => {
           }
         />
       ));
-      expect(wrapper.text()).toContain('Reset Filters');
-      const link = wrapper.find(Link).find('#reset-filters');
-      expect(link.first().props().to).toEqual(`${path}?${nonSearchQuery}`);
+      expect(container).toHaveTextContent('Reset Filters');
+      const link = await screen.findByTestId('reset-filters');
+      expect(link).toHaveAttribute('href', `${path}?${nonSearchQuery}`);
     });
-    it('should not disturb non-search-releated queries', () => {
+    it('should not disturb non-search-releated queries', async () => {
       const path = '/lael/';
       const nonSearchQuery = 'features=bestfeature';
-      const wrapper = mount((
+      const { container } = render((
         <AdminWrapper
           {...baseProps}
           location={
@@ -546,9 +658,99 @@ describe('<Admin />', () => {
           }
         />
       ));
-      expect(wrapper.text()).toContain('Reset Filters');
-      const link = wrapper.find(Link).find('#reset-filters');
-      expect(link.first().props().to).toEqual(`${path}?${nonSearchQuery}`);
+      expect(container).toHaveTextContent('Reset Filters');
+      const link = await screen.findByTestId('reset-filters');
+      expect(link).toHaveAttribute('href', `${path}?${nonSearchQuery}`);
+    });
+  });
+
+  describe('renders expiry component when threshold is met', () => {
+    it('renders when date is within threshold', () => {
+      useEnterpriseBudgets.mockReturnValue(
+        {
+          data: [
+            {
+              end: dayjs().add(60, 'day').toString(),
+            },
+          ],
+        },
+      );
+
+      render(<AdminWrapper {...baseProps} />);
+
+      expect(screen.getByTestId('expiry-notification-alert')).toBeInTheDocument();
+    });
+
+    it('does not render when date is not within threshold', () => {
+      useEnterpriseBudgets.mockReturnValue(
+        {
+          data: [
+            {
+              end: dayjs().add(160, 'day').toString(),
+            },
+          ],
+        },
+      );
+
+      render(<AdminWrapper {...baseProps} />);
+
+      expect(screen.queryByTestId('expiry-notification-alert')).not.toBeInTheDocument();
+    });
+  });
+
+  describe('scroll to report section when fragment present', () => {
+    beforeEach(() => {
+      jest.clearAllMocks();
+    });
+
+    it('scrolls when fragment present', async () => {
+      const { rerender, container } = render((
+        <AdminWrapper
+          {...baseProps}
+          location={
+            { hash: '#fullreport' }
+          }
+        />
+      ));
+      // Setting prop to trigger componentDidUpdate
+      rerender(
+        <AdminWrapper
+          {...baseProps}
+          location={
+            { hash: '#fullreport' }
+          }
+          enterpriseId="forcing-change-to-trigger-scroll"
+        />,
+      );
+
+      await waitFor(() => {
+        expect(container).toHaveTextContent('Full Report');
+      });
+      expect(scrollIntoViewMock).toHaveBeenCalled();
+    });
+    it('does not scroll when fragment absent', async () => {
+      const { rerender, container } = render((
+        <AdminWrapper
+          {...baseProps}
+          location={
+            {}
+          }
+        />
+      ));
+      // Setting prop to trigger componentDidUpdate
+      rerender(
+        <AdminWrapper
+          {...baseProps}
+          location={
+            { hash: '#fullreport' }
+          }
+          enterpriseId="forcing-change-to-trigger-scroll"
+        />,
+      );
+      await waitFor(() => {
+        expect(container).toHaveTextContent('Full Report');
+      });
+      expect(scrollIntoViewMock).not.toHaveBeenCalled();
     });
   });
 });

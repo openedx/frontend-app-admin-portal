@@ -1,6 +1,5 @@
 import {
   screen,
-  render,
   waitFor,
 } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
@@ -8,7 +7,7 @@ import '@testing-library/jest-dom';
 
 import { SUPPORTED_SUBSIDY_TYPES } from '../../../../data/constants/subsidyRequests';
 import SettingsAccessSubsidyTypeSelection from '../SettingsAccessSubsidyTypeSelection';
-import { SUBSIDY_TYPE_LABELS } from '../../data/constants';
+import { renderWithI18nProvider } from '../../../test/testUtils';
 
 describe('<SettingsAccessSubsidyTypeSelection />', () => {
   const basicProps = {
@@ -19,30 +18,33 @@ describe('<SettingsAccessSubsidyTypeSelection />', () => {
     subsidyTypes: Object.values(SUPPORTED_SUBSIDY_TYPES),
   };
 
-  it('should open confirmation modal when subsidy type is selected', () => {
-    render(<SettingsAccessSubsidyTypeSelection {...basicProps} />);
-    userEvent.click(screen.getByLabelText(SUBSIDY_TYPE_LABELS[SUPPORTED_SUBSIDY_TYPES.license]));
+  it('should open confirmation modal when subsidy type is selected', async () => {
+    const user = userEvent.setup();
+    renderWithI18nProvider(<SettingsAccessSubsidyTypeSelection {...basicProps} />);
+    await user.click(screen.getByLabelText('Licenses'));
     expect(screen.getByText('Confirm selection')).toBeInTheDocument();
   });
 
-  it('should close confirmation modal when cancel is clicked', () => {
-    render(<SettingsAccessSubsidyTypeSelection {...basicProps} />);
-    userEvent.click(screen.getByLabelText(SUBSIDY_TYPE_LABELS[SUPPORTED_SUBSIDY_TYPES.license]));
+  it('should close confirmation modal when cancel is clicked', async () => {
+    const user = userEvent.setup();
+    renderWithI18nProvider(<SettingsAccessSubsidyTypeSelection {...basicProps} />);
+    await user.click(screen.getByLabelText('Licenses'));
     expect(screen.getByText('Confirm selection')).toBeInTheDocument();
-    userEvent.click(screen.getByText('Cancel'));
+    await user.click(screen.getByText('Cancel'));
     expect(screen.queryByText('Confirm selection')).not.toBeInTheDocument();
   });
 
   it('should call updateSubsidyRequestConfiguration when selection is confirmed', async () => {
+    const user = userEvent.setup();
     const mockUpdateSubsidyRequestConfiguration = jest.fn();
-    render(
+    renderWithI18nProvider(
       <SettingsAccessSubsidyTypeSelection
         {...basicProps}
         updateSubsidyRequestConfiguration={mockUpdateSubsidyRequestConfiguration}
       />,
     );
-    userEvent.click(screen.getByLabelText(SUBSIDY_TYPE_LABELS[SUPPORTED_SUBSIDY_TYPES.license]));
-    userEvent.click(screen.getByText('Confirm selection'));
+    await user.click(screen.getByLabelText('Licenses'));
+    await user.click(screen.getByText('Confirm selection'));
     await waitFor(() => {
       expect(mockUpdateSubsidyRequestConfiguration).toHaveBeenCalledWith({
         subsidyType: SUPPORTED_SUBSIDY_TYPES.license,
@@ -51,18 +53,19 @@ describe('<SettingsAccessSubsidyTypeSelection />', () => {
   });
 
   it('should handle errors', async () => {
+    const user = userEvent.setup();
     const mockUpdateSubsidyRequestConfiguration = jest.fn();
     mockUpdateSubsidyRequestConfiguration.mockRejectedValue('error');
 
-    render(
+    renderWithI18nProvider(
       <SettingsAccessSubsidyTypeSelection
         {...basicProps}
         updateSubsidyRequestConfiguration={mockUpdateSubsidyRequestConfiguration}
       />,
     );
 
-    userEvent.click(screen.getByLabelText(SUBSIDY_TYPE_LABELS[SUPPORTED_SUBSIDY_TYPES.license]));
-    userEvent.click(screen.getByText('Confirm selection'));
+    await user.click(screen.getByLabelText('Licenses'));
+    await user.click(screen.getByText('Confirm selection'));
     await waitFor(() => {
       expect(mockUpdateSubsidyRequestConfiguration).toHaveBeenCalledWith({
         subsidyType: SUPPORTED_SUBSIDY_TYPES.license,

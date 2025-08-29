@@ -14,6 +14,11 @@ class EnterpriseCatalogApiService {
 
   static highlightSetUrl = `${EnterpriseCatalogApiService.baseUrl}/highlight-sets-admin/`;
 
+  static fetchEnterpriseCatalogMetadata({ catalogUuid }) {
+    const url = `${EnterpriseCatalogApiService.baseUrl}/enterprise-catalogs/${catalogUuid}/get_content_metadata/`;
+    return EnterpriseCatalogApiService.apiClient().get(url);
+  }
+
   static fetchApplicableCatalogs({ enterpriseId, courseRunIds }) {
     // This API call will *only* obtain the enterprise's catalogs whose
     // catalog queries return/contain the specified courseRunIds.
@@ -24,11 +29,7 @@ class EnterpriseCatalogApiService {
       queryParams.set('course_run_ids', courseRunIds.join(','));
     }
     const url = `${EnterpriseCatalogApiService.baseUrl}/enterprise-customer/${enterpriseId}/contains_content_items/?${queryParams.toString()}`;
-    return EnterpriseCatalogApiService.apiClient(
-      {
-        useCache: configuration.USE_API_CACHE,
-      },
-    ).get(url);
+    return EnterpriseCatalogApiService.apiClient().get(url);
   }
 
   static fetchEnterpriseCustomerCatalogs(enterpriseId) {

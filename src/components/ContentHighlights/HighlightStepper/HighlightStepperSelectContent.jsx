@@ -1,12 +1,8 @@
-import React from 'react';
-import {
-  Row, Col, Container,
-} from '@edx/paragon';
-import PropTypes from 'prop-types';
+import { Row, Col, Container } from '@openedx/paragon';
 import HighlightStepperSelectContentSearch from './HighlightStepperSelectContentSearch';
 import HighlightStepperSelectContentHeader from './HighlightStepperSelectContentHeader';
 
-const HighlightStepperSelectContent = ({ enterpriseId }) => (
+const HighlightStepperSelectContent = () => (
   <Container>
     <Row>
       <Col xs={12} md={8} lg={6}>
@@ -15,14 +11,10 @@ const HighlightStepperSelectContent = ({ enterpriseId }) => (
     </Row>
     <Row>
       <Col>
-        <HighlightStepperSelectContentSearch enterpriseId={enterpriseId} />
+        <HighlightStepperSelectContentSearch />
       </Col>
     </Row>
   </Container>
 );
-
-HighlightStepperSelectContent.propTypes = {
-  enterpriseId: PropTypes.string.isRequired,
-};
 
 export default HighlightStepperSelectContent;

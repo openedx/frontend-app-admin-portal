@@ -2,6 +2,8 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 
+import { FormattedMessage } from '@edx/frontend-platform/i18n';
+
 import SubscriptionExpirationModals from '../subscriptions/expiration/SubscriptionExpirationModals';
 import SubscriptionDetails from './SubscriptionDetails';
 import LicenseAllocationDetails from './licenses/LicenseAllocationDetails';
@@ -17,7 +19,13 @@ export const SubscriptionDetailPage = ({ enterpriseSlug, match }) => {
 
   if (!subscription && !loadingSubscription) {
     return (
-      <div>No subscription available</div>
+      <div>
+        <FormattedMessage
+          id="admin.portal.lpr.embedded.subscription.section.no.subscription.available"
+          defaultMessage="No subscription available"
+          description="Message displayed when no subscription is available for the enterprise"
+        />
+      </div>
     );
   }
 

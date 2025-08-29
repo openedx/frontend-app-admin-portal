@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Button, Icon } from '@edx/paragon';
-import { Close } from '@edx/paragon/icons';
+import { Button, Icon } from '@openedx/paragon';
+import { Close } from '@openedx/paragon/icons';
 
 const CodeSearchResultsHeading = ({ searchQuery, onClose }) => (
   <div className="d-flex align-items-center justify-content-between mb-3">

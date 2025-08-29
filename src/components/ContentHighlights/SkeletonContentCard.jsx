@@ -1,5 +1,5 @@
 import React from 'react';
-import { Card } from '@edx/paragon';
+import { Card } from '@openedx/paragon';
 
 const SkeletonContentCard = () => (
   <Card isLoading data-testid="card-item-skeleton">

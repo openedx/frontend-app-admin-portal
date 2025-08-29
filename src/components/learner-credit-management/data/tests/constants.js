@@ -1,10 +1,15 @@
+const today = Date.now();
+
 export const mockEnterpriseOfferId = '123';
+
 export const mockSubsidyAccessPolicyUUID = 'c17de32e-b80b-468f-b994-85e68fd32751';
+export const mockGroupUuid = '81d68e18-2ce0-4080-8141-36679bdaef33';
 
 export const mockAssignableSubsidyAccessPolicy = {
   uuid: mockSubsidyAccessPolicyUUID,
-  subsidyActiveDatetime: '2023-11-01T13:06:46Z',
-  subsidyExpirationDatetime: '2024-02-29T13:06:59Z',
+  subsidyActiveDatetime: new Date(today).toISOString(),
+  subsidyExpirationDatetime: new Date(today + 130 * 24 * 60 * 60 * 1000).toISOString(),
+  groupAssociations: [mockGroupUuid],
   policyType: 'AssignedLearnerCreditAccessPolicy',
   displayName: 'Assignable Learner Credit',
   spendLimit: 10000 * 100,
@@ -18,12 +23,14 @@ export const mockAssignableSubsidyAccessPolicy = {
   },
   isAssignable: true,
   subsidyUuid: 'mock-subsidy-uuid',
+  catalogUuid: 'mock-catalog-uuid',
 };
 
 export const mockAssignableSubsidyAccessPolicyWithNoUtilization = {
   uuid: mockSubsidyAccessPolicyUUID,
-  subsidyActiveDatetime: '2023-11-01T13:06:46Z',
-  subsidyExpirationDatetime: '2024-02-29T13:06:59Z',
+  subsidyActiveDatetime: new Date(today).toISOString(),
+  subsidyExpirationDatetime: new Date(today + 130 * 24 * 60 * 60 * 1000).toISOString(),
+  groupAssociations: [],
   policyType: 'AssignedLearnerCreditAccessPolicy',
   displayName: 'Assignable Learner Credit',
   spendLimit: 10000 * 100,
@@ -41,8 +48,9 @@ export const mockAssignableSubsidyAccessPolicyWithNoUtilization = {
 
 export const mockAssignableSubsidyAccessPolicyWithSpendNoAllocations = {
   uuid: mockSubsidyAccessPolicyUUID,
-  subsidyActiveDatetime: '2023-11-01T13:06:46Z',
-  subsidyExpirationDatetime: '2024-02-29T13:06:59Z',
+  subsidyActiveDatetime: new Date(today).toISOString(),
+  subsidyExpirationDatetime: new Date(today + 130 * 24 * 60 * 60 * 1000).toISOString(),
+  groupAssociations: [],
   policyType: 'AssignedLearnerCreditAccessPolicy',
   displayName: 'Assignable Learner Credit',
   spendLimit: 10000 * 100,
@@ -60,8 +68,9 @@ export const mockAssignableSubsidyAccessPolicyWithSpendNoAllocations = {
 
 export const mockAssignableSubsidyAccessPolicyWithSpendNoRedeemed = {
   uuid: mockSubsidyAccessPolicyUUID,
-  subsidyActiveDatetime: '2023-11-01T13:06:46Z',
-  subsidyExpirationDatetime: '2024-02-29T13:06:59Z',
+  subsidyActiveDatetime: new Date(today).toISOString(),
+  subsidyExpirationDatetime: new Date(today + 130 * 24 * 60 * 60 * 1000).toISOString(),
+  groupAssociations: [],
   policyType: 'AssignedLearnerCreditAccessPolicy',
   displayName: 'Assignable Learner Credit',
   spendLimit: 10000 * 100,
@@ -79,8 +88,9 @@ export const mockAssignableSubsidyAccessPolicyWithSpendNoRedeemed = {
 
 export const mockPerLearnerSpendLimitSubsidyAccessPolicy = {
   uuid: mockSubsidyAccessPolicyUUID,
-  subsidyActiveDatetime: '2023-11-01T13:06:46Z',
-  subsidyExpirationDatetime: '2024-02-29T13:06:59Z',
+  subsidyActiveDatetime: new Date(today).toISOString(),
+  subsidyExpirationDatetime: new Date(today + 130 * 24 * 60 * 60 * 1000).toISOString(),
+  groupAssociations: ['test-group-uuid'],
   policyType: 'PerLearnerSpendCreditAccessPolicy',
   displayName: 'Per Learner Spend Limit',
   spendLimit: 10000 * 100,
@@ -93,6 +103,42 @@ export const mockPerLearnerSpendLimitSubsidyAccessPolicy = {
   subsidyUuid: 'mock-subsidy-uuid',
 };
 
+export const mockSpendLimitNoGroupsSubsidyAccessPolicy = {
+  uuid: mockSubsidyAccessPolicyUUID,
+  subsidyActiveDatetime: new Date(today).toISOString(),
+  subsidyExpirationDatetime: new Date(today + 130 * 24 * 60 * 60 * 1000).toISOString(),
+  groupAssociations: [],
+  policyType: 'PerLearnerSpendCreditAccessPolicy',
+  displayName: 'Per Learner Spend Limit',
+  spendLimit: 10000 * 100,
+  aggregates: {
+    spendAvailableUsd: 10000,
+    amountAllocatedUsd: 100,
+    amountRedeemedUsd: 350,
+  },
+  isAssignable: false,
+  subsidyUuid: 'mock-subsidy-uuid',
+};
+
+export const mockPerLearnerSpendLimitSubsidyAccessPolicyWithBnrEnabled = {
+  uuid: mockSubsidyAccessPolicyUUID,
+  subsidyActiveDatetime: new Date(today).toISOString(),
+  subsidyExpirationDatetime: new Date(today + 130 * 24 * 60 * 60 * 1000).toISOString(),
+  groupAssociations: [mockGroupUuid],
+  policyType: 'PerLearnerSpendCreditAccessPolicy',
+  displayName: 'Browse and Request Per Learner Credit',
+  spendLimit: 10000 * 100,
+  aggregates: {
+    spendAvailableUsd: 10000,
+    amountAllocatedUsd: 100,
+    amountRedeemedUsd: 350,
+  },
+  isAssignable: false,
+  subsidyUuid: 'mock-subsidy-uuid',
+  catalogUuid: 'mock-catalog-uuid',
+  bnrEnabled: true,
+};
+
 export const mockSubsidySummary = {
   budgetsSummary: [],
   offerId: '1234',
@@ -101,11 +147,12 @@ export const mockSubsidySummary = {
   redeemedFunds: 500,
   remainingFunds: 500,
   totalFunds: 1000,
+  groupAssociations: ['test-group-uuid'],
 };
 
 export const mockEnterpriseOfferMetadata = {
-  id: 99511,
-  startDatetime: '2022-09-01T00:00:00Z',
-  endDatetime: '2024-09-01T00:00:00Z',
+  id: mockEnterpriseOfferId,
+  startDatetime: new Date(today).toISOString(),
+  endDatetime: new Date(today + 130 * 24 * 60 * 60 * 1000).toISOString(),
   displayName: 'Test Display Name',
 };

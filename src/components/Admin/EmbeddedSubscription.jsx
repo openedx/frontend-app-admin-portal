@@ -1,8 +1,9 @@
 import React, { useContext, useState } from 'react';
 import dayjs from 'dayjs';
 import { useParams, Link } from 'react-router-dom';
-import { Form, Icon } from '@edx/paragon';
-import { Lightbulb, ArrowOutward } from '@edx/paragon/icons';
+import { Form, Icon } from '@openedx/paragon';
+import { Lightbulb, ArrowOutward } from '@openedx/paragon/icons';
+import { FormattedMessage } from '@edx/frontend-platform/i18n';
 import ConnectedSubscriptionDetailPage from './SubscriptionDetailPage';
 import { SubscriptionContext } from '../subscriptions/SubscriptionData';
 import { sortSubscriptionsByStatus } from '../subscriptions/data/utils';
@@ -36,11 +37,23 @@ const EmbeddedSubscription = () => {
             !loading && activeSubscriptions.length > 0
             && (
             <>
-              <h2 className="mt-4.5 mb-4">Manage Learners</h2>
+              <h2 className="mt-4.5 mb-4">
+                <FormattedMessage
+                  id="admin.portal.lpr.embedded.subscription.section.heading"
+                  defaultMessage="Manage Learners"
+                  description="Heading for the embedded subscription section on lpr page."
+                />
+              </h2>
               {activeSubscriptions.length > 1
                 ? (
                   <>
-                    <p className="ml-4 mt-3">Filter by subscription plan</p>
+                    <p className="ml-4 mt-3">
+                      <FormattedMessage
+                        id="admin.portal.lpr.embedded.subscription.section.filter.by.subscription.dropdown.label"
+                        defaultMessage="Filter by subscription plan"
+                        description="Label for the subscription plan filter dropdown in the embedded subscription section on lpr page."
+                      />
+                    </p>
                     <div className="ml-2 col-8 col-md-6">
                       <Form.Control
                         as="select"
@@ -59,19 +72,34 @@ const EmbeddedSubscription = () => {
               <ConnectedSubscriptionDetailPage enterpriseSlug={enterpriseSlug} match={match} />
               <div className="d-flex align-items-center">
                 <Icon src={Lightbulb} className="text-danger mr-2" />
-                <span> Help Center: Learners report that nudges have a positive impact on their motivation and
-                  performance.
+                <span>
+                  <FormattedMessage
+                    id="admin.portal.lpr.embedded.subscription.section.info.nudges"
+                    defaultMessage="Help Center: Learners report that nudges have a positive impact on their motivation and performance."
+                    description="Nudges info message for the embedded subscription section on lpr page."
+                  />
                 </span>
               </div>
               <div className="align-items-center">
-                <span className="ml-4.5"> Learn more helpful tips in </span>
+                <span className="ml-4.5">
+                  <FormattedMessage
+                    id="admin.portal.lpr.embedded.subscription.section.info.learn.more"
+                    defaultMessage="Learn more helpful tips in <a>Best Practices</a>"
+                    description="Learn more helpful tips link in the embedded subscription section on lpr page."
+                    /* eslint-disable react/no-unstable-nested-components */
+                    values={{
+                      a: chunks => (
+                        <Link
+                          to={bestPracticesUrl}
+                          target="_blank"
+                        >{chunks}
+                        </Link>
+                      ),
+                    }}
+                    /* eslint-disable react/no-unstable-nested-components */a
+                  />
+                </span>
                 <span>
-                  <Link
-                    to={bestPracticesUrl}
-                    target="_blank"
-                  >
-                    Best Practices
-                  </Link>
                   <Icon className="d-inline-flex ml-2" src={ArrowOutward} />
                 </span>
               </div>

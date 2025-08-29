@@ -1,5 +1,6 @@
+import { validate as uuidValidate } from 'uuid';
+
 import { useParams } from 'react-router-dom';
-import { isUUID } from '../utils';
 
 /**
  * Given a page route with the `:budgetId` param, returns the `budgetId` and either a
@@ -13,8 +14,8 @@ import { isUUID } from '../utils';
  */
 const useBudgetId = () => {
   const { budgetId } = useParams();
-  const enterpriseOfferId = isUUID(budgetId) ? null : budgetId;
-  const subsidyAccessPolicyId = isUUID(budgetId) ? budgetId : null;
+  const enterpriseOfferId = uuidValidate(budgetId) ? null : budgetId;
+  const subsidyAccessPolicyId = uuidValidate(budgetId) ? budgetId : null;
   return {
     budgetId,
     enterpriseOfferId,

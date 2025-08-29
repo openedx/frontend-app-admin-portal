@@ -4,6 +4,7 @@ import {
   waitFor,
 } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
+import { IntlProvider } from '@edx/frontend-platform/i18n';
 import { ApproveLicenseRequestModal } from '../ApproveLicenseRequestModal';
 import EnterpriseAccessApiService from '../../../data/services/EnterpriseAccessApiService';
 import * as hooks from '../data/hooks';
@@ -31,6 +32,12 @@ describe('<ApproveLicenseRequestModal />', () => {
     onSuccess: jest.fn(),
     onClose: jest.fn(),
   };
+
+  const ApproveLicenseRequestModalWrapper = (props) => (
+    <IntlProvider locale="en">
+      <ApproveLicenseRequestModal {...basicProps} {...props} />
+    </IntlProvider>
+  );
 
   beforeEach(() => {
     hooks.useApplicableSubscriptions.mockReturnValue({
@@ -63,17 +70,13 @@ describe('<ApproveLicenseRequestModal />', () => {
       error: undefined,
     });
 
-    const { getByTestId } = render(
-      <ApproveLicenseRequestModal {...basicProps} />,
-    );
+    const { getByTestId } = render(<ApproveLicenseRequestModalWrapper />);
 
     expect(getByTestId('approve-license-request-modal-skeleton'));
   });
 
   it('should disable the approve button if no subscription has been selected', () => {
-    const { getByTestId } = render(
-      <ApproveLicenseRequestModal {...basicProps} />,
-    );
+    const { getByTestId } = render(<ApproveLicenseRequestModalWrapper />);
 
     const approveBtn = getByTestId('approve-license-request-modal-approve-btn');
     expect(approveBtn.disabled).toBe(true);
@@ -93,9 +96,7 @@ describe('<ApproveLicenseRequestModal />', () => {
       error: undefined,
     });
 
-    const { getByTestId, queryByTestId } = render(
-      <ApproveLicenseRequestModal {...basicProps} />,
-    );
+    const { getByTestId, queryByTestId } = render(<ApproveLicenseRequestModalWrapper />);
 
     expect(queryByTestId('approve-license-request-modal-subscription-0')).toBeNull();
     const approveBtn = getByTestId('approve-license-request-modal-approve-btn');
@@ -106,18 +107,17 @@ describe('<ApproveLicenseRequestModal />', () => {
   });
 
   it('should call Enterprise Access API to approve the request and call onSuccess afterwards', async () => {
+    const user = userEvent.setup();
     const handleSuccess = jest.fn();
-    const { getByTestId } = render(
-      <ApproveLicenseRequestModal {...basicProps} onSuccess={handleSuccess} />,
-    );
+    const { getByTestId } = render(<ApproveLicenseRequestModalWrapper onSuccess={handleSuccess} />);
 
     const subscriptionChoiceRadio = getByTestId('approve-license-request-modal-subscription-0');
-    userEvent.click(subscriptionChoiceRadio);
+    await user.click(subscriptionChoiceRadio);
 
     const approveBtn = getByTestId('approve-license-request-modal-approve-btn');
     expect(approveBtn.disabled).toBe(false);
 
-    userEvent.click(approveBtn);
+    await user.click(approveBtn);
 
     await waitFor(() => {
       expect(EnterpriseAccessApiService.approveLicenseRequests).toHaveBeenCalledWith({
@@ -129,20 +129,19 @@ describe('<ApproveLicenseRequestModal />', () => {
     });
   });
 
-  it('should render alert if an error occured', async () => {
+  it('should render alert if an error occurred', async () => {
+    const user = userEvent.setup();
     EnterpriseAccessApiService.approveLicenseRequests.mockRejectedValue(new Error('something went wrong'));
 
-    const { getByTestId } = render(
-      <ApproveLicenseRequestModal {...basicProps} />,
-    );
+    const { getByTestId } = render(<ApproveLicenseRequestModalWrapper />);
 
     const subscriptionChoiceRadio = getByTestId('approve-license-request-modal-subscription-0');
-    userEvent.click(subscriptionChoiceRadio);
+    await user.click(subscriptionChoiceRadio);
 
     let approveBtn = getByTestId('approve-license-request-modal-approve-btn');
     expect(approveBtn.disabled).toBe(false);
 
-    userEvent.click(approveBtn);
+    await user.click(approveBtn);
 
     await waitFor(() => {
       expect(EnterpriseAccessApiService.approveLicenseRequests).toHaveBeenCalledWith({
@@ -163,9 +162,7 @@ describe('<ApproveLicenseRequestModal />', () => {
       error: undefined,
     });
 
-    const { getByTestId } = render(
-      <ApproveLicenseRequestModal {...basicProps} />,
-    );
+    const { getByTestId } = render(<ApproveLicenseRequestModalWrapper />);
 
     expect(getByTestId('approve-license-request-modal-no-subscriptions-alert'));
   });

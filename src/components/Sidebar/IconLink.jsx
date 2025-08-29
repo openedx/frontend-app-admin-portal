@@ -2,7 +2,7 @@ import React, { useLayoutEffect, useRef, useState } from 'react';
 import PropTypes from 'prop-types';
 import { NavLink } from 'react-router-dom';
 import classNames from 'classnames';
-import { Bubble } from '@edx/paragon';
+import { Bubble } from '@openedx/paragon';
 
 const BUBBLE_MARGIN_LEFT = 5;
 

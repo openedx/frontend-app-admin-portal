@@ -3,32 +3,42 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import {
   Stack, Collapsible, Row, Col, Button,
-} from '@edx/paragon';
-import { ArrowDownward } from '@edx/paragon/icons';
+} from '@openedx/paragon';
+import { ArrowDownward } from '@openedx/paragon/icons';
 import { sendEnterpriseTrackEvent } from '@edx/frontend-enterprise-utils';
 import { generatePath, useParams, Link } from 'react-router-dom';
 
-import { formatPrice } from './data';
+import { FormattedMessage, useIntl } from '@edx/frontend-platform/i18n';
+import { formatPrice, LEARNER_CREDIT_ROUTE } from './data';
 import EVENT_NAMES from '../../eventTracking';
-import { LEARNER_CREDIT_ROUTE } from './constants';
+import { AssignedUtilizationDetails, BnRUtilizationDetails } from './utilization-details';
 
 const BudgetDetailPageOverviewUtilization = ({
   budgetId,
   budgetTotalSummary: { utilized },
   budgetAggregates,
   isAssignable,
+  isBnREnabledPolicy,
   enterpriseFeatures,
   enterpriseId,
+  isRetired,
 }) => {
   const { enterpriseSlug, enterpriseAppPage } = useParams();
-  const { amountAllocatedUsd, amountRedeemedUsd } = budgetAggregates;
+  const intl = useIntl();
   const {
     BUDGET_OVERVIEW_UTILIZATION_VIEW_ASSIGNED_TABLE,
     BUDGET_OVERVIEW_UTILIZATION_VIEW_SPENT_TABLE,
     BUDGET_OVERVIEW_UTILIZATION_DROPDOWN_TOGGLE,
+    BUDGET_OVERVIEW_UTILIZATION_VIEW_PENDING_TABLE,
   } = EVENT_NAMES.LEARNER_CREDIT_MANAGEMENT;
 
-  if (!budgetId || !enterpriseFeatures.topDownAssignmentRealTimeLcm || utilized <= 0 || !isAssignable) {
+  if (
+    !budgetId
+    || isRetired
+    || !enterpriseFeatures.topDownAssignmentRealTimeLcm
+    || utilized <= 0
+    || (!isAssignable && !isBnREnabledPolicy)
+  ) {
     return null;
   }
 
@@ -37,10 +47,31 @@ const BudgetDetailPageOverviewUtilization = ({
       return null;
     }
 
-    const linkText = (type === 'assigned') ? 'View assigned activity' : 'View spent activity';
-    const eventNameType = (type === 'assigned')
-      ? BUDGET_OVERVIEW_UTILIZATION_VIEW_ASSIGNED_TABLE
-      : BUDGET_OVERVIEW_UTILIZATION_VIEW_SPENT_TABLE;
+    let linkText;
+    let eventNameType;
+
+    if (type === 'assigned') {
+      linkText = intl.formatMessage({
+        id: 'lcm.budget.detail.page.overview.utilization.view.assigned',
+        defaultMessage: 'View assigned activity',
+        description: 'Link text for the view assigned activity link on the budget detail page',
+      });
+      eventNameType = BUDGET_OVERVIEW_UTILIZATION_VIEW_ASSIGNED_TABLE;
+    } else if (type === 'approved-requests') {
+      linkText = intl.formatMessage({
+        id: 'lcm.budget.detail.page.overview.utilization.view.pending',
+        defaultMessage: 'View pending activity',
+        description: 'Link text for the view pending activity link on the budget detail page',
+      });
+      eventNameType = BUDGET_OVERVIEW_UTILIZATION_VIEW_PENDING_TABLE;
+    } else {
+      linkText = intl.formatMessage({
+        id: 'lcm.budget.detail.page.overview.utilization.view.spent',
+        defaultMessage: 'View spent activity',
+        description: 'Link text for the view spent activity link on the budget detail page',
+      });
+      eventNameType = BUDGET_OVERVIEW_UTILIZATION_VIEW_SPENT_TABLE;
+    }
 
     return (
       <Button
@@ -67,7 +98,16 @@ const BudgetDetailPageOverviewUtilization = ({
     <Collapsible
       className="mt-4 budget-utilization-container"
       styling="basic"
-      title={<h6 className="mb-0">Utilization details</h6>}
+      id="assignment-budget-utilization-details"
+      title={(
+        <h6 className="mb-0">
+          <FormattedMessage
+            id="lcm.budget.detail.page.overview.utilization.collapsible.title"
+            defaultMessage="Utilization details"
+            description="Title for the utilization details collapsible section on the budget detail page"
+          />
+        </h6>
+      )}
       onToggle={(open) => sendEnterpriseTrackEvent(
         enterpriseId,
         BUDGET_OVERVIEW_UTILIZATION_DROPDOWN_TOGGLE,
@@ -80,39 +120,26 @@ const BudgetDetailPageOverviewUtilization = ({
         <Row>
           <Col lg={7}>
             <Stack className="border border-light-400 p-4">
-              <h4 className="text-primary-500">Utilized</h4>
+              <h4 className="text-primary-500">
+                <FormattedMessage
+                  id="lcm.budget.detail.page.overview.utilization.title"
+                  defaultMessage="Utilized"
+                  description="Title for the utilized amount on the budget detail page"
+                />
+              </h4>
               <Stack direction="vertical" gap={1}>
                 <h1 data-testid="budget-utilization-amount">{formatPrice(utilized)}</h1>
-                <p className="micro">
-                  Your total utilization includes both assigned funds (earmarked for future enrollment) and spent
-                  funds (redeemed for enrollment).
-                </p>
-                <Stack className="small">
-                  <Row>
-                    <Col xl={3} className="mt-auto mb-auto">Amount assigned</Col>
-                    <Col className="mt-auto mb-auto text-right" data-testid="budget-utilization-assigned">
-                      {formatPrice(amountAllocatedUsd)}
-                    </Col>
-                    <Col xl={7} className="text-right">
-                      {renderActivityLink({
-                        amount: amountAllocatedUsd,
-                        type: 'assigned',
-                      })}
-                    </Col>
-                  </Row>
-                  <Row>
-                    <Col xl={3} className="mt-auto mb-auto">Amount spent</Col>
-                    <Col className="mt-auto mb-auto text-right" data-testid="budget-utilization-spent">
-                      {formatPrice(amountRedeemedUsd)}
-                    </Col>
-                    <Col xl={7} lg={7} className="text-right">
-                      {renderActivityLink({
-                        amount: amountRedeemedUsd,
-                        type: 'spent',
-                      })}
-                    </Col>
-                  </Row>
-                </Stack>
+                {isBnREnabledPolicy ? (
+                  <BnRUtilizationDetails
+                    budgetAggregates={budgetAggregates}
+                    renderActivityLink={renderActivityLink}
+                  />
+                ) : (
+                  <AssignedUtilizationDetails
+                    budgetAggregates={budgetAggregates}
+                    renderActivityLink={renderActivityLink}
+                  />
+                )}
               </Stack>
             </Stack>
           </Col>
@@ -138,10 +165,12 @@ BudgetDetailPageOverviewUtilization.propTypes = {
   budgetTotalSummary: PropTypes.shape(budgetTotalSummaryShape).isRequired,
   budgetAggregates: PropTypes.shape(budgetAggregatesShape).isRequired,
   isAssignable: PropTypes.bool.isRequired,
+  isBnREnabledPolicy: PropTypes.bool.isRequired,
   enterpriseFeatures: PropTypes.shape({
     topDownAssignmentRealTimeLcm: PropTypes.bool,
   }).isRequired,
   enterpriseId: PropTypes.string.isRequired,
+  isRetired: PropTypes.bool.isRequired,
 };
 
 const mapStateToProps = state => ({

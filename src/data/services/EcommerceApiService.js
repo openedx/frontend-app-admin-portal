@@ -24,11 +24,7 @@ class EcommerceApiService {
 
   static fetchCoupon(couponId) {
     const url = `${EcommerceApiService.ecommerceBaseUrl}/api/v2/enterprise/coupons/${couponId}/`;
-    return EcommerceApiService.apiClient(
-      {
-        useCache: configuration.USE_API_CACHE,
-      },
-    ).get(url);
+    return EcommerceApiService.apiClient().get(url);
   }
 
   static fetchCouponDetails(couponId, options, { csv } = {}) {

@@ -3,8 +3,8 @@ import {
 } from '@testing-library/react';
 import '@testing-library/jest-dom/extend-expect';
 import React from 'react';
-import { Icon } from '@edx/paragon';
-import { School } from '@edx/paragon/icons';
+import { Icon } from '@openedx/paragon';
+import { School } from '@openedx/paragon/icons';
 import { MemoryRouter } from 'react-router-dom';
 import { Provider } from 'react-redux';
 import configureMockStore from 'redux-mock-store';

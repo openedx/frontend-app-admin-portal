@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
-import { Icon, ModalPopup } from '@edx/paragon';
+import { Icon, ModalPopup } from '@openedx/paragon';
 import { ASSIGNMENT_STATUS_MODAL_MAX_WIDTH } from '../data';
 
 export const BaseModalPopupHeading = ({ icon, iconClassName, children }) => (

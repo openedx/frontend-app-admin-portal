@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Button } from '@edx/paragon';
-import { Close, MenuIcon } from '@edx/paragon/icons';
+import { Button } from '@openedx/paragon';
+import { Close, MenuIcon } from '@openedx/paragon/icons';
 
 import './SidebarToggle.scss';
 
@@ -17,6 +17,7 @@ const SidebarToggle = (props) => {
   return (
     <Button
       variant="link"
+      data-testid={isExpandedByToggle ? 'close-icon' : 'menu-icon'}
       className="sidebar-toggle-btn px-1 mr-2 text-dark"
       onClick={isExpandedByToggle ? collapseSidebar : expandSidebar}
       aria-controls="sidebar"

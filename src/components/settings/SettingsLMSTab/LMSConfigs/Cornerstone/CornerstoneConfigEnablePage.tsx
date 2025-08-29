@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { Container, Form, Image } from '@edx/paragon';
+import { Container, Form, Image } from '@openedx/paragon';
 
 import { CORNERSTONE_TYPE, INVALID_LINK, INVALID_NAME } from '../../../data/constants';
 import ValidatedFormControl from '../../../../forms/ValidatedFormControl';

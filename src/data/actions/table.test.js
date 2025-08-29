@@ -22,6 +22,49 @@ describe('actions', () => {
   describe('sortTable', () => {
     const tableId = 'table-id';
 
+    it('does not sort table data when ordering is null or undefined', async () => {
+      const initialTableState = {
+        count: 3,
+        num_pages: 1,
+        results: [
+          {
+            current_grade: 0.92,
+            enrollment_date: '2023-12-21',
+          },
+          {
+            current_grade: 0.82,
+            enrollment_date: '2023-09-12',
+          },
+        ],
+      };
+      const orderingKey = null;
+
+      const mockFetchMethod = jest.fn().mockResolvedValue({ data: initialTableState });
+
+      const store = mockStore({
+        portalConfiguration: {
+          enterpriseId: 'test-enterprise',
+        },
+        table: {
+          'table-id': {
+            data: initialTableState,
+          },
+        },
+      });
+
+      await store.dispatch(sortTable('table-id', mockFetchMethod, orderingKey));
+
+      const sortSuccessAction = store.getActions().find(action => action.type === 'SORT_SUCCESS');
+
+      // Assert that the SORT_SUCCESS action was dispatched with unchanged data
+      expect(sortSuccessAction).toBeDefined();
+      expect(sortSuccessAction.payload).toEqual({
+        tableId: 'table-id',
+        ordering: null,
+        data: initialTableState,
+      });
+    });
+
     describe('sorts tables based on', () => {
       const initialTableState = {
         count: 3,

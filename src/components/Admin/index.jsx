@@ -1,9 +1,16 @@
-import React from 'react';
+import React, { createRef } from 'react';
 import PropTypes from 'prop-types';
 import { Helmet } from 'react-helmet';
-import { Alert, Icon } from '@edx/paragon';
-import { Error, Undo } from '@edx/paragon/icons';
+import { isEmpty } from 'lodash-es';
+import {
+  Alert, Icon, Tab, Tabs,
+} from '@openedx/paragon';
+import { Error, Undo } from '@openedx/paragon/icons';
 import { Link } from 'react-router-dom';
+import {
+  FormattedDate, FormattedMessage, injectIntl, intlShape,
+} from '@edx/frontend-platform/i18n';
+import { logError } from '@edx/frontend-platform/logging';
 
 import Hero from '../Hero';
 import EnrollmentsTable from '../EnrollmentsTable';
@@ -17,9 +24,10 @@ import DownloadCsvButton from '../../containers/DownloadCsvButton';
 import AdminCards from '../../containers/AdminCards';
 import AdminSearchForm from './AdminSearchForm';
 import EnterpriseAppSkeleton from '../EnterpriseApp/EnterpriseAppSkeleton';
+import { TRACK_LEARNER_PROGRESS_TARGETS } from '../ProductTours/AdminOnboardingTours/constants';
 
 import EnterpriseDataApiService from '../../data/services/EnterpriseDataApiService';
-import { formatTimestamp } from '../../utils';
+import { formatTimestamp, getFilteredQueryParams } from '../../utils';
 
 import AdminCardsSkeleton from './AdminCardsSkeleton';
 import { SubscriptionData } from '../subscriptions';
@@ -27,21 +35,52 @@ import EmbeddedSubscription from './EmbeddedSubscription';
 import { withLocation, withParams } from '../../hoc';
 import AIAnalyticsSummary from './AIAnalyticsSummary';
 import AIAnalyticsSummarySkeleton from './AIAnalyticsSummarySkeleton';
+import BudgetExpiryAlertAndModal from '../BudgetExpiryAlertAndModal';
+import ModuleActivityReport from './tabs/ModuleActivityReport';
 
 class Admin extends React.Component {
+  constructor(props) {
+    super();
+
+    this.fullReportRef = createRef();
+    const state = {
+      activeTab: 'learner-progress-report',
+      ModuleActivityReportVisible: false,
+    };
+
+    // Prepare to scroll to report section when it loads
+    if (props?.location?.hash === '#fullreport') {
+      state.navigateToReport = true;
+    }
+
+    this.state = state;
+  }
+
   componentDidMount() {
     const { enterpriseId } = this.props;
     if (enterpriseId) {
       this.props.fetchDashboardAnalytics(enterpriseId);
       this.props.fetchDashboardInsights(enterpriseId);
+      this.props.fetchEnterpriseBudgets(enterpriseId);
+      this.props.fetchEnterpriseGroups(enterpriseId);
+      this.showModularActivityReport(enterpriseId);
     }
   }
 
   componentDidUpdate(prevProps) {
+    const element = this.fullReportRef.current;
+    // Scroll to report section if #fullreport in url
+    if (element && this.state.navigateToReport) {
+      element.scrollIntoView();
+      this.setState({ navigateToReport: false });
+    }
     const { enterpriseId } = this.props;
     if (enterpriseId && enterpriseId !== prevProps.enterpriseId) {
       this.props.fetchDashboardAnalytics(enterpriseId);
       this.props.fetchDashboardInsights(enterpriseId);
+      this.props.fetchEnterpriseBudgets(enterpriseId);
+      this.props.fetchEnterpriseGroups(enterpriseId);
+      this.showModularActivityReport(enterpriseId);
     }
   }
 
@@ -49,22 +88,36 @@ class Admin extends React.Component {
     // Clear the overview data
     this.props.clearDashboardAnalytics();
     this.props.clearDashboardInsights();
+    this.props.clearEnterpriseBudgets();
+    this.props.clearEnterpriseGroups();
   }
 
   getMetadataForAction(actionSlug) {
-    const { enterpriseId } = this.props;
+    const { enterpriseId, intl } = this.props;
+    const expectedQueryParams = ['search', 'search_course', 'search_start_date', 'budget_uuid', 'group_uuid'];
+    const filteredQueryParams = getFilteredQueryParams(this.props.location.search, expectedQueryParams);
+
     const defaultData = {
-      title: 'Full Report',
+      title: intl.formatMessage({
+        id: 'admin.portal.lpr.report.full.report.title',
+        defaultMessage: 'Full Report',
+        description: 'Title for full report',
+      }),
       component: <EnrollmentsTable />,
       csvFetchMethod: () => (
-        EnterpriseDataApiService.fetchCourseEnrollments(enterpriseId, {}, { csv: true })
+        EnterpriseDataApiService.fetchCourseEnrollments(enterpriseId, filteredQueryParams, { csv: true })
       ),
       csvButtonId: 'enrollments',
+      hasActiveFilters: !isEmpty(filteredQueryParams),
     };
 
     const actionData = {
       'registered-unenrolled-learners': {
-        title: 'Registered Learners Not Yet Enrolled in a Course',
+        title: intl.formatMessage({
+          id: 'admin.portal.lpr.report.registered.learners.not.enrolled.title',
+          defaultMessage: 'Registered Learners Not Yet Enrolled in a Course',
+          description: 'Report title for registered learners not yet enrolled in a course',
+        }),
         component: <RegisteredLearnersTable />,
         csvFetchMethod: () => (
           EnterpriseDataApiService.fetchUnenrolledRegisteredLearners(
@@ -76,7 +129,11 @@ class Admin extends React.Component {
         csvButtonId: 'registered-unenrolled-learners',
       },
       'enrolled-learners': {
-        title: 'Number of Courses Enrolled by Learners',
+        title: intl.formatMessage({
+          id: 'admin.portal.lpr.report.enrolled.learners.title',
+          defaultMessage: 'Number of Courses Enrolled by Learners',
+          description: 'Report title for number of courses enrolled by learners',
+        }),
         component: <EnrolledLearnersTable />,
         csvFetchMethod: () => (
           EnterpriseDataApiService.fetchEnrolledLearners(enterpriseId, {}, { csv: true })
@@ -84,8 +141,16 @@ class Admin extends React.Component {
         csvButtonId: 'enrolled-learners',
       },
       'enrolled-learners-inactive-courses': {
-        title: 'Learners Not Enrolled in an Active Course',
-        description: 'Learners who have completed all of their courses and/or courses have ended.',
+        title: intl.formatMessage({
+          id: 'admin.portal.lpr.report.learners.not.enrolled.in.active.course.title',
+          defaultMessage: 'Learners Not Enrolled in an Active Course',
+          description: 'Report title for learners not enrolled in an active course',
+        }),
+        description: intl.formatMessage({
+          id: 'admin.portal.lpr.report.learners.not.enrolled.in.active.course.description',
+          defaultMessage: 'Learners who have completed all of their courses and/or courses have ended.',
+          description: 'Report description for learners not enrolled in an active course',
+        }),
         component: <EnrolledLearnersForInactiveCoursesTable />,
         csvFetchMethod: () => (
           EnterpriseDataApiService.fetchEnrolledLearnersForInactiveCourses(
@@ -97,8 +162,16 @@ class Admin extends React.Component {
         csvButtonId: 'enrolled-learners-inactive-courses',
       },
       'learners-active-week': {
-        title: 'Learners Enrolled in a Course',
-        subtitle: 'Top Active Learners',
+        title: intl.formatMessage({
+          id: 'admin.portal.lpr.report.learners.active.week.title',
+          defaultMessage: 'Learners Enrolled in a Course',
+          description: 'Report title for learners active in the past week',
+        }),
+        subtitle: intl.formatMessage({
+          id: 'admin.portal.lpr.report.learners.active.week.subtitle',
+          defaultMessage: 'Top Active Learners',
+          description: 'Report subtitle for learners active in the past week',
+        }),
         component: <LearnerActivityTable id="learners-active-week" activity="active_past_week" />,
         csvFetchMethod: () => (
           EnterpriseDataApiService.fetchCourseEnrollments(
@@ -110,8 +183,16 @@ class Admin extends React.Component {
         csvButtonId: 'learners-active-week',
       },
       'learners-inactive-week': {
-        title: 'Learners Enrolled in a Course',
-        subtitle: 'Not Active in Past Week',
+        title: intl.formatMessage({
+          id: 'admin.portal.lpr.report.learners.inactive.week.title',
+          defaultMessage: 'Learners Enrolled in a Course',
+          description: 'Report title for learners inactive in the past week',
+        }),
+        subtitle: intl.formatMessage({
+          id: 'admin.portal.lpr.report.learners.inactive.week.subtitle',
+          defaultMessage: 'Not Active in Past Week',
+          description: 'Report subtitle for learners inactive in the past week',
+        }),
         component: <LearnerActivityTable id="learners-inactive-week" activity="inactive_past_week" />,
         csvFetchMethod: () => (
           EnterpriseDataApiService.fetchCourseEnrollments(
@@ -123,8 +204,16 @@ class Admin extends React.Component {
         csvButtonId: 'learners-inactive-week',
       },
       'learners-inactive-month': {
-        title: 'Learners Enrolled in a Course',
-        subtitle: 'Not Active in Past Month',
+        title: intl.formatMessage({
+          id: 'admin.portal.lpr.report.learners.inactive.month.title',
+          defaultMessage: 'Learners Enrolled in a Course',
+          description: 'Report title for learners inactive in the past month',
+        }),
+        subtitle: intl.formatMessage({
+          id: 'admin.portal.lpr.report.learners.inactive.month.subtitle',
+          defaultMessage: 'Not Active in Past Month',
+          description: 'Report subtitle for learners inactive in the past month',
+        }),
         component: <LearnerActivityTable id="learners-inactive-month" activity="inactive_past_month" />,
         csvFetchMethod: () => (
           EnterpriseDataApiService.fetchCourseEnrollments(
@@ -136,7 +225,11 @@ class Admin extends React.Component {
         csvButtonId: 'learners-inactive-month',
       },
       'completed-learners': {
-        title: 'Number of Courses Completed by Learner',
+        title: intl.formatMessage({
+          id: 'admin.portal.lpr.report.completed.learners.title',
+          defaultMessage: 'Number of Courses Completed by Learner',
+          description: 'Report title for number of courses completed by learners',
+        }),
         component: <CompletedLearnersTable />,
         csvFetchMethod: () => (
           EnterpriseDataApiService.fetchCompletedLearners(enterpriseId, {}, { csv: true })
@@ -144,8 +237,16 @@ class Admin extends React.Component {
         csvButtonId: 'completed-learners',
       },
       'completed-learners-week': {
-        title: 'Number of Courses Completed by Learner',
-        subtitle: 'Past Week',
+        title: intl.formatMessage({
+          id: 'admin.portal.lpr.report.completed.learners.past.week.title',
+          defaultMessage: 'Number of Courses Completed by Learner',
+          description: 'Report title for number of courses completed by learners in past week',
+        }),
+        subtitle: intl.formatMessage({
+          id: 'admin.portal.lpr.report.completed.learners.past.week.subtitle',
+          defaultMessage: 'Past Week',
+          description: 'Report title for number of courses completed by learners in past week',
+        }),
         component: <PastWeekPassedLearnersTable />,
         csvFetchMethod: () => (
           EnterpriseDataApiService.fetchCourseEnrollments(
@@ -209,15 +310,41 @@ class Admin extends React.Component {
     return [courseCompletions, enrolledLearners, numberOfUsers].every(item => item === 0);
   }
 
+  showModularActivityReport(enterpriseId) {
+    const filters = {};
+    EnterpriseDataApiService.fetchEnterpriseModuleActivityReport(enterpriseId, {
+      search: '',
+      ...filters,
+    })
+      .then((response) => {
+        if (response?.data?.results?.length > 0) {
+          this.setState({ ModuleActivityReportVisible: true });
+        }
+      })
+      .catch((error) => {
+        logError('Error fetching module activity report', error);
+        this.setState({ ModuleActivityReportVisible: false });
+      });
+  }
+
   renderDownloadButton() {
-    const { actionSlug } = this.props;
+    const { actionSlug, intl } = this.props;
     const tableMetadata = this.getMetadataForAction(actionSlug);
+    let downloadButtonLabel;
+    if (actionSlug || tableMetadata.hasActiveFilters) {
+      downloadButtonLabel = intl.formatMessage({
+        id: 'admin.portal.lpr.current.report.csv.download',
+        defaultMessage: 'Download current report (CSV)',
+        description: 'Download button label for current report',
+      });
+    }
+
     return (
       <DownloadCsvButton
         id={tableMetadata.csvButtonId}
         fetchMethod={tableMetadata.csvFetchMethod}
         disabled={this.isTableDataMissing(actionSlug)}
-        buttonLabel={`Download ${actionSlug ? 'current' : 'full'} report (CSV)`}
+        buttonLabel={downloadButtonLabel}
       />
     );
   }
@@ -231,7 +358,11 @@ class Admin extends React.Component {
     return (
       <Link to={path} className="btn btn-sm btn-outline-primary ml-0 ml-md-3 mr-3">
         <Icon src={Undo} className="mr-2" />
-        Reset to {this.getMetadataForAction().title}
+        <FormattedMessage
+          id="admin.portal.lpr.reset.report.button.label"
+          defaultMessage="Reset to Full Report"
+          description="Label for button that upon click will reset the report to full report"
+        />
       </Link>
     );
   }
@@ -240,15 +371,19 @@ class Admin extends React.Component {
     const { location: { search, pathname } } = this.props;
     // remove the querys from the path
     const queryParams = new URLSearchParams(search);
-    ['search', 'search_course', 'search_start_date'].forEach((searchTerm) => {
+    ['search', 'search_course', 'search_start_date', 'budget_uuid', 'group_uuid'].forEach((searchTerm) => {
       queryParams.delete(searchTerm);
     });
     const resetQuery = queryParams.toString();
     const resetLink = resetQuery ? `${pathname}?${resetQuery}` : pathname;
     return (
-      <Link id="reset-filters" to={resetLink} className="btn btn-sm btn-outline-primary">
+      <Link data-testid="reset-filters" id="reset-filters" to={resetLink} className="btn btn-sm btn-outline-primary">
         <Icon src={Undo} className="mr-2" />
-        Reset Filters
+        <FormattedMessage
+          id="admin.portal.lpr.reset.filters.button.label"
+          defaultMessage="Reset Filters"
+          description="Label for button that upon click will reset the filters to default"
+        />
       </Link>
     );
   }
@@ -259,8 +394,21 @@ class Admin extends React.Component {
         variant="danger"
         icon={Error}
       >
-        <Alert.Heading>Hey, nice to see you</Alert.Heading>
-        <p>Try refreshing your screen {this.props.error.message}</p>
+        <Alert.Heading>
+          <FormattedMessage
+            id="admin.portal.lpr.error.message.heading"
+            defaultMessage="Hey, nice to see you"
+            description="Error message heading for learner progress report page"
+          />
+        </Alert.Heading>
+        <p>
+          <FormattedMessage
+            id="admin.portal.lpr.error.message.detail"
+            defaultMessage="Try refreshing your screen {errorDetail}"
+            description="Error message detail for learner progress report page"
+            values={{ errorDetail: this.props.error.message }}
+          />
+        </p>
       </Alert>
     );
   }
@@ -272,8 +420,21 @@ class Admin extends React.Component {
         className="mt-3"
         icon={Error}
       >
-        <Alert.Heading>Unable to generate CSV report</Alert.Heading>
-        <p>Please try again. {message}</p>
+        <Alert.Heading>
+          <FormattedMessage
+            id="admin.portal.lpr.error.csv.generation.heading"
+            defaultMessage="Unable to generate CSV report"
+            description="Error message heading for CSV report generation failure"
+          />
+        </Alert.Heading>
+        <p>
+          <FormattedMessage
+            id="admin.portal.lpr.error.csv.generation.detail"
+            defaultMessage="Please try again. {message}"
+            description="Error message detail for CSV report generation failure"
+            values={{ message }}
+          />
+        </p>
       </Alert>
     );
   }
@@ -288,7 +449,11 @@ class Admin extends React.Component {
       location: { search },
       insights,
       insightsLoading,
+      intl,
+      budgets,
+      groups,
     } = this.props;
+    const { activeTab } = this.state;
 
     const queryParams = new URLSearchParams(search || '');
     const queryParamsLength = Array.from(queryParams.entries()).length;
@@ -300,38 +465,50 @@ class Admin extends React.Component {
       searchQuery: queryParams.get('search') || '',
       searchCourseQuery: queryParams.get('search_course') || '',
       searchDateQuery: queryParams.get('search_start_date') || '',
+      searchBudgetQuery: queryParams.get('budget_uuid') || '',
+      searchGroupQuery: queryParams.get('group_uuid') || '',
     };
 
+    const hasCompleteInsights = insights?.learner_engagement && insights?.learner_progress;
+
     return (
-      <main role="main" className="learner-progress-report">
+      <main data-enterprise-id={enterpriseId} data-testid="dashboard-root" role="main" className="learner-progress-report">
         {!loading && !error && !this.hasAnalyticsData() ? <EnterpriseAppSkeleton /> : (
           <>
             <Helmet title="Learner Progress Report" />
             <Hero title="Learner Progress Report" />
             <div className="container-fluid">
-              <div className="row mt-4">
-                <div className="col">
-                  <h2>Overview</h2>
+              <div id={TRACK_LEARNER_PROGRESS_TARGETS.LPR_OVERVIEW}>
+                <div className="row mt-4">
+                  <div className="col">
+                    <BudgetExpiryAlertAndModal />
+                    <h2>
+                      <FormattedMessage
+                        id="admin.portal.lpr.overview.heading"
+                        defaultMessage="Overview"
+                        description="Heading for the overview section of the learner progress report page"
+                      />
+                    </h2>
+                  </div>
                 </div>
-              </div>
-              <div className="row mt-4">
-                <div className="col">
-                  {insightsLoading ? <AIAnalyticsSummarySkeleton /> : (
-                    insights && <AIAnalyticsSummary enterpriseId={enterpriseId} />
+                <div className="row mt-4">
+                  <div id={TRACK_LEARNER_PROGRESS_TARGETS.AI_SUMMARY} className="col">
+                    {insightsLoading ? <AIAnalyticsSummarySkeleton /> : (
+                      hasCompleteInsights && <AIAnalyticsSummary enterpriseId={enterpriseId} />
+                    )}
+                  </div>
+                </div>
+                <div className="row mt-3">
+                  {(error || loading) ? (
+                    <div className="col">
+                      {error && this.renderErrorMessage()}
+                      {loading && <AdminCardsSkeleton />}
+                    </div>
+                  ) : (
+                    <AdminCards />
                   )}
                 </div>
               </div>
-              <div className="row mt-3">
-                {(error || loading) ? (
-                  <div className="col">
-                    {error && this.renderErrorMessage()}
-                    {loading && <AdminCardsSkeleton />}
-                  </div>
-                ) : (
-                  <AdminCards />
-                )}
-              </div>
-
               <div className="row">
                 <div className="col mb-4.5">
                   <SubscriptionData enterpriseId={enterpriseId}>
@@ -340,11 +517,11 @@ class Admin extends React.Component {
                 </div>
               </div>
 
-              <div className="row mt-4">
+              <div className="row mt-4" id="learner-progress-report">
                 <div className="col">
                   <div className="row">
                     <div className="col-12 col-md-3 col-xl-2 mb-2 mb-md-0">
-                      <h2 className="table-title">{tableMetadata.title}</h2>
+                      <h2 className="table-title" ref={this.fullReportRef}>{tableMetadata.title}</h2>
                     </div>
                     <div className="col-12 col-md-9 col-xl-10 mb-2 mb-md-0 mt-0 mt-md-1">
                       {actionSlug && this.renderUrlResetButton()}
@@ -359,38 +536,88 @@ class Admin extends React.Component {
                   </div>
                 </div>
               </div>
-              <div className="row">
-                <div className="col">
-                  {!error && !loading && !this.hasEmptyData() && (
-                    <>
-                      <div className="row pb-3">
-                        <div className="col-12 col-md-6  col-xl-4 pt-1 pb-3">
-                          {lastUpdatedDate
-                            && (
-                            <>
-                              Showing data as of {formatTimestamp({ timestamp: lastUpdatedDate })}
-                            </>
-                            )}
 
-                        </div>
-                        <div className="col-12 col-md-6 col-xl-8">
-                          {this.renderDownloadButton()}
+              <div className="tabs-container" id={TRACK_LEARNER_PROGRESS_TARGETS.PROGRESS_REPORT}>
+                <div className="col-12 col-md-6  col-xl-4 pt-1 pb-3">
+                  {lastUpdatedDate
+                    && (
+                      <FormattedMessage
+                        id="admin.portal.lpr.data.refreshed.date.message"
+                        defaultMessage="Showing data as of {timestamp}"
+                        description="Message to show the last updated date of the data on lpr page"
+                        values={{
+                          timestamp: <FormattedDate
+                            value={formatTimestamp({ timestamp: lastUpdatedDate })}
+                            year="numeric"
+                            month="long"
+                            day="numeric"
+                          />,
+                        }}
+                      />
+                    )}
+                </div>
+                <Tabs
+                  variant="tabs"
+                  activeKey={activeTab}
+                  onSelect={(tab) => {
+                    this.setState({ activeTab: tab });
+                  }}
+                >
+                  <Tab
+                    eventKey="learner-progress-report"
+                    title={intl.formatMessage({
+                      id: 'adminPortal.lpr.tab.learnerProgressReport.title',
+                      defaultMessage: 'Learner Progress Report',
+                      description: 'Title for the learner progress report tab in admin portal.',
+                    })}
+                    id={TRACK_LEARNER_PROGRESS_TARGETS.FULL_PROGRESS_REPORT}
+                  >
+                    <div className="row">
+                      <div className="col">
+                        {!error && !loading && !this.hasEmptyData() && (
+                          <>
+                            <div className="row pb-3 mt-2">
+                              <div className="col-12 col-md-12 col-xl-12">
+                                {this.renderDownloadButton()}
+                              </div>
+                            </div>
+                            <span id={TRACK_LEARNER_PROGRESS_TARGETS.FILTER}>
+                              {this.displaySearchBar() && (
+                                <AdminSearchForm
+                                  searchParams={searchParams}
+                                  searchEnrollmentsList={() => this.props.searchEnrollmentsList()}
+                                  tableData={this.getTableData() ? this.getTableData().results : []}
+                                  budgets={budgets}
+                                  groups={groups}
+                                  enterpriseId={enterpriseId}
+                                />
+                              )}
+                            </span>
+                          </>
+                        )}
+                        {csvErrorMessage && this.renderCsvErrorMessage(csvErrorMessage)}
+                        <div className="mt-3 mb-5">
+                          {enterpriseId && tableMetadata.component}
                         </div>
                       </div>
-                      {this.displaySearchBar() && (
-                      <AdminSearchForm
-                        searchParams={searchParams}
-                        searchEnrollmentsList={() => this.props.searchEnrollmentsList()}
-                        tableData={this.getTableData() ? this.getTableData().results : []}
-                      />
-                      )}
-                    </>
+                    </div>
+                  </Tab>
+                  {this.state.ModuleActivityReportVisible && (
+                    <Tab
+                      eventKey="module-activity"
+                      title={intl.formatMessage({
+                        id: 'adminPortal.lpr.tab.moduleActivity.title',
+                        defaultMessage: 'Module Activity (Executive Education)',
+                        description: 'Title for the module activity tab in admin portal.',
+                      })}
+                      id={TRACK_LEARNER_PROGRESS_TARGETS.MODULE_ACTIVITY}
+                    >
+                      <div className="mt-3">
+                        <ModuleActivityReport enterpriseId={enterpriseId} />
+                      </div>
+                    </Tab>
                   )}
-                  {csvErrorMessage && this.renderCsvErrorMessage(csvErrorMessage)}
-                  <div className="mt-3 mb-5">
-                    {enterpriseId && tableMetadata.component}
-                  </div>
-                </div>
+                </Tabs>
               </div>
             </div>
           </>
@@ -416,6 +643,8 @@ Admin.defaultProps = {
   table: null,
   insightsLoading: false,
   insights: null,
+  budgets: [],
+  groups: [],
 };
 
 Admin.propTypes = {
@@ -423,11 +652,16 @@ Admin.propTypes = {
   clearDashboardAnalytics: PropTypes.func.isRequired,
   fetchDashboardInsights: PropTypes.func.isRequired,
   clearDashboardInsights: PropTypes.func.isRequired,
+  fetchEnterpriseBudgets: PropTypes.func.isRequired,
+  clearEnterpriseBudgets: PropTypes.func.isRequired,
+  fetchEnterpriseGroups: PropTypes.func.isRequired,
+  clearEnterpriseGroups: PropTypes.func.isRequired,
   enterpriseId: PropTypes.string,
   searchEnrollmentsList: PropTypes.func.isRequired,
   location: PropTypes.shape({
     search: PropTypes.string,
     pathname: PropTypes.string,
+    hash: PropTypes.string,
   }),
   activeLearners: PropTypes.shape({
     past_week: PropTypes.number,
@@ -442,8 +676,12 @@ Admin.propTypes = {
   csv: PropTypes.shape({}),
   actionSlug: PropTypes.string,
   table: PropTypes.shape({}),
+  budgets: PropTypes.arrayOf(PropTypes.shape({})),
+  groups: PropTypes.arrayOf(PropTypes.shape({})),
   insightsLoading: PropTypes.bool,
   insights: PropTypes.objectOf(PropTypes.shape),
+  // injected
+  intl: intlShape.isRequired,
 };
 
-export default withParams(withLocation(Admin));
+export default withParams(withLocation(injectIntl(Admin)));

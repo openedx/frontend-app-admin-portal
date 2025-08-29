@@ -2,8 +2,8 @@ import React, { useState, useMemo, useCallback } from 'react';
 import PropTypes from 'prop-types';
 import {
   ModalDialog, ActionRow, Button, Form, Alert, StatefulButton,
-} from '@edx/paragon';
-import { Info } from '@edx/paragon/icons';
+} from '@openedx/paragon';
+import { Info } from '@openedx/paragon/icons';
 import { logError } from '@edx/frontend-platform/logging';
 
 const DeclineSubsidyRequestModal = ({
@@ -65,6 +65,7 @@ const DeclineSubsidyRequestModal = ({
       isOpen={isOpen}
       hasCloseButton
       onClose={onClose}
+      isOverflowVisible={false}
     >
       <ModalDialog.Header>
         <ModalDialog.Title>

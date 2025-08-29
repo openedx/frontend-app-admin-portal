@@ -2,8 +2,8 @@ import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import {
   Dropzone, Form, Icon,
-} from '@edx/paragon';
-import { InsertDriveFile } from '@edx/paragon/icons';
+} from '@openedx/paragon';
+import { InsertDriveFile } from '@openedx/paragon/icons';
 
 import { formatBytes } from '../../MultipleFileInputField/utils';
 import InviteModalInputFeedback from './InviteModalInputFeedback';
@@ -44,8 +44,9 @@ const FileUpload = ({ memberInviteMetadata, setEmailAddressesInputValue }) => {
           invalidSize: 'The file size must be between below 1MB or 1000 emails.',
           multipleDragged: 'Cannot upload more than one file.',
         }}
+        data-testid="csv-upload-input"
       />
-      <InviteModalInputFeedback memberInviteMetadata={memberInviteMetadata} />
+      <InviteModalInputFeedback memberInviteMetadata={memberInviteMetadata} isCsvUpload />
     </Form.Group>
   );
 };

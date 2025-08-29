@@ -15,6 +15,7 @@ describe('LinkTableCell', () => {
           uuid: 'test-invite-key-uuid',
         },
       },
+      enterpriseSlug: 'test-enterprise',
     };
     const tree = renderer
       .create(<LinkTableCell {...props} />)

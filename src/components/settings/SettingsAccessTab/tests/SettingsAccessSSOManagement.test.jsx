@@ -43,6 +43,7 @@ describe('<SettingsAccessSSOManagement />', () => {
   };
 
   it('display current configuration value and handle form switch change', async () => {
+    const user = userEvent.setup();
     const mockUpdatePortalConfiguration = jest.fn();
     render((
       <SettingsAccessSSOManagementWrapper
@@ -54,7 +55,7 @@ describe('<SettingsAccessSSOManagement />', () => {
     const checkbox = screen.getByLabelText('Checkbox');
     const { enableIntegratedCustomerLearnerPortalSearch } = basicProps;
     expect(checkbox.checked).toEqual(enableIntegratedCustomerLearnerPortalSearch);
-    userEvent.click(checkbox);
+    await user.click(checkbox);
 
     await waitFor(() => {
       expect(LmsApiService.updateEnterpriseCustomer).toHaveBeenCalledWith('test-enterprise-uuid', {
@@ -66,12 +67,13 @@ describe('<SettingsAccessSSOManagement />', () => {
     });
   });
 
-  it('should show alert if an error occured', async () => {
+  it('should show alert if an error occurred', async () => {
+    const user = userEvent.setup();
     LmsApiService.updateEnterpriseCustomer.mockRejectedValue(new Error());
     render(<SettingsAccessSSOManagementWrapper {...basicProps} />);
 
     const checkbox = screen.getByLabelText('Checkbox');
-    userEvent.click(checkbox);
+    await user.click(checkbox);
 
     await waitFor(() => {
       expect(screen.getByText('Something went wrong'));

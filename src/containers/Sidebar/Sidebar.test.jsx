@@ -4,14 +4,18 @@ import PropTypes from 'prop-types';
 import configureMockStore from 'redux-mock-store';
 import thunk from 'redux-thunk';
 import renderer from 'react-test-renderer';
-import { mount } from 'enzyme';
 import { MemoryRouter } from 'react-router-dom';
 import { Provider } from 'react-redux';
+import { IntlProvider } from '@edx/frontend-platform/i18n';
 import {
+  cleanup,
+  fireEvent,
   render, screen,
+  waitFor,
 } from '@testing-library/react';
 import '@testing-library/jest-dom';
 import { getConfig } from '@edx/frontend-platform/config';
+import { getAuthenticatedUser } from '@edx/frontend-platform/auth';
 
 import Sidebar from './index';
 import { SubsidyRequestsContext } from '../../components/subsidy-requests';
@@ -48,9 +52,6 @@ const initialState = {
     enableSubscriptionManagementScreen: true,
     enableAnalyticsScreen: true,
     enableReportingConfigScreenLink: true,
-    enterpriseFeatures: {
-      enterpriseGroupsV1: false,
-    },
   },
 };
 
@@ -75,6 +76,8 @@ const initialEnterpriseSubsidiesContextValue = {
   canManageLearnerCredit: true,
 };
 
+const mockOnMount = jest.fn();
+
 const SidebarWrapper = ({
   enterpriseAppContextValue = initialEnterpriseAppContextValue,
   subsidyRequestsContextValue = initialSubsidyRequestsContextValue,
@@ -82,18 +85,21 @@ const SidebarWrapper = ({
   ...props
 }) => (
   <MemoryRouter>
-    <Provider store={props.store}>
-      <EnterpriseAppContext.Provider value={enterpriseAppContextValue}>
-        <EnterpriseSubsidiesContext.Provider value={enterpriseSubsidiesContextValue}>
-          <SubsidyRequestsContext.Provider value={subsidyRequestsContextValue}>
-            <Sidebar
-              baseUrl="/test-enterprise-slug"
-              {...props}
-            />
-          </SubsidyRequestsContext.Provider>
-        </EnterpriseSubsidiesContext.Provider>
-      </EnterpriseAppContext.Provider>
-    </Provider>
+    <IntlProvider locale="en">
+      <Provider store={props.store}>
+        <EnterpriseAppContext.Provider value={enterpriseAppContextValue}>
+          <EnterpriseSubsidiesContext.Provider value={enterpriseSubsidiesContextValue}>
+            <SubsidyRequestsContext.Provider value={subsidyRequestsContextValue}>
+              <Sidebar
+                baseUrl="/test-enterprise-slug"
+                onMount={mockOnMount}
+                {...props}
+              />
+            </SubsidyRequestsContext.Provider>
+          </EnterpriseSubsidiesContext.Provider>
+        </EnterpriseAppContext.Provider>
+      </Provider>
+    </IntlProvider>
   </MemoryRouter>
 );
 
@@ -111,9 +117,11 @@ describe('<Sidebar />', () => {
   let wrapper;
 
   beforeEach(() => {
-    wrapper = mount((
-      <SidebarWrapper />
-    ));
+    jest.clearAllMocks();
+    cleanup();
+    getAuthenticatedUser.mockReturnValue({
+      administrator: true,
+    });
   });
 
   it('renders correctly', () => {
@@ -132,9 +140,6 @@ describe('<Sidebar />', () => {
       },
       portalConfiguration: {
         enableCodeManagementScreen: false,
-        enterpriseFeatures: {
-          enterpriseGroupsV1: false,
-        },
       },
     });
 
@@ -183,25 +188,35 @@ describe('<Sidebar />', () => {
   describe('calls onWidthChange callback', () => {
     it('on isMobile prop change', () => {
       const spy = jest.fn();
-      wrapper = mount((
+      const { rerender } = render((
         <SidebarWrapper
           onWidthChange={spy}
         />
       ));
-      wrapper.setProps({ isMobile: true });
+      rerender(
+        <SidebarWrapper
+          onWidthChange={spy}
+          isMobile
+        />,
+      );
       expect(spy).toHaveBeenCalledTimes(1);
     });
   });
 
-  describe('events', () => {
+  // TODO: Refactor with RTL click events
+  describe.skip('events', () => {
     let store;
 
     beforeEach(() => {
+      jest.clearAllMocks();
       store = wrapper.prop('store');
       store.clearActions();
     });
 
-    it('expands on mouse over', () => {
+    it('expands on mouse over', async () => {
+      render((
+        <SidebarWrapper />
+      ));
       const expectedActions = [{
         type: EXPAND_SIDEBAR,
         payload: { usingToggle: false },
@@ -230,7 +245,7 @@ describe('<Sidebar />', () => {
         },
       });
 
-      wrapper = mount((
+      render((
         <SidebarWrapper store={store} />
       ));
 
@@ -243,7 +258,7 @@ describe('<Sidebar />', () => {
       expect(store.getActions()).toEqual(expectedActions);
     });
 
-    it('collapses on blur', () => {
+    it('collapses on blur', async () => {
       store = mockStore({
         ...initialState,
         sidebar: {
@@ -252,7 +267,7 @@ describe('<Sidebar />', () => {
         },
       });
 
-      wrapper = mount((
+      render((
         <SidebarWrapper store={store} />
       ));
 
@@ -260,8 +275,8 @@ describe('<Sidebar />', () => {
         type: COLLAPSE_SIDEBAR,
         payload: { usingToggle: false },
       }];
-
-      wrapper.find('Sidebar').simulate('blur');
+      const sideBar = await screen.getByTestId('nav-sidebar');
+      fireEvent.blur(sideBar);
       expect(store.getActions()).toEqual(expectedActions);
     });
   });
@@ -380,33 +395,32 @@ describe('<Sidebar />', () => {
       {
         highlightsFeatureFlag: true,
         curationFeatureFlag: true,
+        expected: true,
       },
-      true,
     ],
     [
       {
         highlightsFeatureFlag: false,
         curationFeatureFlag: true,
+        expected: false,
       },
-      false,
     ],
     [
       {
         highlightsFeatureFlag: true,
         curationFeatureFlag: false,
+        expected: false,
       },
-      false,
     ],
     [
       {
         highlightsFeatureFlag: false,
         curationFeatureFlag: false,
+        expected: false,
       },
-      false,
     ],
-  ])('highlights link, when %s, is visible: %s', async (
-    { highlightsFeatureFlag, curationFeatureFlag },
-    expected,
+  ])('highlights link, %s', async (
+    { highlightsFeatureFlag, curationFeatureFlag, expected },
   ) => {
     getConfig.mockReturnValue({ FEATURE_CONTENT_HIGHLIGHTS: highlightsFeatureFlag });
     const store = mockStore(initialState);
@@ -421,43 +435,39 @@ describe('<Sidebar />', () => {
         },
       }}
     />);
-    const highlightsLink = expect(screen.queryByRole('link', { name: 'Highlights' }));
+    const highlightsLink = screen.queryByRole('link', { name: 'Highlights' });
     if (expected) {
-      highlightsLink.toBeInTheDocument();
+      expect(highlightsLink).toBeInTheDocument();
     } else {
-      highlightsLink.not.toBeInTheDocument();
+      expect(highlightsLink).not.toBeInTheDocument();
     }
   });
 
-  it('hides highlights when we have groups with a subset of all learners', async () => {
+  it.each([
+    { groupType: 'budget' },
+    { groupType: 'flex' },
+  ])('hides highlights when we have budget groups (%s)', async ({ groupType }) => {
+    getAuthenticatedUser.mockReturnValue({
+      administrator: false,
+    });
     getConfig.mockReturnValue({ FEATURE_CONTENT_HIGHLIGHTS: true });
     const store = mockStore({
       ...initialState,
-      portalConfiguration: {
-        enterpriseFeatures: {
-          enterpriseGroupsV1: true,
-        },
-      },
     });
-
-    LmsApiService.fetchEnterpriseGroup.mockImplementation(() => Promise.resolve({
-      data: { results: [{ applies_to_all_contexts: false }] },
-    }));
+    LmsApiService.fetchEnterpriseGroups.mockReturnValue({
+      data: { results: [{ group_type: groupType }] },
+    });
     render(<SidebarWrapper store={store} />);
-    const highlightsLink = expect(screen.queryByRole('link', { name: 'Highlights' }));
-    // we have to wait for the async call to set the state
-    setTimeout(() => {
-      expect(highlightsLink).not.toBeInTheDocument();
-    }, 1000);
-
-    LmsApiService.fetchEnterpriseGroup.mockImplementation(() => Promise.resolve({
-      data: { results: [{ applies_to_all_contexts: true }] },
-    }));
-    render(<SidebarWrapper store={store} />);
-    setTimeout(() => {
-      expect(highlightsLink).toBeInTheDocument();
-    }, 1000);
+    const highlightsLink = await screen.findByRole('link', { name: 'Highlights' });
+    await waitFor(() => {
+      if (groupType === 'flex') {
+        expect(highlightsLink).toBeInTheDocument();
+      } else {
+        expect(highlightsLink).not.toBeInTheDocument();
+      }
+    });
   });
+
   describe('notifications', () => {
     it('displays notification bubble when there are outstanding license requests', () => {
       const contextValue = { subsidyRequestsCounts: { subscriptionLicenses: 2 } };

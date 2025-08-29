@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
-import { Button } from '@edx/paragon';
-import { BookOpen } from '@edx/paragon/icons';
+import { Button } from '@openedx/paragon';
+import { BookOpen } from '@openedx/paragon/icons';
 import { sendEnterpriseTrackEvent } from '@edx/frontend-enterprise-utils';
 
 import BulkEnrollWarningModal from '../../../../BulkEnrollmentPage/BulkEnrollmentWarningModal';

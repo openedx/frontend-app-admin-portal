@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
-import { Alert } from '@edx/paragon';
-import { Info, WarningFilled } from '@edx/paragon/icons';
+import { Alert } from '@openedx/paragon';
+import { Info, WarningFilled } from '@openedx/paragon/icons';
 import { sendEnterpriseTrackEvent } from '@edx/frontend-enterprise-utils';
 
 import ContactCustomerSupportButton from '../ContactCustomerSupportButton';

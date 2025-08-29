@@ -51,9 +51,9 @@ export const useSubsidyRequestConfiguration = ({
 
       const customerConfiguration = camelCaseObject(response.data);
       setSubsidyRequestConfiguration(customerConfiguration);
-    } catch (error) {
+    } catch (err) {
       // log error and do nothing
-      logError(error);
+      logError(err);
     }
   }, [enterpriseId]);
 
@@ -64,9 +64,9 @@ export const useSubsidyRequestConfiguration = ({
       );
       const customerConfiguration = camelCaseObject(response.data);
       setSubsidyRequestConfiguration(customerConfiguration);
-    } catch (error) {
-      logError(error);
-      throw error;
+    } catch (err) {
+      logError(err);
+      throw err;
     }
   }, [enterpriseId]);
 
@@ -78,13 +78,13 @@ export const useSubsidyRequestConfiguration = ({
     const loadConfiguration = async () => {
       try {
         await loadSubsidyRequestConfiguration();
-      } catch (error) {
-        const httpErrorStatus = error.customAttributes?.httpErrorStatus;
+      } catch (err) {
+        const httpErrorStatus = err.customAttributes?.httpErrorStatus;
         if (httpErrorStatus === 404) {
           // Customer configuration does not exist, create one
           await createSubsidyRequestConfiguration();
         } else {
-          logError(error);
+          logError(err);
         }
       } finally {
         setIsLoading(false);

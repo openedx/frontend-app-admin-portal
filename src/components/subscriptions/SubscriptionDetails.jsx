@@ -1,12 +1,13 @@
-import React, { useContext, useState } from 'react';
+import { useContext, useState } from 'react';
 import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
+import { useIntl } from '@edx/frontend-platform/i18n';
 import dayjs from 'dayjs';
 import {
   Button, Row, Col, Toast, Icon,
-} from '@edx/paragon';
-import { ArrowBackIos } from '@edx/paragon/icons';
+} from '@openedx/paragon';
+import { ArrowBackIos } from '@openedx/paragon/icons';
 
 import { SubscriptionDetailContext } from './SubscriptionDetailContextProvider';
 import InviteLearnersButton from './buttons/InviteLearnersButton';
@@ -14,7 +15,10 @@ import { SubscriptionContext } from './SubscriptionData';
 import SubscriptionExpirationBanner from './expiration/SubscriptionExpirationBanner';
 import { MANAGE_LEARNERS_TAB } from './data/constants';
 
-const SubscriptionDetails = ({ enterpriseSlug }) => {
+const SubscriptionDetails = ({
+  enterpriseSlug,
+}) => {
+  const intl = useIntl();
   const { forceRefresh } = useContext(SubscriptionContext);
   const {
     hasMultipleSubscriptions,
@@ -32,13 +36,17 @@ const SubscriptionDetails = ({ enterpriseSlug }) => {
   const backToSubscriptionsPath = `/${enterpriseSlug}/admin/subscriptions/${MANAGE_LEARNERS_TAB}`;
 
   return (
-    <>
+    <div id="subscription-plans-detail-page">
       {hasMultipleSubscriptions && (
         <Row className="ml-0 mb-3">
           <Link to={backToSubscriptionsPath}>
-            <Button variant="outline-primary">
+            <Button variant="outline-primary" id="subscription-navigation">
               <Icon src={ArrowBackIos} className="mr-2" />
-              Back to subscriptions
+              {intl.formatMessage({
+                id: 'admin.portal.subscription.details.back.to.subscriptions.button',
+                defaultMessage: 'Back to subscriptions',
+                description: 'Button text to navigate back to subscriptions list.',
+              })}
             </Button>
           </Link>
         </Row>
@@ -49,12 +57,19 @@ const SubscriptionDetails = ({ enterpriseSlug }) => {
           <div className="d-flex justify-content-between mb-3">
             <h2>{subscription.title}</h2>
             {shouldShowInviteLearnersButton && (
-              <div className="text-md-right">
+              <div className="text-md-right" id="invite-learners-button">
                 <InviteLearnersButton
                   onSuccess={({ numAlreadyAssociated, numSuccessfulAssignments }) => {
                     forceRefresh();
                     forceRefreshDetailView();
-                    setToastMessage(`${numAlreadyAssociated} email addresses were previously assigned. ${numSuccessfulAssignments} email addresses were successfully added.`);
+                    setToastMessage(intl.formatMessage({
+                      id: 'admin.portal.subscription.details.toast.message',
+                      defaultMessage: '{numAlreadyAssociated} email addresses were previously assigned. {numSuccessfulAssignments} email addresses were successfully added.',
+                      description: 'Toast message after successful invitation of learners.',
+                    }, {
+                      numAlreadyAssociated,
+                      numSuccessfulAssignments,
+                    }));
                     setShowToast(true);
                   }}
                   disabled={subscription.isLockedForRenewalProcessing}
@@ -63,34 +78,52 @@ const SubscriptionDetails = ({ enterpriseSlug }) => {
             )}
           </div>
           <p>
-            In accordance with edX privacy policies, learners that do not activate their allocated
-            licenses within 90 days of invitation are purged from the record tables below.
+            {intl.formatMessage({
+              id: 'admin.portal.subscription.details.privacy.policy.text',
+              defaultMessage: 'In accordance with edX privacy policies, learners that do not activate their allocated licenses within 90 days of invitation are purged from the record tables below.',
+              description: 'Text explaining the privacy policy regarding learner license invitations.',
+            })}
           </p>
           <div className="mt-3 d-flex align-items-center">
             {subscription.priorRenewals[0]?.priorSubscriptionPlanStartDate && (
               <div className="mr-5">
                 <div className="text-uppercase text-muted">
-                  <small>Purchase Date</small>
+                  <small>{intl.formatMessage({
+                    id: 'admin.portal.subscription.details.purchase.date.label',
+                    defaultMessage: 'Purchase Date',
+                    description: 'Label for the purchase date of the subscription.',
+                  })}
+                  </small>
                 </div>
                 <div className="lead">
-                  {dayjs(subscription.priorRenewals[0].priorSubscriptionPlanStartDate).format('MMMM D, YYYY')}
+                  {intl.formatDate(dayjs(subscription.priorRenewals[0].priorSubscriptionPlanStartDate).format('MMMM D, YYYY'))}
                 </div>
               </div>
             )}
             <div className="mr-5">
               <div className="text-uppercase text-muted">
-                <small>Start Date</small>
+                <small>{intl.formatMessage({
+                  id: 'admin.portal.subscription.details.start.date',
+                  defaultMessage: 'Start Date',
+                  description: 'Label for the start date of the subscription.',
+                })}
+                </small>
               </div>
               <div className="lead">
-                {dayjs(subscription.startDate).format('MMMM D, YYYY')}
+                {intl.formatDate(dayjs(subscription.startDate).format('MMMM D, YYYY'))}
               </div>
             </div>
             <div>
               <div className="text-uppercase text-muted">
-                <small>End Date</small>
+                <small>{intl.formatMessage({
+                  id: 'admin.portal.subscription.details.end.date',
+                  defaultMessage: 'End Date',
+                  description: 'Label for the end date of the subscription.',
+                })}
+                </small>
               </div>
               <div className="lead">
-                {dayjs(subscription.expirationDate).format('MMMM D, YYYY')}
+                {intl.formatDate(dayjs(subscription.expirationDate).format('MMMM D, YYYY'))}
               </div>
             </div>
           </div>
@@ -102,7 +135,7 @@ const SubscriptionDetails = ({ enterpriseSlug }) => {
       >
         {toastMessage}
       </Toast>
-    </>
+    </div>
   );
 };
 

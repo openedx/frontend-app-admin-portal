@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { AlertModal, ActionRow, Button } from '@edx/paragon';
-import { Error } from '@edx/paragon/icons';
+import { ActionRow, AlertModal, Button } from '@openedx/paragon';
+import { Error } from '@openedx/paragon/icons';
 
 import { commonErrorAlertModalPropTypes, getBudgetDisplayName } from '../data';
 import { formatPrice, useBudgetId, useSubsidyAccessPolicy } from '../../data';
@@ -36,6 +36,7 @@ const NotEnoughBalanceAlertModal = ({
           <Button onClick={retry} data-autofocus>Try again</Button>
         </ActionRow>
       )}
+      isOverflowVisible={false}
     >
       <p>
         The total assignment cost exceeds your {`${budgetDisplayName}'s`} available balance

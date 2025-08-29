@@ -3,7 +3,7 @@ import { FormattedMessage } from '@edx/frontend-platform/i18n';
 import { Navigate, useParams } from 'react-router-dom';
 import {
   Container, Row, Col, Alert, MailtoLink, Toast,
-} from '@edx/paragon';
+} from '@openedx/paragon';
 import { getAuthenticatedUser, hydrateAuthenticatedUser } from '@edx/frontend-platform/auth';
 import { LoginRedirect } from '@edx/frontend-enterprise-logistration';
 import { configuration } from '../../config';

@@ -4,20 +4,21 @@ exports[`<CodeSearchResults /> basic rendering should render empty table data 1`
 <div
   className="pgn-transition-replace-group position-relative"
   style={
-    Object {
+    {
       "height": null,
     }
   }
 >
   <div
     style={
-      Object {
+      {
         "padding": ".1px 0",
       }
     }
   >
     <div
       className="code-search-results border-bottom pb-4"
+      data-testid="code-search-results"
     >
       <div
         className="d-flex align-items-center justify-content-between mb-3"
@@ -110,20 +111,21 @@ exports[`<CodeSearchResults /> basic rendering should render error 1`] = `
 <div
   className="pgn-transition-replace-group position-relative"
   style={
-    Object {
+    {
       "height": null,
     }
   }
 >
   <div
     style={
-      Object {
+      {
         "padding": ".1px 0",
       }
     }
   >
     <div
       className="code-search-results border-bottom pb-4"
+      data-testid="code-search-results"
     >
       <div
         className="d-flex align-items-center justify-content-between mb-3"
@@ -224,20 +226,21 @@ exports[`<CodeSearchResults /> basic rendering should render loading 1`] = `
 <div
   className="pgn-transition-replace-group position-relative"
   style={
-    Object {
+    {
       "height": null,
     }
   }
 >
   <div
     style={
-      Object {
+      {
         "padding": ".1px 0",
       }
     }
   >
     <div
       className="code-search-results border-bottom pb-4"
+      data-testid="code-search-results"
     >
       <div
         className="d-flex align-items-center justify-content-between mb-3"
@@ -301,7 +304,7 @@ exports[`<CodeSearchResults /> basic rendering should render loading 1`] = `
           <span
             className="react-loading-skeleton"
             style={
-              Object {
+              {
                 "height": 25,
               }
             }
@@ -312,7 +315,7 @@ exports[`<CodeSearchResults /> basic rendering should render loading 1`] = `
           <span
             className="react-loading-skeleton"
             style={
-              Object {
+              {
                 "height": 25,
               }
             }
@@ -323,7 +326,7 @@ exports[`<CodeSearchResults /> basic rendering should render loading 1`] = `
           <span
             className="react-loading-skeleton"
             style={
-              Object {
+              {
                 "height": 25,
               }
             }
@@ -334,7 +337,7 @@ exports[`<CodeSearchResults /> basic rendering should render loading 1`] = `
           <span
             className="react-loading-skeleton"
             style={
-              Object {
+              {
                 "height": 25,
               }
             }
@@ -345,7 +348,7 @@ exports[`<CodeSearchResults /> basic rendering should render loading 1`] = `
           <span
             className="react-loading-skeleton"
             style={
-              Object {
+              {
                 "height": 25,
               }
             }
@@ -356,7 +359,7 @@ exports[`<CodeSearchResults /> basic rendering should render loading 1`] = `
           <span
             className="react-loading-skeleton"
             style={
-              Object {
+              {
                 "height": 25,
               }
             }
@@ -367,7 +370,7 @@ exports[`<CodeSearchResults /> basic rendering should render loading 1`] = `
           <span
             className="react-loading-skeleton"
             style={
-              Object {
+              {
                 "height": 25,
               }
             }
@@ -378,7 +381,7 @@ exports[`<CodeSearchResults /> basic rendering should render loading 1`] = `
           <span
             className="react-loading-skeleton"
             style={
-              Object {
+              {
                 "height": 25,
               }
             }
@@ -389,7 +392,7 @@ exports[`<CodeSearchResults /> basic rendering should render loading 1`] = `
           <span
             className="react-loading-skeleton"
             style={
-              Object {
+              {
                 "height": 25,
               }
             }
@@ -400,7 +403,7 @@ exports[`<CodeSearchResults /> basic rendering should render loading 1`] = `
           <span
             className="react-loading-skeleton"
             style={
-              Object {
+              {
                 "height": 25,
               }
             }
@@ -411,7 +414,7 @@ exports[`<CodeSearchResults /> basic rendering should render loading 1`] = `
           <span
             className="react-loading-skeleton"
             style={
-              Object {
+              {
                 "height": 25,
               }
             }
@@ -422,7 +425,7 @@ exports[`<CodeSearchResults /> basic rendering should render loading 1`] = `
           <span
             className="react-loading-skeleton"
             style={
-              Object {
+              {
                 "height": 25,
               }
             }
@@ -433,7 +436,7 @@ exports[`<CodeSearchResults /> basic rendering should render loading 1`] = `
           <span
             className="react-loading-skeleton"
             style={
-              Object {
+              {
                 "height": 25,
               }
             }
@@ -444,7 +447,7 @@ exports[`<CodeSearchResults /> basic rendering should render loading 1`] = `
           <span
             className="react-loading-skeleton"
             style={
-              Object {
+              {
                 "height": 25,
               }
             }
@@ -455,7 +458,7 @@ exports[`<CodeSearchResults /> basic rendering should render loading 1`] = `
           <span
             className="react-loading-skeleton"
             style={
-              Object {
+              {
                 "height": 25,
               }
             }
@@ -466,7 +469,7 @@ exports[`<CodeSearchResults /> basic rendering should render loading 1`] = `
           <span
             className="react-loading-skeleton"
             style={
-              Object {
+              {
                 "height": 25,
               }
             }
@@ -477,7 +480,7 @@ exports[`<CodeSearchResults /> basic rendering should render loading 1`] = `
           <span
             className="react-loading-skeleton"
             style={
-              Object {
+              {
                 "height": 25,
               }
             }
@@ -488,7 +491,7 @@ exports[`<CodeSearchResults /> basic rendering should render loading 1`] = `
           <span
             className="react-loading-skeleton"
             style={
-              Object {
+              {
                 "height": 25,
               }
             }
@@ -499,7 +502,7 @@ exports[`<CodeSearchResults /> basic rendering should render loading 1`] = `
           <span
             className="react-loading-skeleton"
             style={
-              Object {
+              {
                 "height": 25,
               }
             }
@@ -510,7 +513,7 @@ exports[`<CodeSearchResults /> basic rendering should render loading 1`] = `
           <span
             className="react-loading-skeleton"
             style={
-              Object {
+              {
                 "height": 25,
               }
             }
@@ -521,7 +524,7 @@ exports[`<CodeSearchResults /> basic rendering should render loading 1`] = `
           <span
             className="react-loading-skeleton"
             style={
-              Object {
+              {
                 "height": 25,
               }
             }
@@ -532,7 +535,7 @@ exports[`<CodeSearchResults /> basic rendering should render loading 1`] = `
           <span
             className="react-loading-skeleton"
             style={
-              Object {
+              {
                 "height": 25,
               }
             }
@@ -543,7 +546,7 @@ exports[`<CodeSearchResults /> basic rendering should render loading 1`] = `
           <span
             className="react-loading-skeleton"
             style={
-              Object {
+              {
                 "height": 25,
               }
             }
@@ -554,7 +557,7 @@ exports[`<CodeSearchResults /> basic rendering should render loading 1`] = `
           <span
             className="react-loading-skeleton"
             style={
-              Object {
+              {
                 "height": 25,
               }
             }
@@ -565,7 +568,7 @@ exports[`<CodeSearchResults /> basic rendering should render loading 1`] = `
           <span
             className="react-loading-skeleton"
             style={
-              Object {
+              {
                 "height": 25,
               }
             }
@@ -584,7 +587,7 @@ exports[`<CodeSearchResults /> basic rendering should render nothing visible whe
 <div
   className="pgn-transition-replace-group position-relative"
   style={
-    Object {
+    {
       "height": null,
     }
   }
@@ -595,20 +598,21 @@ exports[`<CodeSearchResults /> basic rendering should render table data 1`] = `
 <div
   className="pgn-transition-replace-group position-relative"
   style={
-    Object {
+    {
       "height": null,
     }
   }
 >
   <div
     style={
-      Object {
+      {
         "padding": ".1px 0",
       }
     }
   >
     <div
       className="code-search-results border-bottom pb-4"
+      data-testid="code-search-results"
     >
       <div
         className="d-flex align-items-center justify-content-between mb-3"
@@ -958,34 +962,45 @@ exports[`<CodeSearchResults /> basic rendering should render table data 1`] = `
                 >
                   <button
                     aria-label="Previous"
-                    className="previous page-link btn btn-primary"
+                    className="previous page-link btn btn-tertiary"
                     disabled={true}
                     onClick={[Function]}
                     tabIndex="-1"
                     type="button"
                   >
-                    <div>
-                      <span
-                        className="pgn__icon"
+                    <span
+                      className="pgn__icon btn-icon-before"
+                    >
+                      <svg
+                        aria-hidden={true}
+                        fill="none"
+                        focusable={false}
+                        height={24}
+                        role="img"
+                        viewBox="0 0 24 24"
+                        width={24}
+                        xmlns="http://www.w3.org/2000/svg"
                       >
-                        <svg
-                          aria-hidden={true}
-                          fill="none"
-                          focusable={false}
-                          height={24}
-                          role="img"
-                          viewBox="0 0 24 24"
-                          width={24}
-                          xmlns="http://www.w3.org/2000/svg"
-                        >
-                          <path
-                            d="M15.41 7.41 14 6l-6 6 6 6 1.41-1.41L10.83 12l4.58-4.59Z"
-                            fill="currentColor"
-                          />
-                        </svg>
-                      </span>
-                      Previous
-                    </div>
+                        <path
+                          d="M15.41 7.41 14 6l-6 6 6 6 1.41-1.41L10.83 12l4.58-4.59Z"
+                          fill="currentColor"
+                        />
+                      </svg>
+                    </span>
+                    Previous
+                  </button>
+                </li>
+                <li
+                  className="page-item active"
+                >
+                  <button
+                    aria-label="Page 1, Current Page"
+                    className="page-link btn btn-primary"
+                    disabled={false}
+                    onClick={[Function]}
+                    type="button"
+                  >
+                    1
                   </button>
                 </li>
                 <li
@@ -993,34 +1008,32 @@ exports[`<CodeSearchResults /> basic rendering should render table data 1`] = `
                 >
                   <button
                     aria-label="Next"
-                    className="next page-link btn btn-primary"
+                    className="previous page-link btn btn-tertiary"
                     disabled={true}
                     onClick={[Function]}
                     tabIndex="-1"
                     type="button"
                   >
-                    <div>
-                      Next
-                      <span
-                        className="pgn__icon"
+                    Next
+                    <span
+                      className="pgn__icon btn-icon-after"
+                    >
+                      <svg
+                        aria-hidden={true}
+                        fill="none"
+                        focusable={false}
+                        height={24}
+                        role="img"
+                        viewBox="0 0 24 24"
+                        width={24}
+                        xmlns="http://www.w3.org/2000/svg"
                       >
-                        <svg
-                          aria-hidden={true}
-                          fill="none"
-                          focusable={false}
-                          height={24}
-                          role="img"
-                          viewBox="0 0 24 24"
-                          width={24}
-                          xmlns="http://www.w3.org/2000/svg"
-                        >
-                          <path
-                            d="M10 6 8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6-6-6Z"
-                            fill="currentColor"
-                          />
-                        </svg>
-                      </span>
-                    </div>
+                        <path
+                          d="M10 6 8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6-6-6Z"
+                          fill="currentColor"
+                        />
+                      </svg>
+                    </span>
                   </button>
                 </li>
               </ul>
@@ -1037,20 +1050,21 @@ exports[`<CodeSearchResults /> basic rendering should render table data when sea
 <div
   className="pgn-transition-replace-group position-relative"
   style={
-    Object {
+    {
       "height": null,
     }
   }
 >
   <div
     style={
-      Object {
+      {
         "padding": ".1px 0",
       }
     }
   >
     <div
       className="code-search-results border-bottom pb-4"
+      data-testid="code-search-results"
     >
       <div
         className="d-flex align-items-center justify-content-between mb-3"
@@ -1262,34 +1276,45 @@ exports[`<CodeSearchResults /> basic rendering should render table data when sea
                 >
                   <button
                     aria-label="Previous"
-                    className="previous page-link btn btn-primary"
+                    className="previous page-link btn btn-tertiary"
                     disabled={true}
                     onClick={[Function]}
                     tabIndex="-1"
                     type="button"
                   >
-                    <div>
-                      <span
-                        className="pgn__icon"
+                    <span
+                      className="pgn__icon btn-icon-before"
+                    >
+                      <svg
+                        aria-hidden={true}
+                        fill="none"
+                        focusable={false}
+                        height={24}
+                        role="img"
+                        viewBox="0 0 24 24"
+                        width={24}
+                        xmlns="http://www.w3.org/2000/svg"
                       >
-                        <svg
-                          aria-hidden={true}
-                          fill="none"
-                          focusable={false}
-                          height={24}
-                          role="img"
-                          viewBox="0 0 24 24"
-                          width={24}
-                          xmlns="http://www.w3.org/2000/svg"
-                        >
-                          <path
-                            d="M15.41 7.41 14 6l-6 6 6 6 1.41-1.41L10.83 12l4.58-4.59Z"
-                            fill="currentColor"
-                          />
-                        </svg>
-                      </span>
-                      Previous
-                    </div>
+                        <path
+                          d="M15.41 7.41 14 6l-6 6 6 6 1.41-1.41L10.83 12l4.58-4.59Z"
+                          fill="currentColor"
+                        />
+                      </svg>
+                    </span>
+                    Previous
+                  </button>
+                </li>
+                <li
+                  className="page-item active"
+                >
+                  <button
+                    aria-label="Page 1, Current Page"
+                    className="page-link btn btn-primary"
+                    disabled={false}
+                    onClick={[Function]}
+                    type="button"
+                  >
+                    1
                   </button>
                 </li>
                 <li
@@ -1297,34 +1322,32 @@ exports[`<CodeSearchResults /> basic rendering should render table data when sea
                 >
                   <button
                     aria-label="Next"
-                    className="next page-link btn btn-primary"
+                    className="previous page-link btn btn-tertiary"
                     disabled={true}
                     onClick={[Function]}
                     tabIndex="-1"
                     type="button"
                   >
-                    <div>
-                      Next
-                      <span
-                        className="pgn__icon"
+                    Next
+                    <span
+                      className="pgn__icon btn-icon-after"
+                    >
+                      <svg
+                        aria-hidden={true}
+                        fill="none"
+                        focusable={false}
+                        height={24}
+                        role="img"
+                        viewBox="0 0 24 24"
+                        width={24}
+                        xmlns="http://www.w3.org/2000/svg"
                       >
-                        <svg
-                          aria-hidden={true}
-                          fill="none"
-                          focusable={false}
-                          height={24}
-                          role="img"
-                          viewBox="0 0 24 24"
-                          width={24}
-                          xmlns="http://www.w3.org/2000/svg"
-                        >
-                          <path
-                            d="M10 6 8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6-6-6Z"
-                            fill="currentColor"
-                          />
-                        </svg>
-                      </span>
-                    </div>
+                        <path
+                          d="M10 6 8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6-6-6Z"
+                          fill="currentColor"
+                        />
+                      </svg>
+                    </span>
                   </button>
                 </li>
               </ul>

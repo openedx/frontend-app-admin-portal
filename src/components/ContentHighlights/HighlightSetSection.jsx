@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { CardGrid } from '@edx/paragon';
+import { CardGrid } from '@openedx/paragon';
 import { connect } from 'react-redux';
 import { sendEnterpriseTrackEvent } from '@edx/frontend-enterprise-utils';
 import ContentHighlightSetCard from './ContentHighlightSetCard';

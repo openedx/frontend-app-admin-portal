@@ -1,9 +1,9 @@
 import React from 'react';
-import { Skeleton } from '@edx/paragon';
+import { Skeleton } from '@openedx/paragon';
 
 const EnterpriseAppSkeleton = () => (
   <>
-    <div className="sr-only">Loading...</div>
+    <div data-testid="enterprise-app-skeleton" className="sr-only">Loading...</div>
     <Skeleton height="8rem" />
     <Skeleton height="70vh" />
   </>

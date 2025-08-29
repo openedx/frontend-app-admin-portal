@@ -1,19 +1,19 @@
 import React, {
-  useCallback,
-  useEffect,
-  useMemo,
-  useState,
+  useCallback, useEffect, useMemo, useState,
 } from 'react';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
-import debounce from 'lodash.debounce';
+import { debounce } from 'lodash-es';
 import { camelCaseObject } from '@edx/frontend-platform';
 import { logError } from '@edx/frontend-platform/logging';
-import { DataTable, TextFilter } from '@edx/paragon';
+import {
+  Col, Container, DataTable, Row, TextFilter,
+} from '@openedx/paragon';
 
 import LmsApiService from '../../data/services/LmsApiService';
 
 export const TITLE = 'Enterprise List';
+
 const PAGE_SIZE = 50;
 
 const EnterpriseList = ({ clearPortalConfiguration }) => {
@@ -54,13 +54,13 @@ const EnterpriseList = ({ clearPortalConfiguration }) => {
   };
 
   return (
-    <main role="main">
-      <div className="container-fluid">
-        <div className="row mt-4">
-          <div className="col-sm-12 col-md">
+    <main role="main" style={{ flex: 1 }}>
+      <Container className="my-4">
+        <Row>
+          <Col sm={12} md>
             <h1>{TITLE}</h1>
-          </div>
-        </div>
+          </Col>
+        </Row>
         <DataTable
           isPaginated
           manualPagination
@@ -87,7 +87,7 @@ const EnterpriseList = ({ clearPortalConfiguration }) => {
             },
           ]}
         />
-      </div>
+      </Container>
     </main>
   );
 };

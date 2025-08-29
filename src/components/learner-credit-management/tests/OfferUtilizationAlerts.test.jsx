@@ -1,5 +1,5 @@
 import React from 'react';
-import { ALERT_CLOSE_LABEL_TEXT } from '@edx/paragon';
+import { ALERT_CLOSE_LABEL_TEXT } from '@openedx/paragon';
 import { IntlProvider } from '@edx/frontend-platform/i18n';
 import { render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
@@ -9,7 +9,7 @@ import OfferUtilizationAlerts from '../OfferUtilizationAlerts';
 import {
   LOW_REMAINING_BALANCE_PERCENT_THRESHOLD,
   NO_BALANCE_REMAINING_DOLLAR_THRESHOLD,
-} from '../data/constants';
+} from '../data';
 
 const TEST_ENTERPRISE_UUID = 'test-enterprise-uuid';
 
@@ -41,7 +41,8 @@ describe('<OfferUtilizationAlerts />', () => {
   });
 
   it('renders low balance alert', async () => {
-    const { container } = render(
+    const user = userEvent.setup();
+    render(
       <OfferUtilizationAlertsWrapper
         enterpriseUUID={TEST_ENTERPRISE_UUID}
         percentUtilized={LOW_REMAINING_BALANCE_PERCENT_THRESHOLD + 0.1}
@@ -54,9 +55,10 @@ describe('<OfferUtilizationAlerts />', () => {
     // assert alert is dismissible
     const dismissBtn = screen.getByText(ALERT_CLOSE_LABEL_TEXT);
     expect(dismissBtn).toBeInTheDocument();
-    userEvent.click(dismissBtn);
+    await user.click(dismissBtn);
     await waitFor(() => {
-      expect(container).toBeEmptyDOMElement();
+      expect(screen.queryByText('Low remaining funds')).not.toBeInTheDocument();
+      expect(screen.queryByText('Contact support')).not.toBeInTheDocument();
     });
   });
 

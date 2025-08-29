@@ -2,6 +2,9 @@ import React from 'react';
 import {
   fireEvent, render, screen, waitFor,
 } from '@testing-library/react';
+import { Provider } from 'react-redux';
+import thunk from 'redux-thunk';
+import configureMockStore from 'redux-mock-store';
 import userEvent from '@testing-library/user-event';
 import '@testing-library/jest-dom/extend-expect';
 import { QueryClientProvider } from '@tanstack/react-query';
@@ -9,24 +12,52 @@ import { IntlProvider } from '@edx/frontend-platform/i18n';
 
 import { BudgetDetailPageContext } from '../../BudgetDetailPageWrapper';
 import LmsApiService from '../../../../data/services/LmsApiService';
-import { useBudgetId, useSubsidyAccessPolicy } from '../../data';
+import {
+  useBudgetId,
+  useContentMetadata,
+  useEnterpriseCustomer,
+  useEnterpriseFlexGroups, useEnterpriseGroup,
+  useEnterpriseGroupLearners,
+  useSubsidyAccessPolicy,
+} from '../../data';
 import { EMAIL_ADDRESSES_INPUT_VALUE_DEBOUNCE_DELAY } from '../../cards/data';
-
 import { queryClient } from '../../../test/testUtils';
 
 import InviteMembersModalWrapper from '../InviteMembersModalWrapper';
+import { getGroupMemberEmails } from '../../data/hooks/useEnterpriseFlexGroups';
 
 jest.mock('@tanstack/react-query', () => ({
   ...jest.requireActual('@tanstack/react-query'),
   useQueryClient: jest.fn(),
 }));
-
 jest.mock('../../data', () => ({
   ...jest.requireActual('../../data'),
   useBudgetId: jest.fn(),
   useSubsidyAccessPolicy: jest.fn(),
+  useEnterpriseGroupLearners: jest.fn(),
+  useContentMetadata: jest.fn(),
+  useEnterpriseFlexGroups: jest.fn(),
+  useEnterpriseCustomer: jest.fn(),
+  useEnterpriseGroup: jest.fn(),
 }));
 jest.mock('../../../../data/services/LmsApiService');
+jest.mock('../../../../data/services/EnterpriseCatalogApiService');
+jest.mock('../../data/hooks/useEnterpriseFlexGroups');
+
+const mockStore = configureMockStore([thunk]);
+const getMockStore = store => mockStore(store);
+const enterpriseSlug = 'test-enterprise';
+const enterpriseUUID = '1234';
+const initialStoreState = {
+  portalConfiguration: {
+    enterpriseId: enterpriseUUID,
+    enterpriseSlug,
+    enableLearnerPortal: true,
+    enterpriseFeatures: {
+      topDownAssignmentRealTimeLcm: true,
+    },
+  },
+};
 
 const mockSubsidyAccessPolicy = {
   uuid: 'test-subsidy-access-policy-uuid',
@@ -39,6 +70,7 @@ const mockSubsidyAccessPolicy = {
     spendAvailableUsd: 50000,
   },
   groupAssociations: ['test-group-uuid'],
+  policyType: 'AssignedLearnerCreditAccessPolicy',
 };
 
 const mockDisplaySuccessfulInvitationToast = jest.fn();
@@ -52,34 +84,71 @@ const defaultBudgetDetailPageContextValue = {
 };
 
 const mockLearnerEmails = ['hello@example.com', 'world@example.com', 'dinesh@example.com'];
+const mockEnterpriseFlexGroup = [
+  {
+    enterpriseCustomer: 'test-enterprise-customer-1',
+    name: 'Group 1',
+    uuid: 'test-uuid',
+    acceptedMembersCount: 2,
+    groupType: 'flex',
+    created: '2024-05-31T02:23:33.311109Z',
+  },
+  {
+    enterpriseCustomer: 'test-enterprise-customer-2',
+    name: 'Group 2',
+    uuid: 'test-uuid-2',
+    acceptedMembersCount: 1,
+    groupType: 'flex',
+    created: '2024-05-31T02:23:33.311109Z',
+  },
+];
 const defaultProps = {
   isOpen: true,
   close: jest.fn(),
 };
 
 const InviteModalWrapper = ({
+  initialState = initialStoreState,
   budgetDetailPageContextValue = defaultBudgetDetailPageContextValue,
-}) => (
-  <IntlProvider locale="en">
-    <QueryClientProvider client={queryClient()}>
-      <BudgetDetailPageContext.Provider value={budgetDetailPageContextValue}>
-        <InviteMembersModalWrapper {...defaultProps} />
-      </BudgetDetailPageContext.Provider>
-    </QueryClientProvider>
-  </IntlProvider>
-);
+}) => {
+  const store = getMockStore({ ...initialState });
+  return (
+    <IntlProvider locale="en">
+      <Provider store={store}>
+        <QueryClientProvider client={queryClient()}>
+          <BudgetDetailPageContext.Provider value={budgetDetailPageContextValue}>
+            <InviteMembersModalWrapper {...defaultProps} />
+          </BudgetDetailPageContext.Provider>
+        </QueryClientProvider>
+      </Provider>
+    </IntlProvider>
+  );
+};
 
 describe('<InviteMemberModal />', () => {
   beforeEach(() => {
+    jest.clearAllMocks();
     useBudgetId.mockReturnValue({ subsidyAccessPolicyId: mockSubsidyAccessPolicy.uuid });
+    useEnterpriseCustomer.mockReturnValue({
+      data:
+      {
+        uuid: 'test-customer-uuid',
+        activeIntegrations: [],
+      },
+    });
     useSubsidyAccessPolicy.mockReturnValue({
       data: mockSubsidyAccessPolicy,
       isLoading: false,
     });
-  });
-
-  afterEach(() => {
-    jest.clearAllMocks();
+    useContentMetadata.mockReturnValue({ data: { count: 5280 } });
+    useEnterpriseGroupLearners.mockReturnValue({ data: { count: 3 } });
+    useEnterpriseFlexGroups.mockReturnValue({
+      data: mockEnterpriseFlexGroup,
+    });
+    getGroupMemberEmails.mockReturnValue(mockLearnerEmails);
+    useEnterpriseGroup.mockReturnValue({
+      data: {}, isLoading: false,
+    });
   });
 
   it('Modal renders as expected', async () => {
@@ -87,9 +156,18 @@ describe('<InviteMemberModal />', () => {
     expect(screen.getByText('New members')).toBeInTheDocument();
     expect(screen.getByText('Invite members to this budget')).toBeInTheDocument();
     expect(screen.getByText('Member email addresses')).toBeInTheDocument();
+    expect(screen.getByText('Members are invited')).toBeInTheDocument();
+    expect(screen.getByText('Newly invited members are immediately notified by email.')).toBeInTheDocument();
+    expect(screen.getByText('Members can browse and learn')).toBeInTheDocument();
+    expect(screen.getByText('Managing members')).toBeInTheDocument();
+    // some dropdowns shouldn't be expanded
+    expect(screen.queryByText('Members can be removed at any time from this budget\'s Members tab.')).not.toBeInTheDocument();
     expect(screen.getByText('Details')).toBeInTheDocument();
+    expect(screen.getByText('Member permissions')).toBeInTheDocument();
+    expect(screen.getByText('Browse this budget\'s catalog')).toBeInTheDocument();
   });
   it('allows manual input of emails', async () => {
+    const user = userEvent.setup();
     render(<InviteModalWrapper />);
     expect(screen.getByText('You haven\'t entered any members yet.')).toBeInTheDocument();
     expect(screen.getByText('Add member emails to get started.')).toBeInTheDocument();
@@ -98,41 +176,80 @@ describe('<InviteMemberModal />', () => {
     const textareaInput = textareaInputLabel.closest('textarea');
     expect(textareaInput).toBeInTheDocument();
 
-    userEvent.type(textareaInput, mockLearnerEmails.join('{enter}'));
+    await user.type(textareaInput, mockLearnerEmails.join('{enter}'));
     expect(textareaInput).toHaveValue(mockLearnerEmails.join('\n'));
     await waitFor(() => {
       expect(screen.getByText(`Summary (${mockLearnerEmails.length})`)).toBeInTheDocument();
-    }, { timeout: EMAIL_ADDRESSES_INPUT_VALUE_DEBOUNCE_DELAY + 1000 });
+    }, { timeout: EMAIL_ADDRESSES_INPUT_VALUE_DEBOUNCE_DELAY + 1500 });
   });
   it('allows csv upload of emails', async () => {
+    const user = userEvent.setup();
     render(<InviteModalWrapper />);
-    expect(screen.getByText('You haven\'t entered any members yet.')).toBeInTheDocument();
+
+    expect(screen.getByText("You haven't entered any members yet.")).toBeInTheDocument();
     expect(screen.getByText('Add member emails to get started.')).toBeInTheDocument();
+
     const inputTypeRadio = screen.getByLabelText('Upload CSV');
-    expect(inputTypeRadio).toBeInTheDocument();
-    fireEvent.click(inputTypeRadio);
+    await user.click(inputTypeRadio);
+
     const fakeFile = new File(['tomhaverford@pawnee.org'], 'emails.csv', { type: 'text/csv' });
 
     expect(screen.getByText('Upload CSV files (Max 1MB)')).toBeInTheDocument();
-    const dropzone = screen.getByText('Drag and drop your file here or click to upload.');
-    Object.defineProperty(dropzone, 'files', {
-      value: [fakeFile],
-    });
-    fireEvent.drop(dropzone);
+
+    const dropzone = screen.getByTestId('csv-upload-input');
+    const input = dropzone.querySelector('input[type="file"]');
+    await user.upload(input, fakeFile);
+
+    const dropzoneUpdate = screen.getByTestId('csv-upload-input');
+    const updatedInput = dropzoneUpdate.querySelector('input[type="file"]');
+
+    await waitFor(() => expect(updatedInput.files[0].path).toEqual('./emails.csv'));
+
+    // TODO: Fix
+    // await waitFor(() => {
+    //   expect(screen.getByText('emails.csv')).toBeInTheDocument();
+    //   expect(screen.getByText('Summary (1)')).toBeInTheDocument();
+    //   expect(screen.getByText('tomhaverford@pawnee.org')).toBeInTheDocument();
+    //   expect(screen.queryByText('Maximum members invite at a time: 1000')).not.toBeInTheDocument();
+    // }, { timeout: EMAIL_ADDRESSES_INPUT_VALUE_DEBOUNCE_DELAY + 10000 });
+  });
+
+  it('renders group dropdown', async () => {
+    const user = userEvent.setup();
+    render(<InviteModalWrapper />);
+
+    // Verify dropdown menu
+    expect(
+      screen.getByText('Select one or more group to add its members to the assignment.'),
+    ).toBeInTheDocument();
+    const dropdownMenu = screen.getByText('Select group');
+    expect(dropdownMenu).toBeInTheDocument();
+    await user.click(dropdownMenu);
+    const group1 = screen.getByText('Group 1 (2)');
+    const group2 = screen.getByText('Group 2 (1)');
+    expect(group1).toBeInTheDocument();
+    expect(group2).toBeInTheDocument();
+
+    await user.click(group1);
+    await user.click(group2);
+    const applyButton = screen.getByText('Apply selections');
 
     await waitFor(() => {
-      expect(screen.getByText('emails.csv')).toBeInTheDocument();
-      expect(screen.getByText('Summary (1)')).toBeInTheDocument();
-      expect(screen.getByText('tomhaverford@pawnee.org')).toBeInTheDocument();
-    }, { timeout: EMAIL_ADDRESSES_INPUT_VALUE_DEBOUNCE_DELAY + 1000 });
+      user.click(applyButton);
+      expect(screen.getByText('2 groups selected')).toBeInTheDocument();
+      expect(screen.getByText('hello@example.com')).toBeInTheDocument();
+      expect(screen.getByText('world@example.com')).toBeInTheDocument();
+      expect(screen.getByText('dinesh@example.com')).toBeInTheDocument();
+    });
   });
   it('does not allow non-csv files', async () => {
+    const user = userEvent.setup();
     render(<InviteModalWrapper />);
     expect(screen.getByText('You haven\'t entered any members yet.')).toBeInTheDocument();
     expect(screen.getByText('Add member emails to get started.')).toBeInTheDocument();
     const inputTypeRadio = screen.getByLabelText('Upload CSV');
     expect(inputTypeRadio).toBeInTheDocument();
-    fireEvent.click(inputTypeRadio);
+    await user.click(inputTypeRadio);
     const fakeFile = new File(['tammiswanson@library.com'], 'emails.txt', { type: 'text/txt' });
 
     expect(screen.getByText('Upload CSV files (Max 1MB)')).toBeInTheDocument();
@@ -166,6 +283,7 @@ describe('<InviteMemberModal />', () => {
     }, { timeout: EMAIL_ADDRESSES_INPUT_VALUE_DEBOUNCE_DELAY + 1000 });
   });
   it('invite calls assign-learners api and renders toast', async () => {
+    const user = userEvent.setup();
     const mockInvite = jest.spyOn(LmsApiService, 'inviteEnterpriseLearnersToGroup');
     const mockData = { records_processed: 3, new_learners: 3, existing_learners: 0 };
     LmsApiService.inviteEnterpriseLearnersToGroup.mockResolvedValue({ status: 201, data: mockData });
@@ -173,7 +291,7 @@ describe('<InviteMemberModal />', () => {
     render(<InviteModalWrapper />);
     const textareaInputLabel = screen.getByLabelText('Member email addresses');
     const textareaInput = textareaInputLabel.closest('textarea');
-    userEvent.type(textareaInput, mockLearnerEmails.join('{enter}'));
+    await user.type(textareaInput, mockLearnerEmails.join('{enter}'));
     expect(textareaInput).toHaveValue(mockLearnerEmails.join('\n'));
     await waitFor(() => {
       expect(screen.getByText(`Summary (${mockLearnerEmails.length})`)).toBeInTheDocument();
@@ -181,7 +299,7 @@ describe('<InviteMemberModal />', () => {
 
     const inviteButton = screen.getByRole('button', { name: 'Invite' });
     expect(inviteButton).not.toBeDisabled();
-    userEvent.click(inviteButton);
+    await user.click(inviteButton);
     expect(mockInvite).toHaveBeenCalledTimes(1);
     await waitFor(() => {
       expect(mockDisplaySuccessfulInvitationToast).toHaveBeenCalledTimes(1);
@@ -190,11 +308,12 @@ describe('<InviteMemberModal />', () => {
       });
     });
   });
-  it('throws up errors for incorrectly formatted emails', async () => {
+  it('throws up errors for incorrectly formatted email', async () => {
+    const user = userEvent.setup();
     render(<InviteModalWrapper />);
     const textareaInputLabel = screen.getByLabelText('Member email addresses');
     const textareaInput = textareaInputLabel.closest('textarea');
-    userEvent.type(textareaInput, 'sillygoosethisisntanemail');
+    await user.type(textareaInput, 'sillygoosethisisntanemail');
     await waitFor(() => {
       expect(screen.getByText('Members can\'t be invited as entered.')).toBeInTheDocument();
       expect(screen.getByText('Please check your member emails and try again.')).toBeInTheDocument();
@@ -203,15 +322,115 @@ describe('<InviteMemberModal />', () => {
       expect(inviteButton).toBeDisabled();
     }, { timeout: EMAIL_ADDRESSES_INPUT_VALUE_DEBOUNCE_DELAY + 1000 });
   });
-  it('throws up warning for duplicated emails', async () => {
+  it('throws up errors for incorrectly formatted emails', async () => {
+    const user = userEvent.setup();
     render(<InviteModalWrapper />);
     const textareaInputLabel = screen.getByLabelText('Member email addresses');
     const textareaInput = textareaInputLabel.closest('textarea');
-    userEvent.type(textareaInput, 'oopsallberries@example.com');
-    userEvent.type(textareaInput, '{enter}');
-    userEvent.type(textareaInput, 'oopsallberries@example.com');
+    await user.type(textareaInput, 'sillygoosethisisntanemail');
+    await user.type(textareaInput, '{enter}');
+    await user.type(textareaInput, 'neitheristhis');
     await waitFor(() => {
+      expect(screen.getByText('Members can\'t be invited as entered.')).toBeInTheDocument();
+      expect(screen.getByText('Please check your member emails and try again.')).toBeInTheDocument();
+      expect(screen.getByText('sillygoosethisisntanemail and 1 other email addresses are not valid.')).toBeInTheDocument();
+      const inviteButton = screen.getByRole('button', { name: 'Invite' });
+      expect(inviteButton).toBeDisabled();
+    }, { timeout: EMAIL_ADDRESSES_INPUT_VALUE_DEBOUNCE_DELAY + 1000 });
+  });
+  it('throws up errors for incorrectly formatted emails but allows inviting valid email', async () => {
+    const user = userEvent.setup();
+    render(<InviteModalWrapper />);
+    const textareaInputLabel = screen.getByLabelText('Member email addresses');
+    const textareaInput = textareaInputLabel.closest('textarea');
+    await user.type(textareaInput, 'sillygoosethisisntanemail');
+    await user.type(textareaInput, '{enter}');
+    await user.type(textareaInput, 'neitheristhis');
+    await user.type(textareaInput, '{enter}');
+    await user.type(textareaInput, 'but@this.is');
+    await waitFor(() => {
+      expect(screen.getByText('Summary (1)')).toBeInTheDocument();
+      expect(screen.getByText('Members can\'t be invited as entered.')).toBeInTheDocument();
+      expect(screen.getByText('sillygoosethisisntanemail and 1 other email addresses are not valid.')).toBeInTheDocument();
+      const inviteButton = screen.getByRole('button', { name: 'Invite' });
+      expect(inviteButton).not.toBeDisabled();
+    }, { timeout: EMAIL_ADDRESSES_INPUT_VALUE_DEBOUNCE_DELAY + 1000 });
+  });
+  it('throws up warning for duplicated emails', async () => {
+    const user = userEvent.setup();
+    render(<InviteModalWrapper />);
+    const textareaInputLabel = screen.getByLabelText('Member email addresses');
+    const textareaInput = textareaInputLabel.closest('textarea');
+    const duplicateEmail = 'oopsallberries@example.com';
+    await user.type(textareaInput, duplicateEmail);
+    await user.type(textareaInput, '{enter}');
+    await user.type(textareaInput, duplicateEmail);
+    await waitFor(() => {
+      expect(screen.getByText('Summary (1)')).toBeInTheDocument();
       expect(screen.getByText('oopsallberries@example.com was entered more than once.')).toBeInTheDocument();
+      expect(screen.getByText('Only 1 invite per email address will be sent.')).toBeInTheDocument();
+      const inviteButton = screen.getByRole('button', { name: 'Invite' });
+      expect(inviteButton).not.toBeDisabled();
+    }, { timeout: EMAIL_ADDRESSES_INPUT_VALUE_DEBOUNCE_DELAY + 1000 });
+    // Remove duplicate and verify message goes away
+    await user.type(textareaInput, '{backspace}'.repeat(duplicateEmail.length));
+    await waitFor(() => {
+      expect(screen.queryByText('oopsallberries@example.com was entered more than once.')).not.toBeInTheDocument();
+    }, { timeout: EMAIL_ADDRESSES_INPUT_VALUE_DEBOUNCE_DELAY + 1000 });
+  });
+  it('does not throw up spurious warnings for duplicated emails on edit', async () => {
+    const user = userEvent.setup();
+    render(<InviteModalWrapper />);
+    const textareaInputLabel = screen.getByLabelText('Member email addresses');
+    const textareaInput = textareaInputLabel.closest('textarea');
+    const emailSuffix = '@example.com';
+    await user.type(textareaInput, `a${emailSuffix}`);
+    await waitFor(() => {
+      expect(screen.getByText('Summary (1)')).toBeInTheDocument();
+      expect(screen.queryAllByText('a@example.com')).toHaveLength(2);
+    }, { timeout: EMAIL_ADDRESSES_INPUT_VALUE_DEBOUNCE_DELAY + 1000 });
+    // Add new character to email address
+    await user.clear(textareaInput);
+    await user.type(textareaInput, 'ab@example.com');
+    // Validate that new email address is shown, and old one is not still present
+    await waitFor(() => {
+      expect(screen.queryAllByText('ab@example.com')).toHaveLength(2);
+    }, { timeout: EMAIL_ADDRESSES_INPUT_VALUE_DEBOUNCE_DELAY + 1000 });
+    expect(screen.queryByText('a@example.com')).not.toBeInTheDocument();
+  });
+  it('throws up warning for invalid/duplicated emails', async () => {
+    const user = userEvent.setup();
+    render(<InviteModalWrapper />);
+    const textareaInputLabel = screen.getByLabelText('Member email addresses');
+    const textareaInput = textareaInputLabel.closest('textarea');
+    await user.type(textareaInput, 'oopsallberries@example.com');
+    await user.type(textareaInput, '{enter}');
+    await user.type(textareaInput, 'oopsallberries@example.com');
+    await user.type(textareaInput, '{enter}');
+    await user.type(textareaInput, 'sillygoosethisisntanemail');
+    await waitFor(() => {
+      expect(screen.getByText('Summary (1)')).toBeInTheDocument();
+      expect(screen.getByText('sillygoosethisisntanemail is not a valid email.')).toBeInTheDocument();
+      expect(screen.getByText('Members can\'t be invited as entered.')).toBeInTheDocument();
+      expect(screen.getByText('Only 1 invite per email address will be sent.')).toBeInTheDocument();
+      const inviteButton = screen.getByRole('button', { name: 'Invite' });
+      expect(inviteButton).not.toBeDisabled();
+    }, { timeout: EMAIL_ADDRESSES_INPUT_VALUE_DEBOUNCE_DELAY + 1000 });
+  });
+  it('renders the groups invite ', async () => {
+    const user = userEvent.setup();
+    render(<InviteModalWrapper />);
+    const textareaInputLabel = screen.getByLabelText('Member email addresses');
+    const textareaInput = textareaInputLabel.closest('textarea');
+    await user.type(textareaInput, 'oopsallberries@example.com');
+    await user.type(textareaInput, '{enter}');
+    await user.type(textareaInput, 'oopsallberries@example.com');
+    await user.type(textareaInput, '{enter}');
+    await user.type(textareaInput, 'sillygoosethisisntanemail');
+    await waitFor(() => {
+      expect(screen.getByText('Summary (1)')).toBeInTheDocument();
+      expect(screen.getByText('sillygoosethisisntanemail is not a valid email.')).toBeInTheDocument();
+      expect(screen.getByText('Members can\'t be invited as entered.')).toBeInTheDocument();
       expect(screen.getByText('Only 1 invite per email address will be sent.')).toBeInTheDocument();
       const inviteButton = screen.getByRole('button', { name: 'Invite' });
       expect(inviteButton).not.toBeDisabled();

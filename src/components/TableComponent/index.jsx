@@ -2,8 +2,8 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { sendEnterpriseTrackEvent } from '@edx/frontend-enterprise-utils';
 
-import { Alert, Pagination, Table } from '@edx/paragon';
-import { Error } from '@edx/paragon/icons';
+import { Alert, Pagination, Table } from '@openedx/paragon';
+import { Error } from '@openedx/paragon/icons';
 
 import 'font-awesome/css/font-awesome.css';
 
@@ -31,7 +31,7 @@ class TableComponent extends React.Component {
       const currentQueryParams = new URLSearchParams(location.search);
       const page = currentQueryParams.get('page');
       const ordering = currentQueryParams.get('ordering');
-      if (ordering !== prevOrdering) {
+      if (ordering && ordering !== prevOrdering) {
         this.props.sortTable(ordering);
       } else if (page !== prevPage) {
         this.props.paginateTable(parseInt(page, 10));
@@ -47,18 +47,18 @@ class TableComponent extends React.Component {
     const {
       className,
       currentPage,
-      pageCount,
-      tableSortable,
       data,
-      ordering,
+      defaultSortIndex,
+      defaultSortType,
+      enterpriseId,
       formatData,
       id,
       loading,
-      enterpriseId,
-      defaultSortIndex,
-      defaultSortType,
-      navigate,
       location,
+      navigate,
+      ordering,
+      pageCount,
+      tableSortable,
     } = this.props;
 
     const sortByColumn = (column, direction) => {
@@ -130,10 +130,7 @@ class TableComponent extends React.Component {
 
   renderErrorMessage() {
     return (
-      <Alert
-        variant="danger"
-        icon={Error}
-      >
+      <Alert variant="danger" icon={Error}>
         <Alert.Heading>Unable to load data</Alert.Heading>
         <p>Try refreshing your screen {this.props.error.message}</p>
       </Alert>
@@ -141,22 +138,16 @@ class TableComponent extends React.Component {
   }
 
   renderEmptyDataMessage() {
+    const { customEmptyMessage } = this.props;
     return (
-      <Alert
-        variant="warning"
-        icon={Error}
-      >
-        There are no results.
+      <Alert variant="warning" icon={Error}>
+        {!customEmptyMessage ? 'There are no results.' : customEmptyMessage}
       </Alert>
     );
   }
 
   render() {
-    const {
-      data,
-      loading,
-      error,
-    } = this.props;
+    const { data, loading, error } = this.props;
 
     return (
       <>
@@ -179,6 +170,7 @@ TableComponent.propTypes = {
   tableSortable: PropTypes.bool,
   defaultSortIndex: PropTypes.number,
   defaultSortType: PropTypes.string,
+  customEmptyMessage: PropTypes.string,
 
   // Props expected from TableContainer / redux store
   enterpriseId: PropTypes.string.isRequired,
@@ -209,6 +201,7 @@ TableComponent.defaultProps = {
   pageCount: undefined,
   error: null,
   loading: false,
+  customEmptyMessage: null,
 };
 
 export default withLocation(withNavigate(TableComponent));

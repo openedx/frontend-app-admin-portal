@@ -6,6 +6,7 @@ import '@testing-library/jest-dom/extend-expect';
 import userEvent from '@testing-library/user-event';
 
 import * as enterpriseUtils from '@edx/frontend-enterprise-utils';
+import { IntlProvider } from '@edx/frontend-platform/i18n';
 import SubscriptionExpirationModals from '../../expiration/SubscriptionExpirationModals';
 import { EXPIRED_MODAL_TITLE } from '../../expiration/SubscriptionExpiredModal';
 import { EXPIRING_MODAL_TITLE } from '../../expiration/SubscriptionExpiringModal';
@@ -31,13 +32,15 @@ jest.mock('@edx/frontend-enterprise-utils', () => {
 // PropType validation for state is done by SubscriptionManagementContext
 
 const ExpirationModalsWithContext = ({ detailState }) => (
-  <SubscriptionManagementContext detailState={detailState}>
-    <SubscriptionExpirationModals enterpriseId="fake-uuid" />
-  </SubscriptionManagementContext>
+  <IntlProvider locale="en">
+    <SubscriptionManagementContext detailState={detailState}>
+      <SubscriptionExpirationModals enterpriseId="fake-uuid" />
+    </SubscriptionManagementContext>
+  </IntlProvider>
 );
 
 describe('<SubscriptionExpirationModals />', () => {
-  afterEach(() => jest.clearAllMocks());
+  beforeEach(() => jest.clearAllMocks());
 
   describe('non-expired and non-expiring', () => {
     test('does not render any expiration modals', () => {
@@ -69,7 +72,8 @@ describe('<SubscriptionExpirationModals />', () => {
       expect(screen.queryByLabelText(EXPIRING_MODAL_TITLE)).toBeFalsy();
     });
 
-    test('expired modal is dismissible', () => {
+    test('expired modal is dismissible', async () => {
+      const user = userEvent.setup();
       const agreementNetDaysUntilExpiration = 0;
       const detailStateCopy = {
         ...SUBSCRIPTION_PLAN_ZERO_STATE,
@@ -77,7 +81,7 @@ describe('<SubscriptionExpirationModals />', () => {
       };
       render(<ExpirationModalsWithContext detailState={detailStateCopy} />);
       expect(screen.queryByLabelText(EXPIRED_MODAL_TITLE)).toBeTruthy();
-      userEvent.click(screen.getByText('Dismiss'));
+      await user.click(screen.getByText('Dismiss'));
       expect(screen.queryByLabelText(EXPIRED_MODAL_TITLE)).toBeFalsy();
       expect(enterpriseUtils.sendEnterpriseTrackEvent).toHaveBeenCalledWith(
         TEST_ENTERPRISE_CUSTOMER_UUID,
@@ -89,7 +93,8 @@ describe('<SubscriptionExpirationModals />', () => {
       );
     });
 
-    test('handles support button click', () => {
+    test('handles support button click', async () => {
+      const user = userEvent.setup();
       const agreementNetDaysUntilExpiration = 0;
       const detailStateCopy = {
         ...SUBSCRIPTION_PLAN_ZERO_STATE,
@@ -97,7 +102,7 @@ describe('<SubscriptionExpirationModals />', () => {
       };
 
       render(<ExpirationModalsWithContext detailState={detailStateCopy} />);
-      userEvent.click(screen.getByText('Contact support'));
+      await user.click(screen.getByText('Contact support'));
       expect(enterpriseUtils.sendEnterpriseTrackEvent).toHaveBeenCalledWith(
         TEST_ENTERPRISE_CUSTOMER_UUID,
         'edx.ui.admin_portal.subscriptions.expiration.modal.support_cta.clicked',
@@ -140,13 +145,14 @@ describe('<SubscriptionExpirationModals />', () => {
       SUBSCRIPTION_DAYS_REMAINING_SEVERE,
       SUBSCRIPTION_DAYS_REMAINING_EXCEPTIONAL,
     ])('close expiring modal for expiration threshold (%i days)', async (threshold) => {
+      const user = userEvent.setup();
       const detailStateCopy = {
         ...SUBSCRIPTION_PLAN_ZERO_STATE,
         agreementNetDaysUntilExpiration: threshold,
       };
       render(<ExpirationModalsWithContext detailState={detailStateCopy} />);
       expect(screen.queryByLabelText(EXPIRING_MODAL_TITLE)).toBeTruthy();
-      userEvent.click(screen.getByText('Dismiss'));
+      await user.click(screen.getByText('Dismiss'));
       expect(screen.queryByLabelText(EXPIRING_MODAL_TITLE)).toBeFalsy();
       expect(enterpriseUtils.sendEnterpriseTrackEvent).toHaveBeenCalledWith(
         TEST_ENTERPRISE_CUSTOMER_UUID,
@@ -158,7 +164,8 @@ describe('<SubscriptionExpirationModals />', () => {
       );
     });
 
-    test('handles support button click', () => {
+    test('handles support button click', async () => {
+      const user = userEvent.setup();
       const agreementNetDaysUntilExpiration = 0;
       const detailStateCopy = {
         ...SUBSCRIPTION_PLAN_ZERO_STATE,
@@ -166,7 +173,7 @@ describe('<SubscriptionExpirationModals />', () => {
       };
 
       render(<ExpirationModalsWithContext detailState={detailStateCopy} />);
-      userEvent.click(screen.getByText('Contact support'));
+      await user.click(screen.getByText('Contact support'));
       expect(enterpriseUtils.sendEnterpriseTrackEvent).toHaveBeenCalledWith(
         TEST_ENTERPRISE_CUSTOMER_UUID,
         'edx.ui.admin_portal.subscriptions.expiration.modal.support_cta.clicked',

@@ -3,10 +3,14 @@ import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import {
   Button, Card, Col, Row,
-} from '@edx/paragon';
+} from '@openedx/paragon';
 import { Link } from 'react-router-dom';
-
-import { useIsLargeOrGreater } from '../data';
+import {
+  useBudgetId,
+  useEnterpriseGroupLearners,
+  useIsLargeOrGreater,
+  useSubsidyAccessPolicy,
+} from '../data';
 import nameYourMembers from '../assets/reading.svg';
 import memberBrowse from '../assets/phoneScroll.svg';
 import enrollAndSpend from '../assets/wallet.svg';
@@ -24,6 +28,11 @@ const EnrollAndSpendIllustration = (props) => (
 );
 
 const NoBnEBudgetActivity = ({ openInviteModal }) => {
+  const { subsidyAccessPolicyId } = useBudgetId();
+  const { data: subsidyAccessPolicy } = useSubsidyAccessPolicy(subsidyAccessPolicyId);
+  const { data } = useEnterpriseGroupLearners(subsidyAccessPolicy?.groupAssociations[0]);
+  const groupMembersCount = data?.count || 0;
+
   const isLargeOrGreater = useIsLargeOrGreater();
 
   return (
@@ -89,7 +98,7 @@ const NoBnEBudgetActivity = ({ openInviteModal }) => {
               as={Link}
               onClick={openInviteModal}
             >
-              Get started
+              {groupMembersCount > 0 ? 'Invite more members' : 'Get started'}
             </Button>
           </Col>
         </Row>

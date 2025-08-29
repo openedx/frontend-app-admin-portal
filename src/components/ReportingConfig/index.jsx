@@ -1,8 +1,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Collapsible, Icon } from '@edx/paragon';
-import { Check, Close } from '@edx/paragon/icons';
+import { Collapsible, Icon, Pagination } from '@openedx/paragon';
+import { Check, Close } from '@openedx/paragon/icons';
 import { camelCaseObject } from '@edx/frontend-platform';
+import { FormattedMessage, injectIntl, intlShape } from '@edx/frontend-platform/i18n';
 import EnterpriseCatalogApiService from '../../data/services/EnterpriseCatalogApiService';
 import LMSApiService from '../../data/services/LmsApiService';
 import ReportingConfigForm from './ReportingConfigForm';
@@ -11,6 +12,7 @@ import LoadingMessage from '../LoadingMessage';
 import ErrorPage from '../ErrorPage';
 
 const STATUS_FULFILLED = 'fulfilled';
+const DEFAULT_PAGE_SIZE = 10;
 
 class ReportingConfig extends React.Component {
   // eslint-disable-next-line react/state-in-constructor
@@ -32,7 +34,15 @@ class ReportingConfig extends React.Component {
       LMSApiService.fetchReportingConfigTypes(this.props.enterpriseId),
     ])
       .then((responses) => {
+        let totalPages = responses[0].status === STATUS_FULFILLED ? responses[0].value.data.num_pages : 1;
+        if (!totalPages) {
+          totalPages = 1;
+        }
+
         this.setState({
+          totalPages,
+          currentPage: 1,
+          totalRecords: responses[0].status === STATUS_FULFILLED ? responses[0].value.data.count : 0,
           reportingConfigs: responses[0].status === STATUS_FULFILLED ? responses[0].value.data.results : undefined,
           availableCatalogs: responses[1].status === STATUS_FULFILLED ? responses[1].value.data.results : undefined,
           reportingConfigTypes: responses[2].status === STATUS_FULFILLED ? responses[2].value.data : undefined,
@@ -51,17 +61,25 @@ class ReportingConfig extends React.Component {
    * @param {FormData} formData
    */
   createConfig = async (formData) => {
-    //  snake_case the data before sending it to the backend
-    const transformedData = snakeCaseFormData(formData);
     try {
-      const response = await LMSApiService.postNewReportingConfig(transformedData);
-      this.setState(prevState => ({
-        reportingConfigs: [
-          ...prevState.reportingConfigs,
-          response.data,
-        ],
-      }));
+      // Transform data to snake_case format
+      const transformedData = snakeCaseFormData(formData);
+
+      // Post the new configuration to the backend
+      await LMSApiService.postNewReportingConfig(transformedData);
+
+      const { totalRecords, totalPages } = this.state;
+
+      // Determine the target page to navigate to
+      const shouldAddNewPage = totalRecords % DEFAULT_PAGE_SIZE === 0 && totalRecords !== 0;
+      const targetPage = shouldAddNewPage ? totalPages + 1 : totalPages;
+
+      // Navigate to the appropriate page
+      this.handlePageSelect(targetPage);
+
+      // Close the new config form
       this.newConfigFormRef.current.close();
+
       return undefined;
     } catch (error) {
       return error;
@@ -71,18 +89,17 @@ class ReportingConfig extends React.Component {
   deleteConfig = async (uuid) => {
     try {
       await LMSApiService.deleteReportingConfig(uuid);
-      const deletedIndex = this.state.reportingConfigs
-        .findIndex(config => config.uuid === uuid);
 
-      this.setState((state) => {
-        // Copy the existing, needs to be updated, list of reporting configs
-        const newReportingConfig = [...state.reportingConfigs];
-        // Splice out the one that's being deleted
-        newReportingConfig.splice(deletedIndex, 1);
-        return {
-          reportingConfigs: newReportingConfig,
-        };
-      });
+      const isLastPage = this.state.currentPage === this.state.totalPages;
+      const hasOneRecord = this.state.reportingConfigs.length === 1;
+      const isOnlyRecordOnLastPage = hasOneRecord && isLastPage;
+
+      if (isOnlyRecordOnLastPage && this.state.currentPage > 1) {
+        this.handlePageSelect(this.state.totalPages - 1);
+      } else {
+        this.handlePageSelect(this.state.currentPage);
+      }
+
       return undefined;
     } catch (error) {
       return error;
@@ -110,6 +127,32 @@ class ReportingConfig extends React.Component {
     }
   };
 
+  /**
+   * Handles page select event and fetches the data for the selected page
+   * @param {number} page - The page number to fetch data for
+   */
+  handlePageSelect = async (page) => {
+    this.setState({
+      loading: true,
+    });
+
+    try {
+      const response = await LMSApiService.fetchReportingConfigs(this.props.enterpriseId, page);
+      this.setState({
+        totalPages: response.data.num_pages || 1,
+        totalRecords: response.data.count,
+        currentPage: page,
+        reportingConfigs: response.data.results,
+        loading: false,
+      });
+    } catch (error) {
+      this.setState({
+        loading: false,
+        error,
+      });
+    }
+  };
+
   render() {
     const {
       reportingConfigs,
@@ -117,8 +160,10 @@ class ReportingConfig extends React.Component {
       error,
       availableCatalogs,
       reportingConfigTypes,
+      currentPage,
+      totalPages,
     } = this.state;
-
+    const { intl } = this.props;
     if (loading) {
       return <LoadingMessage className="overview" />;
     }
@@ -155,19 +200,38 @@ class ReportingConfig extends React.Component {
                       />
                     )}
                     <div className="col">
-                      <h3 className="h6">Report Type:</h3>
+                      <h3 className="h6">
+                        <FormattedMessage
+                          id="admin.portal.reporting.config.title"
+                          defaultMessage="Report Type:"
+                          description="Title for the reporting configuration"
+                        />
+                      </h3>
                       <p>{config.data_type}</p>
                     </div>
                     <div className="col">
-                      <h3 className="h6">Delivery Method:</h3>
+                      <h3 className="h6">
+                        <FormattedMessage
+                          id="admin.portal.reporting.config.delivery.method"
+                          defaultMessage="Delivery Method:"
+                          description="Title for the delivery method of the reporting configuration"
+                        />
+                      </h3>
                       <p>{config.delivery_method}</p>
                     </div>
                     <div className="col">
-                      <h3 className="h6">Frequency:</h3>
+                      <h3 className="h6">
+                        <FormattedMessage
+                          id="admin.portal.reporting.config.frequency"
+                          defaultMessage="Frequency:"
+                          description="Title for the frequency of the reporting configuration"
+                        />
+                      </h3>
                       <p>{config.frequency}</p>
                     </div>
                   </div>
                   )}
+                data-testid="collapsible-trigger-reporting-config"
               >
                 <ReportingConfigForm
                   config={camelCaseObject(config)}
@@ -181,9 +245,24 @@ class ReportingConfig extends React.Component {
               </Collapsible>
             </div>
           ))}
+
+          {reportingConfigs && reportingConfigs.length > 0 && (
+            <Pagination
+              variant="reduced"
+              onPageSelect={this.handlePageSelect}
+              pageCount={totalPages}
+              currentPage={currentPage}
+              paginationLabel="reporting configurations pagination"
+            />
+          )}
+
           <Collapsible
             styling="basic"
-            title="Add a reporting configuration"
+            title={intl.formatMessage({
+              id: 'admin.portal.reporting.config.add',
+              defaultMessage: 'Add a reporting configuration',
+              description: 'Add a reporting configuration',
+            })}
             className="col justify-content-center align-items-center"
             ref={this.newConfigFormRef}
           >
@@ -204,6 +283,8 @@ class ReportingConfig extends React.Component {
 
 ReportingConfig.propTypes = {
   enterpriseId: PropTypes.string.isRequired,
+  // injected
+  intl: intlShape.isRequired,
 };
 
-export default ReportingConfig;
+export default injectIntl(ReportingConfig);

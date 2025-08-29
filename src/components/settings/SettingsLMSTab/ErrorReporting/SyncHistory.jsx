@@ -2,10 +2,20 @@ import React, { useEffect, useMemo, useState } from 'react';
 
 import { camelCaseObject } from '@edx/frontend-platform/utils';
 import {
-  ActionRow, AlertModal, Badge, Breadcrumb, Button, Card, Hyperlink,
-  Icon, Image, Skeleton, Toast, useToggle,
-} from '@edx/paragon';
-import { CheckCircle, Error, Sync } from '@edx/paragon/icons';
+  ActionRow,
+  AlertModal,
+  Badge,
+  Breadcrumb,
+  Button,
+  Card,
+  Hyperlink,
+  Icon,
+  Image,
+  Skeleton,
+  Toast,
+  useToggle,
+} from '@openedx/paragon';
+import { CheckCircle, Error, Sync } from '@openedx/paragon/icons';
 import { getStatus } from '../utils';
 import { getTimeAgo } from './utils';
 import handleErrors from '../../utils';
@@ -14,15 +24,22 @@ import { channelMapping, formatTimestamp } from '../../../../utils';
 import LmsApiService from '../../../../data/services/LmsApiService';
 
 import {
-  ACTIVATE_TOAST_MESSAGE, BLACKBOARD_TYPE, CANVAS_TYPE, CORNERSTONE_TYPE,
-  DEGREED2_TYPE, errorToggleModalText, INACTIVATE_TOAST_MESSAGE, MOODLE_TYPE, SAP_TYPE,
+  ACTIVATE_TOAST_MESSAGE,
+  BLACKBOARD_TYPE,
+  CANVAS_TYPE,
+  CORNERSTONE_TYPE,
+  DEGREED2_TYPE,
+  errorToggleModalText,
+  INACTIVATE_TOAST_MESSAGE,
+  MOODLE_TYPE,
+  SAP_TYPE,
 } from '../../data/constants';
 import ErrorReportingTable from './ErrorReportingTable';
 
 const SyncHistory = () => {
   // the simple redirect is used for going back to the lms page
   const vars = (window.location.pathname).split('lms/');
-  const redirectPath = `${vars[0]}lms/`;
+  const redirectPath = `${vars[0]}lms`;
   const configInfo = vars[1].split('/');
   const configChannel = configInfo[0];
   const configId = configInfo[1];
@@ -201,6 +218,7 @@ const SyncHistory = () => {
             </Button>
           </ActionRow>
         )}
+        isOverflowVisible={false}
       >
         <p>
           Are you sure you want to delete this learning platform integration?

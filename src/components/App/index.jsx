@@ -1,4 +1,10 @@
-import React, { useEffect, useMemo } from 'react';
+import React, {
+  lazy,
+  Suspense,
+  useEffect,
+  useMemo,
+  useState,
+} from 'react';
 import {
   Route, Navigate, Routes, generatePath, useParams,
 } from 'react-router-dom';
@@ -15,6 +21,7 @@ import { logError } from '@edx/frontend-platform/logging';
 import { getAuthenticatedHttpClient } from '@edx/frontend-platform/auth';
 import { getConfig } from '@edx/frontend-platform/config';
 
+import dayjs from 'dayjs';
 import Header from '../../containers/Header';
 import Footer from '../../containers/Footer';
 import EnterpriseIndexPage from '../../containers/EnterpriseIndexPage';
@@ -26,7 +33,12 @@ import { SystemWideWarningBanner } from '../system-wide-banner';
 
 import store from '../../data/store';
 import { ROUTE_NAMES } from '../EnterpriseApp/data/constants';
-import { defaultQueryClientRetryHandler, queryCacheOnErrorHandler } from '../../utils';
+import { defaultQueryClientRetryHandler, isTodayBetweenDates, queryCacheOnErrorHandler } from '../../utils';
+
+// eslint-disable-next-line import/no-unresolved
+const ReactQueryDevtoolsProduction = lazy(() => import('@tanstack/react-query-devtools/production').then((d) => ({
+  default: d.ReactQueryDevtools,
+})));
 
 const queryClient = new QueryClient({
   queryCache: new QueryCache({
@@ -60,6 +72,11 @@ const AppWrapper = () => {
   const apiClient = getAuthenticatedHttpClient();
   const config = getConfig();
 
+  const [showReactQueryDevtools, setShowReactQueryDevtools] = useState(false);
+  useEffect(() => {
+    window.toggleReactQueryDevtools = () => setShowReactQueryDevtools((prevState) => !prevState);
+  });
+
   useEffect(() => {
     if (process.env.HOTJAR_APP_ID) {
       try {
@@ -85,8 +102,15 @@ const AppWrapper = () => {
       return false;
     }
     const startTimestamp = config.MAINTENANCE_ALERT_START_TIMESTAMP;
+    const endTimestamp = config.MAINTENANCE_ALERT_END_TIMESTAMP;
+    if (startTimestamp && endTimestamp) {
+      return isTodayBetweenDates({ startDate: startTimestamp, endDate: endTimestamp });
+    }
     if (startTimestamp) {
-      return new Date() > new Date(startTimestamp);
+      return dayjs().isAfter(dayjs(startTimestamp));
+    }
+    if (endTimestamp) {
+      return dayjs().isBefore(dayjs(endTimestamp));
     }
     return true;
   }, [config]);
@@ -94,70 +118,77 @@ const AppWrapper = () => {
   return (
     <QueryClientProvider client={queryClient}>
       <ReactQueryDevtools />
+      {showReactQueryDevtools && (
+        <Suspense fallback={null}>
+          <ReactQueryDevtoolsProduction />
+        </Suspense>
+      )}
       <AppProvider store={store}>
-        <Helmet
-          titleTemplate="%s - edX Admin Portal"
-          defaultTitle="edX Admin Portal"
-        />
-        {isMaintenanceAlertOpen && (
-        <SystemWideWarningBanner>
-          {config.MAINTENANCE_ALERT_MESSAGE}
-        </SystemWideWarningBanner>
-        )}
-        <Header />
-        <Routes>
-          <Route
-            path="/enterprises"
-            element={(
-              <AuthenticatedPageRoute
-                authenticatedAPIClient={apiClient}
-                redirect={`${process.env.BASE_URL}/enterprises`}
-              >
-                <EnterpriseIndexPage />
-              </AuthenticatedPageRoute>
+        <div id="app-container">
+          <Helmet
+            titleTemplate="%s - edX Admin Portal"
+            defaultTitle="edX Admin Portal"
+          />
+          {isMaintenanceAlertOpen && (
+            <SystemWideWarningBanner>
+              {config.MAINTENANCE_ALERT_MESSAGE}
+            </SystemWideWarningBanner>
           )}
-          />
-          <Route
-            path="/:enterpriseSlug/admin/register"
-            element={<PageWrap><AdminRegisterPage /></PageWrap>}
-          />
-          <Route
-            path="/:enterpriseSlug/admin/register/activate"
-            element={<PageWrap><UserActivationPage /></PageWrap>}
-          />
-          <Route
-            path="/:enterpriseSlug/admin?"
-            element={(
-              <PageWrap
-                authenticatedAPIClient={apiClient}
-                redirect={process.env.BASE_URL}
-              >
-                <RedirectComponent />
-              </PageWrap>
-          )}
-          />
-          <Route
-            path="/:enterpriseSlug/admin/:enterpriseAppPage/*"
-            element={(
-              <PageWrap
-                authenticatedAPIClient={apiClient}
-                redirect={process.env.BASE_URL}
-              >
-                <AuthenticatedEnterpriseApp />
-              </PageWrap>
-          )}
-          />
-          <Route
-            path="/"
-            element={(
-              <AuthenticatedPageRoute authenticatedAPIClient={apiClient} redirect={process.env.BASE_URL}>
-                <EnterpriseIndexPage />
-              </AuthenticatedPageRoute>
-          )}
-          />
-          <Route path="*" element={<PageWrap><NotFoundPage /></PageWrap>} />
-        </Routes>
-        <Footer />
+          <Header />
+          <Routes>
+            <Route
+              path="/enterprises"
+              element={(
+                <AuthenticatedPageRoute
+                  authenticatedAPIClient={apiClient}
+                  redirect={`${process.env.BASE_URL}/enterprises`}
+                >
+                  <EnterpriseIndexPage />
+                </AuthenticatedPageRoute>
+              )}
+            />
+            <Route
+              path="/:enterpriseSlug/admin/register"
+              element={<PageWrap><AdminRegisterPage /></PageWrap>}
+            />
+            <Route
+              path="/:enterpriseSlug/admin/register/activate"
+              element={<PageWrap><UserActivationPage /></PageWrap>}
+            />
+            <Route
+              path="/:enterpriseSlug/admin?"
+              element={(
+                <PageWrap
+                  authenticatedAPIClient={apiClient}
+                  redirect={process.env.BASE_URL}
+                >
+                  <RedirectComponent />
+                </PageWrap>
+              )}
+            />
+            <Route
+              path="/:enterpriseSlug/admin/:enterpriseAppPage/*"
+              element={(
+                <PageWrap
+                  authenticatedAPIClient={apiClient}
+                  redirect={process.env.BASE_URL}
+                >
+                  <AuthenticatedEnterpriseApp />
+                </PageWrap>
+            )}
+            />
+            <Route
+              path="/"
+              element={(
+                <AuthenticatedPageRoute authenticatedAPIClient={apiClient} redirect={process.env.BASE_URL}>
+                  <EnterpriseIndexPage />
+                </AuthenticatedPageRoute>
+            )}
+            />
+            <Route path="*" element={<PageWrap><NotFoundPage /></PageWrap>} />
+          </Routes>
+          <Footer />
+        </div>
       </AppProvider>
     </QueryClientProvider>
   );

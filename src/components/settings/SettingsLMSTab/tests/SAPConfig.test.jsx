@@ -1,9 +1,10 @@
 import React from 'react';
 import {
-  act, fireEvent, render, screen, waitFor,
+  render, screen, waitFor,
 } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import '@testing-library/jest-dom/extend-expect';
+import { IntlProvider } from '@edx/frontend-platform/i18n';
 
 import SAPConfig from '../LMSConfigs/SAP/SAPConfig';
 import { INVALID_LINK, INVALID_NAME } from '../../data/constants';
@@ -67,53 +68,46 @@ const mockDelete = jest.fn();
 
 function testSAPConfigSetup(formData) {
   return (
-    <FormContextWrapper
-      formWorkflowConfig={SAPConfig({
-        enterpriseCustomerUuid: enterpriseId,
-        onSubmit: mockSetExistingConfigFormData,
-        handleCloseClick: mockOnClick,
-        existingData: formData,
-        existingConfigNames: new Map(),
-        channelMap: {
-          SAP: {
-            post: mockPost,
-            update: mockUpdate,
-            delete: mockDelete,
+    <IntlProvider locale="en">
+      <FormContextWrapper
+        formWorkflowConfig={SAPConfig({
+          enterpriseCustomerUuid: enterpriseId,
+          onSubmit: mockSetExistingConfigFormData,
+          handleCloseClick: mockOnClick,
+          existingData: formData,
+          existingConfigNames: new Map(),
+          channelMap: {
+            SAP: {
+              post: mockPost,
+              update: mockUpdate,
+              delete: mockDelete,
+            },
           },
-        },
-      })}
-      onClickOut={mockOnClick}
-      formData={formData}
-      isStepperOpen
-      dispatch={jest.fn()}
-    />
+        })}
+        onClickOut={mockOnClick}
+        formData={formData}
+        isStepperOpen
+        dispatch={jest.fn()}
+      />
+    </IntlProvider>
   );
 }
 
 async function clearForm() {
-  await act(async () => {
-    fireEvent.change(screen.getByLabelText('Display Name'), {
-      target: { value: '' },
-    });
-    fireEvent.change(screen.getByLabelText('SAP Base URL'), {
-      target: { value: '' },
-    });
-    fireEvent.change(screen.getByLabelText('SAP Company ID'), {
-      target: { value: '' },
-    });
-    fireEvent.change(screen.getByLabelText('SAP User ID'), {
-      target: { value: '' },
-    });
-    fireEvent.change(screen.getByLabelText('OAuth Client ID'), {
-      target: { value: '' },
-    });
-    fireEvent.change(screen.getByLabelText('OAuth Client Secret'), {
-      target: { value: '' },
-    });
-  });
+  const user = userEvent.setup();
+  await user.clear(screen.getByLabelText('Display Name'));
+  await user.clear(screen.getByLabelText('SAP Base URL'));
+  await user.clear(screen.getByLabelText('SAP Company ID'));
+  await user.clear(screen.getByLabelText('SAP User ID'));
+  await user.clear(screen.getByLabelText('OAuth Client ID'));
+  await user.clear(screen.getByLabelText('OAuth Client Secret'));
 }
 
 describe('<SAPConfig />', () => {
+  beforeEach(() => {
+    jest.clearAllMocks();
+  });
+
   test('renders SAP Enable Form', () => {
     render(testSAPConfigSetup(noConfigs));
     screen.getByLabelText('Display Name');
@@ -125,11 +119,12 @@ describe('<SAPConfig />', () => {
     screen.getByLabelText('SAP User Type');
   });
   test('test error messages', async () => {
+    const user = userEvent.setup();
     render(testSAPConfigSetup(noExistingData));
 
     const enableButton = screen.getByRole('button', { name: 'Enable' });
     await clearForm();
-    userEvent.click(enableButton);
+    await user.click(enableButton);
     expect(screen.queryByText(validationMessages.displayNameRequired));
     expect(screen.queryByText(validationMessages.baseUrlRequired));
     expect(screen.queryByText(validationMessages.companyIdRequired));
@@ -138,47 +133,44 @@ describe('<SAPConfig />', () => {
     expect(screen.queryByText(validationMessages.secretRequired));
     expect(screen.queryByText(validationMessages.userTypeRequired));
 
-    userEvent.paste(screen.getByLabelText('Display Name'), 'terriblenogoodverybaddisplayname');
-    userEvent.paste(screen.getByLabelText('SAP Base URL'), 'badlink');
-    userEvent.paste(screen.getByLabelText('SAP Company ID'), '1');
-    userEvent.paste(screen.getByLabelText('SAP User ID'), '1');
-    userEvent.paste(screen.getByLabelText('OAuth Client ID'), 'id');
-    userEvent.paste(screen.getByLabelText('OAuth Client Secret'), 'secret');
-    userEvent.click(screen.getByLabelText('Admin'));
+    await user.type(screen.getByLabelText('Display Name'), 'terriblenogoodverybaddisplayname');
+    await user.type(screen.getByLabelText('SAP Base URL'), 'badlink');
+    await user.type(screen.getByLabelText('SAP Company ID'), '1');
+    await user.type(screen.getByLabelText('SAP User ID'), '1');
+    await user.type(screen.getByLabelText('OAuth Client ID'), 'id');
+    await user.type(screen.getByLabelText('OAuth Client Secret'), 'secret');
+    await user.click(screen.getByLabelText('Admin'));
 
-    userEvent.click(enableButton);
+    await user.click(enableButton);
     expect(screen.queryByText(INVALID_LINK));
     expect(screen.queryByText(INVALID_NAME));
 
-    fireEvent.change(screen.getByLabelText('Display Name'), {
-      target: { value: '' },
-    });
-    fireEvent.change(screen.getByLabelText('SAP Base URL'), {
-      target: { value: '' },
-    });
-    userEvent.paste(screen.getByLabelText('Display Name'), 'displayName');
-    userEvent.paste(
+    await user.clear(screen.getByLabelText('Display Name'));
+    await user.clear(screen.getByLabelText('SAP Base URL'));
+    await user.type(screen.getByLabelText('Display Name'), 'displayName');
+    await user.type(
       screen.getByLabelText('SAP Base URL'),
       'https://www.test.com',
     );
-    userEvent.click(enableButton);
+    await user.click(enableButton);
     expect(screen.queryByText(INVALID_LINK)).not.toBeInTheDocument();
     expect(screen.queryByText(INVALID_NAME)).not.toBeInTheDocument();
   });
   test('it creates new configs on submit', async () => {
+    const user = userEvent.setup();
     render(testSAPConfigSetup(noExistingData));
     const enableButton = screen.getByRole('button', { name: 'Enable' });
 
     await clearForm();
-    userEvent.paste(screen.getByLabelText('Display Name'), 'lmsconfig');
-    userEvent.paste(screen.getByLabelText('SAP Base URL'), 'http://www.example.com');
-    userEvent.paste(screen.getByLabelText('SAP Company ID'), '1');
-    userEvent.paste(screen.getByLabelText('SAP User ID'), '1');
-    userEvent.paste(screen.getByLabelText('OAuth Client ID'), 'id');
-    userEvent.paste(screen.getByLabelText('OAuth Client Secret'), 'secret');
-    userEvent.click(screen.getByLabelText('Admin'));
+    await user.type(screen.getByLabelText('Display Name'), 'lmsconfig');
+    await user.type(screen.getByLabelText('SAP Base URL'), 'http://www.example.com');
+    await user.type(screen.getByLabelText('SAP Company ID'), '1');
+    await user.type(screen.getByLabelText('SAP User ID'), '1');
+    await user.type(screen.getByLabelText('OAuth Client ID'), 'id');
+    await user.type(screen.getByLabelText('OAuth Client Secret'), 'secret');
+    await user.click(screen.getByLabelText('Admin'));
 
-    userEvent.click(enableButton);
+    await user.click(enableButton);
     const expectedConfig = {
       active: false,
       display_name: 'lmsconfig',
@@ -193,25 +185,26 @@ describe('<SAPConfig />', () => {
     await waitFor(() => expect(mockPost).toHaveBeenCalledWith(expectedConfig));
   }, 30000);
   test('saves draft correctly', async () => {
+    const user = userEvent.setup();
     render(testSAPConfigSetup(noExistingData));
     const cancelButton = screen.getByRole('button', { name: 'Cancel' });
 
     await clearForm();
-    userEvent.paste(screen.getByLabelText('Display Name'), 'lmsconfig');
-    userEvent.paste(screen.getByLabelText('SAP Base URL'), 'http://www.example.com');
-    userEvent.paste(screen.getByLabelText('SAP Company ID'), '1');
-    userEvent.paste(screen.getByLabelText('SAP User ID'), '1');
-    userEvent.paste(screen.getByLabelText('OAuth Client ID'), 'id');
-    userEvent.paste(screen.getByLabelText('OAuth Client Secret'), 'secret');
-    userEvent.click(screen.getByLabelText('User'));
+    await user.type(screen.getByLabelText('Display Name'), 'lmsconfig');
+    await user.type(screen.getByLabelText('SAP Base URL'), 'http://www.example.com');
+    await user.type(screen.getByLabelText('SAP Company ID'), '1');
+    await user.type(screen.getByLabelText('SAP User ID'), '1');
+    await user.type(screen.getByLabelText('OAuth Client ID'), 'id');
+    await user.type(screen.getByLabelText('OAuth Client Secret'), 'secret');
+    await user.click(screen.getByLabelText('User'));
 
     expect(cancelButton).not.toBeDisabled();
-    userEvent.click(cancelButton);
+    await user.click(cancelButton);
 
     await waitFor(() => expect(screen.getByText('Exit configuration')).toBeInTheDocument());
     const closeButton = screen.getByRole('button', { name: 'Exit' });
 
-    userEvent.click(closeButton);
+    await user.click(closeButton);
 
     const expectedConfig = {
       active: false,
@@ -224,16 +217,18 @@ describe('<SAPConfig />', () => {
       user_type: 'user',
       enterprise_customer: enterpriseId,
     };
-    expect(mockPost).toHaveBeenCalledWith(expectedConfig);
+    await waitFor(() => expect(mockPost).toHaveBeenCalledWith(expectedConfig));
   });
   test('validates poorly formatted existing data on load', async () => {
+    const user = userEvent.setup();
     render(testSAPConfigSetup(invalidExistingData));
     const enableButton = screen.getByRole('button', { name: 'Enable' });
-    userEvent.click(enableButton);
+    await user.click(enableButton);
     expect(screen.queryByText(INVALID_LINK)).toBeInTheDocument();
     expect(screen.queryByText(INVALID_NAME)).toBeInTheDocument();
   });
-  test('validates properly formatted existing data on load', () => {
+  test('validates properly formatted existing data on load', async () => {
+    const user = userEvent.setup();
     render(testSAPConfigSetup(existingConfigData));
     const enableButton = screen.getByRole('button', { name: 'Enable' });
     // ensuring the existing data is prefilled
@@ -244,7 +239,7 @@ describe('<SAPConfig />', () => {
     expect(screen.getByLabelText('OAuth Client ID').value).toEqual(existingConfigData.key);
     expect(screen.getByLabelText('OAuth Client Secret').value).toEqual(existingConfigData.secret);
 
-    userEvent.click(enableButton);
+    await user.click(enableButton);
     expect(screen.queryByText(INVALID_LINK)).not.toBeInTheDocument();
     expect(screen.queryByText(INVALID_NAME)).not.toBeInTheDocument();
   });

@@ -1,5 +1,5 @@
 import React from 'react';
-import { AlertModal, Spinner } from '@edx/paragon';
+import { AlertModal, Spinner } from '@openedx/paragon';
 import { useFormContext } from './FormContext';
 import type { FormContext } from './FormContext';
 

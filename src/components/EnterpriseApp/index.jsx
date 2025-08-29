@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Navigate } from 'react-router-dom';
-import { breakpoints, MediaQuery } from '@edx/paragon';
+import { breakpoints, MediaQuery } from '@openedx/paragon';
 
 import { getAuthenticatedUser } from '@edx/frontend-platform/auth';
 import Sidebar from '../../containers/Sidebar';
@@ -26,12 +26,13 @@ class EnterpriseApp extends React.Component {
 
     this.state = {
       sidebarWidth: 61.3, // hardcoded sidebarWidth required for initial render
+      enterpriseAppMinHeight: 0,
     };
   }
 
   componentDidMount() {
     const { enterpriseSlug } = this.props;
-    this.props.fetchPortalConfiguration(enterpriseSlug);
+    this.props.fetchEnterpriseAppData(enterpriseSlug);
     this.props.toggleSidebarToggle(); // ensure sidebar toggle button is in header
   }
 
@@ -122,7 +123,7 @@ class EnterpriseApp extends React.Component {
         enablePortalLearnerCreditManagementScreen={enablePortalLearnerCreditManagementScreen}
       >
         <BrandStyles enterpriseBranding={enterpriseBranding} />
-        <div className="enterprise-app">
+        <div className="enterprise-app" style={{ minHeight: this.state.enterpriseAppMinHeight }}>
           <MediaQuery minWidth={breakpoints.large.minWidth}>
             {matchesMediaQ => (
               <>
@@ -132,6 +133,11 @@ class EnterpriseApp extends React.Component {
                   onWidthChange={(width) => {
                     this.setState({
                       sidebarWidth: width + defaultContentPadding,
+                    });
+                  }}
+                  onMount={({ sidebarHeight }) => {
+                    this.setState({
+                      enterpriseAppMinHeight: sidebarHeight,
                     });
                   }}
                   isMobile={!matchesMediaQ}
@@ -196,7 +202,7 @@ EnterpriseApp.propTypes = {
     tertiary_color: PropTypes.string,
     logo: PropTypes.string,
   }),
-  fetchPortalConfiguration: PropTypes.func.isRequired,
+  fetchEnterpriseAppData: PropTypes.func.isRequired,
   location: PropTypes.shape({
     pathname: PropTypes.string,
   }).isRequired,

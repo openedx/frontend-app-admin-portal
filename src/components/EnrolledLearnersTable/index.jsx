@@ -1,23 +1,39 @@
 import React from 'react';
 
+import { useIntl } from '@edx/frontend-platform/i18n';
+
 import TableContainer from '../../containers/TableContainer';
-import { formatTimestamp } from '../../utils';
+import { i18nFormatTimestamp } from '../../utils';
 import EnterpriseDataApiService from '../../data/services/EnterpriseDataApiService';
 
 const EnrolledLearnersTable = () => {
+  const intl = useIntl();
+
   const tableColumns = [
     {
-      label: 'Email',
+      label: intl.formatMessage({
+        id: 'admin.portal.lpr.enrolled.learners.table.user_email.column.heading',
+        defaultMessage: 'Email',
+        description: 'Column heading for the user email column in the enrolled learners table',
+      }),
       key: 'user_email',
       columnSortable: true,
     },
     {
-      label: 'Account Created',
+      label: intl.formatMessage({
+        id: 'admin.portal.lpr.enrolled.learners.table.lms_user_created.column.heading',
+        defaultMessage: 'Account Created',
+        description: 'Column heading for the lms user created column in the enrolled learners table',
+      }),
       key: 'lms_user_created',
       columnSortable: true,
     },
     {
-      label: 'Total Course Enrollment Count',
+      label: intl.formatMessage({
+        id: 'admin.portal.lpr.enrolled.learners.table.enrollment_count.column.heading',
+        defaultMessage: 'Total Course Enrollment Count',
+        description: 'Column heading for the course enrollment count column in the enrolled learners table',
+      }),
       key: 'enrollment_count',
       columnSortable: true,
     },
@@ -26,8 +42,8 @@ const EnrolledLearnersTable = () => {
   const formatLearnerData = learners => learners.map(learner => ({
     ...learner,
     user_email: <span data-hj-suppress>{learner.user_email}</span>,
-    lms_user_created: formatTimestamp({
-      timestamp: learner.lms_user_created,
+    lms_user_created: i18nFormatTimestamp({
+      intl, timestamp: learner.lms_user_created,
     }),
   }));
 

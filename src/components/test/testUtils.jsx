@@ -4,6 +4,7 @@ import { BrowserRouter as Router } from 'react-router-dom';
 import { createMemoryHistory } from 'history';
 import { render, screen as rtlScreen } from '@testing-library/react';
 import { QueryCache, QueryClient } from '@tanstack/react-query';
+import { IntlProvider } from '@edx/frontend-platform/i18n';
 import { queryCacheOnErrorHandler } from '../../utils';
 
 // TODO: this could likely be replaced by `renderWithRouter` from `@edx/frontend-enterprise-utils`.
@@ -58,3 +59,9 @@ export function queryClient(options = {}) {
     },
   });
 }
+
+export const renderWithI18nProvider = (children) => renderWithRouter(
+  <IntlProvider locale="en">
+    {children}
+  </IntlProvider>,
+);

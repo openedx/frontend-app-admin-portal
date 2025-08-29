@@ -1,15 +1,14 @@
-import React from 'react';
-import omit from 'lodash/omit';
-import isString from 'lodash/isString';
+import React, { ReactNode } from 'react';
+import { isString, omit } from 'lodash-es';
 
-import { Form } from '@edx/paragon';
+import { Form } from '@openedx/paragon';
 
 import { setFormFieldAction } from './data/actions';
 import { useFormContext } from './FormContext';
 
 type InheritedParagonCheckboxProps = {
   className?: string;
-  children: string;
+  children: ReactNode;
 };
 
 export type ValidatedFormCheckboxProps = {

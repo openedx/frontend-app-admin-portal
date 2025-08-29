@@ -1,10 +1,8 @@
 import dayjs from 'dayjs';
-import camelCase from 'lodash/camelCase';
-import snakeCase from 'lodash/snakeCase';
-import isArray from 'lodash/isArray';
-import mergeWith from 'lodash/mergeWith';
-import isNumber from 'lodash/isNumber';
-import isString from 'lodash/isString';
+import { saveAs } from 'file-saver';
+import {
+  camelCase, fromPairs, isArray, isNumber, isString, mergeWith, snakeCase, without,
+} from 'lodash-es';
 import isEmail from 'validator/lib/isEmail';
 import isEmpty from 'validator/lib/isEmpty';
 import isNumeric from 'validator/lib/isNumeric';
@@ -15,9 +13,18 @@ import { snakeCaseObject } from '@edx/frontend-platform/utils';
 import { features } from './config';
 
 import {
-  BLACKBOARD_TYPE, CANVAS_TYPE, CORNERSTONE_TYPE, DEGREED2_TYPE,
-  HELP_CENTER_BLACKBOARD, HELP_CENTER_CANVAS, HELP_CENTER_CORNERSTONE,
-  HELP_CENTER_DEGREED, HELP_CENTER_MOODLE, HELP_CENTER_SAP, MOODLE_TYPE, SAP_TYPE,
+  BLACKBOARD_TYPE,
+  CANVAS_TYPE,
+  CORNERSTONE_TYPE,
+  DEGREED2_TYPE,
+  HELP_CENTER_BLACKBOARD,
+  HELP_CENTER_CANVAS,
+  HELP_CENTER_CORNERSTONE,
+  HELP_CENTER_DEGREED,
+  HELP_CENTER_MOODLE,
+  HELP_CENTER_SAP,
+  MOODLE_TYPE,
+  SAP_TYPE,
 } from './components/settings/data/constants';
 import BlackboardIcon from './icons/Blackboard.svg';
 import CanvasIcon from './icons/Canvas.svg';
@@ -46,6 +53,79 @@ const formatPassedTimestamp = (timestamp) => {
 const formatPercentage = ({ decimal, numDecimals = 1 }) => (
   decimal ? `${parseFloat((decimal * 100).toFixed(numDecimals))}%` : '0%'
 );
+
+function i18nFormatTimestamp({ intl, timestamp }) {
+  if (timestamp) {
+    return intl.formatDate(formatTimestamp({ timestamp }), {
+      year: 'numeric',
+      month: 'long',
+      day: 'numeric',
+    });
+  }
+  return timestamp;
+}
+
+function i18nFormatPassedTimestamp({ intl, timestamp }) {
+  if (timestamp) {
+    return i18nFormatTimestamp({ intl, timestamp });
+  }
+  return intl.formatMessage({
+    id: 'admin.portal.lpr.enrollments.table.not.passed.text.status',
+    defaultMessage: 'Has not passed',
+    description: 'Text to display when the learner has not passed the course',
+  });
+}
+
+function i18nFormatProgressStatus({ intl, progressStatus }) {
+  switch (progressStatus) {
+    case 'In Progress':
+      return intl.formatMessage({
+        id: 'admin.portal.lpr.progress.status.in.progress',
+        defaultMessage: 'In Progress',
+        description: 'Text to display when the learner is in progress of the course',
+      });
+    case 'Passed':
+      return intl.formatMessage({
+        id: 'admin.portal.lpr.progress.status.passed',
+        defaultMessage: 'Passed',
+        description: 'Text to display when the learner has passed the course',
+      });
+    case 'Audit Access Expired':
+      return intl.formatMessage({
+        id: 'admin.portal.lpr.progress.status.audit.access.expired',
+        defaultMessage: 'Audit Access Expired',
+        description: 'Text to display when the learner has audit access expired',
+      });
+    case 'Failed':
+      return intl.formatMessage({
+        id: 'admin.portal.lpr.progress.status.failed',
+        defaultMessage: 'Failed',
+        description: 'Text to display when the learner has failed the course',
+      });
+    case 'Cancelled':
+      return intl.formatMessage({
+        id: 'admin.portal.lpr.progress.status.cancelled',
+        defaultMessage: 'Cancelled',
+      });
+    case 'Enrolled':
+      return intl.formatMessage({
+        id: 'admin.portal.lpr.progress.status.enrolled',
+        defaultMessage: 'Enrolled',
+      });
+    case 'Pass':
+      return intl.formatMessage({
+        id: 'admin.portal.lpr.progress.status.pass',
+        defaultMessage: 'Pass',
+      });
+    case 'Pending':
+      return intl.formatMessage({
+        id: 'admin.portal.lpr.progress.status.pending',
+        defaultMessage: 'Pending',
+      });
+    default:
+      return progressStatus;
+  }
+}
 
 const updateUrl = (navigate, currentPath, queryOptions) => {
   if (!queryOptions) {
@@ -96,6 +176,12 @@ const getPageOptionsFromUrl = () => {
   }
   if (query.has('search_course')) {
     pageOptions.search_course = query.get('search_course');
+  }
+  if (query.has('budget_uuid')) {
+    pageOptions.budget_uuid = query.get('budget_uuid');
+  }
+  if (query.has('group_uuid')) {
+    pageOptions.group_uuid = query.get('group_uuid');
   }
   if (query.has('search_start_date')) {
     pageOptions.search_start_date = query.get('search_start_date');
@@ -474,6 +560,20 @@ function makePlural(num, string) {
 }
 
 /**
+ * Pluralizes a word that typically ends with s based on the benchmark passed
+ *
+ * @param textToPlural
+ * @param pluralBenchmark
+ * @param punctuation
+ * @returns {string}
+ */
+const pluralText = (
+  textToPlural,
+  pluralBenchmark,
+  punctuation = '',
+) => (pluralBenchmark > 1 || pluralBenchmark === 0 ? `${textToPlural}s${punctuation}` : `${textToPlural}${punctuation}`);
+
+/**
  * Helper function to determine if a content is archived.
  *
  * @param {Object} content (can be program, course, or pathway)
@@ -486,6 +586,164 @@ function isArchivedContent(content) {
   }
   const ARCHIVABLE_STATUSES = [COURSE_RUN_STATUSES.archived, COURSE_RUN_STATUSES.unpublished];
   return courseRunStatuses.every(status => ARCHIVABLE_STATUSES.includes(status));
+}
+
+/**
+ * Helper function utilizing dayjs's 'isBetween' function to determine
+ * if the date passed is between today and an offset amount of days
+ *
+ * @param date
+ * @param days
+ * @returns {boolean}
+ */
+function isTodayWithinDateThreshold({ date, days }) {
+  const dateToCheck = dayjs(date);
+  const today = dayjs();
+  const offsetDays = dateToCheck.subtract(days, 'days');
+  return today.isBetween(offsetDays, dateToCheck);
+}
+// TODO: Generalize this function with isTodayWithinDateThreshold
+function isTodayBetweenDates({ startDate, endDate }) {
+  const today = dayjs();
+  const formattedStartDate = dayjs(startDate);
+  const formattedEndDate = dayjs(endDate);
+  return today.isBetween(formattedStartDate, formattedEndDate);
+}
+
+/**
+ * Helper function to determine if a value is falsy.
+ * Returns true if value is "", null, or undefined
+ *
+ * @param value
+ * @returns {boolean}
+ */
+const isFalsy = (value) => value == null || value === '';
+
+/**
+ * Generate filename with current timestamp prepended to given suffix
+ *
+ * @param {string} suffix
+ * @returns {string}
+ */
+function getTimeStampedFilename(suffix) {
+  const padTwoZeros = (num) => num.toString().padStart(2, '0');
+  const currentDate = new Date();
+  const year = currentDate.getUTCFullYear();
+  const month = padTwoZeros(currentDate.getUTCMonth() + 1);
+  const day = padTwoZeros(currentDate.getUTCDate());
+  return `${year}-${month}-${day}-${suffix}`;
+}
+
+/**
+ * Transform data to csv format and save to file
+ *
+ * @param {string} fileName
+ *  Name of the file to save to
+ * @param {Array<object>} data
+ *  Data to transform to csv format
+ * @param {Array<string>} headers
+ *  Text headers for the file
+ * @param {(object) => Array<string|number>} dataEntryToRow
+ *  Transform function, taking a single data entry and converting it to array of string or numeric values
+ *  that will represent a row of data in the csv document
+ *  Note: Enclosing quotes will be added to any string fields containing commas
+ */
+function downloadCsv(fileName, data, headers, dataEntryToRow) {
+  // If a cell in a csv document contains commas, we need to enclose cell in quotes
+  const escapeCommas = (cell) => (isString(cell) && cell.includes(',') ? `"${cell}"` : cell);
+  const generateCsvRow = (entry) => dataEntryToRow(entry).map(escapeCommas);
+
+  const body = data.map(generateCsvRow).join('\n');
+  const csvText = `${headers}\n${body}`;
+  const blob = new Blob([csvText], {
+    type: 'text/csv',
+  });
+  saveAs(blob, fileName);
+}
+
+/**
+ * Split a string by given separator, and return array of trimmed, non-blank string entries
+ */
+function splitAndTrim(separator, str) {
+  return str.split(separator).map((subStr) => subStr.trim()).filter((subStr) => subStr.length > 0);
+}
+
+/**
+ * Remove strings from a list, matching in a case-sensitive manner
+ * @param {Array<string>} list
+ *  List of strings to remove from
+ * @param {Array<string>} stringsToRemove
+ *  Strings that should be removed from list
+ * @returns {Array<string>}
+ */
+function removeStringsFromList(list, stringsToRemove) {
+  return without(list, ...stringsToRemove);
+}
+
+/**
+ * Remove strings from a list, matching in a case-insensitive manner
+ * @param {Array<string>} list
+ *  List of strings to remove from
+ * @param {Array<string>} stringsToRemove
+ *  Strings that should be removed from list
+ * @returns {Array<string>}
+ */
+function removeStringsFromListCaseInsensitive(list, stringsToRemove) {
+  // Create lowercased versions of original strings
+  const lowercasePairs = list.map(str => [str.toLowerCase(), str]);
+  // Create lookup of lowercased -> original strings
+  const lowercaseLookup = fromPairs(lowercasePairs);
+  // Use lowercased list with lowercased removal strings to perform an efficient set difference operation
+  const lowercaseList = lowercasePairs.map(pair => pair[0]);
+  const lowercaseToRemove = stringsToRemove.map(str => str.toLowerCase());
+  const remainingLowercase = removeStringsFromList(lowercaseList, lowercaseToRemove);
+  // Return set difference mapped back to original strings
+  return remainingLowercase.map(str => lowercaseLookup[str]);
+}
+
+/**
+ * Save a value to local storage
+ * @param {string} key
+ *  Key to save the value under
+ * @param {any} value
+ *  Value to save
+ */
+const saveToLocalStorage = (key, value) => {
+  localStorage.setItem(key, JSON.stringify(value));
+};
+
+/**
+ * Retrieve a value from local storage
+ * @param {string} key
+ *  Key to retrieve the value from
+ * @returns {any}
+ *  Value stored under the key, or null if not found
+ */
+const getFromLocalStorage = (key) => {
+  const savedValue = localStorage.getItem(key);
+  return savedValue ? JSON.parse(savedValue) : null;
+};
+
+/**
+ * Extracts and filters URL query parameters based on an allowed list.
+ *
+ * @param {string} queryString - The query string part of the URL (e.g. "?search=AI&extra=123").
+ * @param {string[]} expectedParams - An array of expected query parameter keys to include.
+ * @returns {Object} An object containing only the filtered query parameters.
+ */
+function getFilteredQueryParams(queryString, expectedParams) {
+  // Convert the query string to a URLSearchParams object
+  const queryParams = new URLSearchParams(queryString);
+
+  // Convert queryParams to an object
+  const options = Object.fromEntries(queryParams.entries());
+
+  // Filter the options object to include only expected parameters
+  const filteredOptions = Object.fromEntries(
+    Object.entries(options).filter(([key]) => expectedParams.includes(key)),
+  );
+
+  return filteredOptions;
 }
 
 export {
@@ -527,5 +785,20 @@ export {
   getActiveTableColumnFilters,
   queryCacheOnErrorHandler,
   makePlural,
+  pluralText,
   isArchivedContent,
+  i18nFormatTimestamp,
+  i18nFormatPassedTimestamp,
+  i18nFormatProgressStatus,
+  isTodayWithinDateThreshold,
+  isTodayBetweenDates,
+  isFalsy,
+  getTimeStampedFilename,
+  downloadCsv,
+  splitAndTrim,
+  removeStringsFromList,
+  removeStringsFromListCaseInsensitive,
+  saveToLocalStorage,
+  getFromLocalStorage,
+  getFilteredQueryParams,
 };

@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import {
   Button, OverlayTrigger, Tooltip,
-} from '@edx/paragon';
+} from '@openedx/paragon';
 import { Field } from 'redux-form';
 
 import RenderField from '../RenderField';
@@ -128,6 +128,7 @@ class TemplateSourceFields extends React.Component {
                 variant={emailTemplateSource === newEmail ? 'primary' : 'outline-primary'}
                 id="btn-new-email-template"
                 key="btn-new-email-template"
+                data-testid="btn-new-email-template"
                 className="rounded-left"
                 style={{
                   pointerEvents: emailTemplateSource === newEmail ? 'none' : 'auto',
@@ -153,6 +154,7 @@ class TemplateSourceFields extends React.Component {
               <Button
                 variant={emailTemplateSource !== newEmail ? 'primary' : 'outline-primary'}
                 id="btn-old-email-template"
+                data-testid="btn-old-email-template"
                 key="btn-old-email-template"
                 className="rounded-right"
                 style={{

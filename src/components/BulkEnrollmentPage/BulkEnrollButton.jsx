@@ -1,8 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import { Button } from '@edx/paragon';
-import { BookOpen } from '@edx/paragon/icons';
+import { Button } from '@openedx/paragon';
+import { BookOpen } from '@openedx/paragon/icons';
 
 /**
  * Bulk action button, meant to be used in License management page to initiate Bulk Enrollment Dialog

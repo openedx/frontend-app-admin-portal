@@ -1,17 +1,25 @@
-import { v4 as uuidv4 } from 'uuid';
-import dayjs from 'dayjs';
-import { camelCaseObject } from '@edx/frontend-platform/utils';
+import { getConfig } from '@edx/frontend-platform';
 import { logInfo } from '@edx/frontend-platform/logging';
+import { camelCaseObject } from '@edx/frontend-platform/utils';
+import dayjs from 'dayjs';
+import { v4 as uuidv4 } from 'uuid';
 
-import {
-  LOW_REMAINING_BALANCE_PERCENT_THRESHOLD,
-  NO_BALANCE_REMAINING_DOLLAR_THRESHOLD,
-  ASSIGNMENT_ENROLLMENT_DEADLINE,
-} from './constants';
-import { BUDGET_STATUSES } from '../../EnterpriseApp/data/constants';
 import EnterpriseAccessApiService from '../../../data/services/EnterpriseAccessApiService';
 import EnterpriseDataApiService from '../../../data/services/EnterpriseDataApiService';
 import SubsidyApiService from '../../../data/services/EnterpriseSubsidyApiService';
+import { isPlanApproachingExpiry } from '../../BudgetExpiryAlertAndModal/data/utils';
+import { BUDGET_STATUSES } from '../../EnterpriseApp/data/constants';
+import {
+  ASSIGNMENT_ENROLLMENT_DEADLINE,
+  COURSE_PACING_MAP,
+  DAYS_UNTIL_ASSIGNMENT_ALLOCATION_EXPIRATION,
+  LATE_ENROLLMENTS_BUFFER_DAYS,
+  LOW_REMAINING_BALANCE_PERCENT_THRESHOLD,
+  NO_BALANCE_REMAINING_DOLLAR_THRESHOLD,
+  START_DATE_DEFAULT_TO_TODAY_THRESHOLD_DAYS,
+  APPROVED_REQUEST_TYPE,
+} from './constants';
+import { capitalizeFirstLetter } from '../../../utils';
 
 /**
  * Transforms subsidy (offer or Subsidy) summary from API for display in the UI, guarding
@@ -101,6 +109,14 @@ export const transformUtilizationTableResults = results => results.map(result =>
   courseKey: result.courseKey,
 }));
 
+export const transformGroupMembersTableResults = results => results.map(result => ({
+  memberDetails: result.memberDetails,
+  status: result.status,
+  recentAction: result.recentAction,
+  memberEnrollments: result.memberEnrollments,
+  enrollmentCount: result.enrollmentCount,
+}));
+
 /**
  * Transforms redemptions data from transaction list API to fields for display in learner credit spent table.
  *
@@ -145,15 +161,15 @@ export const getProgressBarVariant = ({ percentUtilized, remainingFunds }) => {
   return variant;
 };
 
-//  Utility function to check if the ID is a UUID
-export const isUUID = (id) => /^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$/.test(id);
-
+// TODO: Abstract 'status' higher up into the component tree to simplify code
 //  Utility function to check the budget status
 export const getBudgetStatus = ({
+  intl,
   startDateStr,
   endDateStr,
   isBudgetRetired,
   currentDate = new Date(),
+  retiredDateStr = null,
 }) => {
   const startDate = new Date(startDateStr);
   const endDate = new Date(endDateStr);
@@ -162,10 +178,9 @@ export const getBudgetStatus = ({
   if (isBudgetRetired) {
     return {
       status: BUDGET_STATUSES.retired,
-      badgeVariant: 'info',
-      // no term or date for retired budgets
-      term: null,
-      date: null,
+      badgeVariant: 'light',
+      term: 'Retired',
+      date: retiredDateStr,
     };
   }
 
@@ -176,6 +191,15 @@ export const getBudgetStatus = ({
       badgeVariant: 'secondary',
       term: 'Starts',
       date: startDateStr,
+    };
+  }
+
+  if (isPlanApproachingExpiry(intl, endDateStr)) {
+    return {
+      status: BUDGET_STATUSES.expiring,
+      badgeVariant: 'warning',
+      term: 'Expiring',
+      date: endDateStr,
     };
   }
 
@@ -216,21 +240,24 @@ export const formatPrice = (price, options = {}) => {
  * @param {Array} budgets - An array of budget objects.
  * @returns {Array} - The sorted array of budget objects.
  */
-export const orderBudgets = (budgets) => {
+export const orderBudgets = (intl, budgets) => {
   const statusOrder = {
-    Active: 0,
-    Scheduled: 1,
-    Expired: 2,
-    Retired: 3,
+    Expiring: 1,
+    Active: 1,
+    Scheduled: 2,
+    Expired: 3,
+    Retired: 4,
   };
 
   budgets?.sort((budgetA, budgetB) => {
     const statusA = getBudgetStatus({
+      intl,
       startDateStr: budgetA.start,
       endDateStr: budgetA.end,
       isBudgetRetired: budgetA.isRetired,
     }).status;
     const statusB = getBudgetStatus({
+      intl,
       startDateStr: budgetB.start,
       endDateStr: budgetB.end,
       isBudgetRetired: budgetB.isRetired,
@@ -252,11 +279,12 @@ export const orderBudgets = (budgets) => {
 
 /**
  * Formats a date string to MMM D, YYYY format.
- * @param {string} date Date string.
- * @returns Formatted date string.
+ * @param {string} date
+ * @param {string} format
+ * @returns {string}
  */
-export function formatDate(date) {
-  return dayjs(date).format('MMM D, YYYY');
+export function formatDate(date, format = 'MMM D, YYYY') {
+  return dayjs(date).format(format);
 }
 
 // Exec ed and open courses cards should display either the enrollment deadline
@@ -282,6 +310,18 @@ export function getEnrollmentDeadline(enrollByDate) {
  */
 export async function fetchContentAssignments(assignmentConfigurationUUID, options = {}) {
   const response = await EnterpriseAccessApiService.listContentAssignments(assignmentConfigurationUUID, options);
+  return camelCaseObject(response.data);
+}
+
+/**
+ * Retrieves BnR subsidy requests for the given enterprise UUID.
+ * @param {String} enterpriseUUID The UUID of the enterprise customer.
+ * @param {Object} options Optional options object to pass/override query parameters.
+ *
+ * @returns Camelcased response from the BnR subsidy requests.
+ */
+export async function fetchBnrRequest(enterpriseUUID, policyUuid, options = {}) {
+  const response = await EnterpriseAccessApiService.fetchBnrSubsidyRequests(enterpriseUUID, policyUuid, options);
   return camelCaseObject(response.data);
 }
 
@@ -359,6 +399,7 @@ export async function retrieveBudgetDetailActivityOverview({
   isTopDownAssignmentEnabled,
 }) {
   const isBudgetAssignable = !!(isTopDownAssignmentEnabled && subsidyAccessPolicy?.isAssignable);
+  const isBnrEnabledSubsidy = subsidyAccessPolicy?.bnrEnabled;
   const promisesToFulfill = [
     fetchSpentTransactions({
       enterpriseUUID,
@@ -370,12 +411,22 @@ export async function retrieveBudgetDetailActivityOverview({
   if (isBudgetAssignable) {
     promisesToFulfill.push(fetchContentAssignments(subsidyAccessPolicy.assignmentConfiguration.uuid));
   }
+  if (isBnrEnabledSubsidy) {
+    promisesToFulfill.push(fetchBnrRequest(enterpriseUUID, subsidyAccessPolicy.uuid, {
+      state: APPROVED_REQUEST_TYPE,
+    }));
+  }
   const responses = await Promise.allSettled(promisesToFulfill);
   const result = {
     spentTransactions: responses[0].value,
   };
+  let responseIndex = 1;
   if (isBudgetAssignable) {
-    result.contentAssignments = responses[1].value;
+    result.contentAssignments = responses[responseIndex].value;
+    responseIndex += 1;
+  }
+  if (isBnrEnabledSubsidy) {
+    result.approvedBnrRequests = responses[responseIndex].value;
   }
   return result;
 }
@@ -435,4 +486,338 @@ export const transformSelectedRows = (selectedFlatRows) => {
     assignmentUuids,
     totalSelectedRows,
   };
+};
+
+/**
+ * Translates the budget status using the provided `intl` object.
+ *
+ * @param {object} intl - The `intl` object used for translation.
+ * @param {string} status - The status of the budget.
+ * @returns {string} The translated budget status.
+ */
+export const getTranslatedBudgetStatus = (intl, status) => {
+  switch (status) {
+    case BUDGET_STATUSES.active:
+      return intl.formatMessage({
+        id: 'lcm.budgets.budget.card.status.active',
+        defaultMessage: 'Active',
+        description: 'Status for an active budget',
+      });
+    case BUDGET_STATUSES.expiring:
+      return intl.formatMessage({
+        id: 'lcm.budgets.budget.card.status.expiring',
+        defaultMessage: 'Expiring',
+        description: 'Status for an expiring budget',
+      });
+    case BUDGET_STATUSES.expired:
+      return intl.formatMessage({
+        id: 'lcm.budgets.budget.card.status.expired',
+        defaultMessage: 'Expired',
+        description: 'Status for an expired budget',
+      });
+    case BUDGET_STATUSES.retired:
+      return intl.formatMessage({
+        id: 'lcm.budgets.budget.card.status.retired',
+        defaultMessage: 'Retired',
+        description: 'Status for a retired budget',
+      });
+    case BUDGET_STATUSES.scheduled:
+      return intl.formatMessage({
+        id: 'lcm.budgets.budget.card.status.scheduled',
+        defaultMessage: 'Scheduled',
+        description: 'Status for a scheduled budget',
+      });
+    default:
+      return '';
+  }
+};
+
+/**
+ * Translates the budget term using the provided `intl` object.
+ * @param {object} intl - The `intl` object used for translation.
+ * @param {string} term - The term of the budget.
+ * @returns {string} The translated budget term.
+ */
+export const getTranslatedBudgetTerm = (intl, term) => {
+  switch (term) {
+    case 'Starts':
+      return intl.formatMessage({
+        id: 'lcm.budgets.budget.card.term.starts',
+        defaultMessage: 'Starts',
+        description: 'Term for when a budget starts',
+      });
+    case 'Expires':
+      return intl.formatMessage({
+        id: 'lcm.budgets.budget.card.term.expires',
+        defaultMessage: 'Expires',
+        description: 'Term for when a budget expires',
+      });
+    case 'Expiring':
+      return intl.formatMessage({
+        id: 'lcm.budgets.budget.card.term.expiring',
+        defaultMessage: 'Expiring',
+        description: 'Term for when a budget is expiring',
+      });
+    case 'Expired':
+      return intl.formatMessage({
+        id: 'lcm.budgets.budget.card.term.expired',
+        defaultMessage: 'Expired',
+        description: 'Term for when a budget has expired',
+      });
+    case 'Retired':
+      return intl.formatMessage({
+        id: 'lcm.budgets.budget.card.term.retired',
+        defaultMessage: 'Retired',
+        description: 'Term for when a budget has retired',
+      });
+    default:
+      return '';
+  }
+};
+
+export const isLmsBudget = (
+  activeIntegrationsLength,
+  isUniversalGroup,
+) => activeIntegrationsLength > 0 && isUniversalGroup;
+
+/**
+ * Determines if the course has already started. Mostly used around text formatting for tense
+ *
+ * @param date
+ * @returns {boolean}
+ */
+export const isDateBeforeToday = date => dayjs(date).isBefore(dayjs());
+
+const subsidyExpirationRefundCutoffDate = ({ subsidyExpirationDatetime }) => dayjs(subsidyExpirationDatetime).toDate();
+
+export const isCourseSelfPaced = ({ pacingType }) => pacingType === COURSE_PACING_MAP.SELF_PACED;
+
+export const hasTimeToComplete = ({ end, weeksToComplete }) => {
+  if (!weeksToComplete || !end) {
+    return true;
+  }
+  const today = dayjs();
+  const differenceInWeeks = dayjs(end).diff(today, 'week');
+  return weeksToComplete <= differenceInWeeks;
+};
+
+const isWithinMinimumStartDateThreshold = ({ start }) => dayjs(start).isBefore(dayjs().subtract(START_DATE_DEFAULT_TO_TODAY_THRESHOLD_DAYS, 'days'));
+
+/**
+ * Normalizes the course start_date based on a heuristic for the purpose of
+ * displaying a reasonable start_date.  Sometimes, it may be appropriate to
+ * display today's date rather than the actual start date in order to
+ * incentivize enrollment.
+ *
+ * Heuristic:
+ * For already started self-paced courses for which EITHER there is still
+ * enough time to complete it before it ends, OR the course started a long time
+ * ago, we should display today's date as the "start date".  Otherwise, return
+ * the actual start_date.
+ *
+ * For cases where a start date does not exist, also just return today's date.
+ *
+ * @param {string} - start
+ * @param {string} - pacingType
+ * @param {string} - end
+ * @param {number} - weeksToComplete
+ * @returns {string}
+ */
+export const getNormalizedStartDate = ({
+  start, pacingType, end, weeksToComplete,
+}) => {
+  const todayToIso = dayjs().toISOString();
+  if (!start) {
+    return todayToIso;
+  }
+  const startDateIso = dayjs(start).toISOString();
+  if (isCourseSelfPaced({ pacingType }) && dayjs(startDateIso).isBefore(dayjs())) {
+    if (hasTimeToComplete({ end, weeksToComplete }) || isWithinMinimumStartDateThreshold({ start })) {
+      // always today's date (incentivizes enrollment)
+      return todayToIso;
+    }
+  }
+  return startDateIso;
+};
+
+export const getNormalizedEnrollByDate = (enrollBy) => {
+  if (!enrollBy) {
+    return null;
+  }
+  const ninetyDaysFromNow = dayjs().add(DAYS_UNTIL_ASSIGNMENT_ALLOCATION_EXPIRATION, 'days');
+  if (dayjs(enrollBy).isAfter(ninetyDaysFromNow)) {
+    return ninetyDaysFromNow.toISOString();
+  }
+  return enrollBy;
+};
+
+const isStartDateWithinThreshold = ({
+  hasEnrollStart, enrollStart, start, subsidyExpirationDatetime,
+}) => {
+  if (!start && !hasEnrollStart) {
+    return true;
+  }
+  const validStartDates = [];
+  if (start) {
+    validStartDates.push(dayjs(start).valueOf());
+  }
+  if (hasEnrollStart) {
+    validStartDates.push(dayjs(enrollStart).valueOf());
+  }
+  const earliestStartDate = Math.min(...validStartDates);
+  const subsidyExpirationDate = subsidyExpirationRefundCutoffDate({ subsidyExpirationDatetime });
+  return dayjs(earliestStartDate).isBefore(subsidyExpirationDate, 'seconds');
+};
+
+const isEnrollByDateWithinThreshold = ({ hasEnrollBy, enrollBy, isLateRedemptionAllowed = false }) => {
+  if (!hasEnrollBy) { return true; }
+  let enrollmentEffectiveDate = dayjs();
+  if (isLateRedemptionAllowed) {
+    enrollmentEffectiveDate = enrollmentEffectiveDate.subtract(LATE_ENROLLMENTS_BUFFER_DAYS, 'days');
+  }
+  return dayjs(enrollBy).isAfter(enrollmentEffectiveDate, 'seconds');
+};
+
+export const startAndEnrollBySortLogic = (prev, next) => {
+  // Label relevant timestamps to milliseconds for the most granular sort
+  const prevEnrollByDateTimestamp = dayjs(prev.enrollBy).valueOf();
+  const nextEnrollByDateTimestamp = dayjs(next.enrollBy).valueOf();
+  const prevStartDateTimestamp = dayjs(prev.start).valueOf();
+  const nextStartDateTimestamp = dayjs(next.start).valueOf();
+
+  // When start dates are equivalent, compare enrollBy dates.
+  if (dayjs(prev.start).isSame(next.start, 'day')) {
+    return prevEnrollByDateTimestamp - nextEnrollByDateTimestamp;
+  }
+  // Otherwise, compare start dates
+  return prevStartDateTimestamp - nextStartDateTimestamp;
+};
+
+/**
+ * Filters assignable course runs based on the following criteria:
+ *  - If the start date or enrollStart date (min date) is before the subsidy expiration - 14 day threshold
+ *    AND
+ *    If the enrollBy date is after current date
+ *
+ *  Based on the above criteria, if isLateRedemptionAllowed is false, filter on if the course run isActive AND
+ *  isEligibleForEnrollment otherwise, if isLateRedemptionAllowed, the enrollBy date is modified to take into account
+ *  late enrollment in the initial comparison.
+ *
+ *  The main purpose of the filter is to ensure that course runs for a
+ *  course are within the enterprises LC subsidy duration
+ *  The inclusion of the increased sensitivity reduces the chance of a specific run
+ *  (which may be allocated but not accepted) falling outside the date range of the subsidy expiration date
+ *  refund threshold.
+ *
+ *  We transform the assignedCourseRuns data to normalize the start, enrollBy and enrollStart dates
+ *
+ *  Furthermore, we return assignable course runs sorted by the enrollBy date (soonest to latest). If the enrollBy dates
+ *  are equivalent, sort by the start date.
+ *
+ * @param courseRuns
+ * @param subsidyExpirationDatetime
+ * @param isLateRedemptionAllowed
+ * @param catalogContainsRestrictedRunsData
+ * @returns {*}
+ */
+export const getAssignableCourseRuns = ({
+  courseRuns,
+  subsidyExpirationDatetime,
+  isLateRedemptionAllowed,
+  catalogContainsRestrictedRunsData,
+}) => {
+  const clonedCourseRuns = courseRuns.map(courseRun => ({
+    ...courseRun,
+    enrollBy: courseRun.hasEnrollBy ? dayjs.unix(courseRun.enrollBy).toISOString() : null,
+    enrollStart: courseRun.hasEnrollStart ? dayjs.unix(courseRun.enrollStart).toISOString() : null,
+    upgradeDeadline: dayjs.unix(courseRun.upgradeDeadline).toISOString(),
+  }));
+
+  const assignableCourseRunsFilter = ({
+    key, enrollBy, enrollStart, start, hasEnrollBy, hasEnrollStart, isActive, isLateEnrollmentEligible, restrictionType,
+  }) => {
+    const isEnrollByDateValid = isEnrollByDateWithinThreshold({
+      hasEnrollBy,
+      enrollBy,
+      isLateRedemptionAllowed,
+    });
+    const isStartDateValid = isStartDateWithinThreshold({
+      hasEnrollStart,
+      enrollStart,
+      start,
+      subsidyExpirationDatetime,
+    });
+
+    // Determine eligibility based on the provided enrollBy, start, and enrollStart date
+    const isEligibleForEnrollment = isEnrollByDateValid && isStartDateValid;
+
+    if (!isEligibleForEnrollment) {
+      // Basic checks against this content's critical dates and their relation to
+      // the current date and subsidy expiration date have failed.
+      return false;
+    }
+    // ENT-9359 (epic for Custom Presentations/Restricted Runs):
+    // Hide any restricted runs that are not considered to be "contained" in the policy's catalog.
+    if (restrictionType) {
+      // Always filter out restricted runs if the feature to show them isn't even enabled.
+      if (!getConfig().FEATURE_ENABLE_RESTRICTED_RUN_ASSIGNMENT) {
+        return false;
+      }
+      // Only filter out restricted runs if the run isn't part of the policy's catalog.
+      if (!catalogContainsRestrictedRunsData?.[key]?.containsContentItems) {
+        return false;
+      }
+    }
+    if (hasEnrollBy && isLateRedemptionAllowed && isDateBeforeToday(enrollBy)) {
+      // Special case: late enrollment has been enabled by ECS for this budget, and
+      // isEligibleForEnrollment already succeeded, so we know that late enrollment
+      // would be happy given enrollment deadline of the course.  Now all we need
+      // to do is make sure the run itself is generally eligible for late enrollment
+      return isLateEnrollmentEligible;
+    }
+    // General courseware filter
+    return isActive;
+  };
+
+  // Main function that transforms the cloned course runs to the normalizedStart and normalizedEnrollBy dates
+  const assignableCourseRuns = clonedCourseRuns.filter(assignableCourseRunsFilter).map(courseRun => {
+    if (!courseRun.hasEnrollBy) {
+      return {
+        ...courseRun,
+        start: getNormalizedStartDate(courseRun),
+        enrollBy: getNormalizedEnrollByDate(
+          subsidyExpirationRefundCutoffDate({ subsidyExpirationDatetime }),
+        ),
+        hasEnrollBy: true,
+      };
+    }
+    return {
+      ...courseRun,
+      start: getNormalizedStartDate(courseRun),
+      enrollBy: getNormalizedEnrollByDate(courseRun.enrollBy),
+    };
+  });
+  // Sorts by the enrollBy date. If enrollBy is equivalent, sort by start
+  return assignableCourseRuns.sort(startAndEnrollBySortLogic);
+};
+
+/**
+ * Checks if a budget status is retired or expired.
+ * These states typically disable certain actions or hide UI elements.
+ *
+ * @param {string} status The budget status to check
+ * @returns {boolean} True if the budget is retired or expired, false otherwise
+ */
+export const isBudgetRetiredOrExpired = (status) => [BUDGET_STATUSES.retired, BUDGET_STATUSES.expired].includes(status);
+
+export const transformRequestOverview = (requestStates) => {
+  const allowedStates = ['requested', 'cancelled', 'declined'];
+
+  return requestStates
+    .filter(({ state }) => allowedStates.includes(state))
+    .map(({ state, count }) => ({
+      name: capitalizeFirstLetter(state),
+      number: count,
+      value: state,
+    }));
 };

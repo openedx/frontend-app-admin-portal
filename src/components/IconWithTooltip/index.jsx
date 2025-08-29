@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import {
   Icon, OverlayTrigger, Tooltip, useWindowSize,
-} from '@edx/paragon';
+} from '@openedx/paragon';
 
 const IconWithTooltip = ({
   icon, altText, tooltipText, placementSm = 'right', placementLg = 'top', trigger = ['hover', 'focus'], breakpoint = 768, iconClassNames = 'ml-1',

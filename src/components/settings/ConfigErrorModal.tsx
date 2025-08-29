@@ -1,7 +1,7 @@
 import React from 'react';
 import {
   AlertModal, ActionRow, Button, Hyperlink,
-} from '@edx/paragon';
+} from '@openedx/paragon';
 import { HELP_CENTER_LINK } from './data/constants';
 
 const cardText = 'We were unable to process your request to submit a new LMS configuration. Please try submitting again or contact support for help.';

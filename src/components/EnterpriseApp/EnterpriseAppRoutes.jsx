@@ -1,8 +1,9 @@
 import React, { useContext } from 'react';
 import { Routes, Route, useParams } from 'react-router-dom';
 import PropTypes from 'prop-types';
+import { features } from '../../config';
 
-import AdminPage from '../../containers/AdminPage';
+import AdminPageV2 from '../../containers/AdminPageV2';
 import CodeManagementPage from '../CodeManagement';
 import RequestCodesPage from '../RequestCodesPage';
 import ReportingConfig from '../ReportingConfig';
@@ -10,12 +11,17 @@ import NotFoundPage from '../NotFoundPage';
 import LoadingMessage from '../LoadingMessage';
 import SettingsPage from '../settings';
 import { SubscriptionManagementPage } from '../subscriptions';
-import { PlotlyAnalyticsPage } from '../PlotlyAnalytics';
+import AnalyticsV2Page from '../AdvanceAnalyticsV2/AnalyticsV2Page';
+import RevisedAnalyticsV2Page from '../AdvanceAnalyticsV2.0/AnalyticsPage';
+import FeatureNotSupportedPage from '../FeatureNotSupportedPage';
 import { ROUTE_NAMES } from './data/constants';
 import BulkEnrollmentResultsDownloadPage from '../BulkEnrollmentResultsDownloadPage';
 import { EnterpriseSubsidiesContext } from '../EnterpriseSubsidiesContext';
 import ContentHighlights from '../ContentHighlights';
 import LearnerCreditManagementRoutes from '../learner-credit-management';
+import PeopleManagementPage from '../PeopleManagement';
+import GroupDetailPage from '../PeopleManagement/GroupDetailPage/GroupDetailPage';
+import LearnerDetailPage from '../PeopleManagement/LearnerDetailPage/LearnerDetailPage';
 
 const EnterpriseAppRoutes = ({
   email,
@@ -35,7 +41,7 @@ const EnterpriseAppRoutes = ({
       {enterpriseAppPage === ROUTE_NAMES.learners && (
         <Route
           path="/:actionSlug?"
-          element={<AdminPage />}
+          element={features.ANALYTICS_SUPPORTED ? <AdminPageV2 /> : <FeatureNotSupportedPage />}
         />
       )}
 
@@ -80,8 +86,20 @@ const EnterpriseAppRoutes = ({
         <Route
           key="analytics"
           path="/"
-          element={<PlotlyAnalyticsPage />}
+          element={features.ANALYTICS_SUPPORTED
+            ? <AnalyticsV2Page enterpriseId={enterpriseId} />
+            : <FeatureNotSupportedPage />}
         />
+      )}
+
+      {enableAnalyticsPage && enterpriseAppPage === ROUTE_NAMES.analytics_v2 && features.ADMIN_V2 && (
+      <Route
+        key="analytics"
+        path="/"
+        element={features.ANALYTICS_SUPPORTED
+          ? <RevisedAnalyticsV2Page enterpriseId={enterpriseId} />
+          : <FeatureNotSupportedPage />}
+      />
       )}
 
       {enterpriseAppPage === ROUTE_NAMES.bulkEnrollmentResults && (
@@ -105,6 +123,29 @@ const EnterpriseAppRoutes = ({
           element={<LearnerCreditManagementRoutes />}
         />
       )}
+
+      {enterpriseAppPage === ROUTE_NAMES.peopleManagement && ([
+        <Route
+          path="/:groupUuid"
+          key="group-detail"
+          element={<GroupDetailPage />}
+        />,
+        <Route
+          path="/:groupUuid/learner-detail/:learnerId"
+          key="group-learner-detail"
+          element={<LearnerDetailPage />}
+        />,
+        <Route
+          path="/learner-detail/:learnerId"
+          key="learner-detail"
+          element={<LearnerDetailPage />}
+        />,
+        <Route
+          path="/"
+          key="people-management"
+          element={<PeopleManagementPage />}
+        />,
+      ])}
 
       {enableContentHighlightsPage && enterpriseAppPage === ROUTE_NAMES.contentHighlights && (
         <Route

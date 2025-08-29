@@ -1,8 +1,12 @@
 // eslint-disable-next-line import/no-extraneous-dependencies
-const { createConfig } = require('@edx/frontend-build');
+const { createConfig } = require('@openedx/frontend-build');
 
-module.exports = createConfig('jest', {
+const config = createConfig('jest', {
   setupFiles: [
     '<rootDir>/src/setupTest.js',
   ],
 });
+config.transformIgnorePatterns = ['node_modules/(?!(lodash-es|@(open)?edx)/)'];
+
+
+module.exports = config;

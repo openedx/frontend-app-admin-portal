@@ -1,9 +1,6 @@
 import React from 'react';
 import {
-  act,
-  screen,
-  render,
-  cleanup,
+  cleanup, render, screen,
 } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import dayjs from 'dayjs';
@@ -11,17 +8,11 @@ import configureMockStore from 'redux-mock-store';
 import { Provider } from 'react-redux';
 import { sendEnterpriseTrackEvent } from '@edx/frontend-enterprise-utils';
 
+import { IntlProvider } from '@edx/frontend-platform/i18n';
 import LicenseManagementTableActionColumn from '../LicenseManagementTableActionColumn';
-import {
-  ASSIGNED,
-  ACTIVATED,
-  REVOKED,
-} from '../../../data/constants';
+import { ACTIVATED, ASSIGNED, REVOKED } from '../../../data/constants';
 import { SUBSCRIPTION_TABLE_EVENTS } from '../../../../../eventTracking';
-import {
-  TEST_ENTERPRISE_CUSTOMER_UUID,
-  TEST_SUBSCRIPTION_PLAN_UUID,
-} from '../../../tests/TestUtilities';
+import { TEST_ENTERPRISE_CUSTOMER_UUID, TEST_SUBSCRIPTION_PLAN_UUID } from '../../../tests/TestUtilities';
 
 jest.mock('@edx/frontend-enterprise-utils', () => {
   const originalModule = jest.requireActual('@edx/frontend-enterprise-utils');
@@ -61,9 +52,11 @@ const basicProps = {
 };
 
 const LicenseManagementTableActionColumnWithContext = (props) => (
-  <Provider store={store}>
-    <LicenseManagementTableActionColumn {...props} />
-  </Provider>
+  <IntlProvider locale="en">
+    <Provider store={store}>
+      <LicenseManagementTableActionColumn {...props} />
+    </Provider>
+  </IntlProvider>
 );
 
 describe('<LicenseManagementTableActionColumn />', () => {
@@ -71,11 +64,9 @@ describe('<LicenseManagementTableActionColumn />', () => {
     cleanup();
     jest.clearAllMocks();
   });
-  const testDialogClosed = () => {
+  const testDialogClosed = async (user) => {
     const cancelButton = screen.getByText('Cancel');
-    act(() => {
-      userEvent.click(cancelButton);
-    });
+    await user.click(cancelButton);
     expect(screen.queryByRole('dialog')).toBeFalsy();
   };
 
@@ -113,13 +104,12 @@ describe('<LicenseManagementTableActionColumn />', () => {
   });
 
   it('opens and closes revoke modal', async () => {
+    const user = userEvent.setup();
     render(<LicenseManagementTableActionColumnWithContext {...basicProps} />);
     expect(screen.queryByRole('dialog')).toBeFalsy();
     // Open dialog
     const revokeButton = screen.getByTitle('Revoke license');
-    await act(async () => {
-      await userEvent.click(revokeButton);
-    });
+    await user.click(revokeButton);
     expect(screen.getByRole('dialog')).toBeTruthy();
     // Event is sent when open
     expect(sendEnterpriseTrackEvent).toHaveBeenCalledWith(
@@ -127,7 +117,7 @@ describe('<LicenseManagementTableActionColumn />', () => {
       SUBSCRIPTION_TABLE_EVENTS.REVOKE_ROW_CLICK,
     );
     // Close dialog
-    testDialogClosed();
+    await testDialogClosed(user);
     // Event is sent when cancel
     expect(sendEnterpriseTrackEvent).toHaveBeenCalledWith(
       TEST_ENTERPRISE_CUSTOMER_UUID,
@@ -136,13 +126,12 @@ describe('<LicenseManagementTableActionColumn />', () => {
   });
 
   it('opens and closes remind modal', async () => {
+    const user = userEvent.setup();
     render(<LicenseManagementTableActionColumnWithContext {...basicProps} />);
     expect(screen.queryByRole('dialog')).toBeFalsy();
     // Open dialog
     const remindButton = screen.getByTitle('Remind learner');
-    await act(async () => {
-      await userEvent.click(remindButton);
-    });
+    await user.click(remindButton);
     expect(screen.getByRole('dialog')).toBeTruthy();
     // Event is sent when open
     expect(sendEnterpriseTrackEvent).toHaveBeenCalledWith(
@@ -150,7 +139,7 @@ describe('<LicenseManagementTableActionColumn />', () => {
       SUBSCRIPTION_TABLE_EVENTS.REMIND_ROW_CLICK,
     );
     // Close dialog
-    testDialogClosed();
+    await testDialogClosed(user);
     // Event is sent when cancel
     expect(sendEnterpriseTrackEvent).toHaveBeenCalledWith(
       TEST_ENTERPRISE_CUSTOMER_UUID,

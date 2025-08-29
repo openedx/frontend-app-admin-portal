@@ -2,13 +2,16 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Field, reduxForm } from 'redux-form';
 import { Link, Navigate } from 'react-router-dom';
-import { Alert, Button, Spinner } from '@edx/paragon';
+import { Alert, Button, Spinner } from '@openedx/paragon';
+import { Error } from '@openedx/paragon/icons';
+import { injectIntl, intlShape } from '@edx/frontend-platform/i18n';
 
 import RenderField from '../RenderField';
 
 import {
   isRequired, isValidEmail, isNotValidNumberString, maxLength512,
 } from '../../utils';
+import messages from './messages';
 
 class RequestCodesForm extends React.Component {
   constructor(props) {
@@ -24,7 +27,7 @@ class RequestCodesForm extends React.Component {
   }
 
   renderErrorMessage() {
-    const { error: { message } } = this.props;
+    const { error: { message }, intl } = this.props;
 
     return (
       <Alert
@@ -32,8 +35,8 @@ class RequestCodesForm extends React.Component {
         variant="danger"
         icon={Error}
       >
-        <Alert.Heading>Unable to request more codes</Alert.Heading>
-        <p>Try refreshing your screen {message}</p>
+        <Alert.Heading>{intl.formatMessage(messages.errorHeading)}</Alert.Heading>
+        <p>{intl.formatMessage(messages.errorRetry)} {message}</p>
       </Alert>
     );
   }
@@ -56,6 +59,7 @@ class RequestCodesForm extends React.Component {
       submitSucceeded,
       submitFailed,
       error,
+      intl,
     } = this.props;
 
     return (
@@ -71,7 +75,7 @@ class RequestCodesForm extends React.Component {
                 component={RenderField}
                 label={(
                   <>
-                    Email Address
+                    {intl.formatMessage(messages.emailLabel)}
                     <span className="required">*</span>
                   </>
                 )}
@@ -86,7 +90,7 @@ class RequestCodesForm extends React.Component {
                 component={RenderField}
                 label={(
                   <>
-                    Company
+                    {intl.formatMessage(messages.companyLabel)}
                     <span className="required">*</span>
                   </>
                 )}
@@ -100,7 +104,7 @@ class RequestCodesForm extends React.Component {
                 className="numberOfCodes"
                 type="number"
                 component={RenderField}
-                label="Number of Codes"
+                label={intl.formatMessage(messages.numberOfCodesLabel)}
                 validate={[isNotValidNumberString]}
                 data-hj-suppress
               />
@@ -109,7 +113,7 @@ class RequestCodesForm extends React.Component {
                 className="notes"
                 type="text"
                 component={RenderField}
-                label="Notes"
+                label={intl.formatMessage(messages.notesLabel)}
                 validate={[maxLength512]}
                 data-hj-suppress
               />
@@ -120,14 +124,14 @@ class RequestCodesForm extends React.Component {
               >
                 <>
                   {submitting && <Spinner animation="border" className="mr-2" variant="light" size="sm" />}
-                  Request Codes
+                  {intl.formatMessage(messages.submitButton)}
                 </>
               </Button>
               <Link
                 className="btn btn-link ml-3 form-cancel-btn"
                 to={this.getPathToCodeManagement()}
               >
-                Cancel
+                {intl.formatMessage(messages.cancelButton)}
               </Link>
             </form>
           </div>
@@ -158,6 +162,8 @@ RequestCodesForm.propTypes = {
     enterpriseName: PropTypes.string.isRequired,
     numberOfCodes: PropTypes.string.isRequired,
   }).isRequired,
+  // injected
+  intl: intlShape.isRequired,
 };
 
-export default reduxForm({ form: 'request-codes-form' })(RequestCodesForm);
+export default reduxForm({ form: 'request-codes-form' })(injectIntl(RequestCodesForm));

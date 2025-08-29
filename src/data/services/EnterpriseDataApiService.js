@@ -1,5 +1,8 @@
 import { getAuthenticatedHttpClient } from '@edx/frontend-platform/auth';
-import { snakeCaseObject } from '@edx/frontend-platform/utils';
+import { camelCaseObject, snakeCaseObject } from '@edx/frontend-platform/utils';
+import { omitBy } from 'lodash-es';
+
+import { isFalsy } from '../../utils';
 
 import store from '../store';
 import { configuration } from '../../config';
@@ -11,6 +14,23 @@ class EnterpriseDataApiService {
   static enterpriseBaseUrl = `${configuration.DATA_API_BASE_URL}/enterprise/api/v1/enterprise/`;
 
   static enterpriseAdminBaseUrl = `${configuration.DATA_API_BASE_URL}/enterprise/api/v1/admin/`;
+
+  static enterpriseAdminAnalyticsV2BaseUrl = `${configuration.DATA_API_BASE_URL}/enterprise/api/v1/admin/analytics/`;
+
+  static constructAnalyticsDataURL(key, baseURL) {
+    const dataURLsMap = {
+      skills: `${baseURL}/skills/stats`,
+      completions: `${baseURL}/completions/stats`,
+      engagements: `${baseURL}/engagements/stats`,
+      enrollments: `${baseURL}/enrollments/stats`,
+      leaderboardTable: `${baseURL}/leaderboard`,
+      completionsTable: `${baseURL}/completions`,
+      engagementsTable: `${baseURL}/engagements`,
+      enrollmentsTable: `${baseURL}/enrollments`,
+    };
+
+    return dataURLsMap[key];
+  }
 
   static getEnterpriseUUID(enterpriseId) {
     const { enableDemoData } = store.getState().portalConfiguration;
@@ -137,10 +157,88 @@ class EnterpriseDataApiService {
     return EnterpriseDataApiService.apiClient().get(url);
   }
 
+  static fetchAdminAnalyticsData(enterpriseCustomerUUID, key, options) {
+    const baseURL = EnterpriseDataApiService.enterpriseAdminAnalyticsV2BaseUrl;
+    const enterpriseUUID = EnterpriseDataApiService.getEnterpriseUUID(enterpriseCustomerUUID);
+    const transformOptions = omitBy(snakeCaseObject(options), isFalsy);
+    const queryParams = new URLSearchParams(transformOptions);
+    const tableURL = EnterpriseDataApiService.constructAnalyticsDataURL(key, `${baseURL}${enterpriseUUID}`);
+    const url = `${tableURL}?${queryParams.toString()}`;
+    return EnterpriseDataApiService.apiClient().get(url).then((response) => camelCaseObject(response.data));
+  }
+
+  static fetchAdminAggregatesData(enterpriseCustomerUUID, options) {
+    const baseURL = EnterpriseDataApiService.enterpriseAdminAnalyticsV2BaseUrl;
+    const enterpriseUUID = EnterpriseDataApiService.getEnterpriseUUID(enterpriseCustomerUUID);
+    const transformOptions = omitBy(snakeCaseObject(options), isFalsy);
+    const queryParams = new URLSearchParams(transformOptions);
+    const url = `${baseURL}${enterpriseUUID}?${queryParams.toString()}`;
+    return EnterpriseDataApiService.apiClient().get(url).then((response) => camelCaseObject(response.data));
+  }
+
+  static fetchEnterpriseCourses(enterpriseCustomerUUID, options) {
+    const baseURL = EnterpriseDataApiService.enterpriseAdminAnalyticsV2BaseUrl;
+    const transformOptions = omitBy(snakeCaseObject(options), isFalsy);
+    const enterpriseUUID = EnterpriseDataApiService.getEnterpriseUUID(enterpriseCustomerUUID);
+    const queryParams = new URLSearchParams(transformOptions);
+    const url = `${baseURL}${enterpriseUUID}/enrolled-courses?${queryParams.toString()}`;
+
+    return EnterpriseDataApiService.apiClient()
+      .get(url)
+      .then((response) => camelCaseObject(response.data));
+  }
+
   static fetchDashboardInsights(enterpriseId) {
     const enterpriseUUID = EnterpriseDataApiService.getEnterpriseUUID(enterpriseId);
     const url = `${EnterpriseDataApiService.enterpriseAdminBaseUrl}insights/${enterpriseUUID}`;
     return EnterpriseDataApiService.apiClient().get(url);
+  }
+
+  static fetchEnterpriseGroups(enterpriseId) {
+    const enterpriseUUID = EnterpriseDataApiService.getEnterpriseUUID(enterpriseId);
+    const url = `${EnterpriseDataApiService.enterpriseBaseUrl}${enterpriseUUID}/groups/`;
+    return EnterpriseDataApiService.apiClient().get(url);
+  }
+
+  static fetchEnterpriseBudgets(enterpriseId) {
+    const enterpriseUUID = EnterpriseDataApiService.getEnterpriseUUID(enterpriseId);
+    const url = `${EnterpriseDataApiService.enterpriseBaseUrl}${enterpriseUUID}/budgets/`;
+    return EnterpriseDataApiService.apiClient().get(url);
+  }
+
+  static fetchEnterpriseModuleActivityReport(enterpriseId, options, { csv } = {}) {
+    const enterpriseUUID = EnterpriseDataApiService.getEnterpriseUUID(enterpriseId);
+    const endpoint = csv ? 'module-performance.csv' : 'module-performance';
+
+    const queryParams = new URLSearchParams({
+      page: 1,
+      page_size: 50,
+      ...options,
+    });
+
+    if (csv) {
+      queryParams.set('no_page', csv);
+    }
+
+    const url = `${EnterpriseDataApiService.enterpriseBaseUrl}${enterpriseUUID}/${endpoint}/?${queryParams.toString()}`;
+    return EnterpriseDataApiService.apiClient().get(url);
+  }
+
+  static fetchPlotlyChartsCSV(enterpriseId, chartUrl, options) {
+    const url = `${EnterpriseDataApiService.enterpriseAdminAnalyticsV2BaseUrl}${enterpriseId}/${chartUrl}?${new URLSearchParams(options).toString()}`;
+    return EnterpriseDataApiService.apiClient().get(url);
+  }
+
+  static getAnalyticsCSVDownloadURL(key, enterpriseId, options) {
+    const queryParams = new URLSearchParams({
+      ...options,
+      ...{ response_type: 'csv' },
+    });
+    const tableURL = EnterpriseDataApiService.constructAnalyticsDataURL(
+      key,
+      `${EnterpriseDataApiService.enterpriseAdminAnalyticsV2BaseUrl}${enterpriseId}`,
+    );
+    return `${tableURL}?${queryParams.toString()}`;
   }
 }
 

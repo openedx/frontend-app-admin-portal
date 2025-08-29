@@ -1,8 +1,8 @@
 import {
   Button, Container, Stepper,
-} from '@edx/paragon';
+} from '@openedx/paragon';
 import PropTypes from 'prop-types';
-import { ArrowBack, ArrowForward } from '@edx/paragon/icons';
+import { ArrowBack, ArrowForward } from '@openedx/paragon/icons';
 import isEmpty from 'validator/lib/isEmpty';
 import isURL from 'validator/lib/isURL';
 import React, {

@@ -1,4 +1,4 @@
-import { renderHook } from '@testing-library/react-hooks';
+import { renderHook, waitFor } from '@testing-library/react';
 import { sendEnterpriseTrackEvent } from '@edx/frontend-enterprise-utils';
 
 import useBudgetContentAssignments from '../useBudgetContentAssignments';
@@ -14,7 +14,7 @@ describe('useBudgetContentAssignments', () => {
     jest.clearAllMocks();
   });
   it('does not call fetchContentAssignments if isEnabled is false', async () => {
-    const { result, waitForNextUpdate } = renderHook(() => useBudgetContentAssignments({
+    const { result } = renderHook(() => useBudgetContentAssignments({
       assignmentConfigurationUUID: '123',
       isEnabled: false,
       enterpriseId: 'test-enterprise-id',
@@ -35,13 +35,15 @@ describe('useBudgetContentAssignments', () => {
       filters: [],
     });
 
-    await waitForNextUpdate();
+    await waitFor(() => {
+      expect(result.current).toBeDefined();
+    });
 
     expect(mockListContentAssignments).not.toHaveBeenCalled();
   });
 
   it('should return the correct data', async () => {
-    const { result, waitForNextUpdate } = renderHook(() => useBudgetContentAssignments({
+    const { result } = renderHook(() => useBudgetContentAssignments({
       assignmentConfigurationUUID: '123',
       isEnabled: true,
       enterpriseId: 'test-enterprise-id',
@@ -67,9 +69,10 @@ describe('useBudgetContentAssignments', () => {
       filters: [],
     });
 
-    await waitForNextUpdate();
+    await waitFor(() => {
+      expect(result.current.isLoading).toEqual(false);
+    });
 
-    expect(result.current.isLoading).toEqual(false);
     expect(result.current.contentAssignments).toEqual({
       results: [
         {
@@ -105,7 +108,7 @@ describe('useBudgetContentAssignments', () => {
   ])('handles assignment details filter with search query parameter (%s)', async ({
     filters, hasSearchParam,
   }) => {
-    const { result, waitForNextUpdate } = renderHook(() => useBudgetContentAssignments({
+    const { result } = renderHook(() => useBudgetContentAssignments({
       assignmentConfigurationUUID: '123',
       isEnabled: true,
       enterpriseId: 'test-enterprise-id',
@@ -131,7 +134,9 @@ describe('useBudgetContentAssignments', () => {
       filters,
     });
 
-    await waitForNextUpdate();
+    await waitFor(() => {
+      expect(result.current.isLoading).toEqual(false);
+    });
     expect(mockListContentAssignments).toHaveBeenCalledWith(
       '123',
       {
@@ -162,7 +167,7 @@ describe('useBudgetContentAssignments', () => {
       selectedLearnerStateQueryParam: 'waiting,notifying',
     },
   ])('handles learner state (status) filtering (%s)', async ({ filters, selectedLearnerStateQueryParam }) => {
-    const { result, waitForNextUpdate } = renderHook(() => useBudgetContentAssignments({
+    const { result } = renderHook(() => useBudgetContentAssignments({
       assignmentConfigurationUUID: '123',
       isEnabled: true,
       enterpriseId: 'test-enterprise-id',
@@ -188,7 +193,9 @@ describe('useBudgetContentAssignments', () => {
       filters,
     });
 
-    await waitForNextUpdate();
+    await waitFor(() => {
+      expect(result.current.isLoading).toEqual(false);
+    });
 
     expect(mockListContentAssignments).toHaveBeenCalledWith(
       '123',
@@ -257,7 +264,7 @@ describe('useBudgetContentAssignments', () => {
       orderingQueryParam: 'content_quantity',
     },
   ])('handles ordering on appropriate columns (%s)', async ({ sortBy, orderingQueryParam }) => {
-    const { result, waitForNextUpdate } = renderHook(() => useBudgetContentAssignments({
+    const { result } = renderHook(() => useBudgetContentAssignments({
       assignmentConfigurationUUID: '123',
       isEnabled: true,
       enterpriseId: 'test-enterprise-id',
@@ -283,7 +290,9 @@ describe('useBudgetContentAssignments', () => {
       sortBy,
     });
 
-    await waitForNextUpdate();
+    await waitFor(() => {
+      expect(result.current.isLoading).toEqual(false);
+    });
     expect(mockListContentAssignments).toHaveBeenCalledWith(
       '123',
       {
@@ -322,7 +331,7 @@ describe('useBudgetContentAssignments', () => {
     };
 
     // Perform first render where currentArgsRef.current = null, no track event called
-    const { rerender, result, waitForNextUpdate } = renderHook(() => useBudgetContentAssignments(
+    const { rerender, result } = renderHook(() => useBudgetContentAssignments(
       mockUseBudgetContentAssignmentsData,
     ));
 
@@ -335,7 +344,9 @@ describe('useBudgetContentAssignments', () => {
       sortBy: [initialSortByMetadata],
     });
 
-    await waitForNextUpdate();
+    await waitFor(() => {
+      expect(result.current.isLoading).toEqual(false);
+    });
 
     expect(sendEnterpriseTrackEvent).not.toHaveBeenCalled();
 
@@ -350,8 +361,8 @@ describe('useBudgetContentAssignments', () => {
       sortBy: [modifiedSortByMetaData],
     });
 
-    await waitForNextUpdate();
-
-    expect(sendEnterpriseTrackEvent).toHaveBeenCalledTimes(1);
+    await waitFor(() => {
+      expect(sendEnterpriseTrackEvent).toHaveBeenCalledTimes(1);
+    });
   });
 });

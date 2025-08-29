@@ -1,15 +1,21 @@
 import React, { useState } from 'react';
-import { ActionRow, Button } from '@edx/paragon';
+import { ActionRow, Button } from '@openedx/paragon';
 import PropTypes from 'prop-types';
-import { getConfig } from '@edx/frontend-platform/config';
 import { logError } from '@edx/frontend-platform/logging';
 import { sendEnterpriseTrackEvent } from '@edx/frontend-enterprise-utils';
 
+import { FormattedMessage } from '@edx/frontend-platform/i18n';
 import LinkDeactivationAlertModal from './LinkDeactivationAlertModal';
 import LinkCopiedToast from './LinkCopiedToast';
 import { SETTINGS_ACCESS_EVENTS } from '../../../eventTracking';
+import getInviteURL from './utils';
 
-const ActionsTableCell = ({ row, onDeactivateLink, enterpriseUUID }) => {
+const ActionsTableCell = ({
+  row,
+  onDeactivateLink,
+  enterpriseUUID,
+  enterpriseSlug,
+}) => {
   const [isLinkDeactivationModalOpen, setIsLinkDeactivationModalOpen] = useState(false);
   const [isCopyLinkToastOpen, setIsCopyLinkToastOpen] = useState(false);
   const { isValid, uuid: inviteKeyUUID } = row.original;
@@ -24,7 +30,7 @@ const ActionsTableCell = ({ row, onDeactivateLink, enterpriseUUID }) => {
       return;
     }
     const addToClipboard = async () => {
-      const inviteURL = `${getConfig().ENTERPRISE_LEARNER_PORTAL_URL}/invite/${inviteKeyUUID}`;
+      const inviteURL = getInviteURL(enterpriseSlug, inviteKeyUUID);
       try {
         await navigator.clipboard.writeText(inviteURL);
         setIsCopyLinkToastOpen(true);
@@ -69,9 +75,21 @@ const ActionsTableCell = ({ row, onDeactivateLink, enterpriseUUID }) => {
       <div className="d-flex justify-content-end">
         <ActionRow>
           {hasClipboard && (
-            <Button onClick={handleCopyLink} variant="link" size="inline">Copy</Button>
+            <Button onClick={handleCopyLink} variant="link" size="inline">
+              <FormattedMessage
+                id="adminPortal.settings.access.copyLink"
+                defaultMessage="Copy"
+                description="Label for the copy link button."
+              />
+            </Button>
           )}
-          <Button onClick={handleDeactivateClick} variant="link" size="inline">Deactivate</Button>
+          <Button onClick={handleDeactivateClick} variant="link" size="inline">
+            <FormattedMessage
+              id="adminPortal.settings.access.deactivateLink"
+              defaultMessage="Deactivate"
+              description="Label for the deactivate link button."
+            />
+          </Button>
         </ActionRow>
       </div>
       <LinkDeactivationAlertModal
@@ -94,6 +112,7 @@ ActionsTableCell.propTypes = {
   }).isRequired,
   onDeactivateLink: PropTypes.func,
   enterpriseUUID: PropTypes.string.isRequired,
+  enterpriseSlug: PropTypes.string.isRequired,
 };
 
 ActionsTableCell.defaultProps = {

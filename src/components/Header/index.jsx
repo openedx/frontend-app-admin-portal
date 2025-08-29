@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import {
   Dropdown, Navbar, AvatarButton, Nav,
-} from '@edx/paragon';
+} from '@openedx/paragon';
 import { getProxyLoginUrl } from '@edx/frontend-enterprise-logistration';
 
 import {
@@ -20,6 +20,7 @@ export const Logo = ({ enterpriseLogo, enterpriseName }) => {
 
   return (
     <Img
+      dataTestId="header-logo-img"
       src={enterpriseLogo || logo}
       alt={`${enterpriseName} logo`}
       onError={(e) => { e.target.src = logo; }}

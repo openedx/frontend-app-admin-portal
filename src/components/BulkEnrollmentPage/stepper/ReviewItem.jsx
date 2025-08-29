@@ -1,8 +1,8 @@
 import React from 'react';
-import { Delete } from '@edx/paragon/icons';
+import { Delete } from '@openedx/paragon/icons';
 import {
   Card, IconButton, Icon,
-} from '@edx/paragon';
+} from '@openedx/paragon';
 import PropTypes from 'prop-types';
 
 import { deleteSelectedRowAction } from '../data/actions';

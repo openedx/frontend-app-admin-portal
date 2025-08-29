@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types';
 import {
   ActionRow, Button, Card, Form,
-} from '@edx/paragon';
+} from '@openedx/paragon';
 import ThemeSvg from './ThemeSvg';
 import { CUSTOM_THEME_LABEL, SCHOLAR_THEME } from '../data/constants';
 

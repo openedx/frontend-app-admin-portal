@@ -3,8 +3,8 @@ import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import {
   Alert, Button, Icon, Form,
-} from '@edx/paragon';
-import { CheckCircle, Error } from '@edx/paragon/icons';
+} from '@openedx/paragon';
+import { CheckCircle, Error } from '@openedx/paragon/icons';
 
 import TableContainer from '../../containers/TableContainer';
 import DownloadCsvButton from '../../containers/DownloadCsvButton';
@@ -536,6 +536,7 @@ class CouponDetails extends React.Component {
     return (
       <div
         id={`coupon-details-${id}`}
+        data-testid="coupon-details"
         className={classNames([
           'coupon-details row no-gutters px-2 my-3',
           {

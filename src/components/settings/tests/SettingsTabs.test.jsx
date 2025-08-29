@@ -5,14 +5,13 @@ import { IntlProvider } from '@edx/frontend-platform/i18n';
 import {
   screen,
   render,
-  act,
 } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import configureMockStore from 'redux-mock-store';
 
 import { MemoryRouter, Routes, Route } from 'react-router-dom';
 import SettingsTabs from '../SettingsTabs';
-import { SCHOLAR_THEME, SETTINGS_TAB_LABELS } from '../data/constants';
+import { SCHOLAR_THEME } from '../data/constants';
 
 import { features } from '../../../config';
 import '@testing-library/jest-dom/extend-expect';
@@ -93,7 +92,7 @@ const SettingsTabsWithRouter = ({ store = defaultStore }) => (
 );
 
 describe('<SettingsTabs />', () => {
-  afterEach(() => {
+  beforeEach(() => {
     features.EXTERNAL_LMS_CONFIGURATION = true;
     features.FEATURE_SSO_SETTINGS_TAB = true;
     features.SETTINGS_PAGE_LMS_TAB = true;
@@ -105,26 +104,28 @@ describe('<SettingsTabs />', () => {
   test('SSO tab is not rendered if FEATURE_SSO_SETTINGS_TAB = false', () => {
     features.FEATURE_SSO_SETTINGS_TAB = false;
     render(<SettingsTabsWithRouter />);
-    expect(screen.queryByText(SETTINGS_TAB_LABELS.sso)).not.toBeInTheDocument();
+    expect(screen.queryByText('Single Sign On (SSO)')).not.toBeInTheDocument();
   });
 
   test('Appearance tab is not rendered if FEATURE_SETTING_PAGE_APPEARANCE_TAB = false', () => {
     features.SETTINGS_PAGE_APPEARANCE_TAB = false;
     render(<SettingsTabsWithRouter />);
-    expect(screen.queryByText(SETTINGS_TAB_LABELS.appearance)).not.toBeInTheDocument();
+    expect(screen.queryByText('Portal Appearance')).not.toBeInTheDocument();
   });
 
   test('Clicking on a tab changes content via router', async () => {
+    const user = userEvent.setup();
     render(<SettingsTabsWithRouter />);
-    const lmsTab = screen.getByText(SETTINGS_TAB_LABELS.lms);
-    await act(async () => { userEvent.click(lmsTab); });
+    const lmsTab = screen.getByText('Learning Platform');
+    await user.click(lmsTab);
     expect(screen.queryByText(LMS_MOCK_CONTENT)).toBeTruthy();
   });
 
   test('Clicking on default tab does not change content', async () => {
+    const user = userEvent.setup();
     render(<SettingsTabsWithRouter />);
-    const accessTab = screen.getByText(SETTINGS_TAB_LABELS.access);
-    await act(async () => { userEvent.click(accessTab); });
+    const accessTab = screen.getByText('Configure Access');
+    await user.click(accessTab);
     expect(screen.queryByText(ACCESS_MOCK_CONTENT)).toBeTruthy();
   });
 

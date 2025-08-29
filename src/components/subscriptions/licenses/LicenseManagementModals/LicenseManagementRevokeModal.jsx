@@ -3,19 +3,10 @@ import PropTypes from 'prop-types';
 import dayjs from 'dayjs';
 
 import {
-  Alert,
-  StatefulButton,
-  ModalDialog,
-  ActionRow,
-  Hyperlink,
-  Icon,
-  Spinner,
-} from '@edx/paragon';
-import {
-  RemoveCircle,
-} from '@edx/paragon/icons';
+  ActionRow, Alert, Hyperlink, Icon, ModalDialog, Spinner, StatefulButton,
+} from '@openedx/paragon';
+import { RemoveCircle } from '@openedx/paragon/icons';
 import { logError } from '@edx/frontend-platform/logging';
-
 import { useRequestState } from './LicenseManagementModalHook';
 import { configuration } from '../../../../config';
 import { SHOW_REVOCATION_CAP_PERCENT } from '../../data/constants';
@@ -76,31 +67,76 @@ const LicenseManagementRevokeModal = ({
   const title = `Revoke License${revokeAllUsers || totalToRevoke > 1 ? 's' : ''}`;
 
   const isExpired = dayjs().isAfter(subscription.expirationDate);
+  const LICENSE_NOT_FOUND_ERROR_CODE = 404;
+  const REQUEST_EXCEEDS_REMAINING_REVOCATIONS_ERROR_CODE = 400;
+
+  const handleErrorMessages = (errorMessages) => {
+    // Treat LICENSE_NOT_FOUND_ERROR_CODE errors as successful revocations to handle already revoked licenses
+    // This allows the process to continue for valid licenses and avoids unnecessary
+    // errors when users retry with already revoked emails
+    if (errorMessages && errorMessages.length > 0) {
+      const non404Errors = errorMessages.filter(
+        (error) => error.error_response_status !== LICENSE_NOT_FOUND_ERROR_CODE,
+      );
+      if (non404Errors.length > 0) {
+        throw non404Errors;
+      }
+    }
+  };
+
+  const bulkRevokeUsers = useCallback(async (options) => {
+    try {
+      const response = await LicenseManagerApiService.licenseBulkRevoke(
+        subscription.uuid,
+        options,
+      );
+
+      if (response.status === 207) {
+        // Case 1: Partial revocation success
+        handleErrorMessages(response.data.unsuccessful_revocations);
+        return response.data;
+      }
+      return response.data;
+    } catch (error) {
+      if (error.response) {
+        const { status, data } = error.response;
+        if (status === REQUEST_EXCEEDS_REMAINING_REVOCATIONS_ERROR_CODE || status === LICENSE_NOT_FOUND_ERROR_CODE) {
+          // Case 2: All revocations failed
+          handleErrorMessages(data.unsuccessful_revocations);
+          return data; // treat this as success if all errors were LICENSE_NOT_FOUND_ERROR_CODE
+        }
+      }
+      throw error;
+    }
+  }, [subscription.uuid]);
 
   const handleSubmit = useCallback(async () => {
     if (onSubmit) {
       onSubmit();
     }
     setRequestState({ ...initialRequestState, loading: true });
-    const makeRequest = () => {
+    const makeRequest = async () => {
       const filtersPresent = activeFilters.length > 0;
-
+      const options = {};
       // If all users are selected and there are no filters, hit revoke-all endpoint
-      if (revokeAllUsers && !filtersPresent) {
-        return LicenseManagerApiService.licenseRevokeAll(subscription.uuid);
+      if (revokeAllUsers) {
+        if (!filtersPresent) {
+          return LicenseManagerApiService.licenseRevokeAll(subscription.uuid);
+        }
+        options.filters = transformFiltersForRequest(activeFilters);
+        return bulkRevokeUsers(options);
       }
-
       // If all users not selected, then hit bulk-revoke with the emails loaded into the UI
       const userEmailsToRevoke = usersToRevoke.map((user) => user.email);
-
-      const options = {};
       if (userEmailsToRevoke.length > 0) {
         options.user_emails = userEmailsToRevoke;
       } else {
-        options.filters = transformFiltersForRequest(activeFilters);
+        // If the UI happened to render bulk actions without any state set for the table or just a filter is set
+        // with no selected items.
+        logError('Unable to revoke license(s) based on table state. No licenses selected for revocation');
+        throw new Error('Unable to revoke license(s) based on table state');
       }
-
-      return LicenseManagerApiService.licenseBulkRevoke(subscription.uuid, options);
+      return bulkRevokeUsers(options);
     };
 
     try {
@@ -113,13 +149,14 @@ const LicenseManagementRevokeModal = ({
     }
   }, [
     onSubmit,
+    setRequestState,
+    initialRequestState,
     activeFilters,
     revokeAllUsers,
     usersToRevoke,
+    bulkRevokeUsers,
     subscription.uuid,
-    initialRequestState,
     onSuccess,
-    setRequestState,
   ]);
 
   const handleClose = () => {
@@ -147,6 +184,7 @@ const LicenseManagementRevokeModal = ({
       isOpen={isOpen}
       onClose={handleClose}
       hasCloseButton={false}
+      isOverflowVisible={false}
     >
       <ModalDialog.Header>
         <ModalDialog.Title>
@@ -164,6 +202,9 @@ const LicenseManagementRevokeModal = ({
                   contact customer support.
                 </Hyperlink>
               </p>
+              {requestState.error?.map?.((err, index) => (
+                <p key={err.error}>{`Error: ${index + 1}: ${err.error}`}</p>
+              ))}
             </Alert>
             )}
         {showRevocationCapAlert(subscription.isRevocationCapEnabled, subscription.revocations)

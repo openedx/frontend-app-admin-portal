@@ -2,34 +2,35 @@ import { connect } from 'react-redux';
 
 import EnterpriseApp from '../../components/EnterpriseApp';
 
-import { fetchPortalConfiguration } from '../../data/actions/portalConfiguration';
 import { toggleSidebarToggle } from '../../data/actions/sidebar';
+import { fetchEnterpriseAppData } from '../../data/actions/enterpriseApp';
 
 const mapStateToProps = (state) => {
   const enterpriseListState = state.table['enterprise-list'] || {};
-
   return {
-    enterprises: enterpriseListState.data,
-    error: state.portalConfiguration.error,
-    enableCodeManagementScreen: state.portalConfiguration.enableCodeManagementScreen,
-    enableSubscriptionManagementScreen: state.portalConfiguration.enableSubscriptionManagementScreen, // eslint-disable-line max-len
-    enableSamlConfigurationScreen: state.portalConfiguration.enableSamlConfigurationScreen,
+    adminPortalLearnerProfileViewEnabled: state.portalConfiguration.adminPortalLearnerProfileViewEnabled,
+    disableExpiryMessagingForLearnerCredit: state.portalConfiguration.disableExpiryMessagingForLearnerCredit,
     enableAnalyticsScreen: state.portalConfiguration.enableAnalyticsScreen,
+    enableCodeManagementScreen: state.portalConfiguration.enableCodeManagementScreen,
     enableLearnerPortal: state.portalConfiguration.enableLearnerPortal,
     enableLmsConfigurationsScreen: state.portalConfiguration.enableLmsConfigurationsScreen,
-    enableReportingConfigurationsScreen: state.portalConfiguration.enableReportingConfigScreen,
     enablePortalLearnerCreditManagementScreen: state.portalConfiguration.enablePortalLearnerCreditManagementScreen,
+    enableReportingConfigurationsScreen: state.portalConfiguration.enableReportingConfigScreen,
+    enableSamlConfigurationScreen: state.portalConfiguration.enableSamlConfigurationScreen,
+    enableSubscriptionManagementScreen: state.portalConfiguration.enableSubscriptionManagementScreen,
+    enterpriseBranding: state.portalConfiguration.enterpriseBranding,
+    enterpriseFeatures: state.portalConfiguration.enterpriseFeatures,
     enterpriseId: state.portalConfiguration.enterpriseId,
     enterpriseName: state.portalConfiguration.enterpriseName,
-    enterpriseFeatures: state.portalConfiguration.enterpriseFeatures,
-    enterpriseBranding: state.portalConfiguration.enterpriseBranding,
+    enterprises: enterpriseListState.data,
+    error: state.portalConfiguration.error,
     loading: state.portalConfiguration.loading,
   };
 };
 
 const mapDispatchToProps = dispatch => ({
-  fetchPortalConfiguration: (slug) => {
-    dispatch(fetchPortalConfiguration(slug));
+  fetchEnterpriseAppData: (slug) => {
+    dispatch(fetchEnterpriseAppData(slug));
   },
   toggleSidebarToggle: () => {
     dispatch(toggleSidebarToggle());

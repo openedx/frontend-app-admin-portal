@@ -1,16 +1,23 @@
-import { Button, Hyperlink } from '@edx/paragon';
+import { Button, Hyperlink } from '@openedx/paragon';
 import { sendEnterpriseTrackEvent } from '@edx/frontend-enterprise-utils';
 
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import React from 'react';
+import { FormattedMessage } from '@edx/frontend-platform/i18n';
+import { useBudgetId, useSubsidyAccessPolicy, useEnterpriseGroup } from '../data';
 import NewAssignmentModalButton from '../assignment-modal/NewAssignmentModalButton';
 import EVENT_NAMES from '../../../eventTracking';
-import CARD_TEXT from '../constants';
-
-const { BUTTON_ACTION } = CARD_TEXT;
 
 const CourseCardFooterActions = ({ enterpriseId, course }) => {
+  const { subsidyAccessPolicyId } = useBudgetId();
+  const {
+    data: subsidyAccessPolicy,
+  } = useSubsidyAccessPolicy(subsidyAccessPolicyId);
+  const { data } = useEnterpriseGroup(subsidyAccessPolicy);
+  const bnrEnabled = subsidyAccessPolicy?.bnrEnabled;
+  const catalogGroupView = subsidyAccessPolicy?.groupAssociations?.length > 0
+    && !data.appliesToAllContexts;
   const { linkToCourse, uuid } = course;
   const handleViewCourse = () => {
     sendEnterpriseTrackEvent(
@@ -19,22 +26,33 @@ const CourseCardFooterActions = ({ enterpriseId, course }) => {
       { courseUuid: uuid },
     );
   };
-  return [
-    <Button
-      key="link-to-course"
-      as={Hyperlink}
-      data-testid="hyperlink-view-course"
-      onClick={handleViewCourse}
-      destination={linkToCourse}
-      target="_blank"
-      variant="outline-primary"
-    >
-      {BUTTON_ACTION.viewCourse}
-    </Button>,
-    <NewAssignmentModalButton key="assignment-modal-trigger" course={course}>
-      {BUTTON_ACTION.assign}
-    </NewAssignmentModalButton>,
-  ];
+  return (
+    <>
+      <Button
+        as={Hyperlink}
+        data-testid="hyperlink-view-course"
+        onClick={handleViewCourse}
+        destination={linkToCourse}
+        target="_blank"
+        variant="outline-primary"
+      >
+        <FormattedMessage
+          id="lcm.budget.detail.page.catalog.tab.course.card.view.course"
+          defaultMessage="View course"
+          description="Button text to view course"
+        />
+      </Button>
+      {(!catalogGroupView && !bnrEnabled) && (
+        <NewAssignmentModalButton key="assignment-modal-trigger" course={course}>
+          <FormattedMessage
+            id="lcm.budget.detail.page.catalog.tab.course.card.assign"
+            defaultMessage="Assign"
+            description="Button text to assign course"
+          />
+        </NewAssignmentModalButton>
+      )}
+    </>
+  );
 };
 
 CourseCardFooterActions.propTypes = {

@@ -1,5 +1,5 @@
 import { getConfig } from '@edx/frontend-platform/config';
-import { Form, Hyperlink } from '@edx/paragon';
+import { Form, Hyperlink } from '@openedx/paragon';
 import PropTypes from 'prop-types';
 import { useContext } from 'react';
 import { connect } from 'react-redux';

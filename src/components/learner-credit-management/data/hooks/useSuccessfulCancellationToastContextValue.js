@@ -8,13 +8,30 @@ const generateSuccessCancelMessage = (assignmentUuidCount) => {
   return 'Assignment canceled';
 };
 
+const generateSuccessApprovalCancelMessage = (approvalCount) => {
+  if (approvalCount > 1) {
+    return `Approved requests canceled (${approvalCount})`;
+  }
+
+  return 'Approved request canceled';
+};
+
 const useSuccessfulCancellationToastContextValue = () => {
   const [isToastOpen, setIsToastOpen] = useState(false);
   const [assignmentUuidCount, setAssignmentUuidCount] = useState();
+  const [approvalCount, setApprovalCount] = useState();
+  const [toastType, setToastType] = useState('assignment'); // 'assignment' or 'approval'
 
   const handleDisplayToast = useCallback((assignmentUuids) => {
     setIsToastOpen(true);
     setAssignmentUuidCount(assignmentUuids);
+    setToastType('assignment');
+  }, []);
+
+  const handleDisplayApprovalToast = useCallback((count) => {
+    setIsToastOpen(true);
+    setApprovalCount(count);
+    setToastType('approval');
   }, []);
 
   const handleCloseToast = useCallback(() => {
@@ -22,17 +39,24 @@ const useSuccessfulCancellationToastContextValue = () => {
   }, []);
 
   const successfulAssignmentCancellationToastMessage = generateSuccessCancelMessage(assignmentUuidCount);
+  const successfulApprovalCancellationToastMessage = generateSuccessApprovalCancelMessage(approvalCount);
+
+  const toastMessage = toastType === 'approval'
+    ? successfulApprovalCancellationToastMessage
+    : successfulAssignmentCancellationToastMessage;
 
   const successfulCancellationToastContextValue = useMemo(() => ({
     isSuccessfulAssignmentCancellationToastOpen: isToastOpen,
     displayToastForAssignmentCancellation: handleDisplayToast,
+    displayToastForApprovalCancellation: handleDisplayApprovalToast,
     closeToastForAssignmentCancellation: handleCloseToast,
-    successfulAssignmentCancellationToastMessage,
+    successfulAssignmentCancellationToastMessage: toastMessage,
   }), [
     isToastOpen,
     handleDisplayToast,
+    handleDisplayApprovalToast,
     handleCloseToast,
-    successfulAssignmentCancellationToastMessage,
+    toastMessage,
   ]);
 
   return successfulCancellationToastContextValue;

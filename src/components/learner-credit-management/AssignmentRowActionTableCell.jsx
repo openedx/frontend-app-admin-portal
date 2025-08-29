@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Stack } from '@edx/paragon';
+import { Stack } from '@openedx/paragon';
 import PendingAssignmentRemindButton from './PendingAssignmentRemindButton';
 import PendingAssignmentCancelButton from './PendingAssignmentCancelButton';
 

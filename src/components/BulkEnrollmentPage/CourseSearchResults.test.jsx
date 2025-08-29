@@ -11,9 +11,7 @@ import { SearchContext } from '@edx/frontend-enterprise-catalog-search';
 import { IntlProvider } from '@edx/frontend-platform/i18n';
 
 import BulkEnrollContextProvider from './BulkEnrollmentContext';
-import {
-  BaseCourseSearchResults, NO_DATA_MESSAGE, TABLE_HEADERS,
-} from './CourseSearchResults';
+import { BaseCourseSearchResults, NO_DATA_MESSAGE, TABLE_HEADERS } from './CourseSearchResults';
 import { renderWithRouter } from '../test/testUtils';
 import '../../../__mocks__/react-instantsearch-dom';
 
@@ -105,22 +103,23 @@ describe('<CourseSearchResults />', () => {
     expect(screen.getAllByRole('cell', { name: 'edX' })).toHaveLength(2);
   });
   it('renders popover with course description', async () => {
+    const user = userEvent.setup();
     renderWithRouter(<CourseSearchWrapper {...defaultProps} />);
     expect(screen.queryByText(/short description of course 1/)).not.toBeInTheDocument();
     const courseTitle = screen.getByText(testCourseName);
-    userEvent.click(courseTitle);
+    await user.click(courseTitle);
     await waitFor(() => {
       expect(screen.getByText(/short description of course 1/)).toBeInTheDocument();
     });
   });
   it('displays search pagination', () => {
     renderWithRouter(<CourseSearchWrapper {...defaultProps} />);
-    expect(screen.getByText('Navigate Right'));
-    expect(screen.getByText('Navigate Left'));
+    expect(screen.getByLabelText('Previous'));
+    expect(screen.getByLabelText('Next'));
   });
   it('returns an error message if there\'s an error', () => {
     const errorMsg = 'It did not work';
-    const expectedError = `An error occured while retrieving data ${errorMsg}`;
+    const expectedError = `An error occurred while retrieving data ${errorMsg}`;
     renderWithRouter(<CourseSearchWrapper props={{ ...defaultProps, error: { message: errorMsg } }} />);
     expect(screen.getByText(expectedError));
   });
@@ -128,10 +127,11 @@ describe('<CourseSearchResults />', () => {
     renderWithRouter(<CourseSearchWrapper props={{ ...defaultProps, isSearchStalled: true }} />);
     expect(screen.getByText('Loading...'));
   });
-  it('shows selection options when at least one course is selected', () => {
+  it('shows selection options when at least one course is selected', async () => {
+    const user = userEvent.setup();
     renderWithRouter(<CourseSearchWrapper {...defaultProps} />);
     const rowToSelect = screen.getByText(testCourseName2).closest('tr');
-    userEvent.click(within(rowToSelect).getByTestId('selectOne'));
+    await user.click(within(rowToSelect).getByTestId('selectOne'));
     expect(screen.getByText('1 selected (1 shown below)', { exact: false })).toBeInTheDocument();
   });
   it('renders a message when there are no results', () => {

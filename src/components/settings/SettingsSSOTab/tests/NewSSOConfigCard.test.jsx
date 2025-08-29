@@ -1,14 +1,15 @@
 import React from 'react';
 import '@testing-library/jest-dom/extend-expect';
 import userEvent from '@testing-library/user-event';
-import { act, render, screen } from '@testing-library/react';
+import { screen } from '@testing-library/react';
 import { SSOConfigContext, SSO_INITIAL_STATE } from '../SSOConfigContext';
 import NewSSOConfigCard from '../NewSSOConfigCard';
 import LmsApiService from '../../../../data/services/LmsApiService';
+import { renderWithI18nProvider } from '../../../test/testUtils';
 
 describe('New SSO Config Card Tests', () => {
   test('displays enabled and validated status icon properly', async () => {
-    render(
+    renderWithI18nProvider(
       <NewSSOConfigCard
         config={{
           display_name: 'test',
@@ -33,7 +34,7 @@ describe('New SSO Config Card Tests', () => {
     ).toBeInTheDocument();
   });
   test('displays not validated status icon properly', async () => {
-    render(
+    renderWithI18nProvider(
       <NewSSOConfigCard
         config={{
           display_name: 'test',
@@ -58,7 +59,7 @@ describe('New SSO Config Card Tests', () => {
     ).toBeInTheDocument();
   });
   test('displays key off icon status icon properly', async () => {
-    render(
+    renderWithI18nProvider(
       <NewSSOConfigCard
         config={{
           display_name: 'test',
@@ -83,7 +84,7 @@ describe('New SSO Config Card Tests', () => {
     ).toBeInTheDocument();
   });
   test('displays badges properly', async () => {
-    render(
+    renderWithI18nProvider(
       <NewSSOConfigCard
         config={{
           display_name: 'test',
@@ -106,7 +107,7 @@ describe('New SSO Config Card Tests', () => {
         'existing-sso-config-card-badge-in-progress',
       ),
     ).toBeInTheDocument();
-    render(
+    renderWithI18nProvider(
       <NewSSOConfigCard
         config={{
           display_name: 'test',
@@ -131,6 +132,7 @@ describe('New SSO Config Card Tests', () => {
     ).toBeInTheDocument();
   });
   test('displays configure button properly', async () => {
+    const user = userEvent.setup();
     const mockSetIsStepperOpen = jest.fn();
     const mockSetProviderConfig = jest.fn();
     const contextValue = {
@@ -156,7 +158,7 @@ describe('New SSO Config Card Tests', () => {
       setProviderConfig: mockSetProviderConfig,
       setRefreshBool: jest.fn(),
     };
-    render(
+    renderWithI18nProvider(
       <SSOConfigContext.Provider value={contextValue}>
         <NewSSOConfigCard
           config={{
@@ -179,14 +181,13 @@ describe('New SSO Config Card Tests', () => {
     const button = screen.getByTestId(
       'existing-sso-config-card-configure-button',
     );
-    act(() => {
-      userEvent.click(button);
-    });
+
+    await user.click(button);
     expect(mockSetIsStepperOpen).toHaveBeenCalledWith(true);
     expect(mockSetProviderConfig).toHaveBeenCalled();
   });
   test('displays enable button properly', async () => {
-    render(
+    renderWithI18nProvider(
       <NewSSOConfigCard
         config={{
           display_name: 'test',
@@ -211,9 +212,10 @@ describe('New SSO Config Card Tests', () => {
     ).toBeInTheDocument();
   });
   test('handles kebob Delete dropdown option', async () => {
+    const user = userEvent.setup();
     const spy = jest.spyOn(LmsApiService, 'deleteEnterpriseSsoOrchestrationRecord');
     spy.mockImplementation(() => Promise.resolve({}));
-    render(
+    renderWithI18nProvider(
       <NewSSOConfigCard
         config={{
           display_name: 'test',
@@ -231,18 +233,15 @@ describe('New SSO Config Card Tests', () => {
         refreshBool={false}
       />,
     );
-    act(() => {
-      userEvent.click(screen.getByTestId('existing-sso-config-card-dropdown'));
-    });
-    act(() => {
-      userEvent.click(screen.getByTestId('existing-sso-config-delete-dropdown'));
-    });
+    await user.click(screen.getByTestId('existing-sso-config-card-dropdown'));
+    await user.click(screen.getByTestId('existing-sso-config-delete-dropdown'));
     expect(spy).toBeCalledTimes(1);
   });
   test('handles kebob Disable dropdown option', async () => {
+    const user = userEvent.setup();
     const spy = jest.spyOn(LmsApiService, 'updateEnterpriseSsoOrchestrationRecord');
     spy.mockImplementation(() => Promise.resolve({}));
-    render(
+    renderWithI18nProvider(
       <NewSSOConfigCard
         config={{
           display_name: 'test',
@@ -260,12 +259,8 @@ describe('New SSO Config Card Tests', () => {
         refreshBool={false}
       />,
     );
-    act(() => {
-      userEvent.click(screen.getByTestId('existing-sso-config-card-dropdown'));
-    });
-    act(() => {
-      userEvent.click(screen.getByTestId('existing-sso-config-disable-dropdown'));
-    });
+    await user.click(screen.getByTestId('existing-sso-config-card-dropdown'));
+    await user.click(screen.getByTestId('existing-sso-config-disable-dropdown'));
     expect(spy).toBeCalledTimes(1);
   });
 });

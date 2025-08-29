@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { reduxForm, SubmissionError } from 'redux-form';
 import {
   Button, ModalDialog, ActionRow, Spinner,
-} from '@edx/paragon';
+} from '@openedx/paragon';
 import { injectIntl, intlShape } from '@edx/frontend-platform/i18n';
 
 import SaveTemplateButton from '../../containers/SaveTemplateButton';
@@ -212,10 +212,12 @@ export class BaseCodeReminderModal extends React.Component {
     return (
       <ModalDialog
         isOpen
+        data-testid="code-reminder-modal"
         size="lg"
         onClose={onClose}
         className="code-reminder"
         hasCloseButton
+        isOverflowVisible={false}
       >
         <ModalDialog.Header>
           <ModalDialog.Title>
@@ -231,6 +233,7 @@ export class BaseCodeReminderModal extends React.Component {
               Cancel
             </ModalDialog.CloseButton>
             <Button
+              data-testid="remind-submit-btn"
               key="remind-submit-btn"
               disabled={submitting}
               className="code-remind-save-btn"

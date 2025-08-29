@@ -1,15 +1,18 @@
-import React, { useContext, useEffect, useMemo } from 'react';
+import { useContext, useEffect, useMemo } from 'react';
 import { connectStateResults } from 'react-instantsearch-dom';
 import PropTypes from 'prop-types';
 
 import { SearchPagination, SearchContext } from '@edx/frontend-enterprise-catalog-search';
-import { FormattedMessage, injectIntl } from '@edx/frontend-platform/i18n';
+import { FormattedMessage } from '@edx/frontend-platform/i18n';
 import {
   Alert, CardView, DataTable, TextFilter,
-} from '@edx/paragon';
+} from '@openedx/paragon';
 
 import CourseCard from '../cards/CourseCard';
-import { DEFAULT_PAGE, SEARCH_RESULT_PAGE_SIZE } from '../data';
+import {
+  DEFAULT_PAGE,
+  SEARCH_RESULT_PAGE_SIZE,
+} from '../data';
 
 export const ERROR_MESSAGE = 'An error occurred while retrieving data';
 
@@ -54,7 +57,6 @@ export const BaseCatalogSearchResults = ({
     ],
     [],
   );
-
   const tableData = useMemo(
     () => searchResults?.hits || [],
     [searchResults?.hits],
@@ -65,7 +67,6 @@ export const BaseCatalogSearchResults = ({
   useEffect(() => {
     setNoContent(searchResults === null || searchResults?.nbHits === 0);
   }, [searchResults, setNoContent]);
-
   if (error) {
     return (
       <Alert className="mt-2" variant="warning">
@@ -140,4 +141,4 @@ BaseCatalogSearchResults.propTypes = {
   setNoContent: PropTypes.func,
 };
 
-export default connectStateResults(injectIntl(BaseCatalogSearchResults));
+export default connectStateResults(BaseCatalogSearchResults);

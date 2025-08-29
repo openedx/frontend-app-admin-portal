@@ -5,6 +5,7 @@ import {
 } from '@testing-library/react';
 import '@testing-library/jest-dom/extend-expect';
 
+import { IntlProvider } from '@edx/frontend-platform/i18n';
 import SubscriptionExpiredModal from '../../expiration/SubscriptionExpiredModal';
 import {
   SUBSCRIPTION_PLAN_ZERO_STATE,
@@ -16,9 +17,11 @@ const ExpiredModalWithContext = ({
   store,
   isOpen,
 }) => (
-  <SubscriptionManagementContext detailState={detailState} store={store}>
-    <SubscriptionExpiredModal isOpen={isOpen} onClose={() => {}} />
-  </SubscriptionManagementContext>
+  <IntlProvider locale="en">
+    <SubscriptionManagementContext detailState={detailState} store={store}>
+      <SubscriptionExpiredModal isOpen={isOpen} onClose={() => {}} />
+    </SubscriptionManagementContext>
+  </IntlProvider>
 );
 
 ExpiredModalWithContext.propTypes = {

@@ -1,8 +1,8 @@
 import React, { useEffect } from 'react';
 import {
   Alert, Button, Form, Hyperlink, ModalDialog,
-} from '@edx/paragon';
-import { Info } from '@edx/paragon/icons';
+} from '@openedx/paragon';
+import { Info } from '@openedx/paragon/icons';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import isURL from 'validator/lib/isURL';
@@ -130,7 +130,7 @@ const SSOConfigConfigureStep = ({
   };
 
   // these are the suggested values we've come back to this step after an error
-  // https://edx.readthedocs.io/projects/edx-installing-configuring-and-running/en/latest/configuration/tpa/tpa_integrate_open/tpa_SAML_IdP.html#configure-the-saml-identity-provider
+  // https://docs.openedx.org/en/latest/site_ops/install_configure_run_guide/configuration/tpa/tpa_integrate_open/tpa_SAML_IdP.html#configure-the-saml-identity-provider
   const errorData = {
     displayName: '',
     userId: 'userid',
@@ -161,6 +161,7 @@ const SSOConfigConfigureStep = ({
         onClose={closeExitModal}
         isOpen={showExitModal}
         title="Save on Exit Modal"
+        isOverflowVisible={false}
       >
         <ModalDialog.Header className="mt-2 mb-n2">
           <ModalDialog.Title>

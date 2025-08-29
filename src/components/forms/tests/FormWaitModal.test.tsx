@@ -2,6 +2,7 @@
 import React from 'react';
 import '@testing-library/jest-dom/extend-expect';
 import { screen, render } from '@testing-library/react';
+import { IntlProvider } from '@edx/frontend-platform/i18n';
 
 import FormWaitModal from '../FormWaitModal';
 import FormContextProvider from '../FormContext';
@@ -18,19 +19,21 @@ const FormWaitModalWrapper = ({
     stateMap: { SHOW_MODAL: showModal },
   };
   return (
-    <FormContextProvider
-      dispatch={mockDispatch}
-      formContext={contextValue || {}}
-    >
-      <FormWaitModal
-        {...{
-          onClose,
-          triggerState,
-          header,
-          text,
-        }}
-      />
-    </FormContextProvider>
+    <IntlProvider locale="en">
+      <FormContextProvider
+        dispatch={mockDispatch}
+        formContext={contextValue || {}}
+      >
+        <FormWaitModal
+          {...{
+            onClose,
+            triggerState,
+            header,
+            text,
+          }}
+        />
+      </FormContextProvider>
+    </IntlProvider>
   );
 };
 

@@ -25,7 +25,9 @@ const BudgetCard = ({ original }) => {
     enterpriseUUID,
     id,
     isAssignable,
+    isBnREnabled,
     isRetired,
+    retiredAt,
     name,
     source,
     start,
@@ -50,7 +52,9 @@ const BudgetCard = ({ original }) => {
         displayName={name}
         enterpriseSlug={enterpriseSlug}
         isAssignable={isAssignable}
+        isBnREnabled={isBnREnabled}
         isRetired={isRetired}
+        retiredAt={retiredAt}
       />
     );
   }
@@ -59,8 +63,8 @@ const BudgetCard = ({ original }) => {
   if (source === BUDGET_TYPES.ecommerce) {
     return (
       <SubBudgetCard
-        isLoading={isLoadingSubsidySummaryAnalyticsApi}
         id={subsidySummaryAnalyticsApi?.offerId}
+        isLoading={isLoadingSubsidySummaryAnalyticsApi}
         start={start}
         end={end}
         available={subsidySummaryAnalyticsApi?.remainingFunds}
@@ -106,10 +110,11 @@ BudgetCard.propTypes = {
       pending: PropTypes.number,
     }),
     isAssignable: PropTypes.bool,
+    isBnREnabled: PropTypes.bool,
     isRetired: PropTypes.bool,
+    retiredAt: PropTypes.string,
     enterpriseUUID: PropTypes.string.isRequired,
     enterpriseSlug: PropTypes.string.isRequired,
-    status: PropTypes.string,
   }).isRequired,
 };
 

@@ -5,13 +5,14 @@ import { logError } from '@edx/frontend-platform/logging';
 import { camelCaseObject } from '@edx/frontend-platform/utils';
 import { getConfig } from '@edx/frontend-platform/config';
 import { useQuery } from '@tanstack/react-query';
+import { useIntl } from '@edx/frontend-platform/i18n';
 
 import EcommerceApiService from '../../../data/services/EcommerceApiService';
 import LicenseManagerApiService from '../../../data/services/LicenseManagerAPIService';
 import SubsidyApiService from '../../../data/services/EnterpriseSubsidyApiService';
 import { BUDGET_TYPES } from '../../EnterpriseApp/data/constants';
 import EnterpriseAccessApiService from '../../../data/services/EnterpriseAccessApiService';
-import { learnerCreditManagementQueryKeys } from '../../learner-credit-management/data';
+import { learnerCreditManagementQueryKeys, isBudgetRetiredOrExpired, getBudgetStatus } from '../../learner-credit-management/data';
 import { isAssignableSubsidyAccessPolicyType } from '../../../utils';
 
 dayjs.extend(isBetween);
@@ -76,7 +77,9 @@ async function fetchEnterpriseBudgets({
         pending: result.aggregates.amountAllocatedUsd,
       },
       isAssignable: isAssignableSubsidyAccessPolicyType(result),
+      isBnREnabled: result.bnrEnabled,
       isRetired: result.retired,
+      retiredAt: result.retiredAt,
     });
   });
   enterpriseSubsidyResults?.forEach((result) => {
@@ -110,15 +113,52 @@ export const useEnterpriseBudgets = ({
   enablePortalLearnerCreditManagementScreen,
   enterpriseId,
   isTopDownAssignmentEnabled,
-}) => useQuery({
-  queryKey: learnerCreditManagementQueryKeys.budgets(enterpriseId),
-  queryFn: (args) => fetchEnterpriseBudgets({
-    queryArgs: args,
-    isTopDownAssignmentEnabled,
-    enterpriseId,
-    enablePortalLearnerCreditManagementScreen,
-  }),
-});
+  queryOptions = {},
+}) => {
+  const intl = useIntl();
+
+  return useQuery({
+    queryKey: learnerCreditManagementQueryKeys.budgets(enterpriseId),
+    queryFn: (args) => fetchEnterpriseBudgets({
+      queryArgs: args,
+      isTopDownAssignmentEnabled,
+      enterpriseId,
+      enablePortalLearnerCreditManagementScreen,
+    }),
+    select: (data) => {
+      if (!data?.budgets) {
+        return data;
+      }
+
+      const updatedBudgets = data.budgets.map(budget => {
+        if (budget.source === BUDGET_TYPES.policy) {
+          const { status } = getBudgetStatus({
+            intl,
+            startDateStr: budget.start,
+            endDateStr: budget.end,
+            isBudgetRetired: budget.isRetired,
+          });
+          return {
+            ...budget,
+            isRetiredOrExpired: isBudgetRetiredOrExpired(status),
+          };
+        }
+        return budget;
+      });
+
+      const transformedData = {
+        ...data,
+        budgets: updatedBudgets,
+      };
+
+      if (queryOptions.select) {
+        return queryOptions.select(transformedData);
+      }
+
+      return transformedData;
+    },
+  });
+};
 
 export const useCustomerAgreement = ({ enterpriseId }) => {
   const [customerAgreement, setCustomerAgreement] = useState();

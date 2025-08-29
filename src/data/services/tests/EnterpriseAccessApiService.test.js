@@ -15,6 +15,7 @@ axios.post = jest.fn();
 axios.patch = jest.fn();
 const enterpriseAccessBaseUrl = `${process.env.ENTERPRISE_ACCESS_BASE_URL}`;
 const mockEnterpriseUUID = 'test-enterprise-id';
+const mockPolicyId = 'test-policy-id';
 const mockLicenseRequestUUID = 'test-license-request-uuid';
 const mockCouponCodeRequestUUID = 'test-coupon-code-request-uuid';
 const mockAssignmentConfigurationUUID = 'test-assignment-configuration-uuid';
@@ -229,6 +230,249 @@ describe('EnterpriseAccessApiService', () => {
     EnterpriseAccessApiService.remindAllContentAssignments(mockAssignmentConfigurationUUID, options);
     expect(axios.post).toBeCalledWith(
       `${enterpriseAccessBaseUrl}/api/v1/assignment-configurations/${mockAssignmentConfigurationUUID}/admin/assignments/remind-all/?learner_state__in=pending%2Cwaiting`,
+    );
+  });
+
+  test('getLearnerCreditPlans calls enterprise-access to fetch learner credit plans', () => {
+    const mockLmsUserId = 'test-lms-user-id';
+    EnterpriseAccessApiService.getLearnerCreditPlans({
+      enterpriseId: mockEnterpriseUUID,
+      lmsUserId: mockLmsUserId,
+    });
+    expect(axios.get).toBeCalledWith(
+      `${enterpriseAccessBaseUrl}/api/v1/policy-redemption/credits_available/?enterprise_customer_uuid=${mockEnterpriseUUID}&lms_user_id=${mockLmsUserId}`,
+    );
+  });
+
+  test('fetchAdminLearnerProfileData calls enterprise-access with correct query params', () => {
+    const testUserEmail = 'markscout@lumon.com';
+    const testLmsUserId = 2;
+
+    const queryParams = new URLSearchParams({
+      user_email: testUserEmail,
+      lms_user_id: testLmsUserId,
+      enterprise_customer_uuid: mockEnterpriseUUID,
+    });
+
+    EnterpriseAccessApiService.fetchAdminLearnerProfileData(testUserEmail, testLmsUserId, mockEnterpriseUUID);
+
+    expect(axios.get).toBeCalledWith(`${enterpriseAccessBaseUrl}/api/v1/admin-view/learner_profile/?${queryParams.toString()}`);
+  });
+  test('fetchBnrSubsidyRequests calls enterprise-access with enterpriseUUID only', () => {
+    EnterpriseAccessApiService.fetchBnrSubsidyRequests(mockEnterpriseUUID, mockPolicyId);
+
+    const expectedParams = new URLSearchParams({
+      enterprise_customer_uuid: mockEnterpriseUUID,
+      policy_uuid: mockPolicyId,
+    });
+
+    expect(axios.get).toBeCalledWith(
+      `${enterpriseAccessBaseUrl}/api/v1/learner-credit-requests/?${expectedParams.toString()}`,
+    );
+  });
+
+  test('approveBnrSubsidyRequest calls enterprise-access to approve BNR subsidy request', () => {
+    const mockBnrSubsidyRequestUUID = 'test-bnr-subsidy-request-uuid';
+
+    EnterpriseAccessApiService.approveBnrSubsidyRequest({
+      enterpriseId: mockEnterpriseUUID,
+      subsidyRequestUUID: mockBnrSubsidyRequestUUID,
+      subsidyAccessPolicyId: mockSubsidyAccessPolicyUUID,
+    });
+
+    expect(axios.post).toBeCalledWith(`${enterpriseAccessBaseUrl}/api/v1/learner-credit-requests/approve/`, {
+      learner_credit_request_uuid: mockBnrSubsidyRequestUUID,
+      enterprise_customer_uuid: mockEnterpriseUUID,
+      policy_uuid: mockSubsidyAccessPolicyUUID,
+
+    });
+  });
+
+  test('fetchBnrSubsidyRequests calls enterprise-access with enterpriseUUID and options', () => {
+    const options = {
+      page: 2,
+      page_size: 10,
+      state: 'requested,declined',
+      search: 'test@example.com',
+      ordering: '-created',
+    };
+
+    EnterpriseAccessApiService.fetchBnrSubsidyRequests(mockEnterpriseUUID, mockPolicyId, options);
+
+    const expectedParams = new URLSearchParams({
+      enterprise_customer_uuid: mockEnterpriseUUID,
+      policy_uuid: mockPolicyId,
+      page: '2',
+      page_size: '10',
+      state: 'requested,declined',
+      search: 'test@example.com',
+      ordering: '-created',
+    });
+
+    expect(axios.get).toBeCalledWith(
+      `${enterpriseAccessBaseUrl}/api/v1/learner-credit-requests/?${expectedParams.toString()}`,
+    );
+  });
+
+  test('declineBnrSubsidyRequest calls enterprise-access to decline BNR subsidy request', () => {
+    const mockBnrSubsidyRequestUUID = 'test-bnr-subsidy-request-uuid';
+
+    EnterpriseAccessApiService.declineBnrSubsidyRequest({
+      enterpriseId: mockEnterpriseUUID,
+      subsidyRequestUUID: mockBnrSubsidyRequestUUID,
+      sendNotification: true,
+      unlinkUsersFromEnterprise: false,
+    });
+
+    expect(axios.post).toBeCalledWith(`${enterpriseAccessBaseUrl}/api/v1/learner-credit-requests/decline/`, {
+      subsidy_request_uuid: mockBnrSubsidyRequestUUID,
+      enterprise_customer_uuid: mockEnterpriseUUID,
+      send_notification: true,
+      disassociate_from_org: false,
+    });
+  });
+
+  test('declineBnrSubsidyRequest calls enterprise-access with unlinkUsersFromEnterprise set to true', () => {
+    const mockBnrSubsidyRequestUUID = 'test-bnr-subsidy-request-uuid';
+
+    EnterpriseAccessApiService.declineBnrSubsidyRequest({
+      enterpriseId: mockEnterpriseUUID,
+      subsidyRequestUUID: mockBnrSubsidyRequestUUID,
+      sendNotification: false,
+      unlinkUsersFromEnterprise: true,
+    });
+
+    expect(axios.post).toBeCalledWith(`${enterpriseAccessBaseUrl}/api/v1/learner-credit-requests/decline/`, {
+      subsidy_request_uuid: mockBnrSubsidyRequestUUID,
+      enterprise_customer_uuid: mockEnterpriseUUID,
+      send_notification: false,
+      disassociate_from_org: true,
+    });
+  });
+
+  test('fetchBnrSubsidyRequestsOverviw calls enterprise-access with enterpriseId and policyId only', () => {
+    EnterpriseAccessApiService.fetchBnrSubsidyRequestsOverviw(mockEnterpriseUUID, mockPolicyId);
+
+    const expectedParams = new URLSearchParams({
+      enterprise_customer_uuid: mockEnterpriseUUID,
+      policy_uuid: mockPolicyId,
+    });
+
+    expect(axios.get).toBeCalledWith(
+      `${enterpriseAccessBaseUrl}/api/v1/learner-credit-requests/overview/?${expectedParams.toString()}`,
+    );
+  });
+
+  test('fetchBnrSubsidyRequestsOverviw calls enterprise-access with enterpriseId, policyId and empty options', () => {
+    const options = {};
+
+    EnterpriseAccessApiService.fetchBnrSubsidyRequestsOverviw(mockEnterpriseUUID, mockPolicyId, options);
+
+    const expectedParams = new URLSearchParams({
+      enterprise_customer_uuid: mockEnterpriseUUID,
+      policy_uuid: mockPolicyId,
+    });
+
+    expect(axios.get).toBeCalledWith(
+      `${enterpriseAccessBaseUrl}/api/v1/learner-credit-requests/overview/?${expectedParams.toString()}`,
+    );
+  });
+
+  test('fetchBnrSubsidyRequestsOverviw calls enterprise-access with enterpriseId, policyId and search option', () => {
+    const options = {
+      search: 'test@example.com',
+    };
+
+    EnterpriseAccessApiService.fetchBnrSubsidyRequestsOverviw(mockEnterpriseUUID, mockPolicyId, options);
+
+    const expectedParams = new URLSearchParams({
+      enterprise_customer_uuid: mockEnterpriseUUID,
+      policy_uuid: mockPolicyId,
+      search: 'test@example.com',
+    });
+
+    expect(axios.get).toBeCalledWith(
+      `${enterpriseAccessBaseUrl}/api/v1/learner-credit-requests/overview/?${expectedParams.toString()}`,
+    );
+  });
+
+  test('fetchBnrSubsidyRequestsOverviw calls enterprise-access with enterpriseId, policyId and multiple options', () => {
+    const options = {
+      search: 'test@example.com',
+      state: 'requested,declined',
+      ordering: '-created',
+      custom_param: 'custom_value',
+    };
+
+    EnterpriseAccessApiService.fetchBnrSubsidyRequestsOverviw(mockEnterpriseUUID, mockPolicyId, options);
+
+    const expectedParams = new URLSearchParams({
+      enterprise_customer_uuid: mockEnterpriseUUID,
+      policy_uuid: mockPolicyId,
+      search: 'test@example.com',
+      state: 'requested,declined',
+      ordering: '-created',
+      custom_param: 'custom_value',
+    });
+
+    expect(axios.get).toBeCalledWith(
+      `${enterpriseAccessBaseUrl}/api/v1/learner-credit-requests/overview/?${expectedParams.toString()}`,
+    );
+  });
+
+  test('fetchBnrSubsidyRequestsOverviw calls enterprise-access with all possible query parameters', () => {
+    const options = {
+      page: '1',
+      page_size: '25',
+      state: 'requested',
+      search: 'learner@example.com',
+      ordering: 'created',
+      start_date: '2023-01-01',
+      end_date: '2023-12-31',
+    };
+
+    EnterpriseAccessApiService.fetchBnrSubsidyRequestsOverviw(mockEnterpriseUUID, mockPolicyId, options);
+
+    const expectedParams = new URLSearchParams({
+      enterprise_customer_uuid: mockEnterpriseUUID,
+      policy_uuid: mockPolicyId,
+      page: '1',
+      page_size: '25',
+      state: 'requested',
+      search: 'learner@example.com',
+      ordering: 'created',
+      start_date: '2023-01-01',
+      end_date: '2023-12-31',
+    });
+
+    expect(axios.get).toBeCalledWith(
+      `${enterpriseAccessBaseUrl}/api/v1/learner-credit-requests/overview/?${expectedParams.toString()}`,
+    );
+  });
+
+  test('fetchBnrSubsidyRequestsOverviw handles undefined options parameter', () => {
+    EnterpriseAccessApiService.fetchBnrSubsidyRequestsOverviw(mockEnterpriseUUID, mockPolicyId, undefined);
+
+    const expectedParams = new URLSearchParams({
+      enterprise_customer_uuid: mockEnterpriseUUID,
+      policy_uuid: mockPolicyId,
+    });
+
+    expect(axios.get).toBeCalledWith(
+      `${enterpriseAccessBaseUrl}/api/v1/learner-credit-requests/overview/?${expectedParams.toString()}`,
+    );
+  });
+
+  test('fetchBnrSubsidyRequestsOverviw handles null options parameter', () => {
+    EnterpriseAccessApiService.fetchBnrSubsidyRequestsOverviw(mockEnterpriseUUID, mockPolicyId, null);
+
+    const expectedParams = new URLSearchParams({
+      enterprise_customer_uuid: mockEnterpriseUUID,
+      policy_uuid: mockPolicyId,
+    });
+
+    expect(axios.get).toBeCalledWith(
+      `${enterpriseAccessBaseUrl}/api/v1/learner-credit-requests/overview/?${expectedParams.toString()}`,
     );
   });
 });

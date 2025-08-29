@@ -1,9 +1,11 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Button, Spinner } from '@edx/paragon';
-import { FileDownload } from '@edx/paragon/icons';
+import { Button, Spinner } from '@openedx/paragon';
+import { FileDownload } from '@openedx/paragon/icons';
 import { sendEnterpriseTrackEvent } from '@edx/frontend-enterprise-utils';
 import { FormattedMessage } from '@edx/frontend-platform/i18n';
+
+import { TRACK_LEARNER_PROGRESS_TARGETS } from '../ProductTours/AdminOnboardingTours/constants';
 
 export const CSV_CLICK_SEGMENT_EVENT_NAME = 'edx.ui.enterprise.admin_portal.download_csv.clicked';
 
@@ -25,7 +27,9 @@ class DownloadCsvButton extends React.Component {
 
     return (
       <Button
+        id={TRACK_LEARNER_PROGRESS_TARGETS.CSV_DOWNLOAD}
         variant="outline-primary"
+        data-testid="download-csv-btn"
         className="download-btn d-sm-inline float-md-right"
         disabled={disabled || csvLoading}
         onClick={() => {

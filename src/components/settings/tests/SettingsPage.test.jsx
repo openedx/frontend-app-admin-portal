@@ -5,6 +5,7 @@ import {
 } from '@testing-library/react';
 import { Provider } from 'react-redux';
 import configureMockStore from 'redux-mock-store';
+import { IntlProvider } from '@edx/frontend-platform/i18n';
 
 import { MemoryRouter, Route, Routes } from 'react-router-dom';
 import SettingsPage from '../index';
@@ -22,13 +23,15 @@ const store = mockStore({
 });
 
 const settingsPageWithRouter = (route) => (
-  <MemoryRouter initialEntries={[route]}>
-    <Provider store={store}>
-      <Routes>
-        <Route path="/settings/*" element={<SettingsPage />} />
-      </Routes>
-    </Provider>
-  </MemoryRouter>
+  <IntlProvider locale="en">
+    <MemoryRouter initialEntries={[route]}>
+      <Provider store={store}>
+        <Routes>
+          <Route path="/settings/*" element={<SettingsPage />} />
+        </Routes>
+      </Provider>
+    </MemoryRouter>
+  </IntlProvider>
 );
 
 describe('<SettingsPage />', () => {

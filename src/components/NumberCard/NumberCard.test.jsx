@@ -1,12 +1,13 @@
 import React from 'react';
 import renderer from 'react-test-renderer';
-import { mount } from 'enzyme';
+import {
+  fireEvent, render, screen, waitFor,
+} from '@testing-library/react';
 import { MemoryRouter } from 'react-router-dom';
-import { Groups } from '@edx/paragon/icons';
+import { Groups } from '@openedx/paragon/icons';
+import '@testing-library/jest-dom';
 
 import NumberCard from './index';
-
-const getNumberCard = wrapper => wrapper.find('NumberCard');
 
 const NumberCardWrapper = props => (
   <MemoryRouter>
@@ -22,8 +23,6 @@ const NumberCardWrapper = props => (
 );
 
 describe('<NumberCard />', () => {
-  let wrapper;
-
   describe('renders correctly', () => {
     it('without detail actions', () => {
       const tree = renderer
@@ -53,13 +52,13 @@ describe('<NumberCard />', () => {
   });
 
   it('sets a non-number title', () => {
-    wrapper = mount(<NumberCardWrapper title="10%" />).find('NumberCard');
-    expect(wrapper.find('.card-title span').first().text()).toEqual('10%');
+    const { container } = render(<NumberCardWrapper title="10%" />);
+    expect(container.querySelector('.card-title span')).toHaveTextContent('10%');
   });
 
   describe('collapsible detail actions', () => {
-    beforeEach(() => {
-      wrapper = mount((
+    it('expands and collapses the actions', () => {
+      const { container, rerender } = render((
         <NumberCardWrapper
           detailActions={[{
             label: 'Action 1',
@@ -70,76 +69,232 @@ describe('<NumberCard />', () => {
           }]}
         />
       ));
-    });
+      expect(container.querySelector('.details-btn-text').textContent).toEqual('Details');
 
-    it('expands and collapses the actions', () => {
-      expect(getNumberCard(wrapper).find('.details-btn-text').text()).toEqual('Details');
-
-      wrapper.setProps({ detailsExpanded: true });
-      expect(getNumberCard(wrapper).find('.details-btn-text').text()).toEqual('Detailed breakdown');
-      expect(getNumberCard(wrapper).instance().state.detailsExpanded).toBeTruthy();
-
-      wrapper.setProps({ detailsExpanded: false });
-      expect(getNumberCard(wrapper).find('.details-btn-text').text()).toEqual('Details');
-      expect(getNumberCard(wrapper).instance().state.detailsExpanded).toBeFalsy();
+      rerender(
+        <NumberCardWrapper
+          detailActions={[{
+            label: 'Action 1',
+            slug: 'action-1',
+          }, {
+            label: 'Action 2',
+            slug: 'action-2',
+          }]}
+          detailsExpanded
+        />,
+      );
+      expect(container.querySelector('.details-btn-text').textContent).toEqual('Detailed breakdown');
+      expect(container.querySelector('.toggle-collapse')).toHaveAttribute('aria-expanded', 'true');
+      rerender(
+        <NumberCardWrapper
+          detailActions={[{
+            label: 'Action 1',
+            slug: 'action-1',
+          }, {
+            label: 'Action 2',
+            slug: 'action-2',
+          }]}
+          detailsExpanded={false}
+        />,
+      );
+      expect(container.querySelector('.details-btn-text').textContent).toEqual('Details');
+      expect(container.querySelector('.toggle-collapse')).toHaveAttribute('aria-expanded', 'false');
     });
 
     it('opens and closes detail actions with keydown on collapse btn', () => {
-      getNumberCard(wrapper).find('.toggle-collapse').hostNodes().simulate('keyDown', { key: 'ArrowDown' });
-      expect(getNumberCard(wrapper).instance().state.detailsExpanded).toBeTruthy();
+      const { container } = render((
+        <NumberCardWrapper
+          detailActions={[{
+            label: 'Action 1',
+            slug: 'action-1',
+          }, {
+            label: 'Action 2',
+            slug: 'action-2',
+          }]}
+        />
+      ));
+      const toggleButton = container.querySelector('.toggle-collapse');
+      fireEvent.keyDown(toggleButton, { key: 'ArrowDown' });
+      expect(container.querySelector('.toggle-collapse')).toHaveAttribute('aria-expanded', 'true');
 
-      getNumberCard(wrapper).find('.toggle-collapse').hostNodes().simulate('keyDown', { key: 'Escape' });
-      expect(getNumberCard(wrapper).instance().state.detailsExpanded).toBeFalsy();
+      fireEvent.keyDown(toggleButton, { key: 'Escape' });
+      expect(container.querySelector('.toggle-collapse')).toHaveAttribute('aria-expanded', 'false');
     });
 
-    it('closes detail actions with enter keydown on action', () => {
-      wrapper.setProps({ detailsExpanded: true });
-      expect(getNumberCard(wrapper).instance().state.detailsExpanded).toBeTruthy();
-      const actions = getNumberCard(wrapper).find('.footer-body .btn-link').hostNodes();
-      actions.first().simulate('keyDown', { key: 'Enter' });
-      setTimeout(() => {
-        expect(getNumberCard(wrapper).instance().state.detailsExpanded).toBeFalsy();
-      }, 0);
+    it('closes detail actions with enter keydown on action', async () => {
+      const { container, rerender } = render((
+        <NumberCardWrapper
+          detailActions={[{
+            label: 'Action 1',
+            slug: 'action-1',
+          }, {
+            label: 'Action 2',
+            slug: 'action-2',
+          }]}
+        />
+      ));
+      rerender(
+        <NumberCardWrapper
+          detailActions={[{
+            label: 'Action 1',
+            slug: 'action-1',
+          }, {
+            label: 'Action 2',
+            slug: 'action-2',
+          }]}
+          detailsExpanded
+        />,
+      );
+      expect(container.querySelector('.toggle-collapse')).toHaveAttribute('aria-expanded', 'true');
+      const firstAction = container.querySelector('.footer-body .btn-link');
+      fireEvent.keyDown(firstAction, { key: 'Enter' });
+      await waitFor(() => {
+        expect(screen.queryByTestId('details-section')).not.toBeInTheDocument();
+      });
     });
 
-    it('closes detail actions with escape keydown on action', () => {
-      wrapper.setProps({ detailsExpanded: true });
-      expect(getNumberCard(wrapper).instance().state.detailsExpanded).toBeTruthy();
-      const actions = getNumberCard(wrapper).find('.footer-body .btn-link').hostNodes();
-      actions.first().simulate('keyDown', { key: 'Escape' });
-      expect(getNumberCard(wrapper).instance().state.detailsExpanded).toBeFalsy();
+    it('closes detail actions with escape keydown on action', async () => {
+      const { container, rerender } = render(
+        <NumberCardWrapper
+          detailActions={[{
+            label: 'Action 1',
+            slug: 'action-1',
+          }, {
+            label: 'Action 2',
+            slug: 'action-2',
+          }]}
+        />,
+      );
+      rerender(
+        <NumberCardWrapper
+          detailActions={[{
+            label: 'Action 1',
+            slug: 'action-1',
+          }, {
+            label: 'Action 2',
+            slug: 'action-2',
+          }]}
+          detailsExpanded
+        />,
+      );
+      expect(container.querySelector('.toggle-collapse')).toHaveAttribute('aria-expanded', 'true');
+      const firstAction = container.querySelector('.footer-body .btn-link');
+      fireEvent.keyDown(firstAction, { key: 'Escape' });
+      await waitFor(() => {
+        expect(screen.queryByTestId('details-section')).not.toBeInTheDocument();
+      });
     });
 
-    it('sets focus index on actions', () => {
-      wrapper.setProps({ detailsExpanded: true });
-      const actions = getNumberCard(wrapper).find('.footer-body .btn-link').hostNodes();
-      actions.first().simulate('keyDown', { key: 'ArrowDown' });
-      expect(getNumberCard(wrapper).instance().state.focusIndex).toEqual(1);
+    it('sets focus index on actions', async () => {
+      const { rerender } = render((
+        <NumberCardWrapper
+          detailActions={[{
+            label: 'Action 1',
+            slug: 'action-1',
+          }, {
+            label: 'Action 2',
+            slug: 'action-2',
+          }]}
+        />
+      ));
+      rerender(
+        <NumberCardWrapper
+          detailActions={[{
+            label: 'Action 1',
+            slug: 'action-1',
+          }, {
+            label: 'Action 2',
+            slug: 'action-2',
+          }]}
+          detailsExpanded
+        />,
+      );
+      const actions = await screen.findAllByTestId('details-action-item');
+      fireEvent.keyDown(actions[0], { key: 'ArrowDown' });
+      expect(actions[1]).toHaveFocus();
 
-      actions.last().simulate('keyDown', { key: 'ArrowUp' });
-      expect(getNumberCard(wrapper).instance().state.focusIndex).toEqual(0);
+      fireEvent.keyDown(actions[1], { key: 'ArrowDown' });
+      expect(actions[0]).toHaveFocus();
     });
 
-    it('closes detail actions on action click', () => {
-      wrapper.setProps({ detailsExpanded: true });
-      const actions = getNumberCard(wrapper).find('.footer-body .btn-link').hostNodes();
-      actions.first().simulate('click');
-      expect(getNumberCard(wrapper).instance().state.detailsExpanded).toBeFalsy();
+    it('closes detail actions on action click', async () => {
+      const { container, rerender } = render((
+        <NumberCardWrapper
+          detailActions={[{
+            label: 'Action 1',
+            slug: 'action-1',
+          }, {
+            label: 'Action 2',
+            slug: 'action-2',
+          }]}
+        />
+      ));
+      rerender(
+        <NumberCardWrapper
+          detailActions={[{
+            label: 'Action 1',
+            slug: 'action-1',
+          }, {
+            label: 'Action 2',
+            slug: 'action-2',
+          }]}
+          detailsExpanded
+        />,
+      );
+      const actions = await screen.findAllByTestId('details-action-item');
+      fireEvent.click(actions[0]);
+      expect(container.querySelector('.toggle-collapse')).toHaveAttribute('aria-expanded', 'false');
     });
 
-    it('shows loading spinner in action', () => {
-      wrapper = mount((
+    it('shows loading spinner in action', async () => {
+      const { container, rerender } = render(
         <NumberCardWrapper
           detailActions={[{
             label: 'Action 1',
             slug: 'action-1',
             loading: true,
           }]}
-        />
-      ));
-      wrapper.setProps({ detailsExpanded: true });
-      const action = getNumberCard(wrapper).find('.footer-body .btn-link').hostNodes().first();
-      expect(action.find('.ml-2').exists()).toBeTruthy();
+          detailsExpanded
+        />,
+      );
+      rerender(
+        <NumberCardWrapper
+          detailActions={[{
+            label: 'Action 1',
+            slug: 'action-1',
+            loading: true,
+          }]}
+          detailsExpanded
+        />,
+      );
+      const actions = await screen.findAllByTestId('details-action-item');
+      fireEvent.click(actions[0]);
+      expect(container.querySelector('.ml-2')).toBeInTheDocument();
+    });
+    it('should scroll element into view if element exists', async () => {
+      document.body.innerHTML = '<div id="learner-progress-report"></div>';
+      const element = document.getElementById('learner-progress-report');
+      const mockScrollIntoView = jest.fn();
+      element.scrollIntoView = mockScrollIntoView;
+      render(
+        <NumberCardWrapper
+          detailActions={[{
+            label: 'Action 1',
+            slug: 'action-1',
+          }]}
+        />,
+      );
+
+      jest.useFakeTimers();
+
+      const detailAction = await screen.findByTestId('details-action-item');
+      fireEvent.click(detailAction);
+
+      jest.runAllTimers();
+
+      expect(mockScrollIntoView).toHaveBeenCalledWith({ behavior: 'smooth' });
+
+      jest.useRealTimers();
     });
   });
 });

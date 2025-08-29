@@ -1,20 +1,15 @@
 import React, {
-  useCallback, useState, useContext, useEffect,
+  useCallback, useContext, useEffect, useState,
 } from 'react';
 import PropTypes from 'prop-types';
 import { useContextSelector } from 'use-context-selector';
 import { connect } from 'react-redux';
 import {
-  Stepper,
-  FullscreenModal,
-  Button,
-  StatefulButton,
-  useToggle,
-  AlertModal,
-  ActionRow,
-} from '@edx/paragon';
+  ActionRow, AlertModal, Button, FullscreenModal, StatefulButton, Stepper, useToggle,
+} from '@openedx/paragon';
 import { logError } from '@edx/frontend-platform/logging';
 import { camelCaseObject } from '@edx/frontend-platform';
+import { FormattedMessage, useIntl } from '@edx/frontend-platform/i18n';
 
 import { sendEnterpriseTrackEvent } from '@edx/frontend-enterprise-utils';
 import { useLocation, useNavigate } from 'react-router-dom';
@@ -28,7 +23,7 @@ import EnterpriseCatalogApiService from '../../../data/services/EnterpriseCatalo
 import { enterpriseCurationActions } from '../../EnterpriseApp/data/enterpriseCurationReducer';
 import { useContentHighlightsContext } from '../data/hooks';
 import EVENT_NAMES from '../../../eventTracking';
-import { STEPPER_STEP_LABELS, STEPPER_STEP_TEXT } from '../data/constants';
+import { STEPPER_STEP_LABELS } from '../data/constants';
 
 const steps = [
   STEPPER_STEP_LABELS.CREATE_TITLE,
@@ -40,6 +35,7 @@ const steps = [
  * Stepper to support create user flow for a highlight set.
  */
 const ContentHighlightStepper = ({ enterpriseId }) => {
+  const intl = useIntl();
   const {
     enterpriseCuration: {
       dispatch: dispatchEnterpriseCuration,
@@ -324,10 +320,15 @@ const ContentHighlightStepper = ({ enterpriseId }) => {
             </>
 
           )}
+          isOverflowVisible={false}
         >
           <Stepper.Step
             eventKey={STEPPER_STEP_LABELS.CREATE_TITLE}
-            title={STEPPER_STEP_LABELS.CREATE_TITLE}
+            title={intl.formatMessage({
+              id: 'highlights.new.highlights.stepper.step.labels.create.title',
+              defaultMessage: 'Create a title',
+              description: 'Message to create a title for administrators during new highlights creation',
+            })}
             hasError={!!titleStepValidationError}
             description={titleStepValidationError || ''}
             index={steps.indexOf(STEPPER_STEP_LABELS.CREATE_TITLE)}
@@ -337,15 +338,23 @@ const ContentHighlightStepper = ({ enterpriseId }) => {
 
           <Stepper.Step
             eventKey={STEPPER_STEP_LABELS.SELECT_CONTENT}
-            title={STEPPER_STEP_LABELS.SELECT_CONTENT}
+            title={intl.formatMessage({
+              id: 'highlights.new.highlights.stepper.step.labels.select.content',
+              defaultMessage: 'Select content',
+              description: 'Message to select content for administrators during new highlights creation',
+            })}
             index={steps.indexOf(STEPPER_STEP_LABELS.SELECT_CONTENT)}
           >
-            <HighlightStepperSelectContent enterpriseId={enterpriseId} />
+            <HighlightStepperSelectContent />
           </Stepper.Step>
 
           <Stepper.Step
             eventKey={STEPPER_STEP_LABELS.CONFIRM_PUBLISH}
-            title={STEPPER_STEP_LABELS.CONFIRM_PUBLISH}
+            title={intl.formatMessage({
+              id: 'highlights.new.highlights.stepper.step.labels.confirm.publish',
+              defaultMessage: 'Confirm and publish',
+              description: 'Publish confirmation message for administrators during new highlights creation',
+            })}
             index={steps.indexOf(STEPPER_STEP_LABELS.CONFIRM_PUBLISH)}
           >
             <HighlightStepperConfirmContent />
@@ -354,16 +363,37 @@ const ContentHighlightStepper = ({ enterpriseId }) => {
       </Stepper>
       {/* Alert Modal for StepperModal Close Confirmation */}
       <AlertModal
-        title={STEPPER_STEP_TEXT.ALERT_MODAL_TEXT.title}
+        title={intl.formatMessage({
+          id: 'highlights.new.highlights.stepper.step.alert.modal.title',
+          defaultMessage: 'Lose Progress?',
+          description: 'Alert modal title during new highlights creation',
+        })}
         isOpen={isCloseAlertOpen}
         onClose={closeCloseAlert}
+        isOverflowVisible={false}
       >
         <p>
-          {STEPPER_STEP_TEXT.ALERT_MODAL_TEXT.content}
+          <FormattedMessage
+            id="highlights.new.highlights.stepper.step.alert.modal.content"
+            defaultMessage="If you exit now, any changes you have made will be lost."
+            description="Alert modal message content during new highlights creation"
+          />
         </p>
         <ActionRow>
-          <Button variant="tertiary" onClick={cancelCloseModal}>{STEPPER_STEP_TEXT.ALERT_MODAL_TEXT.buttons.cancel}</Button>
-          <Button variant="primary" onClick={closeStepperModal}>{STEPPER_STEP_TEXT.ALERT_MODAL_TEXT.buttons.exit}</Button>
+          <Button variant="tertiary" onClick={cancelCloseModal}>
+            <FormattedMessage
+              id="highlights.new.highlights.stepper.step.alert.modal.buttons.cancel"
+              defaultMessage="Cancel"
+              description="Alert modal CTA button text during new highlights creation"
+            />
+          </Button>
+          <Button variant="primary" onClick={closeStepperModal}>
+            <FormattedMessage
+              id="highlights.new.highlights.stepper.step.alert.modal.buttons.exit"
+              defaultMessage="Exit"
+              description="Alert modal CTA button text during new highlights creation"
+            />
+          </Button>
         </ActionRow>
       </AlertModal>
     </>

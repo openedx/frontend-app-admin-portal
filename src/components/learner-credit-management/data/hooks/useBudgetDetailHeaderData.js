@@ -23,13 +23,15 @@ const transformSubsidySummaryToPolicy = (subsidySummary, enterpriseOfferMetadata
   return transformedData;
 };
 
-const assignBudgetStatus = (policy) => {
+const assignBudgetStatus = (intl, policy) => {
   const {
     status, badgeVariant, term, date,
   } = getBudgetStatus({
+    intl,
     startDateStr: policy.subsidyActiveDatetime,
     endDateStr: policy.subsidyExpirationDatetime,
     isBudgetRetired: policy.retired,
+    retiredDateStr: policy.retiredAt,
   });
 
   return {
@@ -49,7 +51,7 @@ const assignBudgetDetails = (policy, isTopDownAssignmentEnabled) => {
 
   const available = spendAvailableUsd;
   const limit = policy.spendLimit / 100;
-  const utilized = policy.isAssignable && isTopDownAssignmentEnabled
+  const utilized = (policy.isAssignable && isTopDownAssignmentEnabled) || policy.bnrEnabled
     ? (amountAllocatedUsd + amountRedeemedUsd)
     : amountRedeemedUsd;
 
@@ -63,6 +65,7 @@ const assignBudgetDetails = (policy, isTopDownAssignmentEnabled) => {
 };
 
 const useBudgetDetailHeaderData = ({
+  intl,
   subsidyAccessPolicy,
   subsidySummary,
   budgetId,
@@ -81,10 +84,11 @@ const useBudgetDetailHeaderData = ({
     budgetAggregates: policy?.aggregates || {},
     isAssignable: policy?.isAssignable || false,
     budgetDisplayName: policy?.displayName || 'Overview',
+    isRetired: policy?.retired || false,
   };
 
   if (policy) {
-    Object.assign(transformedPolicyData, assignBudgetStatus(policy));
+    Object.assign(transformedPolicyData, assignBudgetStatus(intl, policy));
     Object.assign(transformedPolicyData, assignBudgetDetails(policy, isTopDownAssignmentEnabled));
   }
   return transformedPolicyData;

@@ -1,15 +1,11 @@
 import {
-  useCallback, useState, useEffect, useReducer, useMemo,
+  useCallback, useEffect, useMemo, useReducer, useState,
 } from 'react';
 import { camelCaseObject } from '@edx/frontend-platform/utils';
 import { logError } from '@edx/frontend-platform/logging';
-import debounce from 'lodash.debounce';
+import { debounce } from 'lodash-es';
 
-import {
-  DEBOUNCE_TIME_MS,
-  PAGE_SIZE,
-  SUBSIDY_REQUESTS_TYPES,
-} from './constants';
+import { DEBOUNCE_TIME_MS, PAGE_SIZE, SUBSIDY_REQUESTS_TYPES } from './constants';
 import { transformRequestOverview, transformRequests } from './utils';
 import DiscoveryApiService from '../../../data/services/DiscoveryApiService';
 import { initialSubsidyRequestsState, subsidyRequestsReducer } from './reducer';
@@ -18,7 +14,6 @@ import {
   setSubsidyRequestsData,
   setSubsidyRequestsOverviewData,
   updateSubsidyRequestStatus,
-
 } from './actions';
 import { SUPPORTED_SUBSIDY_TYPES } from '../../../data/constants/subsidyRequests';
 

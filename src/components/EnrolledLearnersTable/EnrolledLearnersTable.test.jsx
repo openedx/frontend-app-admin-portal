@@ -1,6 +1,7 @@
 import React from 'react';
 import { MemoryRouter } from 'react-router-dom';
 import renderer from 'react-test-renderer';
+import { IntlProvider } from '@edx/frontend-platform/i18n';
 import configureMockStore from 'redux-mock-store';
 import thunk from 'redux-thunk';
 import { Provider } from 'react-redux';
@@ -29,11 +30,13 @@ const store = mockStore({
 
 const EnrolledLearnersWrapper = props => (
   <MemoryRouter>
-    <Provider store={store}>
-      <EnrolledLearnersTable
-        {...props}
-      />
-    </Provider>
+    <IntlProvider locale="en">
+      <Provider store={store}>
+        <EnrolledLearnersTable
+          {...props}
+        />
+      </Provider>
+    </IntlProvider>
   </MemoryRouter>
 );
 

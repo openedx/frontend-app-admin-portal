@@ -2,8 +2,8 @@ import React, { useEffect, useState } from 'react';
 import type { Dispatch } from 'react';
 import {
   ActionRow, Button, FullscreenModal, Spinner, Stepper, useToggle,
-} from '@edx/paragon';
-import { Launch } from '@edx/paragon/icons';
+} from '@openedx/paragon';
+import { Launch } from '@openedx/paragon/icons';
 
 import { useFormContext } from './FormContext';
 import type { FormFieldValidation, FormContext } from './FormContext';
@@ -275,6 +275,7 @@ const FormWorkflow = <FormConfigData extends unknown>({
               )}
             </ActionRow>
           )}
+          isOverflowVisible={false}
         >
           <Stepper activeKey={step?.index.toString()}>
             <Stepper.Header />

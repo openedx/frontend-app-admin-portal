@@ -1,5 +1,5 @@
-import { Alert } from '@edx/paragon';
-import { Error } from '@edx/paragon/icons';
+import { Alert } from '@openedx/paragon';
+import { Error } from '@openedx/paragon/icons';
 import { credentialErrorMessage } from './constants';
 
 const FailedAlert = () => (

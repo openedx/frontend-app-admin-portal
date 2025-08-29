@@ -1,0 +1,31 @@
+.group-detail-card {
+  background-color: $light-200;
+  .card-button {
+    justify-content: flex-start !important;
+  }
+  .pgn__card-section {
+    padding: .25rem 1.25rem 1.25rem 1.25rem;
+  }
+}
+
+.learner-detail-card {
+  align-items: center;
+  padding-top: 2rem; 
+  width: 25rem;
+  background-color: $light-200;
+}
+.learner-detail-icon {
+  height: 75px;
+  width: 75px;
+  background: black;
+  border-radius: 50%;
+  padding: 10px;
+  color: white;
+}
+.learner-detail-section {
+  box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.175);
+  padding-top: 2rem;
+  padding-bottom: 1px;
+  width: 25rem;
+  border-radius: 10px;
+}

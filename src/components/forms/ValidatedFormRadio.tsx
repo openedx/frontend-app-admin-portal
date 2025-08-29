@@ -1,8 +1,7 @@
 import React, { ReactElement } from 'react';
-import omit from 'lodash/omit';
-import isString from 'lodash/isString';
+import { isString, omit } from 'lodash-es';
 
-import { Form, Stack } from '@edx/paragon';
+import { Form, Stack } from '@openedx/paragon';
 
 import { setFormFieldAction } from './data/actions';
 import { useFormContext } from './FormContext';

@@ -1,9 +1,7 @@
 import { configuration } from '../../../config';
-import { FOOTER_TEXT_BY_CONTENT_TYPE } from './constants';
 
 // Highlight Card logic for footer text
-export const getContentHighlightCardFooter = ({ price, contentType }) => {
-  const formattedContentType = FOOTER_TEXT_BY_CONTENT_TYPE[contentType?.toLowerCase()];
+export const getContentHighlightCardFooter = ({ price, formattedContentType }) => {
   if (!price) {
     return formattedContentType;
   }

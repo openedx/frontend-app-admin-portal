@@ -1,7 +1,7 @@
 import React from 'react';
 import { useContextSelector } from 'use-context-selector';
-import { Icon } from '@edx/paragon';
-import { AddCircle } from '@edx/paragon/icons';
+import { Icon } from '@openedx/paragon';
+import { AddCircle } from '@openedx/paragon/icons';
 import { STEPPER_STEP_TEXT } from '../data/constants';
 import { ContentHighlightsContext } from '../ContentHighlightsContext';
 

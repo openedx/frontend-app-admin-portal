@@ -1,17 +1,29 @@
 import React from 'react';
 
+import { useIntl } from '@edx/frontend-platform/i18n';
+
 import TableContainer from '../../containers/TableContainer';
 import EnterpriseDataApiService from '../../data/services/EnterpriseDataApiService';
 
 const CompletedLearnersTable = () => {
+  const intl = useIntl();
+
   const tableColumns = [
     {
-      label: 'Email',
+      label: intl.formatMessage({
+        id: 'admin.portal.lpr.completed.learners.table.user_email.column.heading',
+        defaultMessage: 'Email',
+        description: 'Column heading for the user email column in the completed learners table',
+      }),
       key: 'user_email',
       columnSortable: true,
     },
     {
-      label: 'Total Course Completed Count',
+      label: intl.formatMessage({
+        id: 'admin.portal.lpr.completed.learned.table.completed_courses.column.heading',
+        defaultMessage: 'Total Course Completed Count',
+        description: 'Column heading for the completed courses column in the completed learners table',
+      }),
       key: 'completed_courses',
       columnSortable: true,
     },

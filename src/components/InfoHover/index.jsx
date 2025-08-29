@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { OverlayTrigger, Tooltip } from '@edx/paragon';
-import { InfoOutline } from '@edx/paragon/icons';
+import { OverlayTrigger, Tooltip } from '@openedx/paragon';
+import { InfoOutline } from '@openedx/paragon/icons';
 
 const InfoHover = ({
   className, size, keyName, message,

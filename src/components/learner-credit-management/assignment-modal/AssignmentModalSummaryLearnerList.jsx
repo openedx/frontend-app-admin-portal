@@ -1,28 +1,36 @@
 import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import { v4 as uuidv4 } from 'uuid';
-import {
-  Button, Stack, Icon,
-} from '@edx/paragon';
-import { Person } from '@edx/paragon/icons';
+import { Button, Icon, Stack } from '@openedx/paragon';
+import { Person } from '@openedx/paragon/icons';
+import { useIntl } from '@edx/frontend-platform/i18n';
 
-import { MAX_INITIAL_LEARNER_EMAILS_DISPLAYED_COUNT, hasLearnerEmailsSummaryListTruncation } from '../cards/data';
+import { hasLearnerEmailsSummaryListTruncation, MAX_INITIAL_LEARNER_EMAILS_DISPLAYED_COUNT } from '../cards/data';
+import { formatPrice } from '../data';
 
 const AssignmentModalSummaryLearnerList = ({
-  course,
+  courseRun,
   learnerEmails,
 }) => {
   const [isTruncated, setIsTruncated] = useState(hasLearnerEmailsSummaryListTruncation(learnerEmails));
   const truncatedLearnerEmails = learnerEmails.slice(0, MAX_INITIAL_LEARNER_EMAILS_DISPLAYED_COUNT - 1);
   const displayedLearnerEmails = isTruncated ? truncatedLearnerEmails : learnerEmails;
-
+  const intl = useIntl();
   useEffect(() => {
     setIsTruncated(hasLearnerEmailsSummaryListTruncation(learnerEmails));
   }, [learnerEmails]);
 
   const expandCollapseMessage = isTruncated
-    ? `Show ${learnerEmails.length - MAX_INITIAL_LEARNER_EMAILS_DISPLAYED_COUNT} more`
-    : 'Show less';
+    ? intl.formatMessage({
+      id: 'lcm.budget.detail.page.catalog.tab.course.card.show.more',
+      defaultMessage: 'Show {count, number} more',
+      description: 'Button text to show more learner emails',
+    }, { count: learnerEmails.length - MAX_INITIAL_LEARNER_EMAILS_DISPLAYED_COUNT })
+    : intl.formatMessage({
+      id: 'lcm.budget.detail.page.catalog.tab.course.card.show.less',
+      defaultMessage: 'Show less',
+      description: 'Button text to show less learner emails',
+    });
 
   return (
     <ul className="list-unstyled mb-0">
@@ -44,7 +52,7 @@ const AssignmentModalSummaryLearnerList = ({
                 </Stack>
               </div>
               <span className="ml-auto">
-                {course.formattedPrice}
+                {formatPrice(courseRun.contentPrice)}
               </span>
             </div>
           </li>
@@ -65,8 +73,8 @@ const AssignmentModalSummaryLearnerList = ({
 };
 
 AssignmentModalSummaryLearnerList.propTypes = {
-  course: PropTypes.shape({
-    formattedPrice: PropTypes.string.isRequired,
+  courseRun: PropTypes.shape({
+    contentPrice: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
   }).isRequired,
   learnerEmails: PropTypes.arrayOf(PropTypes.string).isRequired,
 };

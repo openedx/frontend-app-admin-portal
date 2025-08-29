@@ -16,5 +16,6 @@ dist/
 # edx
 .env.private
 temp/
+src/i18n/transifex_input.json
 src/i18n/messages
 

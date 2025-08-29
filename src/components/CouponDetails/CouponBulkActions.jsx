@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 
 import {
   Button, Form,
-} from '@edx/paragon';
+} from '@openedx/paragon';
 import { BULK_ACTION, COUPON_FILTERS, COUPON_FILTER_TYPES } from './constants';
 import { getBASelectOptions, getFirstNonDisabledOption } from './helpers';
 

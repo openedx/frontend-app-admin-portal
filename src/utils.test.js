@@ -1,21 +1,46 @@
 import { logError } from '@edx/frontend-platform/logging';
+import { createIntl } from '@edx/frontend-platform/i18n';
+import { saveAs } from 'file-saver';
 
 import {
   camelCaseDict,
   camelCaseDictArray,
+  defaultQueryClientRetryHandler,
+  downloadCsv,
+  getFromLocalStorage,
+  getTimeStampedFilename,
+  i18nFormatPassedTimestamp,
+  i18nFormatProgressStatus,
+  isValidNumber,
+  pollAsync,
+  queryCacheOnErrorHandler,
+  removeStringsFromList,
+  removeStringsFromListCaseInsensitive,
+  saveToLocalStorage,
   snakeCaseDict,
   snakeCaseFormData,
   snakeCaseObjectToForm,
-  pollAsync,
-  isValidNumber,
-  defaultQueryClientRetryHandler,
-  queryCacheOnErrorHandler,
+  splitAndTrim,
 } from './utils';
 
 jest.mock('@edx/frontend-platform/logging', () => ({
   ...jest.requireActual('@edx/frontend-platform/logging'),
   logError: jest.fn(),
 }));
+
+jest.mock('file-saver', () => ({
+  ...jest.requireActual('file-saver'),
+  saveAs: jest.fn(),
+}));
+
+jest.useFakeTimers({ advanceTimers: true }).setSystemTime(new Date('2024-01-20'));
+
+global.Blob = jest.fn();
+
+const intl = createIntl({
+  locale: 'en',
+  messages: {},
+});
 
 describe('utils', () => {
   describe('camel casing methods', () => {
@@ -135,6 +160,127 @@ describe('utils', () => {
       const query = { meta: { errorMessage: "hi, I'm an error" } };
       queryCacheOnErrorHandler(error, query);
       expect(logError).toHaveBeenCalledWith("hi, I'm an error");
+    });
+  });
+  describe('i18nFormatPassedTimestamp', () => {
+    it('returns correct value', () => {
+      const passedTimestamp = i18nFormatPassedTimestamp({ intl, timestamp: '2021-01-01T00:00:00Z' });
+      expect(passedTimestamp).toEqual('January 1, 2021');
+
+      const notPassed = i18nFormatPassedTimestamp({ intl, timestamp: undefined });
+      expect(notPassed).toEqual('Has not passed');
+    });
+  });
+  describe('i18nFormatProgressStatus', () => {
+    it('returns correct progress status', () => {
+      const allProgressStatuses = [
+        'In Progress', 'Passed', 'Audit Access Expired',
+        'Failed', 'Cancelled', 'Enrolled', 'Pass', 'Pending', null,
+      ];
+      allProgressStatuses.forEach((progressStatus) => {
+        const formattedProgressStatus = i18nFormatProgressStatus({ intl, progressStatus });
+        expect(formattedProgressStatus).toEqual(progressStatus);
+      });
+    });
+  });
+  describe('getTimeStampedFilename', () => {
+    it('generates timestamped filename', () => {
+      const expectedFileName = '2024-01-20-somefile.txt';
+      expect(getTimeStampedFilename('somefile.txt')).toEqual(expectedFileName);
+    });
+  });
+  describe('downloadCsv', () => {
+    it('downloads properly formatted csv', () => {
+      const fileName = 'somefile.csv';
+      const data = [
+        {
+          a: 1, b: 2, c: 3, d: 4,
+        },
+        {
+          a: 'apple', b: 'banana', c: 'comma, please', d: 'donut',
+        },
+      ];
+      const headers = ['a', 'b', 'c', 'd'];
+      const dataEntryToRow = (entry) => {
+        const changeItUp = (field) => (isValidNumber(field) ? field + 1 : field);
+        const {
+          a, b, c, d,
+        } = entry;
+        return [a, b, c, d].map(changeItUp);
+      };
+      downloadCsv(fileName, data, headers, dataEntryToRow);
+      const expectedBlob = ['a,b,c,d\n2,3,4,5\napple,banana,"comma, please",donut'];
+      expect(global.Blob).toHaveBeenCalledWith(expectedBlob, {
+        type: 'text/csv',
+      });
+      expect(saveAs).toHaveBeenCalledWith({}, fileName);
+    });
+  });
+  describe('splitAndTrim', () => {
+    it('returns split and trimmed string array', () => {
+      const csvStr = 'a,b,,c ,';
+      expect(splitAndTrim(',', csvStr)).toEqual(['a', 'b', 'c']);
+    });
+  });
+  describe('removeStringsFromList', () => {
+    it('should remove strings from list', () => {
+      const list = ['a', 'b', 'c', 'd'];
+      const remove = ['b', 'd'];
+      expect(removeStringsFromList(list, remove)).toEqual(['a', 'c']);
+    });
+  });
+  describe('removeStringsFromListCaseInsensitive', () => {
+    it('should remove strings from list in a case insensitive way', () => {
+      const list = ['ab', 'bc', 'cd', 'de', 'Ef'];
+      const remove = ['Bc', 'de', 'eF'];
+      expect(removeStringsFromListCaseInsensitive(list, remove)).toEqual(['ab', 'cd']);
+    });
+  });
+  describe('localStorage utils', () => {
+    const originalLocalStorage = global.localStorage;
+
+    beforeEach(() => {
+      global.localStorage = {
+        getItem: jest.fn(),
+        setItem: jest.fn(),
+      };
+    });
+
+    afterEach(() => {
+      global.localStorage = originalLocalStorage;
+    });
+
+    describe('saveToLocalStorage', () => {
+      it('saves string value to localStorage', () => {
+        saveToLocalStorage('testKey', 'testValue');
+        expect(localStorage.setItem).toHaveBeenCalledWith('testKey', '"testValue"');
+      });
+
+      it('saves object to localStorage', () => {
+        const testObject = { foo: 'bar', num: 123 };
+        saveToLocalStorage('testKey', testObject);
+        expect(localStorage.setItem).toHaveBeenCalledWith('testKey', JSON.stringify(testObject));
+      });
+    });
+
+    describe('getFromLocalStorage', () => {
+      it('retrieves and parses value from localStorage', () => {
+        const testObject = { foo: 'bar', num: 123 };
+        localStorage.getItem.mockReturnValue(JSON.stringify(testObject));
+
+        const result = getFromLocalStorage('testKey');
+
+        expect(localStorage.getItem).toHaveBeenCalledWith('testKey');
+        expect(result).toEqual(testObject);
+      });
+
+      it('returns null when key not found', () => {
+        localStorage.getItem.mockReturnValue(null);
+
+        const result = getFromLocalStorage('nonExistentKey');
+
+        expect(result).toBeNull();
+      });
     });
   });
 });

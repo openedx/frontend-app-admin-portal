@@ -23,6 +23,14 @@
   }
 }
 
+.group-dropdown {
+  width: inherit;
+  .btn,
+  .pgn__menu-select-popup {
+    width: inherit;
+    justify-content: space-between;
+  };
+}
 // Must be defined outside of `.learner-credit-management` to ensure the styles are applied to the contents of
 // the `FullscreenModal`, which renders in a React Portal.
 .assignment-modal-collapsible-trigger {
@@ -30,7 +38,7 @@
 }
 
 .assignment-modal-summary-card,
-.assignment-modal-total-assignment-cost-card
+.assignment-modal-total-assignment-cost-card,
 .invite-modal-summary-card {
   &.invalid {
     background-color: $danger-100;
@@ -43,4 +51,9 @@
   padding: 1rem;
   margin-top: 2rem;
   border: 1px solid $info-500;
+}
+
+.budget-overview-card {
+  border-radius: 0;
+  box-shadow: none;
 }

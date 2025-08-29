@@ -1,8 +1,8 @@
 import React from 'react';
 import classNames from 'classnames';
 import PropTypes from 'prop-types';
-import { Button, Icon, Spinner } from '@edx/paragon';
-import { ArrowDropDown, Close } from '@edx/paragon/icons';
+import { Button, Icon, Spinner } from '@openedx/paragon';
+import { ArrowDropDown, Close } from '@openedx/paragon/icons';
 import { Link } from 'react-router-dom';
 
 import { removeTrailingSlash, isTriggerKey } from '../../utils';
@@ -60,10 +60,16 @@ class NumberCard extends React.Component {
   }
 
   handleDetailsActionClick(event) {
+    const element = document.getElementById('learner-progress-report');
     if (event) {
       event.target.click();
     }
     this.toggleDetails();
+    if (element) {
+      setTimeout(() => {
+        element.scrollIntoView({ behavior: 'smooth' });
+      }, 0);
+    }
   }
 
   handleToggleDetailsKeyDown(event) {
@@ -136,6 +142,7 @@ class NumberCard extends React.Component {
 
     return detailActions.map((action, index) => (
       <Link
+        data-testid="details-action-item"
         ref={(node) => { this.detailActionItemRefs[index] = node; }}
         className={classNames(
           'btn btn-link',
@@ -224,6 +231,7 @@ class NumberCard extends React.Component {
               </Button>
             </div>
             <div
+              data-testid="details-actions"
               id={`footer-body-${id}`}
               className={classNames(
                 'footer-body mt-1',

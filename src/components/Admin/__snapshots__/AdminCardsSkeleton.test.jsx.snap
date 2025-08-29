@@ -15,7 +15,7 @@ exports[`AdminCardsSkeleton renders a skeleton 1`] = `
   >
     <span
       className="react-loading-skeleton"
-      style={Object {}}
+      style={{}}
     >
       ‌
     </span>
@@ -27,7 +27,7 @@ exports[`AdminCardsSkeleton renders a skeleton 1`] = `
   >
     <span
       className="react-loading-skeleton"
-      style={Object {}}
+      style={{}}
     >
       ‌
     </span>
@@ -39,7 +39,7 @@ exports[`AdminCardsSkeleton renders a skeleton 1`] = `
   >
     <span
       className="react-loading-skeleton"
-      style={Object {}}
+      style={{}}
     >
       ‌
     </span>
@@ -51,7 +51,7 @@ exports[`AdminCardsSkeleton renders a skeleton 1`] = `
   >
     <span
       className="react-loading-skeleton"
-      style={Object {}}
+      style={{}}
     >
       ‌
     </span>

@@ -1,17 +1,27 @@
 import React from 'react';
 import configureMockStore from 'redux-mock-store';
 import thunk from 'redux-thunk';
-import { mount } from 'enzyme';
+import { render } from '@testing-library/react';
 import { MemoryRouter } from 'react-router-dom';
 import { Provider } from 'react-redux';
 import { IntlProvider } from '@edx/frontend-platform/i18n';
 
 import AdminPage from '.';
 
+jest.mock('../../components/EnterpriseSubsidiesContext/data/hooks', () => ({
+  ...jest.requireActual('../../components/EnterpriseSubsidiesContext/data/hooks'),
+  useEnterpriseBudgets: jest.fn().mockReturnValue({
+    data: [],
+  }),
+}));
+
 const mockStore = configureMockStore([thunk]);
 const store = mockStore({
   portalConfiguration: {
     enterpriseId: 'test-enterprise',
+    enterpriseFeatures: {
+      topDownAssignmentRealTimeLcm: true,
+    },
   },
   dashboardAnalytics: {
     active_learners: {
@@ -32,36 +42,52 @@ const store = mockStore({
     loading: null,
     insights: null,
   },
+  enterpriseBudgets: {
+    loading: null,
+    budgets: null,
+  },
+  enterpriseGroups: {
+    loading: null,
+    groups: [],
+  },
 });
 
 describe('<AdminPage />', () => {
-  let wrapper;
   let dispatchSpy;
 
   beforeEach(() => {
     dispatchSpy = jest.spyOn(store, 'dispatch');
-    wrapper = mount((
+  });
+
+  it('sets the appropriate props', () => {
+    const { container } = render(
       <MemoryRouter>
         <Provider store={store}>
           <IntlProvider locale="en">
             <AdminPage enterpriseSlug="test-enterprise" />
           </IntlProvider>
         </Provider>
-      </MemoryRouter>
-    )).find('Admin');
-  });
-
-  it('sets the appropriate props', () => {
-    expect(wrapper.props().enrolledLearners).toEqual(1);
-    expect(wrapper.props().courseCompletions).toEqual(1);
-    expect(wrapper.props().activeLearners).toEqual({
-      past_week: 1,
-      past_month: 1,
-    });
+      </MemoryRouter>,
+    );
+    const enrolledLearnersTableRows = container.querySelector('#enrolledLearners .card-title');
+    expect(enrolledLearnersTableRows.textContent).toEqual('1');
+    const courseCompletionsTableRows = container.querySelector('#courseCompletions .card-title');
+    expect(courseCompletionsTableRows.textContent).toEqual('1');
+    // unable to test for active learners past_month as it's not being rendered anywhere
+    const activeLearnersPastWeekTableRows = container.querySelector('#activeLearners .card-title');
+    expect(activeLearnersPastWeekTableRows.textContent).toEqual('1');
   });
 
   it('fetchDashboardAnalytics dispatches fetchDashboardAnalytics action', () => {
-    wrapper.props().fetchDashboardAnalytics('ee5e6b3a-069a-4947-bb8d-d2dbc323396c');
+    render(
+      <MemoryRouter>
+        <Provider store={store}>
+          <IntlProvider locale="en">
+            <AdminPage enterpriseSlug="test-enterprise" />
+          </IntlProvider>
+        </Provider>
+      </MemoryRouter>,
+    );
     expect(dispatchSpy).toHaveBeenCalled();
   });
 });

@@ -1,7 +1,7 @@
 import React from 'react';
 import { useContextSelector } from 'use-context-selector';
 import PropTypes from 'prop-types';
-import { CheckboxControl } from '@edx/paragon';
+import { CheckboxControl } from '@openedx/paragon';
 
 import { MAX_CONTENT_ITEMS_PER_HIGHLIGHT_SET } from '../data/constants';
 import { ContentHighlightsContext } from '../ContentHighlightsContext';

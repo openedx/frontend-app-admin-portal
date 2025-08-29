@@ -8,12 +8,11 @@ import configureMockStore from 'redux-mock-store';
 import { Provider } from 'react-redux';
 import { camelCaseObject } from '@edx/frontend-platform';
 import userEvent from '@testing-library/user-event';
-import { act } from 'react-dom/test-utils';
 import { useContentHighlightsContext } from '../../data/hooks';
 import ContentHighlightCatalogVisibilityRadioInput from '../ContentHighlightCatalogVisibilityRadioInput';
 import { EnterpriseAppContext } from '../../../EnterpriseApp/EnterpriseAppContextProvider';
 import { ContentHighlightsContext } from '../../ContentHighlightsContext';
-import { BUTTON_TEXT, TEST_COURSE_HIGHLIGHTS_DATA, LEARNER_PORTAL_CATALOG_VISIBILITY } from '../../data/constants';
+import { TEST_COURSE_HIGHLIGHTS_DATA, LEARNER_PORTAL_CATALOG_VISIBILITY } from '../../data/constants';
 import EnterpriseCatalogApiService from '../../../../data/services/EnterpriseCatalogApiService';
 
 const mockStore = configureMockStore([thunk]);
@@ -90,10 +89,11 @@ describe('ContentHighlightCatalogVisibilityRadioInput1', () => {
   });
   it('renders', () => {
     renderWithRouter(<ContentHighlightCatalogVisibilityRadioInputWrapper />);
-    expect(screen.getByText(BUTTON_TEXT.catalogVisibilityRadio1)).toBeTruthy();
-    expect(screen.getByText(BUTTON_TEXT.catalogVisibilityRadio2)).toBeTruthy();
+    expect(screen.getByText('Learners can view and enroll into all courses in your catalog')).toBeTruthy();
+    expect(screen.getByText('Learners can only view and enroll into highlighted courses')).toBeTruthy();
   });
   it('Spinner 2 shows on radio 2 click', async () => {
+    const user = userEvent.setup();
     const mockUpdateEnterpriseCuration = jest.fn();
     const mockEnterpriseAppContextValue = {
       enterpriseCuration: {
@@ -115,16 +115,14 @@ describe('ContentHighlightCatalogVisibilityRadioInput1', () => {
       />
     ));
 
-    const viewHighlightedContentButton = screen.getByText(BUTTON_TEXT.catalogVisibilityRadio2);
+    const viewHighlightedContentButton = screen.getByText('Learners can only view and enroll into highlighted courses');
     const radio2LoadingStateInitial = screen.queryByTestId(`${LEARNER_PORTAL_CATALOG_VISIBILITY.HIGHLIGHTED_CONTENT.value}-form-control`);
     const radio1CheckedState = screen.getByTestId(`${LEARNER_PORTAL_CATALOG_VISIBILITY.ALL_CONTENT.value}-form-control-button`).checked;
 
     expect(radio2LoadingStateInitial).toBeFalsy();
     expect(radio1CheckedState).toBeTruthy();
 
-    await act(async () => {
-      userEvent.click(viewHighlightedContentButton);
-    });
+    await user.click(viewHighlightedContentButton);
 
     await waitFor(() => {
       expect(mockUpdateEnterpriseCuration).toHaveBeenCalledTimes(1);
@@ -132,6 +130,7 @@ describe('ContentHighlightCatalogVisibilityRadioInput1', () => {
     });
   });
   it('Spinner 1 shows on radio 1 click', async () => {
+    const user = userEvent.setup();
     EnterpriseCatalogApiService.updateEnterpriseCurationConfig.mockResolvedValue({
       data: {
         canOnlyViewHighlightSets: false,
@@ -158,16 +157,14 @@ describe('ContentHighlightCatalogVisibilityRadioInput1', () => {
         highlightSets={mockHighlightSetResponse}
       />,
     );
-    const viewAllContentButton = screen.getByText(BUTTON_TEXT.catalogVisibilityRadio1);
+    const viewAllContentButton = screen.getByText('Learners can view and enroll into all courses in your catalog');
     const radio1LoadingStateInitial = screen.queryByTestId(`${LEARNER_PORTAL_CATALOG_VISIBILITY.ALL_CONTENT.value}-form-control`);
     const radio2CheckedState = screen.getByTestId(`${LEARNER_PORTAL_CATALOG_VISIBILITY.HIGHLIGHTED_CONTENT.value}-form-control-button`).checked;
 
     expect(radio1LoadingStateInitial).toBeFalsy();
     expect(radio2CheckedState).toBeTruthy();
 
-    await act(async () => {
-      userEvent.click(viewAllContentButton);
-    });
+    await user.click(viewAllContentButton);
 
     await waitFor(() => {
       expect(mockUpdateEnterpriseCuration).toHaveBeenCalledTimes(1);

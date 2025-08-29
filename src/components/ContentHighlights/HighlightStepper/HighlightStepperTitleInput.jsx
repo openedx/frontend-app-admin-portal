@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useContextSelector } from 'use-context-selector';
-import { Form } from '@edx/paragon';
+import { Form } from '@openedx/paragon';
 
 import { ContentHighlightsContext } from '../ContentHighlightsContext';
 import { DEFAULT_ERROR_MESSAGE, MAX_HIGHLIGHT_TITLE_LENGTH } from '../data/constants';

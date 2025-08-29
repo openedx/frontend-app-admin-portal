@@ -119,14 +119,17 @@ const sortTable = (tableId, fetchMethod, ordering) => (
 
     // If we can sort client-side because we have all of the data, do that
     if (tableState.data && tableState.data.num_pages === 1) {
-      const isDesc = ordering.startsWith('-');
+      const isDesc = ordering && ordering.startsWith('-');
       const orderField = isDesc ? ordering.substring(1) : ordering;
-      const result = sortBy(tableState.data.results, orderField);
 
-      return dispatch(sortSuccess(tableId, ordering, {
-        ...tableState.data,
-        results: isDesc ? result.reverse() : result,
-      }));
+      if (orderField) {
+        const result = sortBy(tableState.data.results, orderField);
+
+        return dispatch(sortSuccess(tableId, ordering, {
+          ...tableState.data,
+          results: isDesc ? result.reverse() : result,
+        }));
+      }
     }
 
     return fetchMethod(enterpriseId, options).then((response) => {

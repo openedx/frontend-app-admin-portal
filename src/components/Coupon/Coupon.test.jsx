@@ -1,8 +1,6 @@
 import React from 'react';
 import { Provider } from 'react-redux';
-import {
-  fireEvent, render, screen, waitFor,
-} from '@testing-library/react';
+import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import configureMockStore from 'redux-mock-store';
 import renderer from 'react-test-renderer';
@@ -98,40 +96,48 @@ describe('<Coupon />', () => {
 
   describe('expands and collapses correctly', () => {
     it('expands on click of collapsed coupon', async () => {
+      const user = userEvent.setup();
       const mockOnExpand = jest.fn();
       render(<CouponWrapper onExpand={mockOnExpand} />);
-      await waitFor(() => {
-        userEvent.click(screen.getByText(initialCouponData.title));
-        expect(mockOnExpand).toBeCalledTimes(1);
-      });
-    });
-
-    it('collapses on click of expanded coupon', async () => {
-      const mockOnCollapse = jest.fn();
-      render(<CouponWrapper onCollapse={mockOnCollapse} />);
-      await waitFor(() => {
-        userEvent.click(screen.getByText(initialCouponData.title));
-        expect(mockOnCollapse).toBeCalledTimes(1);
-      });
-    });
-
-    it('expands on keydown of expanded coupon', () => {
-      const mockOnExpand = jest.fn();
-      render(<CouponWrapper onExpand={mockOnExpand} />);
-      fireEvent.keyDown(screen.getByRole('button'), { key: 'Enter', code: 'Enter', charCode: 13 });
+      await user.click(screen.getByText(initialCouponData.title));
       expect(mockOnExpand).toBeCalledTimes(1);
     });
 
-    it('collapses on keydown of expanded coupon', () => {
+    it('collapses on click of expanded coupon', async () => {
+      const user = userEvent.setup();
       const mockOnCollapse = jest.fn();
       render(<CouponWrapper onCollapse={mockOnCollapse} />);
-
-      fireEvent.keyDown(screen.getByRole('button'), { key: 'Enter', code: 'Enter', charCode: 13 });
-      fireEvent.keyDown(screen.getAllByRole('button')[0], { key: 'Enter', code: 'Enter', charCode: 13 });
+      await user.click(screen.getByText(initialCouponData.title));
+      await user.click(screen.getByText(initialCouponData.title));
       expect(mockOnCollapse).toBeCalledTimes(1);
     });
 
-    it('does not handle unknown keydown event', () => {
+    it('expands on keydown of expanded coupon', async () => {
+      const user = userEvent.setup();
+      const mockOnExpand = jest.fn();
+      render(<CouponWrapper onExpand={mockOnExpand} />);
+      const button = screen.getByRole('button');
+      button.focus();
+      await user.keyboard('{enter}');
+      expect(mockOnExpand).toBeCalledTimes(1);
+    });
+
+    it('collapses on keydown of expanded coupon', async () => {
+      const user = userEvent.setup();
+      const mockOnCollapse = jest.fn();
+      render(<CouponWrapper onCollapse={mockOnCollapse} />);
+
+      const button1 = screen.getByRole('button');
+      button1.focus();
+      await user.keyboard('{enter}');
+      const button2 = screen.getAllByRole('button')[0];
+      button2.focus();
+      await user.keyboard('{enter}');
+      expect(mockOnCollapse).toBeCalledTimes(1);
+    });
+
+    it('does not handle unknown keydown event', async () => {
+      const user = userEvent.setup();
       const mockOnExpandOrOnCollapse = jest.fn();
 
       render(
@@ -141,7 +147,9 @@ describe('<Coupon />', () => {
         />,
       );
 
-      fireEvent.keyDown(screen.getByRole('button'), { key: 'A', code: 'KeyA' });
+      const button = screen.getByRole('button');
+      button.focus();
+      await user.keyboard('a');
       expect(mockOnExpandOrOnCollapse).toBeCalledTimes(0);
     });
   });

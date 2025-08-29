@@ -4,9 +4,12 @@ $modal-max-width: 650px;
 // Paragon/Brand
 @import "~@edx/brand/paragon/fonts";
 @import "~@edx/brand/paragon/variables";
-@import "~@edx/paragon/scss/core/core";
+@import "~@openedx/paragon/scss/core/core";
 @import "~@edx/frontend-enterprise-catalog-search";
 @import "~@edx/brand/paragon/overrides";
+
+// Custom variables
+@import "./colors";
 
 // Components
 @import "./components/EnterpriseApp/EnterpriseApp";
@@ -14,11 +17,13 @@ $modal-max-width: 650px;
 @import "./components/Coupon/Coupon";
 @import "./components/CouponDetails/CouponDetails";
 @import "./components/FileInput/FileInput";
+@import "./components/FloatingCollapsible/FloatingCollapsible";
 @import "./components/NumberCard/NumberCard";
 @import "./components/RequestCodesPage/RequestCodesPage";
 @import "./components/Sidebar/Sidebar";
-@import "./components/subscriptions/styles/";
+@import "./components/subscriptions/styles";
 @import "./components/LoadingMessage/LoadingMessage";
+@import "./components/ProductTours/ProductTours";
 @import "./components/TableComponent/TableComponent";
 @import "./components/TableLoadingOverlay/TableLoadingOverlay";
 @import "./components/Hero/Hero";
@@ -26,13 +31,17 @@ $modal-max-width: 650px;
 @import "./components/Admin/Admin";
 @import "./components/settings/settings";
 @import "./components/learner-credit-management/styles";
+@import "./components/AdvanceAnalyticsV2/styles";
+@import "./components/PeopleManagement/PeopleManagement";
+@import "./components/ProductTours/_ProductTours";
+@import "./components/AdvanceAnalyticsV2.0/styles";
 
 // Global
 body {
   overflow-x: hidden;
 }
 
-#root {
+#root #app-container {
   display: flex;
   flex-direction: column;
   min-height: 100vh;
@@ -78,4 +87,21 @@ form {
 
 .stepper-modal .pgn__modal-header {
   border-bottom: solid 7px;
+}
+
+.font-size-base {
+  font-size: $font-size-base !important;
+}
+
+// TODO: Class override can be removed once Paragon is upgraded to version v22.8.1
+.pgn__card-logo-cap {
+  object-fit: scale-down !important;
+  object-position: center center !important;
+}
+
+.bottom-right-fixed {
+  position: fixed;
+  bottom: 1rem;
+  right: 1rem;
+  z-index: 1000;
 }

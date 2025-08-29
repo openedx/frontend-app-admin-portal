@@ -3,8 +3,8 @@ import PropTypes from 'prop-types';
 
 import {
   ActionRow, AlertModal, Button, Icon,
-} from '@edx/paragon';
-import { Error } from '@edx/paragon/icons';
+} from '@openedx/paragon';
+import { Error } from '@openedx/paragon/icons';
 
 import BulkEnrollButton from './BulkEnrollButton';
 
@@ -29,6 +29,7 @@ const BulkEnrollWarningModal = ({
         />
       </ActionRow>
     )}
+    isOverflowVisible={false}
   >
     Any learners with revoked licenses are not included. Click &quot;Enroll&quot; to enroll
     active and pending learners only.
