@@ -135,7 +135,7 @@ const messages = defineMessages({
   },
   organizeLearnersStepFiveBody: {
     id: 'adminPortal.productTours.adminOnboarding.organizeLearners.body.5',
-    defaultMessage: 'When you\'re ready, use "Create Group" to get started.',
+    defaultMessage: 'When you\'re ready, use "Create Group" to get started. <a>Learn more</a>.',
     description: 'Description for the organize learners flow step five',
   },
   organizeLearnersWithGroupsStepFourBody: {
@@ -145,7 +145,7 @@ const messages = defineMessages({
   },
   organizeLearnersWithGroupsStepFiveBody: {
     id: 'adminPortal.productTours.adminOnboarding.organizeLearners.withGroups.body.5',
-    defaultMessage: '“Create Group" allows you to add more learner groups.',
+    defaultMessage: '“Create Group" allows you to add more learner groups. <a>Learn more</a>.',
     description: 'Description for the organize learners flow with groups step five',
   },
   organizeLearnersWithGroupsStepSixBody: {

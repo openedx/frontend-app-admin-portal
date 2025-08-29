@@ -88,8 +88,8 @@ describe('useCreateOrganizeLearnersFlow', () => {
     expect(flow[4]).toMatchObject({
       target: `#${ORGANIZE_LEARNER_TARGETS.CREATE_GROUP_BUTTON}`,
       placement: 'left',
-      body: messages.organizeLearnersStepFiveBody.defaultMessage,
     });
+    expect(flow[4].body.props).toMatchObject(messages.organizeLearnersStepFiveBody);
   });
 
   it('uses correct target selectors for organize learners flow', () => {
@@ -150,8 +150,8 @@ describe('useCreateOrganizeLearnersFlow', () => {
     expect(flow[4]).toMatchObject({
       target: `#${ORGANIZE_LEARNER_TARGETS.CREATE_GROUP_BUTTON}`,
       placement: 'left',
-      body: messages.organizeLearnersWithGroupsStepFiveBody.defaultMessage,
     });
+    expect(flow[4].body.props).toMatchObject(messages.organizeLearnersWithGroupsStepFiveBody);
     expect(flow[5]).toMatchObject({
       target: `#${ORGANIZE_LEARNER_TARGETS.ORG_GROUP_CARD}`,
       placement: 'left',

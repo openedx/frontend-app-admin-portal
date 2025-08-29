@@ -1,10 +1,12 @@
-import { useIntl } from '@edx/frontend-platform/i18n';
+import { useIntl, FormattedMessage } from '@edx/frontend-platform/i18n';
+import { Hyperlink } from '@openedx/paragon';
 
 import { ADMIN_TOUR_EVENT_NAMES, ORGANIZE_LEARNER_TARGETS } from '../constants';
 import messages from '../messages';
 import { configuration } from '../../../../config';
 import { TourStep } from '../../types';
 import useHydrateAdminOnboardingData, { HydratedAdminOnboardingData } from '../data/useHydrateAdminOnboardingData';
+import { ENTERPRISE_HELP_GROUPING } from '../../../settings/data/constants';
 
 interface OrganizeLearnersFlowProps {
   enterpriseId: string;
@@ -25,6 +27,38 @@ const OrganizeLearnersFlow = ({
     configuration.ADMIN_ONBOARDING_UUIDS.FLOW_ORGANIZE_LEARNERS_UUID,
   );
   const onOrganizeBack = () => handleBackTour(ADMIN_TOUR_EVENT_NAMES.ORGANIZE_LEARNERS_BACK_EVENT_NAME);
+
+  const createGroupStepBody = (
+    <FormattedMessage
+      {...messages.organizeLearnersStepFiveBody}
+      values={{
+        a: (chunks) => (
+          <Hyperlink
+            destination={ENTERPRISE_HELP_GROUPING}
+            target="_blank"
+          >
+            {chunks}
+          </Hyperlink>
+        ),
+      }}
+    />
+  );
+
+  const newGroupStepBody = (
+    <FormattedMessage
+      {...messages.organizeLearnersWithGroupsStepFiveBody}
+      values={{
+        a: (chunks) => (
+          <Hyperlink
+            destination={ENTERPRISE_HELP_GROUPING}
+            target="_blank"
+          >
+            {chunks}
+          </Hyperlink>
+        ),
+      }}
+    />
+  );
 
   const tourNoMembers: Array<TourStep> = [{
     target: `#${ORGANIZE_LEARNER_TARGETS.PEOPLE_MANAGEMENT_SIDEBAR}`,
@@ -61,7 +95,7 @@ const OrganizeLearnersFlow = ({
   }, {
     target: `#${ORGANIZE_LEARNER_TARGETS.CREATE_GROUP_BUTTON}`,
     placement: 'left',
-    body: intl.formatMessage(messages.organizeLearnersStepFiveBody),
+    body: createGroupStepBody,
     onEnd: onOrganizeEnd,
     onBack: onOrganizeBack,
   }];
@@ -93,7 +127,7 @@ const OrganizeLearnersFlow = ({
   }, {
     target: `#${ORGANIZE_LEARNER_TARGETS.CREATE_GROUP_BUTTON}`,
     placement: 'left',
-    body: intl.formatMessage(messages.organizeLearnersWithGroupsStepFiveBody),
+    body: newGroupStepBody,
     onAdvance: onOrganizeAdvance,
     onBack: onOrganizeBack,
   }, {
