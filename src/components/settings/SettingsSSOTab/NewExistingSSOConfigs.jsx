@@ -103,7 +103,9 @@ const NewExistingSSOConfigs = ({
   }
 
   function checkErrored(config) {
-    return config.errored_at && (config.submitted_at < config.errored_at);
+    return config.errored_at
+      && (!config.configured_at || config.configured_at < config.errored_at)
+      && (!config.validated_at || config.validated_at < config.errored_at);
   }
 
   function checkTimedOut(config) {
