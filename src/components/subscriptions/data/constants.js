@@ -57,9 +57,6 @@ export const SUBSCRIPTION_STATUS_BADGE_MAP = {
 
 // Browse and request constants `BrowseAndRequestAlert`
 export const BROWSE_AND_REQUEST_ALERT_COOKIE_PREFIX = 'dismissed-browse-and-request-alert';
-export const BROWSE_AND_REQUEST_ALERT_TEXT = 'New! You can now allow all learners to browse'
-+ ' your catalog and request enrollment to courses.';
-export const REDIRECT_SETTINGS_BUTTON_TEXT = 'Go to settings';
 
 // Tabs
 export const MANAGE_LEARNERS_TAB = 'manage-learners';
@@ -92,14 +89,3 @@ export const DEFAULT_TAB = MANAGE_LEARNERS_TAB;
  * Consumed by useCurrentSubscriptionsTab hook to get tab value
  */
 export const SUBSCRIPTIONS_TAB_PARAM = 'subscriptionsTab';
-
-/**
- * Generates subscriptions url matching from SUBSCRIPTION_TABS_VALUES
- * @example :subscriptionsTab(tab0|tab1)?/
- */
-const generatePathMatch = () => {
-  const matchTabs = Object.values(SUBSCRIPTION_TABS_VALUES).join('|');
-  return `:${SUBSCRIPTIONS_TAB_PARAM}(${matchTabs})?/`;
-};
-
-export const SUBSCRIPTIONS_PARAM_MATCH = generatePathMatch();

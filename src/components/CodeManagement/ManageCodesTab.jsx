@@ -4,10 +4,7 @@ import classNames from 'classnames';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import {
-  Alert,
-  Button,
-  Icon,
-  Pagination,
+  Alert, Button, Icon, Pagination,
 } from '@openedx/paragon';
 import {
   CheckCircle, Info, Plus, SpinnerIcon, WarningFilled,
@@ -19,12 +16,13 @@ import CodeSearchResults from '../CodeSearchResults';
 import LoadingMessage from '../LoadingMessage';
 import Coupon from '../Coupon';
 import { updateUrl } from '../../utils';
-import { fetchCouponOrders, clearCouponOrders } from '../../data/actions/coupons';
+import { clearCouponOrders, fetchCouponOrders } from '../../data/actions/coupons';
 import { ROUTE_NAMES } from '../EnterpriseApp/data/constants';
 import NewFeatureAlertBrowseAndRequest from '../NewFeatureAlertBrowseAndRequest';
 import { SubsidyRequestsContext } from '../subsidy-requests';
 import { SUPPORTED_SUBSIDY_TYPES } from '../../data/constants/subsidyRequests';
 import { withLocation, withNavigate } from '../../hoc';
+import CodeDeprecationAlert from '../CodeDeprecationAlert/CodeDeprecationAlert';
 
 class ManageCodesTab extends React.Component {
   constructor(props) {
@@ -279,6 +277,7 @@ class ManageCodesTab extends React.Component {
     return (
       <>
         {this.renderRequestCodesSuccessMessage()}
+        <CodeDeprecationAlert />
         {isBrowseAndRequestFeatureAlertShown && <NewFeatureAlertBrowseAndRequest />}
         <div className="row mt-4 mb-3 no-gutters">
           <div className="col-12 col-xl-3 mb-3 mb-xl-0">
