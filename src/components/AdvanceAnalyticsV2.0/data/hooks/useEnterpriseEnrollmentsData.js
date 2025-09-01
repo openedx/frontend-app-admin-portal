@@ -70,6 +70,7 @@ const useEnterpriseEnrollmentsData = ({
   pageSize = undefined,
   courseType = undefined,
   course = undefined,
+  budgetUUID = undefined,
   queryOptions = {},
 }) => {
   const requestOptions = {
@@ -86,6 +87,10 @@ const useEnterpriseEnrollmentsData = ({
 
   if (course?.value && course?.value !== ALL_COURSES.value) {
     requestOptions.courseKey = course.value;
+  }
+
+  if (budgetUUID) {
+    requestOptions.budgetUUID = budgetUUID;
   }
 
   const response = useQuery({

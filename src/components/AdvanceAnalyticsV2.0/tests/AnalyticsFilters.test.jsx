@@ -15,6 +15,7 @@ const mockSetCalculation = jest.fn();
 const mockSetStartDate = jest.fn();
 const mockSetEndDate = jest.fn();
 const mockSetCourseType = jest.fn();
+const mockSetBudgetUUID = jest.fn();
 
 const mockData = {
   minEnrollmentDate: '2021-01-01',
@@ -23,6 +24,11 @@ const mockData = {
 const mockGroups = [
   { uuid: 'group-1', name: 'Group 1' },
   { uuid: 'group-2', name: 'Group 2' },
+];
+
+const mockBudgets = [
+  { subsidyAccessPolicyUuid: 'budget-uuid-1', subsidyAccessPolicyDisplayName: 'Budget 1' },
+  { subsidyAccessPolicyUuid: 'budget-uuid-2', subsidyAccessPolicyDisplayName: 'Budget 2' },
 ];
 
 const defaultEndDate = new Date().toISOString().split('T')[0];
@@ -45,6 +51,8 @@ const defaultProps = {
   setGranularity: mockSetGranularity,
   calculation: CALCULATION.TOTAL,
   setCalculation: mockSetCalculation,
+  budgets: mockBudgets,
+  setBudgetUUID: mockSetBudgetUUID,
 };
 
 describe('AnalyticsFilters Component', () => {
@@ -65,7 +73,7 @@ describe('AnalyticsFilters Component', () => {
     expect(screen.getByText(/Date range and filters/i)).toBeInTheDocument();
     expect(screen.getByLabelText('Calculation / Trends')).toBeInTheDocument();
     expect(screen.getByLabelText('Date granularity')).toBeInTheDocument();
-    expect(screen.getByLabelText('Filter by budget')).toBeDisabled();
+    expect(screen.getByLabelText('Filter by budget')).toBeInTheDocument();
     expect(screen.getByLabelText('Filter by course')).toBeInTheDocument();
     expect(screen.getByLabelText('Filter by course type')).toBeInTheDocument();
     expect(screen.getByLabelText('Date range options')).toBeInTheDocument();
@@ -304,5 +312,38 @@ describe('AnalyticsFilters Component', () => {
     expect(screen.queryByLabelText('Filter by course type')).not.toBeInTheDocument();
 
     expect(screen.getByLabelText('Filter by start date')).toBeDisabled();
+  });
+
+  test('renders filter by budget dropdown options correctly', () => {
+    render(
+      <IntlProvider locale="en">
+        <AnalyticsFilters
+          {...defaultProps}
+          activeTab="engagement"
+        />
+      </IntlProvider>,
+    );
+
+    const groupSelect = screen.getByLabelText(/Filter by budget/i);
+    expect(groupSelect).toHaveTextContent('All budgets');
+    expect(groupSelect).toHaveTextContent('Budget 1');
+    expect(groupSelect).toHaveTextContent('Budget 2');
+  });
+
+  test('changing budget calls handler', () => {
+    render(
+      <IntlProvider locale="en">
+        <AnalyticsFilters
+          {...defaultProps}
+          activeTab="engagement"
+        />
+      </IntlProvider>,
+    );
+
+    fireEvent.change(screen.getByLabelText('Filter by budget'), {
+      target: { value: 'budget-uuid-1' },
+    });
+
+    expect(mockSetBudgetUUID).toHaveBeenCalledWith('budget-uuid-1');
   });
 });

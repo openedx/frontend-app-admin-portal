@@ -217,4 +217,31 @@ describe('useEnterpriseEngagementData', () => {
       queryKey: expectedKey,
     }));
   });
+
+  it('includes budgetUUID in request options when provided', () => {
+    const budgetUUID = 'budget-789';
+
+    useQuery.mockReturnValue({ data: null, isFetching: false });
+
+    renderHook(() => useEnterpriseEngagementData({
+      enterpriseCustomerUUID,
+      startDate,
+      endDate,
+      courseType,
+      course: undefined,
+      budgetUUID,
+    }));
+
+    const expectedKey = generateKey('engagements', enterpriseCustomerUUID, {
+      startDate,
+      endDate,
+      groupUUID: undefined,
+      courseType,
+      budgetUUID,
+    });
+
+    expect(useQuery).toHaveBeenCalledWith(expect.objectContaining({
+      queryKey: expectedKey,
+    }));
+  });
 });

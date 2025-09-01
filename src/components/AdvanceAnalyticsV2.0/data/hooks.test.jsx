@@ -203,6 +203,52 @@ describe('useEnterpriseAnalyticsData', () => {
       },
     );
   });
+  it('includes budgetUUID in API request when provided', async () => {
+    const startDate = '2021-01-01';
+    const endDate = '2021-12-31';
+    const budgetUUID = 'budget-1234';
+    const courseType = COURSE_TYPES.ALL_COURSE_TYPES;
+    const course = ALL_COURSES;
+
+    const requestOptions = {
+      startDate,
+      endDate,
+      budgetUUID,
+    };
+
+    const queryParams = new URLSearchParams(snakeCaseObject(requestOptions));
+    const baseURL = `${EnterpriseDataApiService.enterpriseAdminAnalyticsV2BaseUrl}${TEST_ENTERPRISE_ID}`;
+    const analyticsURL = `${baseURL}/completions/stats?${queryParams.toString()}`;
+
+    axiosMock.onGet(analyticsURL).reply(200, mockAnalyticsCompletionsChartsData);
+
+    const { result } = renderHook(
+      () => useEnterpriseAnalyticsData({
+        enterpriseCustomerUUID: TEST_ENTERPRISE_ID,
+        key: 'completions',
+        startDate,
+        endDate,
+        courseType,
+        course,
+        budgetUUID,
+      }),
+      { wrapper },
+    );
+
+    await waitFor(() => {
+      expect(result.current.isFetching).toBe(false);
+    });
+
+    expect(EnterpriseDataApiService.fetchAdminAnalyticsData).toHaveBeenCalledWith(
+      TEST_ENTERPRISE_ID,
+      'completions',
+      {
+        startDate,
+        endDate,
+        budgetUUID,
+      },
+    );
+  });
 });
 
 describe('useEnterpriseAnalyticsAggregatesData', () => {
@@ -295,6 +341,42 @@ describe('useEnterpriseAnalyticsAggregatesData', () => {
         startDate,
         endDate,
         course,
+      }),
+      { wrapper },
+    );
+
+    await waitFor(() => {
+      expect(result.current.isFetching).toBe(false);
+    });
+
+    expect(EnterpriseDataApiService.fetchAdminAggregatesData).toHaveBeenCalledWith(
+      TEST_ENTERPRISE_ID,
+      requestOptions,
+    );
+  });
+  it('includes budgetUUID in aggregates API request when provided', async () => {
+    const startDate = '2021-01-01';
+    const endDate = '2021-12-31';
+    const budgetUUID = 'budget-9876';
+
+    const requestOptions = {
+      startDate,
+      endDate,
+      budgetUUID,
+    };
+
+    const queryParams = new URLSearchParams(snakeCaseObject(requestOptions));
+    const baseURL = `${EnterpriseDataApiService.enterpriseAdminAnalyticsV2BaseUrl}${TEST_ENTERPRISE_ID}`;
+    const analyticsURL = `${baseURL}/aggregates/stats?${queryParams.toString()}`;
+
+    axiosMock.onGet(analyticsURL).reply(200, {});
+
+    const { result } = renderHook(
+      () => useEnterpriseAnalyticsAggregatesData({
+        enterpriseCustomerUUID: TEST_ENTERPRISE_ID,
+        startDate,
+        endDate,
+        budgetUUID,
       }),
       { wrapper },
     );

@@ -32,9 +32,13 @@ const AnalyticsFilters = ({
   groups,
   isFetching,
   isGroupsLoading,
+  budgets,
+  isBudgetsFetching,
   activeTab,
   isEnterpriseCoursesFetching,
   enterpriseCourses,
+  budgetUUID,
+  setBudgetUUID,
 
 }) => {
   const intl = useIntl();
@@ -297,7 +301,7 @@ const AnalyticsFilters = ({
                   as="select"
                   value={groupUUID}
                   onChange={(e) => setGroupUUID(e.target.value)}
-                  disabled={isGroupsLoading || groups === undefined || groups.length === 0}
+                  disabled={isGroupsLoading}
                 >
                   <option value={DEFAULT_GROUP}>
                     {intl.formatMessage({
@@ -307,8 +311,8 @@ const AnalyticsFilters = ({
                     })}
                   </option>
                   {groups?.map(grp => (
-                    <option value={grp.uuid} key={grp.uuid}>
-                      {grp.name}
+                    <option value={grp?.uuid} key={grp?.uuid}>
+                      {grp?.name}
                     </option>
                   ))}
                 </Form.Control>
@@ -322,16 +326,31 @@ const AnalyticsFilters = ({
                     <FormattedMessage
                       id="advance.analytics.filter.by.budget"
                       defaultMessage="Filter by budget"
-                      description="Advance analytics filter by budget label"
+                      description="Advance analytics budget filter label"
                     />
                   </Form.Label>
                   <Form.Control
                     controlClassName="font-weight-normal analytics-filter-form-controls rounded-0"
                     as="select"
-                    disabled
-                    value=""
+                    value={budgetUUID}
+                    onChange={(e) => setBudgetUUID(e.target.value)}
+                    disabled={isBudgetsFetching}
                   >
-                    <option value="">All budgets</option>
+                    <option value="">
+                      {intl.formatMessage({
+                        id: 'adminPortal.analytics.budget.filter.all',
+                        defaultMessage: 'All budgets',
+                        description: 'Label for the all budgets option',
+                      })}
+                    </option>
+                    {budgets?.map(budget => (
+                      <option
+                        key={budget?.subsidyAccessPolicyUuid}
+                        value={budget?.subsidyAccessPolicyUuid}
+                      >
+                        {budget?.subsidyAccessPolicyDisplayName}
+                      </option>
+                    ))}
                   </Form.Control>
                 </Form.Group>
               </div>
@@ -458,6 +477,10 @@ AnalyticsFilters.propTypes = {
   activeTab: PropTypes.string.isRequired,
   isEnterpriseCoursesFetching: PropTypes.bool,
   enterpriseCourses: PropTypes.arrayOf(PropTypes.shape({ })),
+  budgets: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
+  isBudgetsFetching: PropTypes.bool.isRequired,
+  budgetUUID: PropTypes.string,
+  setBudgetUUID: PropTypes.func.isRequired,
 };
 
 export default AnalyticsFilters;
