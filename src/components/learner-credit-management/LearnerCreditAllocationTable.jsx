@@ -55,7 +55,7 @@ const LearnerCreditAllocationTable = ({
           accessor: 'courseRunStartDate',
           Cell: ({ row }) => {
             const value = row.values.courseRunStartDate;
-            return value ? formatDate(value) : 'Not set';
+            return value ? formatDate(value) : null;
           },
           disableFilters: true,
         },
