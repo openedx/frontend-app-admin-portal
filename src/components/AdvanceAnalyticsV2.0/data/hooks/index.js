@@ -9,6 +9,7 @@ export { default as useEnterpriseEnrollmentsData } from './useEnterpriseEnrollme
 export { default as useEnterpriseEngagementData } from './useEnterpriseEngagementData';
 export { default as useEnterpriseCompletionsData } from './useEnterpriseCompletionsData';
 export { default as useEnterpriseCourses } from './useEnterpriseCourses';
+export { default as useEnterpriseBudgets } from './useEnterpriseBudgets';
 
 export const useEnterpriseAnalyticsData = ({
   enterpriseCustomerUUID,
@@ -22,6 +23,7 @@ export const useEnterpriseAnalyticsData = ({
   pageSize = undefined,
   courseType = undefined,
   course = undefined,
+  budgetUUID = undefined,
   queryOptions = {},
 }) => {
   const requestOptions = {
@@ -40,6 +42,10 @@ export const useEnterpriseAnalyticsData = ({
 
   if (course?.value && course?.value !== ALL_COURSES.value) {
     requestOptions.courseKey = course.value;
+  }
+
+  if (budgetUUID) {
+    requestOptions.budgetUUID = budgetUUID;
   }
 
   return useQuery({
@@ -79,6 +85,7 @@ export const useEnterpriseAnalyticsAggregatesData = ({
   endDate,
   courseType = undefined,
   course = undefined,
+  budgetUUID = undefined,
   queryOptions = {},
 }) => {
   const requestOptions = {
@@ -92,6 +99,10 @@ export const useEnterpriseAnalyticsAggregatesData = ({
 
   if (course?.value && course?.value !== ALL_COURSES.value) {
     requestOptions.courseKey = course.value;
+  }
+
+  if (budgetUUID) {
+    requestOptions.budgetUUID = budgetUUID;
   }
 
   return useQuery({

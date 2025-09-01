@@ -33,6 +33,7 @@ const useEnterpriseCourses = ({
   endDate,
   groupUUID = undefined,
   courseType = undefined,
+  budgetUUID = undefined,
   queryOptions = {},
 }) => {
   const requestOptions = {
@@ -43,6 +44,10 @@ const useEnterpriseCourses = ({
 
   if (courseType && courseType !== COURSE_TYPES.ALL_COURSE_TYPES) {
     requestOptions.courseType = courseType;
+  }
+
+  if (budgetUUID) {
+    requestOptions.budgetUUID = budgetUUID;
   }
 
   const response = useQuery({
