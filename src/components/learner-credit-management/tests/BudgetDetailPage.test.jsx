@@ -225,7 +225,9 @@ const mockApprovedRequest = {
   requestStatus: 'approved',
   lastActionStatus: 'waiting_for_learner',
   lastActionErrorReason: undefined,
-  latestAction: { status: 'approved', timestamp: '2023-10-27' },
+  latestAction: { status: 'approved', timestamp: '2023-10-27', recentAction: 'approved' },
+  learnerRequestState: 'waiting',
+  lastActionDate: 'Oct 27, 2023',
 };
 
 const createMockApprovedRequest = () => ({
@@ -1824,6 +1826,7 @@ describe('<BudgetDetailPage />', () => {
         ...mockApprovedRequest.latestAction,
         errorReason: 'failed_cancellation',
       },
+      learnerRequestState: 'failed',
     };
     useBnrSubsidyRequests.mockReturnValue({
       isLoading: false,
@@ -1901,6 +1904,7 @@ describe('<BudgetDetailPage />', () => {
         ...mockApprovedRequest.latestAction,
         errorReason: 'failed_redemption',
       },
+      learnerRequestState: 'failed',
     };
     useBnrSubsidyRequests.mockReturnValue({
       isLoading: false,
@@ -1973,15 +1977,18 @@ describe('<BudgetDetailPage />', () => {
       {
         ...mockApprovedRequest,
         lastActionStatus: 'reminded',
+        learnerRequestState: 'waiting',
       },
       {
         ...createMockApprovedRequest(),
         lastActionStatus: 'refunded',
         lastActionErrorReason: 'failed_cancellation',
+        learnerRequestState: 'failed',
       },
       {
         ...createMockApprovedRequest(),
         lastActionStatus: 'completed',
+        learnerRequestState: 'waiting',
       },
     ];
     useBnrSubsidyRequests.mockReturnValue({
