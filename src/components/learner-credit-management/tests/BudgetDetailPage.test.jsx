@@ -13,7 +13,6 @@ import { IntlProvider } from '@edx/frontend-platform/i18n';
 import { renderWithRouter, sendEnterpriseTrackEvent } from '@edx/frontend-enterprise-utils';
 import { act } from 'react-dom/test-utils';
 import { v4 as uuidv4, validate as uuidValidate } from 'uuid';
-import { faker } from '@faker-js/faker';
 import dayjs from 'dayjs';
 
 import EnterpriseAccessApiService from '../../../data/services/EnterpriseAccessApiService';
@@ -25,6 +24,7 @@ import {
   PAGE_SIZE,
   useBudgetContentAssignments,
   useBudgetDetailActivityOverview,
+  useBudgetId,
   useBudgetRedemptions,
   useEnterpriseCustomer,
   useEnterpriseFlexGroups,
@@ -35,12 +35,8 @@ import {
   useIsLargeOrGreater,
   useSubsidyAccessPolicy,
   useSubsidySummaryAnalyticsApi,
-  useBudgetId,
 } from '../data';
-import {
-  BUDGET_DETAIL_ACTIVITY_TAB,
-  BUDGET_DETAIL_CATALOG_TAB,
-} from '../data/constants';
+import { BUDGET_DETAIL_ACTIVITY_TAB, BUDGET_DETAIL_CATALOG_TAB } from '../data/constants';
 import { EnterpriseSubsidiesContext } from '../../EnterpriseSubsidiesContext';
 import {
   mockAssignableSubsidyAccessPolicy,
@@ -178,7 +174,7 @@ const mockLearnerContentAssignment = {
 const createMockLearnerContentAssignment = () => ({
   ...mockLearnerContentAssignment,
   uuid: uuidv4(),
-  learnerEmail: faker.internet.email(),
+  learnerEmail: 'example@edx.org',
 });
 const mockEnrollmentTransactionReversal = {
   uuid: 'test-transaction-reversal-uuid',
@@ -235,7 +231,7 @@ const mockApprovedRequest = {
 const createMockApprovedRequest = () => ({
   ...mockApprovedRequest,
   uuid: uuidv4(),
-  email: faker.internet.email(),
+  email: 'example@edx.org',
 });
 
 const mockEmptyApprovedRequests = {
