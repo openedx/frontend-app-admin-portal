@@ -48,6 +48,20 @@ const LearnerCreditAllocationTable = ({
         {
           Header:
           intl.formatMessage({
+            id: 'lcm.learner.credit.allocation.spent.table.column.startDate',
+            defaultMessage: 'Start Date',
+            description: 'Column header for the Course Run Start Date column in the Learner Credit Allocation table',
+          }),
+          accessor: 'courseRunStartDate',
+          Cell: ({ row }) => {
+            const value = row.values.courseRunStartDate;
+            return value ? formatDate(value) : null;
+          },
+          disableFilters: true,
+        },
+        {
+          Header:
+          intl.formatMessage({
             id: 'lcm.learner.credit.allocation.spent.table.column.enrollment.details',
             defaultMessage: 'Enrollment details',
             description: 'Column header for the Enrollment details column in the Learner Credit Allocation table',
