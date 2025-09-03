@@ -184,12 +184,12 @@ describe('TourCollapsible', () => {
       },
     };
     setup(state, true);
-    expect(screen.queryByText('Track Learner Progress')).toBeInTheDocument();
+    expect(screen.queryByText('Track learner progress')).toBeInTheDocument();
     expect(screen.queryByText('View enrollment insights')).toBeInTheDocument();
     expect(screen.queryByText('Administer subscriptions')).toBeInTheDocument();
     expect(screen.queryByText('Organize learners')).toBeInTheDocument();
-    expect(screen.queryByText('Customize Reports')).toBeInTheDocument();
-    expect(screen.queryByText('Set Up Preferences')).toBeInTheDocument();
+    expect(screen.queryByText('Customize reports')).toBeInTheDocument();
+    expect(screen.queryByText('Set up preferences')).toBeInTheDocument();
   });
 
   it('does not display reporting configuration step when reporting is disabled', () => {
@@ -204,7 +204,7 @@ describe('TourCollapsible', () => {
       },
     };
     setup(state, true);
-    expect(screen.queryByText('Customize Reports')).not.toBeInTheDocument();
+    expect(screen.queryByText('Customize reports')).not.toBeInTheDocument();
   });
 
   it('does not display administer subscriptions step when subscription management is disabled', () => {

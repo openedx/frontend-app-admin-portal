@@ -4,10 +4,9 @@ import React, {
 import dayjs from 'dayjs';
 import { debounce } from 'lodash-es';
 import {
-  breakpoints, CheckboxFilter, DataTable, TextFilter, Toast, useWindowSize,
+  breakpoints, DataTable, TextFilter, Toast, useWindowSize,
 } from '@openedx/paragon';
 import { sendEnterpriseTrackEvent } from '@edx/frontend-enterprise-utils';
-
 import { useIntl } from '@edx/frontend-platform/i18n';
 import { SubscriptionContext } from '../../SubscriptionData';
 import { defaultStatusFilter, SubscriptionDetailContext } from '../../SubscriptionDetailContextProvider';
@@ -24,6 +23,7 @@ import RevokeBulkAction from './bulk-actions/RevokeBulkAction';
 import LicenseManagementTableActionColumn from './LicenseManagementTableActionColumn';
 import LicenseManagementUserBadge from './LicenseManagementUserBadge';
 import { SUBSCRIPTION_TABLE_EVENTS } from '../../../../eventTracking';
+import { CheckboxFilter } from '../../../CheckboxFilter';
 
 const userRecentAction = (user, intl) => {
   switch (user.status) {
@@ -241,6 +241,7 @@ const LicenseManagementTable = () => {
         initialState={{
           pageSize: PAGE_SIZE,
           pageIndex: DEFAULT_PAGE - 1,
+          filters: [],
         }}
         initialTableOptions={{
           getRowId: row => row.id,
