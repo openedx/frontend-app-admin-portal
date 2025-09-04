@@ -3,7 +3,9 @@ import { FormattedMessage } from '@edx/frontend-platform/i18n';
 import PropTypes from 'prop-types';
 import { sendEnterpriseTrackEvent } from '@edx/frontend-enterprise-utils';
 import { ANALYTICS_TABS } from '../constants';
-import { COURSE_TYPES, ALL_COURSES } from '../data/constants';
+import {
+  COURSE_TYPES, ALL_COURSES, GRANULARITY, CALCULATION,
+} from '../data/constants';
 import {
   useEnterpriseEngagementData,
   useEnterpriseAnalyticsAggregatesData,
@@ -13,7 +15,6 @@ import {
   useEnterpriseBudgets,
 } from '../data/hooks';
 import AnalyticsFilters from '../AnalyticsFilters';
-import { useAnalyticsFilters } from '../AnalyticsFiltersContext';
 import Stats from '../Stats';
 import SkillsByEnrollmentChart from '../charts/SkillsByEnrollmentChart';
 import SkillsByLearningHoursChart from '../charts/SkillsByLearningHoursChart';
@@ -26,23 +27,17 @@ import TopSubjectsByEnrollmentTable from '../tables/TopSubjectsByEnrollmentTable
 import TopSubjectsByLearningHoursTable from '../tables/TopSubjectsByLearningHoursTable';
 import EVENT_NAMES from '../../../eventTracking';
 import { get90DayPriorDate } from '../data/utils';
+import { useAllFlexEnterpriseGroups } from '../../learner-credit-management/data';
 
 const Engagements = ({ enterpriseId }) => {
-  // Filters
-  const {
-    granularity,
-    setGranularity,
-    calculation,
-    setCalculation,
-    groupUUID,
-    setGroupUUID,
-    currentDate,
-    groups,
-    isGroupsLoading,
-  } = useAnalyticsFilters();
+  const currentDate = new Date().toISOString().split('T')[0];
 
+  // Filters
   const [startDate, setStartDate] = useState(get90DayPriorDate());
   const [endDate, setEndDate] = useState(currentDate);
+  const [granularity, setGranularity] = useState(GRANULARITY.WEEKLY);
+  const [calculation, setCalculation] = useState(CALCULATION.TOTAL);
+  const [groupUUID, setGroupUUID] = useState('');
   const [courseType, setCourseType] = useState(COURSE_TYPES.ALL_COURSE_TYPES);
   const [course, setCourse] = useState(ALL_COURSES);
   const [budgetUUID, setBudgetUUID] = useState('');
@@ -50,8 +45,10 @@ const Engagements = ({ enterpriseId }) => {
   // Stats Data
   const { isFetching: isStatsFetching, isError: isStatsError, data: statsData } = useEnterpriseAnalyticsAggregatesData({
     enterpriseCustomerUUID: enterpriseId,
+    tabKey: ANALYTICS_TABS.ENGAGEMENTS,
     startDate,
     endDate,
+    groupUUID,
     courseType,
     course,
     budgetUUID,
@@ -65,6 +62,7 @@ const Engagements = ({ enterpriseId }) => {
     key: ANALYTICS_TABS.SKILLS,
     startDate,
     endDate,
+    groupUUID,
     courseType,
     course,
     budgetUUID,
@@ -117,6 +115,11 @@ const Engagements = ({ enterpriseId }) => {
   const {
     isFetching: isBudgetsFetching, data: budgets,
   } = useEnterpriseBudgets({ enterpriseCustomerUUID: enterpriseId });
+
+  // Groups Data
+  const {
+    isLoading: isGroupsLoading, data: groups,
+  } = useAllFlexEnterpriseGroups(enterpriseId);
 
   const handleChartClick = (data) => {
     sendEnterpriseTrackEvent(
@@ -212,7 +215,7 @@ const Engagements = ({ enterpriseId }) => {
       <div className="bg-primary-100 rounded-lg container-fluid mb-3">
         <div className="h-100 overflow-hidden">
           <Leaderboard
-            startDate={startDate || statsData?.minEnrollmentDate}
+            startDate={startDate}
             endDate={endDate || currentDate}
             enterpriseId={enterpriseId}
             courseType={courseType}
@@ -226,7 +229,7 @@ const Engagements = ({ enterpriseId }) => {
         isFetching={isEngagementError}
         isError={isEngagementFetching}
         data={engagementData?.engagementOverTime}
-        startDate={startDate || statsData?.minEnrollmentDate}
+        startDate={startDate}
         endDate={endDate || currentDate}
         onClick={handleChartClick}
       />
@@ -236,7 +239,7 @@ const Engagements = ({ enterpriseId }) => {
         isFetching={isEnrollmentsFetching}
         isError={isEnrollmentsError}
         data={enrollmentsData?.enrollmentsOverTime}
-        startDate={startDate || statsData?.minEnrollmentDate}
+        startDate={startDate}
         endDate={endDate || currentDate}
         onClick={handleChartClick}
       />
@@ -249,7 +252,7 @@ const Engagements = ({ enterpriseId }) => {
             <TopCoursesByEnrollmentTable
               isFetching={isEnrollmentsFetching}
               data={enrollmentsData?.topCoursesByEnrollments}
-              startDate={startDate || statsData?.minEnrollmentDate}
+              startDate={startDate}
               endDate={endDate || currentDate}
             />
           </div>
@@ -260,7 +263,7 @@ const Engagements = ({ enterpriseId }) => {
             <TopCoursesByLearningHoursTable
               isFetching={isEnrollmentsFetching}
               data={engagementData?.topCoursesByEngagement}
-              startDate={startDate || statsData?.minEnrollmentDate}
+              startDate={startDate}
               endDate={endDate || currentDate}
             />
           </div>
@@ -275,7 +278,7 @@ const Engagements = ({ enterpriseId }) => {
             <TopSubjectsByEnrollmentTable
               isFetching={isEnrollmentsFetching}
               data={enrollmentsData?.topSubjectsByEnrollments}
-              startDate={startDate || statsData?.minEnrollmentDate}
+              startDate={startDate}
               endDate={endDate || currentDate}
             />
           </div>
@@ -286,7 +289,7 @@ const Engagements = ({ enterpriseId }) => {
             <TopSubjectsByLearningHoursTable
               isFetching={isEngagementFetching}
               data={engagementData?.topSubjectsByEngagement}
-              startDate={startDate || statsData?.minEnrollmentDate}
+              startDate={startDate}
               endDate={endDate || currentDate}
             />
           </div>
