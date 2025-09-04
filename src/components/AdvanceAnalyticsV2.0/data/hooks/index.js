@@ -1,7 +1,9 @@
 import { useMemo } from 'react';
 import { useQuery } from '@tanstack/react-query';
 
-import { advanceAnalyticsQueryKeys, COURSE_TYPES, ALL_COURSES } from '../constants';
+import {
+  advanceAnalyticsQueryKeys, COURSE_TYPES, ALL_COURSES,
+} from '../constants';
 
 import EnterpriseDataApiService from '../../../../data/services/EnterpriseDataApiService';
 
@@ -81,8 +83,10 @@ export const usePaginatedData = (data) => useMemo(() => {
 
 export const useEnterpriseAnalyticsAggregatesData = ({
   enterpriseCustomerUUID,
+  tabKey,
   startDate,
   endDate,
+  groupUUID = undefined,
   courseType = undefined,
   course = undefined,
   budgetUUID = undefined,
@@ -92,6 +96,10 @@ export const useEnterpriseAnalyticsAggregatesData = ({
     startDate,
     endDate,
   };
+
+  if (groupUUID) {
+    requestOptions.groupUUID = groupUUID;
+  }
 
   if (courseType && courseType !== COURSE_TYPES.ALL_COURSE_TYPES) {
     requestOptions.courseType = courseType;
@@ -106,7 +114,7 @@ export const useEnterpriseAnalyticsAggregatesData = ({
   }
 
   return useQuery({
-    queryKey: advanceAnalyticsQueryKeys.aggregates(enterpriseCustomerUUID, requestOptions),
+    queryKey: advanceAnalyticsQueryKeys.aggregates(enterpriseCustomerUUID, requestOptions, tabKey),
     queryFn: () => EnterpriseDataApiService.fetchAdminAggregatesData(
       enterpriseCustomerUUID,
       requestOptions,

@@ -10,38 +10,33 @@ import {
   useEnterpriseCourses,
 } from '../data/hooks';
 import AnalyticsFilters from '../AnalyticsFilters';
-import { useAnalyticsFilters } from '../AnalyticsFiltersContext';
 import Stats from '../Stats';
 import TopSkillsChart from '../charts/TopSkillsChart';
 import CompletionsOverTimeChart from '../charts/CompletionsOverTimeChart';
 import TopSkillsByCompletionChart from '../charts/TopSkillsByCompletionChart';
 import EVENT_NAMES from '../../../eventTracking';
 import { get90DayPriorDate } from '../data/utils';
-import { ALL_COURSES } from '../data/constants';
+import { ALL_COURSES, GRANULARITY, CALCULATION } from '../data/constants';
+import { useAllFlexEnterpriseGroups } from '../../learner-credit-management/data';
 
 const Outcomes = ({ enterpriseId }) => {
-  // Filters
-  const {
-    granularity,
-    setGranularity,
-    calculation,
-    setCalculation,
-    groupUUID,
-    setGroupUUID,
-    currentDate,
-    groups,
-    isGroupsLoading,
-  } = useAnalyticsFilters();
+  const currentDate = new Date().toISOString().split('T')[0];
 
+  // Filters
   const [startDate, setStartDate] = useState(get90DayPriorDate());
   const [endDate, setEndDate] = useState(currentDate);
+  const [granularity, setGranularity] = useState(GRANULARITY.WEEKLY);
+  const [calculation, setCalculation] = useState(CALCULATION.TOTAL);
+  const [groupUUID, setGroupUUID] = useState('');
   const [course, setCourse] = useState(ALL_COURSES);
 
   // Stats Data
   const { isFetching: isStatsFetching, isError: isStatsError, data: statsData } = useEnterpriseAnalyticsAggregatesData({
     enterpriseCustomerUUID: enterpriseId,
+    tabKey: ANALYTICS_TABS.OUTCOMES,
     startDate,
     endDate,
+    groupUUID,
     course,
   });
 
@@ -53,6 +48,7 @@ const Outcomes = ({ enterpriseId }) => {
     key: ANALYTICS_TABS.SKILLS,
     startDate,
     endDate,
+    groupUUID,
     course,
   });
 
@@ -79,6 +75,11 @@ const Outcomes = ({ enterpriseId }) => {
     endDate,
     groupUUID,
   });
+
+  // Groups Data
+  const {
+    isLoading: isGroupsLoading, data: groups,
+  } = useAllFlexEnterpriseGroups(enterpriseId);
 
   const handleChartClick = (chartData) => {
     sendEnterpriseTrackEvent(
@@ -148,7 +149,7 @@ const Outcomes = ({ enterpriseId }) => {
         isFetching={isSkillsFetching}
         isError={isSkillsError}
         data={skillsData?.topSkills}
-        startDate={startDate || statsData?.minEnrollmentDate}
+        startDate={startDate}
         endDate={endDate || currentDate}
         onClick={handleChartClick}
       />
@@ -158,7 +159,7 @@ const Outcomes = ({ enterpriseId }) => {
         isFetching={isCompletionsFetching}
         isError={isCompletionsError}
         data={completionsData?.completionsOverTime}
-        startDate={startDate || statsData?.minEnrollmentDate}
+        startDate={startDate}
         endDate={endDate || currentDate}
         granularity={granularity}
         calculation={calculation}
@@ -170,7 +171,7 @@ const Outcomes = ({ enterpriseId }) => {
         isFetching={isSkillsFetching}
         isError={isSkillsError}
         data={skillsData?.topSkillsByCompletions}
-        startDate={startDate || statsData?.minEnrollmentDate}
+        startDate={startDate}
         endDate={endDate || currentDate}
         onClick={handleChartClick}
       />
