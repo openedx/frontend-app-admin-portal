@@ -77,8 +77,8 @@ export const advanceAnalyticsQueryKeys = {
   leaderboardTable: (enterpriseUUID, requestOptions) => (
     generateKey(analyticsDataTableKeys.leaderboard, enterpriseUUID, requestOptions)
   ),
-  aggregates: (enterpriseUUID, requestOptions) => (
-    generateKey('aggregates', enterpriseUUID, requestOptions)
+  aggregates: (enterpriseUUID, requestOptions, tabKey) => (
+    generateKey(`aggregates-${tabKey}`, enterpriseUUID, requestOptions)
   ),
 };
 
