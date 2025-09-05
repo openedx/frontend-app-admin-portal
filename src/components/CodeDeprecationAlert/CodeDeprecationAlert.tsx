@@ -18,7 +18,7 @@ const CodeDeprecationAlert = (): React.ReactNode => (
     </Alert.Heading>
     <FormattedMessage
       id="admin.portal.codes.codeDeprecationAlert.message"
-      defaultMessage="The codes feature will be retired after <b>September 30</b>, upon retirement all codes will no longer be valid. We will be sharing more details soon about new enrollment options."
+      defaultMessage="The codes feature will be retired after <b>September 15</b>, upon retirement all codes will no longer be valid. We will be sharing more details soon about new enrollment options."
       description="Message to inform user of an impending deprecation of the current feature"
       values={boldRichText}
     />
