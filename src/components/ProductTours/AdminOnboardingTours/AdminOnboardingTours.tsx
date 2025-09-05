@@ -9,7 +9,7 @@ import { useLocation } from 'react-router-dom';
 import AdminOnboardingTour from './flows/AdminOnboardingTour';
 import CheckpointOverlay from '../CheckpointOverlay';
 import '../_ProductTours.scss';
-import { RESET_TARGETS, ALLOCATE_LEARNING_BUDGETS_TARGETS } from './constants';
+import { RESET_TARGETS } from './constants';
 
 interface Insights {
   learner_engagement?: any;
@@ -27,7 +27,6 @@ interface AdminOnboardingToursProps {
   setTarget: Function,
   targetSelector: string;
   enablePortalLearnerCreditManagementScreen: boolean;
-  enterpriseUUID: string;
   enterpriseFeatures: {
     topDownAssignmentRealTimeLcm: boolean;
   };
@@ -52,9 +51,8 @@ interface RootState {
 }
 
 const AdminOnboardingTours: FC<AdminOnboardingToursProps> = ({
-  enablePortalLearnerCreditManagementScreen,
-  enterpriseUUID,
   enterpriseFeatures,
+  enablePortalLearnerCreditManagementScreen,
   adminUuid, enterpriseId, enterpriseSlug, insights, insightsLoading, isOpen, onClose, setTarget, targetSelector,
 }) => {
   const intl = useIntl();
@@ -63,9 +61,8 @@ const AdminOnboardingTours: FC<AdminOnboardingToursProps> = ({
   const [currentStep, setCurrentStep] = useState(0);
   const prevPathnameRef = useRef(location.pathname);
   const adminOnboardingSteps = AdminOnboardingTour({
-    enablePortalLearnerCreditManagementScreen,
-    enterpriseUUID,
     enterpriseFeatures,
+    enablePortalLearnerCreditManagementScreen,
     adminUuid,
     aiButtonVisible,
     currentStep,
@@ -93,22 +90,13 @@ const AdminOnboardingTours: FC<AdminOnboardingToursProps> = ({
     if (isPageTransition) {
       // Page transition: clear target immediately, then set after delay
       setTarget('');
-
       setTimeout(() => {
         if (adminOnboardingSteps[currentStep]) {
           const nextTarget = adminOnboardingSteps[currentStep].target;
           const targetWithoutPrefix = nextTarget.replace(/^[.#]/, '');
-
-          if (targetWithoutPrefix === ALLOCATE_LEARNING_BUDGETS_TARGETS.ASSIGNMENT_BUDGET_DETAIL_CARD) {
-            setTimeout(() => {
-              setTarget(targetWithoutPrefix);
-            }, 1000);
-          } else {
-            setTarget(targetWithoutPrefix);
-          }
+          setTarget(targetWithoutPrefix);
         }
       }, 200);
-
       prevPathnameRef.current = currentPathname;
     } else {
       // Step change on same page: set target immediately
@@ -116,14 +104,7 @@ const AdminOnboardingTours: FC<AdminOnboardingToursProps> = ({
       if (adminOnboardingSteps[currentStep]) {
         const nextTarget = adminOnboardingSteps[currentStep].target;
         const targetWithoutPrefix = nextTarget.replace(/^[.#]/, '');
-
-        if (targetWithoutPrefix === ALLOCATE_LEARNING_BUDGETS_TARGETS.ASSIGNMENT_BUDGET_DETAIL_CARD) {
-          timeId = setTimeout(() => {
-            setTarget(targetWithoutPrefix);
-          }, 1000);
-        } else {
-          setTarget(targetWithoutPrefix);
-        }
+        setTarget(targetWithoutPrefix);
       }
       return () => clearTimeout(timeId);
     }
@@ -186,7 +167,6 @@ const mapStateToProps = (state: RootState) => ({
   insights: state.dashboardInsights.insights,
   insightsLoading: state.dashboardInsights.loading,
   enablePortalLearnerCreditManagementScreen: state.portalConfiguration.enablePortalLearnerCreditManagementScreen,
-  enterpriseUUID: state.portalConfiguration.enterpriseId,
   enterpriseFeatures: state.portalConfiguration.enterpriseFeatures,
 });
 export default connect(mapStateToProps)(AdminOnboardingTours);

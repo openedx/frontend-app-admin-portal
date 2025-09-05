@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import React, { useState } from 'react';
 import { logError } from '@edx/frontend-platform/logging';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';

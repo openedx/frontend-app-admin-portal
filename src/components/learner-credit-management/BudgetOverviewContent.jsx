@@ -14,6 +14,7 @@ import BudgetDetailPageOverviewAvailability from './BudgetDetailPageOverviewAvai
 import BudgetDetailPageOverviewUtilization from './BudgetDetailPageOverviewUtilization';
 import { BUDGET_TYPES } from '../EnterpriseApp/data/constants';
 import BudgetStatusSubtitle from './BudgetStatusSubtitle';
+import { ALLOCATE_LEARNING_BUDGETS_TARGETS } from '../ProductTours/AdminOnboardingTours/constants';
 
 const BudgetOverviewContent = ({
   enterpriseUUID,
@@ -58,7 +59,7 @@ const BudgetOverviewContent = ({
   if (!subsidyAccessPolicy && (isLoadingSubsidySummary || isLoadingEnterpriseOffer)) {
     return (
       <div data-testid="budget-detail-skeleton">
-        <Skeleton height={180} id="assignment-budget-detail-card" />
+        <Skeleton height={180} id={ALLOCATE_LEARNING_BUDGETS_TARGETS.BUDGET_DETAIL_CARD} />
         <span className="sr-only">
           <FormattedMessage
             id="lcm.budget.detail.page.overview.loading"
@@ -71,7 +72,7 @@ const BudgetOverviewContent = ({
   }
 
   return (
-    <Card id="assignment-budget-detail-card">
+    <Card id={ALLOCATE_LEARNING_BUDGETS_TARGETS.BUDGET_DETAIL_CARD}>
       <Card.Section>
         <h2>{budgetDisplayName}</h2>
         <BudgetStatusSubtitle

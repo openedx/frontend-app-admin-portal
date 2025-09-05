@@ -11,8 +11,8 @@ import {
 } from '@openedx/paragon';
 import { connect } from 'react-redux';
 import { Helmet } from 'react-helmet';
-
 import { useIntl, FormattedMessage } from '@edx/frontend-platform/i18n';
+
 import Hero from '../Hero';
 import MultipleBudgetsPicker from './MultipleBudgetsPicker';
 import { EnterpriseSubsidiesContext } from '../EnterpriseSubsidiesContext';

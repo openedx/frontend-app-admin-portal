@@ -8,6 +8,7 @@ import { injectIntl, intlShape } from '@edx/frontend-platform/i18n';
 import Hero from '../Hero';
 import SubscriptionData from './SubscriptionData';
 import SubscriptionRoutes from './SubscriptionRoutes';
+import { ADMINISTER_SUBSCRIPTIONS_TARGETS } from '../ProductTours/AdminOnboardingTours/constants';
 
 const SubscriptionManagementPage = ({ enterpriseId, intl }) => {
   const PAGE_TITLE = intl.formatMessage({
@@ -21,7 +22,7 @@ const SubscriptionManagementPage = ({ enterpriseId, intl }) => {
       <Helmet title={PAGE_TITLE} />
       <Hero title={PAGE_TITLE} />
       <main role="main" className="manage-subscription">
-        <Container id="subscription-plans-list" className="py-3" fluid>
+        <Container id={ADMINISTER_SUBSCRIPTIONS_TARGETS.SUBSCRIPTION_PLANS_LIST} className="py-3" fluid>
           <SubscriptionRoutes />
         </Container>
       </main>

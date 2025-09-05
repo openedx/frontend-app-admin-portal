@@ -18,6 +18,7 @@ import {
 import { isBudgetRetiredOrExpired } from './data/utils';
 import { useEnterpriseBudgets } from '../EnterpriseSubsidiesContext/data/hooks';
 import SubBudgetCardUtilization from './SubBudgetCardUtilization';
+import { ALLOCATE_LEARNING_BUDGETS_TARGETS } from '../ProductTours/AdminOnboardingTours/constants';
 
 const BaseBackgroundFetchingWrapper = ({
   enterpriseId,
@@ -107,7 +108,7 @@ const BaseSubBudgetCard = ({
   const renderActions = (budgetId) => (
     <Button
       data-testid="view-budget"
-      id="learner-credit-view-budget-button"
+      id={ALLOCATE_LEARNING_BUDGETS_TARGETS.VIEW_BUDGET}
       as={Link}
       to={`/${enterpriseSlug}/admin/${ROUTE_NAMES.learnerCredit}/${budgetId}`}
       variant={isRetiredOrExpired ? 'outline-primary' : 'primary'}

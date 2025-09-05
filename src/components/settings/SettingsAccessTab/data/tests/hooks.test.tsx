@@ -1,3 +1,4 @@
+import React from 'react';
 import { renderHook, waitFor } from '@testing-library/react';
 import { logError } from '@edx/frontend-platform/logging';
 import { QueryClientProvider } from '@tanstack/react-query';

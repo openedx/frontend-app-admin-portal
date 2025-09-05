@@ -6,6 +6,7 @@ import {
   BUDGET_DETAIL_ACTIVITY_TAB, BUDGET_DETAIL_CATALOG_TAB, BUDGET_DETAIL_MEMBERS_TAB, BUDGET_DETAIL_REQUESTS_TAB,
 } from '../constants';
 import { getBudgetStatus, isBudgetRetiredOrExpired } from '../utils';
+import { ALLOCATE_LEARNING_BUDGETS_TARGETS } from '../../../ProductTours/AdminOnboardingTours/constants';
 
 const TAB_CLASS_NAME = 'pt-4.5';
 
@@ -38,7 +39,7 @@ export const useBudgetDetailTabs = ({
     const tabsArray = [];
     tabsArray.push(
       <Tab
-        id="track-budget-activity"
+        id={ALLOCATE_LEARNING_BUDGETS_TARGETS.TRACK_BUDGET_ACTIVITY}
         key={BUDGET_DETAIL_ACTIVITY_TAB}
         eventKey={BUDGET_DETAIL_ACTIVITY_TAB}
         title={
@@ -58,7 +59,7 @@ export const useBudgetDetailTabs = ({
     if (showCatalog) {
       tabsArray.push(
         <Tab
-          id="assignment-budget-catalog-tab"
+          id={ALLOCATE_LEARNING_BUDGETS_TARGETS.BUDGET_CATALOG_TAB}
           key={BUDGET_DETAIL_CATALOG_TAB}
           eventKey={BUDGET_DETAIL_CATALOG_TAB}
           disabled={isCatalogTabDisabled}
@@ -81,6 +82,7 @@ export const useBudgetDetailTabs = ({
       tabsArray.push(
         <Tab
           data-testid="group-members-tab"
+          id={ALLOCATE_LEARNING_BUDGETS_TARGETS.BUDGET_MEMBERS_TAB}
           key={BUDGET_DETAIL_MEMBERS_TAB}
           eventKey={BUDGET_DETAIL_MEMBERS_TAB}
           title={
