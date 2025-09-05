@@ -225,4 +225,37 @@ describe('useEnterpriseEnrollmentsData', () => {
       queryKey: expectedKey,
     }));
   });
+
+  it('includes budgetUUID in request options when provided', () => {
+    const budgetUUID = 'budget-789';
+
+    useQuery.mockReturnValue({ data: null, isFetching: false });
+
+    renderHook(() => useEnterpriseEnrollmentsData({
+      enterpriseCustomerUUID,
+      startDate,
+      endDate,
+      groupUUID: undefined,
+      courseType: COURSE_TYPES.ALL_COURSE_TYPES,
+      currentPage: 1,
+      budgetUUID,
+    }));
+
+    const expectedKey = generateKey('enrollments', enterpriseCustomerUUID, {
+      startDate,
+      endDate,
+      currentPage: 1,
+      groupUUID: undefined,
+      courseType: undefined,
+      budgetUUID,
+    });
+
+    expect(useQuery).toHaveBeenCalledWith(expect.objectContaining({
+      queryKey: expectedKey,
+      queryFn: expect.any(Function),
+      staleTime: 0.5 * 60 * 60 * 1000,
+      cacheTime: 0.75 * 60 * 60 * 1000,
+      keepPreviousData: true,
+    }));
+  });
 });
