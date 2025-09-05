@@ -252,7 +252,7 @@ const messages = defineMessages({
     description: 'Description for the allocate learning budgets flow step one body',
   },
   allocateLearningBudgetStepTwoAssignment: {
-    id: 'adminPortal.productTours.adminOnboarding.allocateLearningBudget.body.2.assignment',
+    id: 'adminPortal.productTours.adminOnboarding.allocateLearningBudget.body.3a',
     defaultMessage: 'Let\'s view your Assignment budget.',
     description: 'Description for the allocate learning budgets flow step three for assignment budget',
   },
