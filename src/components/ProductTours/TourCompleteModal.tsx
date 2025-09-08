@@ -5,6 +5,7 @@ import {
 } from '@openedx/paragon';
 import { FormattedMessage, useIntl } from '@edx/frontend-platform/i18n';
 import { logError } from '@edx/frontend-platform/logging';
+import confetti from 'canvas-confetti';
 import messages from './AdminOnboardingTours/messages';
 import completeModal from './data/images/CompletedModal.svg';
 import LmsApiService from '../../data/services/LmsApiService';
@@ -29,6 +30,14 @@ const TourCompleteModal: React.FC<TourCompleteModalProps> = ({
 
   const handleDismiss = async () => {
     try {
+      // Trigger confetti animation
+      confetti({
+        particleCount: 100,
+        spread: 70,
+        origin: { y: 0.6 },
+        colors: ['#007bff', '#28a745', '#ffc107', '#dc3545', '#6f42c1'],
+      });
+
       close();
       await LmsApiService.updateCompletedTour(adminUuid);
     } catch (error) {
