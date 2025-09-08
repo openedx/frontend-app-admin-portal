@@ -28,6 +28,14 @@ jest.mock('../../../EnterpriseSubsidiesContext/data/hooks', () => ({
   useEnterpriseBudgets: jest.fn(),
 }));
 
+jest.mock('../../../../config', () => ({
+  configuration: {
+    ADMIN_ONBOARDING_UUIDS: {
+      FLOW_ALLOCATE_BUDGETS_UUID: 'test-flow-uuid',
+    },
+  },
+}));
+
 const mockStore = configureStore([]);
 
 const renderHookWithProviders = (hookFn, storeState = {}) => {
