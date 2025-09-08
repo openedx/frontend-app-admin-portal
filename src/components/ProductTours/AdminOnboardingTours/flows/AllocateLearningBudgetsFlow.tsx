@@ -204,6 +204,7 @@ const AllocateLearningBudgetsFlow = ({
         },
       ];
     }
+
   }
 
   // Main allocate learning budgets page flow (steps 1-2)

@@ -66,7 +66,7 @@ export const RESET_TARGETS = [
   ORGANIZE_LEARNER_TARGETS.GROUP_DETAIL_CARD,
 ];
 
-export const CUSTOMIZE_REPORTS_SIDEBAR = 'customize-reports-sidebar';
+export const CUSTOMIZE_REPORTS_SIDEBAR = 'reporting';
 
 export const ADMIN_TOUR_EVENT_NAMES = {
   ADMINISTER_SUBSCRIPTIONS_ADVANCE_EVENT_NAME: 'edx.ui.enterprise.admin-portal.admin-onboarding-tours.administer-subscriptions.advance',

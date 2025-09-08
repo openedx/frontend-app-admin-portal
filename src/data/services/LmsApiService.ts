@@ -197,6 +197,11 @@ class LmsApiService {
     return LmsApiService.apiClient().post(enterpriseAdminCompleteFlowUrl, { flow_uuid: flowUuid });
   }
 
+  static updateCompletedTour(adminUuid: string): EnterpriseAdminResponse {
+    const enterpriseAdminCompleteFlowUrl = `${LmsApiService.baseUrl}/enterprise/api/v1/enterprise-customer-admin/${adminUuid}/`;
+    return LmsApiService.apiClient().patch(enterpriseAdminCompleteFlowUrl, { onboarding_tour_completed: true });
+  }
+
   static requestCodes(options) {
     const postParams = {
       email: options.emailAddress,

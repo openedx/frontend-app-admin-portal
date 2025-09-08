@@ -1,8 +1,8 @@
-import React, { useContext, useState } from 'react';
+import { useContext, useState } from 'react';
 import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { injectIntl, intlShape } from '@edx/frontend-platform/i18n';
+import { useIntl } from '@edx/frontend-platform/i18n';
 import dayjs from 'dayjs';
 import {
   Button, Row, Col, Toast, Icon,
@@ -16,7 +16,10 @@ import SubscriptionExpirationBanner from './expiration/SubscriptionExpirationBan
 import { MANAGE_LEARNERS_TAB } from './data/constants';
 import { ADMINISTER_SUBSCRIPTIONS_TARGETS } from '../ProductTours/AdminOnboardingTours/constants';
 
-const SubscriptionDetails = ({ enterpriseSlug, intl }) => {
+const SubscriptionDetails = ({
+  enterpriseSlug,
+}) => {
+  const intl = useIntl();
   const { forceRefresh } = useContext(SubscriptionContext);
   const {
     hasMultipleSubscriptions,
@@ -139,11 +142,10 @@ const SubscriptionDetails = ({ enterpriseSlug, intl }) => {
 
 SubscriptionDetails.propTypes = {
   enterpriseSlug: PropTypes.string.isRequired,
-  intl: intlShape.isRequired,
 };
 
 const mapStateToProps = state => ({
   enterpriseSlug: state.portalConfiguration.enterpriseSlug,
 });
 
-export default connect(mapStateToProps)(injectIntl(SubscriptionDetails));
+export default connect(mapStateToProps)(SubscriptionDetails);

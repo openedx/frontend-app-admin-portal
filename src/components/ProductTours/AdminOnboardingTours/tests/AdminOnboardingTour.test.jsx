@@ -252,6 +252,7 @@ describe('AdminOnboardingTour', () => {
       />,
       { wrapper },
     );
+
     const secondStep = tourResult[1];
 
     act(() => {

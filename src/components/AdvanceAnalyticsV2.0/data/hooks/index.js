@@ -1,13 +1,15 @@
 import { useMemo } from 'react';
 import { useQuery } from '@tanstack/react-query';
 
-import { advanceAnalyticsQueryKeys, COURSE_TYPES } from '../constants';
+import { advanceAnalyticsQueryKeys, COURSE_TYPES, ALL_COURSES } from '../constants';
 
 import EnterpriseDataApiService from '../../../../data/services/EnterpriseDataApiService';
 
 export { default as useEnterpriseEnrollmentsData } from './useEnterpriseEnrollmentsData';
 export { default as useEnterpriseEngagementData } from './useEnterpriseEngagementData';
 export { default as useEnterpriseCompletionsData } from './useEnterpriseCompletionsData';
+export { default as useEnterpriseCourses } from './useEnterpriseCourses';
+export { default as useEnterpriseBudgets } from './useEnterpriseBudgets';
 
 export const useEnterpriseAnalyticsData = ({
   enterpriseCustomerUUID,
@@ -20,15 +22,32 @@ export const useEnterpriseAnalyticsData = ({
   currentPage = undefined,
   pageSize = undefined,
   courseType = undefined,
+  course = undefined,
+  budgetUUID = undefined,
   queryOptions = {},
 }) => {
-  const requestOptions = courseType === COURSE_TYPES.ALL_COURSE_TYPES
-    ? {
-      startDate, endDate, granularity, calculation, page: currentPage, pageSize, groupUUID,
-    }
-    : {
-      startDate, endDate, granularity, calculation, page: currentPage, pageSize, groupUUID, courseType,
-    };
+  const requestOptions = {
+    startDate,
+    endDate,
+    granularity,
+    calculation,
+    page: currentPage,
+    pageSize,
+    groupUUID,
+  };
+
+  if (courseType && courseType !== COURSE_TYPES.ALL_COURSE_TYPES) {
+    requestOptions.courseType = courseType;
+  }
+
+  if (course?.value && course?.value !== ALL_COURSES.value) {
+    requestOptions.courseKey = course.value;
+  }
+
+  if (budgetUUID) {
+    requestOptions.budgetUUID = budgetUUID;
+  }
+
   return useQuery({
     queryKey: advanceAnalyticsQueryKeys[key](enterpriseCustomerUUID, requestOptions),
     queryFn: () => EnterpriseDataApiService.fetchAdminAnalyticsData(
@@ -65,13 +84,27 @@ export const useEnterpriseAnalyticsAggregatesData = ({
   startDate,
   endDate,
   courseType = undefined,
+  course = undefined,
+  budgetUUID = undefined,
   queryOptions = {},
 }) => {
-  const requestOptions = courseType === COURSE_TYPES.ALL_COURSE_TYPES
-    ? { startDate, endDate }
-    : {
-      startDate, endDate, courseType,
-    };
+  const requestOptions = {
+    startDate,
+    endDate,
+  };
+
+  if (courseType && courseType !== COURSE_TYPES.ALL_COURSE_TYPES) {
+    requestOptions.courseType = courseType;
+  }
+
+  if (course?.value && course?.value !== ALL_COURSES.value) {
+    requestOptions.courseKey = course.value;
+  }
+
+  if (budgetUUID) {
+    requestOptions.budgetUUID = budgetUUID;
+  }
+
   return useQuery({
     queryKey: advanceAnalyticsQueryKeys.aggregates(enterpriseCustomerUUID, requestOptions),
     queryFn: () => EnterpriseDataApiService.fetchAdminAggregatesData(

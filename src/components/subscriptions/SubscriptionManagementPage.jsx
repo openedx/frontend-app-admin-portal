@@ -1,16 +1,18 @@
-import React from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { Helmet } from 'react-helmet';
 import { Container } from '@openedx/paragon';
-import { injectIntl, intlShape } from '@edx/frontend-platform/i18n';
+import { useIntl } from '@edx/frontend-platform/i18n';
 
 import Hero from '../Hero';
 import SubscriptionData from './SubscriptionData';
 import SubscriptionRoutes from './SubscriptionRoutes';
 import { ADMINISTER_SUBSCRIPTIONS_TARGETS } from '../ProductTours/AdminOnboardingTours/constants';
 
-const SubscriptionManagementPage = ({ enterpriseId, intl }) => {
+const SubscriptionManagementPage = ({
+  enterpriseId,
+}) => {
+  const intl = useIntl();
   const PAGE_TITLE = intl.formatMessage({
     id: 'admin.portal.subscription.management.page.title',
     defaultMessage: 'Subscription Management',
@@ -32,11 +34,10 @@ const SubscriptionManagementPage = ({ enterpriseId, intl }) => {
 
 SubscriptionManagementPage.propTypes = {
   enterpriseId: PropTypes.string.isRequired,
-  intl: intlShape.isRequired,
 };
 
 const mapStateToProps = state => ({
   enterpriseId: state.portalConfiguration.enterpriseId,
 });
 
-export default connect(mapStateToProps)(injectIntl(SubscriptionManagementPage));
+export default connect(mapStateToProps)(SubscriptionManagementPage);

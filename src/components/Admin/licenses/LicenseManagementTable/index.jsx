@@ -6,9 +6,7 @@ import PropTypes from 'prop-types';
 import dayjs from 'dayjs';
 
 import { sendEnterpriseTrackEvent } from '@edx/frontend-enterprise-utils';
-import {
-  CheckboxFilter, DataTable, TextFilter, Toast,
-} from '@openedx/paragon';
+import { DataTable, TextFilter, Toast } from '@openedx/paragon';
 import { useIntl } from '@edx/frontend-platform/i18n';
 
 import { SubscriptionContext } from '../../../subscriptions/SubscriptionData';
@@ -32,6 +30,7 @@ import LicenseManagementUserBadge
   from '../../../subscriptions/licenses/LicenseManagementTable/LicenseManagementUserBadge';
 import { SUBSCRIPTION_TABLE_EVENTS } from '../../../../eventTracking';
 import { EVENTS, pushEvent } from '../../../../optimizely';
+import { CheckboxFilter } from '../../../CheckboxFilter';
 
 const userRecentAction = (user, intl) => {
   switch (user.status) {
@@ -248,6 +247,7 @@ const LicenseManagementTable = ({ subscriptionUUID }) => {
         initialState={{
           pageSize: 5,
           pageIndex: DEFAULT_PAGE - 1,
+          filters: [],
         }}
         initialTableOptions={{
           getRowId: row => row.id,

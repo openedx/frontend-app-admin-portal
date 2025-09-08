@@ -8,13 +8,22 @@ import { camelCaseDict } from '../../../../utils';
  * Fetching the enterprise customer admin's profile to see their completed tour flows
  *
  * @param {adminUuid} queryKey The admin's associated uuid
- * @returns {String[]} Array of completed tour flow uuids
+ * @returns {Object} Transformed admin profile data with camelCase keys
  */
 
-export const getFetchCompletedOnboardingFlows = async ({ adminUuid }) : Promise<string[]> => {
+type EnterpriseAdminResponse = {
+  uuid?: string;
+  enterpriseCustomerUser?: number;
+  lastLogin?: string | null;
+  completedTourFlows?: any[];
+  onboardingTourDismissed?: boolean;
+  onboardingTourCompleted?: boolean;
+};
+
+export const getFetchCompletedOnboardingFlows = async ({ adminUuid }) : Promise<EnterpriseAdminResponse> => {
   const adminResponse = await LmsApiService.fetchEnterpriseAdminProfile(adminUuid);
   const results = camelCaseDict(adminResponse.data);
-  return results.completedTourFlows;
+  return results;
 };
 
 const useFetchCompletedOnboardingFlows = (adminUuid: string) => useQuery({
