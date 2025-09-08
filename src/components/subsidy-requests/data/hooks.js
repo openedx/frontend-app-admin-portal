@@ -120,7 +120,11 @@ export const useSubsidyRequestConfiguration = ({
       return;
     }
 
-    if (subsidyRequestConfiguration.subsidyType === null && enterpriseSubsidyTypesForRequests.length === 1) {
+    if (
+      subsidyRequestConfiguration.subsidyType === null
+      && subsidyRequestConfiguration.subsidyRequestsEnabled
+      && enterpriseSubsidyTypesForRequests.length === 1
+    ) {
       // The enterprise customer added a new subsidy type, update the configuration
       updateSubsidyRequestConfiguration({
         subsidyType: enterpriseSubsidyTypesForRequests[0],

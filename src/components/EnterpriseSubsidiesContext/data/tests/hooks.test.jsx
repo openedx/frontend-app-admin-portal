@@ -88,7 +88,7 @@ describe('useEnterpriseBudgets', () => {
     });
   });
 
-  it('should always fetch enterprise offers from ecommerce', async () => {
+  it('should always attempt to fetch enterprise offers with graceful failure handling', async () => {
     const mockEcommerceResponse = [
       {
         id: 'uuid',
@@ -115,6 +115,8 @@ describe('useEnterpriseBudgets', () => {
     const { result } = renderHook(
       () => useEnterpriseBudgets({
         enablePortalLearnerCreditManagementScreen: true,
+        isTopDownAssignmentEnabled: false,
+        enterpriseId: TEST_ENTERPRISE_UUID,
       }),
       { wrapper },
     );
@@ -176,6 +178,7 @@ describe('useEnterpriseBudgets', () => {
         isCurrent: true,
         source: BUDGET_TYPES.subsidy,
       },
+      // Enterprise offers are included when ecommerce API succeeds (graceful degradation)
       {
         id: 'uuid',
         name: 'offer-name',
@@ -275,10 +278,12 @@ describe('useEnterpriseBudgets', () => {
     { isTopDownAssignmentEnabled: false },
     { isTopDownAssignmentEnabled: true },
   ])('should log error when budgets API request cannot be fulfilled (%s)', async ({ isTopDownAssignmentEnabled }) => {
-    const mockListOffersError = 'error_list_offers';
     const mockListSubsidiesError = 'error_list_subsidies';
     const mockListPoliciesError = 'error_list_policies';
 
+    const mockListOffersError = 'error_fetch_offers';
+
+    // Mock API failures for graceful degradation testing
     fetchEnterpriseOffersSpy.mockRejectedValue(mockListOffersError);
     getSubsidyByCustomerUUIDSpy.mockRejectedValue(mockListSubsidiesError);
     listSubsidyAccessPoliciesSpy.mockRejectedValue(mockListPoliciesError);
@@ -293,6 +298,7 @@ describe('useEnterpriseBudgets', () => {
     );
 
     await waitFor(() => {
+      expect(fetchEnterpriseOffersSpy).toHaveBeenCalledTimes(1);
       expect(logError).toHaveBeenCalledWith(mockListOffersError);
     });
 

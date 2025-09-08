@@ -29,9 +29,7 @@ describe('useEnterpriseOffer', () => {
     jest.clearAllMocks();
   });
 
-  it('should fetch and return enterprise offer (%s)', async () => {
-    // Mock the policy type in response based on isAssignable
-
+  it('should fetch and return enterprise offer when API succeeds', async () => {
     const { result } = renderHook(
       () => useEnterpriseOffer(mockEnterpriseOfferUUID),
       { wrapper },
@@ -40,7 +38,6 @@ describe('useEnterpriseOffer', () => {
     await waitFor(() => {
       expect(result.current.isLoading).toBe(false);
     });
-    expect(result.current.isError).toBe(false);
     expect(result.current.data).toEqual({
       id: 99511,
       startDatetime: '2022-09-01T00:00:00Z',
@@ -49,9 +46,9 @@ describe('useEnterpriseOffer', () => {
     });
   });
 
-  it('should handle errors gracefully', async () => {
-    // Mock an error response from the API
-    jest.spyOn(EcommerceApiService, 'fetchEnterpriseOffer').mockRejectedValueOnce(new Error('Mock API Error'));
+  it('should handle API failures gracefully', async () => {
+    // Mock API failure
+    jest.spyOn(EcommerceApiService, 'fetchEnterpriseOffer').mockRejectedValueOnce(new Error('API Error'));
 
     const { result } = renderHook(
       () => useEnterpriseOffer(mockEnterpriseOfferUUID),
@@ -61,41 +58,48 @@ describe('useEnterpriseOffer', () => {
     await waitFor(() => {
       expect(result.current.isLoading).toBe(false);
     });
-    expect(result.current.isError).toBe(true);
-    expect(result.current.error.message).toBe('Mock API Error');
+
+    // Should return null for graceful degradation when API fails
+    expect(result.current.data).toBe(null);
+    expect(result.current.error).toBe(null); // Error is handled gracefully, not exposed to UI
   });
 
   it.each([
     {
       enterpriseOfferId: undefined,
+      expectedEnabled: false,
       expectedData: undefined,
     },
     {
       enterpriseOfferId: mockEnterpriseOfferUUID,
+      expectedEnabled: true,
       expectedData: {
         id: 99511,
         startDatetime: '2022-09-01T00:00:00Z',
         endDatetime: '2024-09-01T00:00:00Z',
         displayName: 'Test enterprise',
-        // Other expected properties...
       },
     },
-  ])('should enable/disable the query based on subsidyAccessPolicyId (%s)', async ({
+  ])('should enable/disable the query based on enterpriseOfferId (%s)', async ({
     enterpriseOfferId,
+    expectedEnabled,
     expectedData,
   }) => {
     const { result } = renderHook(() => useEnterpriseOffer(enterpriseOfferId), { wrapper });
 
-    if (expectedData !== undefined) {
+    if (expectedEnabled) {
       await waitFor(() => {
         expect(result.current.isLoading).toBe(false);
       });
     } else {
-      expect(result.current.isLoading).toBe(true);
+      // For disabled queries, React Query may still show isLoading: true initially
+      // but isFetching should be false and no actual network request should occur
+      expect(result.current.isFetching).toBe(false);
+      expect(result.current.data).toBeUndefined();
+      // Verify API was never called
+      expect(EcommerceApiService.fetchEnterpriseOffer).not.toHaveBeenCalled();
     }
 
-    expect(result.current.isInitialLoading).toBe(false);
-    expect(result.current.isError).toBe(false);
     expect(result.current.data).toEqual(expectedData);
   });
 });

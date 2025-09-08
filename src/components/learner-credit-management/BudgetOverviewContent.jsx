@@ -30,6 +30,7 @@ const BudgetOverviewContent = ({
     budgetType,
   );
 
+  // Fetch enterprise offer data with graceful error handling
   const { isLoading: isLoadingEnterpriseOffer, data: enterpriseOfferMetadata } = useEnterpriseOffer(enterpriseOfferId);
   const { data: subsidyAccessPolicy } = useSubsidyAccessPolicy(subsidyAccessPolicyId);
 

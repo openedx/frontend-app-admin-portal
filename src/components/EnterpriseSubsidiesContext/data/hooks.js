@@ -35,7 +35,7 @@ async function fetchEnterpriseBudgets({
     ? [undefined, EnterpriseAccessApiService.listSubsidyAccessPolicies(enterpriseId)]
     : [SubsidyApiService.getSubsidyByCustomerUUID(enterpriseId, { subsidyType: 'learner_credit' }), undefined];
 
-  // Always prepend the promise to fetch ecommerce offers
+  // Attempt to fetch enterprise offers with graceful error handling
   budgetPromisesToFulfill.unshift(EcommerceApiService.fetchEnterpriseOffers());
 
   // Attempt to resolve all promises
@@ -56,8 +56,10 @@ async function fetchEnterpriseBudgets({
     logError(enterprisePolicyResponse.reason);
   }
 
-  // Transform the API responses
-  const ecommerceOffersResults = camelCaseObject(ecommerceApiResponse.value?.data.results);
+  // Transform the API responses - handle ecommerce API gracefully if it fails
+  const ecommerceOffersResults = ecommerceApiResponse.status === 'fulfilled'
+    ? camelCaseObject(ecommerceApiResponse.value?.data.results)
+    : []; // Return empty array if ecommerce API fails
   const enterpriseSubsidyResults = camelCaseObject(enterpriseSubsidyResponse.value?.data.results);
   const enterprisePolicyResults = camelCaseObject(enterprisePolicyResponse.value?.data.results);
 
@@ -92,6 +94,7 @@ async function fetchEnterpriseBudgets({
       isCurrent: result.isActive,
     });
   });
+  // Add ecommerce offers if available (graceful degradation if API fails)
   ecommerceOffersResults?.forEach((result) => {
     budgetsList.push({
       source: BUDGET_TYPES.ecommerce,
