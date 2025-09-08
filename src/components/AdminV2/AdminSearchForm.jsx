@@ -1,7 +1,7 @@
 /* eslint-disable camelcase */
 import classNames from 'classnames';
 import PropTypes from 'prop-types';
-import { useEffect } from 'react';
+import { useEffect, useRef } from 'react';
 
 import { Form } from '@openedx/paragon';
 import { Info } from '@openedx/paragon/icons';
@@ -29,10 +29,15 @@ const AdminSearchForm = ({
   enterpriseId,
 }) => {
   const intl = useIntl();
+  const isFirstRender = useRef(true);
 
   useEffect(() => {
+    if (isFirstRender.current) {
+      isFirstRender.current = false;
+      return;
+    }
     searchEnrollmentsList();
-  }, [searchEnrollmentsList]);
+  }, [searchEnrollmentsList, searchQuery, searchCourseQuery, searchDateQuery, searchBudgetQuery, searchGroupQuery]);
 
   const onCourseSelect = (event) => {
     const updateParams = {
