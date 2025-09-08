@@ -10,6 +10,7 @@ import {
   useEnterpriseAnalyticsData,
   useEnterpriseEnrollmentsData,
   useEnterpriseCourses,
+  useEnterpriseBudgets,
 } from '../data/hooks';
 import AnalyticsFilters from '../AnalyticsFilters';
 import { useAnalyticsFilters } from '../AnalyticsFiltersContext';
@@ -44,6 +45,7 @@ const Engagements = ({ enterpriseId }) => {
   const [endDate, setEndDate] = useState(currentDate);
   const [courseType, setCourseType] = useState(COURSE_TYPES.ALL_COURSE_TYPES);
   const [course, setCourse] = useState(ALL_COURSES);
+  const [budgetUUID, setBudgetUUID] = useState('');
 
   // Stats Data
   const { isFetching: isStatsFetching, isError: isStatsError, data: statsData } = useEnterpriseAnalyticsAggregatesData({
@@ -52,6 +54,7 @@ const Engagements = ({ enterpriseId }) => {
     endDate,
     courseType,
     course,
+    budgetUUID,
   });
 
   // Skills Data
@@ -64,6 +67,7 @@ const Engagements = ({ enterpriseId }) => {
     endDate,
     courseType,
     course,
+    budgetUUID,
   });
 
   // Engagements Data
@@ -79,6 +83,7 @@ const Engagements = ({ enterpriseId }) => {
     groupUUID,
     courseType,
     course,
+    budgetUUID,
   });
 
   // Enrollments Data
@@ -93,6 +98,7 @@ const Engagements = ({ enterpriseId }) => {
     groupUUID,
     courseType,
     course,
+    budgetUUID,
   });
 
   // Enterprise Courses Data
@@ -104,7 +110,13 @@ const Engagements = ({ enterpriseId }) => {
     endDate,
     groupUUID,
     courseType,
+    budgetUUID,
   });
+
+  // Budgets data
+  const {
+    isFetching: isBudgetsFetching, data: budgets,
+  } = useEnterpriseBudgets({ enterpriseCustomerUUID: enterpriseId });
 
   const handleChartClick = (data) => {
     sendEnterpriseTrackEvent(
@@ -158,6 +170,10 @@ const Engagements = ({ enterpriseId }) => {
           activeTab={ANALYTICS_TABS.ENGAGEMENTS}
           isEnterpriseCoursesFetching={isEnterpriseCoursesFetching}
           enterpriseCourses={enterpriseCourses}
+          budgets={budgets}
+          isBudgetsFetching={isBudgetsFetching}
+          budgetUUID={budgetUUID}
+          setBudgetUUID={setBudgetUUID}
         />
       </div>
 
