@@ -6,6 +6,7 @@ import messages from '../messages';
 import { TourStep } from '../../types';
 import { orderBudgets, useBudgetDetailActivityOverview, useSubsidyAccessPolicy } from '../../../learner-credit-management/data';
 import { useEnterpriseBudgets } from '../../../EnterpriseSubsidiesContext/data/hooks';
+import { configuration } from '../../../../config';
 
 interface CreateTourFlowsProps {
   currentStep: number;
@@ -57,6 +58,13 @@ const AllocateLearningBudgetsFlow = ({
     handleAdvanceTour(ADMIN_TOUR_EVENT_NAMES.ALLOCATE_ASSIGNMENT_ADVANCE_EVENT_NAME);
   };
   const onAllocateBack = () => handleBackTour(ADMIN_TOUR_EVENT_NAMES.ALLOCATE_ASSIGNMENT_BACK_EVENT_NAME);
+  const onAllocateEnd = () => {
+    handleEndTour(
+      ADMIN_TOUR_EVENT_NAMES.ALLOCATE_ASSIGNMENT_COMPLETED_EVENT_NAME,
+      configuration.ADMIN_ONBOARDING_UUIDS.FLOW_ALLOCATE_BUDGETS_UUID,
+    );
+  };
+
   if (isOnBudgetPage) {
     if (policyType === 'Assignment') {
       // Assignment budget with spend or assignment activity
@@ -139,7 +147,7 @@ const AllocateLearningBudgetsFlow = ({
             target: `#${ALLOCATE_LEARNING_BUDGETS_TARGETS.LEARNER_CREDIT_MANAGEMENT_BREADCRUMBS}`,
             placement: 'top',
             body: intl.formatMessage(messages.allocateLearningBudgetStepTen),
-            onEnd: handleEndTour,
+            onEnd: onAllocateEnd,
           },
         ];
       }
@@ -161,7 +169,7 @@ const AllocateLearningBudgetsFlow = ({
           target: `#${ALLOCATE_LEARNING_BUDGETS_TARGETS.LEARNER_CREDIT_MANAGEMENT_BREADCRUMBS}`,
           placement: 'top',
           body: intl.formatMessage(messages.allocateLearningBudgetStepTen),
-          onEnd: handleEndTour,
+          onEnd: onAllocateEnd,
         },
       ];
     // Invite-only browse and enroll budget
@@ -200,11 +208,10 @@ const AllocateLearningBudgetsFlow = ({
           target: `#${ALLOCATE_LEARNING_BUDGETS_TARGETS.LEARNER_CREDIT_MANAGEMENT_BREADCRUMBS}`,
           placement: 'top',
           body: intl.formatMessage(messages.allocateLearningBudgetStepTen),
-          onEnd: handleEndTour,
+          onEnd: onAllocateEnd,
         },
       ];
     }
-
   }
 
   // Main allocate learning budgets page flow (steps 1-2)
