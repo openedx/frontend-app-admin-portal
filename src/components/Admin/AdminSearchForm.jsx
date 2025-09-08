@@ -1,5 +1,5 @@
 /* eslint-disable camelcase */
-import React, { useEffect } from 'react';
+import React, { useEffect, useRef } from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
 
@@ -28,10 +28,15 @@ const AdminSearchForm = ({
   enterpriseId,
 }) => {
   const intl = useIntl();
+  const isFirstRender = useRef(true);
 
   useEffect(() => {
+    if (isFirstRender.current) {
+      isFirstRender.current = false;
+      return;
+    }
     searchEnrollmentsList();
-  }, [searchEnrollmentsList]);
+  }, [searchEnrollmentsList, searchQuery, searchCourseQuery, searchDateQuery, searchBudgetQuery, searchGroupQuery]);
 
   const onCourseSelect = (event) => {
     const updateParams = {
