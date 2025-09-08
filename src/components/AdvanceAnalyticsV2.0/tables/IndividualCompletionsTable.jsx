@@ -9,6 +9,7 @@ const IndividualCompletionsTable = ({
   endDate,
   enterpriseId,
   groupUUID,
+  course,
 }) => {
   const intl = useIntl();
 
@@ -31,6 +32,7 @@ const IndividualCompletionsTable = ({
           endDate={endDate}
           enterpriseId={enterpriseId}
           groupUUID={groupUUID}
+          course={course}
           enableCSVDownload
           tableColumns={[
             {
@@ -77,10 +79,15 @@ IndividualCompletionsTable.propTypes = {
   endDate: PropTypes.string.isRequired,
   enterpriseId: PropTypes.string.isRequired,
   groupUUID: PropTypes.string,
+  course: PropTypes.shape({
+    value: PropTypes.string.isRequired,
+    label: PropTypes.string.isRequired,
+  }),
 };
 
 IndividualCompletionsTable.defaultProps = {
   groupUUID: '',
+  course: undefined,
 };
 
 export default IndividualCompletionsTable;

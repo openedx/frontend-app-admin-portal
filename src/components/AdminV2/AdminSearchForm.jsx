@@ -14,6 +14,7 @@ import { formatTimestamp, updateUrl } from '../../utils';
 import IconWithTooltip from '../IconWithTooltip';
 import { withLocation, withNavigate } from '../../hoc';
 import EVENT_NAMES from '../../eventTracking';
+import { TRACK_LEARNER_PROGRESS_TARGETS } from '../ProductTours/AdminOnboardingTours/constants';
 
 class AdminSearchForm extends React.Component {
   componentDidUpdate(prevProps) {
@@ -94,7 +95,7 @@ class AdminSearchForm extends React.Component {
     const columnWidth = (budgets?.length || groups?.length) ? 'col-md-3' : 'col-md-6';
 
     return (
-      <div className="row">
+      <div className="row" id={TRACK_LEARNER_PROGRESS_TARGETS.FILTER}>
         <div className="col-12 pr-md-0 mb-0">
           <div className="row w-100 m-0">
             {groups?.length ? (

@@ -2,7 +2,7 @@ import { renderHook } from '@testing-library/react';
 import { useQuery } from '@tanstack/react-query';
 import * as utils from '../utils';
 import useEnterpriseEngagementData from './useEnterpriseEngagementData';
-import { generateKey, COURSE_TYPES } from '../constants';
+import { generateKey, COURSE_TYPES, ALL_COURSES } from '../constants';
 
 jest.mock('@tanstack/react-query');
 jest.mock('../utils', () => ({
@@ -36,6 +36,7 @@ describe('useEnterpriseEngagementData', () => {
       startDate,
       endDate,
       groupUUID: undefined,
+      course: undefined,
     });
 
     expect(useQuery).toHaveBeenCalledWith(expect.objectContaining({
@@ -130,6 +131,7 @@ describe('useEnterpriseEngagementData', () => {
       endDate,
       groupUUID: undefined,
       courseType,
+      course: undefined,
     });
 
     expect(useQuery).toHaveBeenCalledWith(expect.objectContaining({
@@ -157,6 +159,7 @@ describe('useEnterpriseEngagementData', () => {
       startDate,
       endDate,
       groupUUID: undefined,
+      course: undefined,
     });
 
     expect(useQuery).toHaveBeenCalledWith(expect.objectContaining({
@@ -165,6 +168,80 @@ describe('useEnterpriseEngagementData', () => {
       staleTime: 0.5 * 60 * 60 * 1000,
       cacheTime: 0.75 * 60 * 60 * 1000,
       keepPreviousData: true,
+    }));
+  });
+
+  it('includes courseKey when course is not ALL_COURSES', () => {
+    const mockedCourse = { value: 'course-v1:edX+ABC123+2025', label: 'Test Course' };
+
+    useQuery.mockReturnValue({ data: null, isFetching: false });
+
+    renderHook(() => useEnterpriseEngagementData({
+      enterpriseCustomerUUID,
+      startDate,
+      endDate,
+      courseType,
+      course: mockedCourse,
+    }));
+
+    const expectedKey = generateKey('engagements', enterpriseCustomerUUID, {
+      startDate,
+      endDate,
+      groupUUID: undefined,
+      courseType,
+      courseKey: mockedCourse.value,
+    });
+
+    expect(useQuery).toHaveBeenCalledWith(expect.objectContaining({
+      queryKey: expectedKey,
+    }));
+  });
+
+  it('does not include courseKey when course is ALL_COURSES', () => {
+    useQuery.mockReturnValue({ data: null, isFetching: false });
+
+    renderHook(() => useEnterpriseEngagementData({
+      enterpriseCustomerUUID,
+      startDate,
+      endDate,
+      course: ALL_COURSES,
+    }));
+
+    const expectedKey = generateKey('engagements', enterpriseCustomerUUID, {
+      startDate,
+      endDate,
+      groupUUID: undefined,
+    });
+
+    expect(useQuery).toHaveBeenCalledWith(expect.objectContaining({
+      queryKey: expectedKey,
+    }));
+  });
+
+  it('includes budgetUUID in request options when provided', () => {
+    const budgetUUID = 'budget-789';
+
+    useQuery.mockReturnValue({ data: null, isFetching: false });
+
+    renderHook(() => useEnterpriseEngagementData({
+      enterpriseCustomerUUID,
+      startDate,
+      endDate,
+      courseType,
+      course: undefined,
+      budgetUUID,
+    }));
+
+    const expectedKey = generateKey('engagements', enterpriseCustomerUUID, {
+      startDate,
+      endDate,
+      groupUUID: undefined,
+      courseType,
+      budgetUUID,
+    });
+
+    expect(useQuery).toHaveBeenCalledWith(expect.objectContaining({
+      queryKey: expectedKey,
     }));
   });
 });

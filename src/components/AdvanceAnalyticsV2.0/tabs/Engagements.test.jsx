@@ -206,6 +206,8 @@ jest.mock('../data/hooks', () => ({
   useEnterpriseEngagementData: jest.fn(),
   useEnterpriseAnalyticsData: jest.fn(),
   useEnterpriseEnrollmentsData: jest.fn(),
+  useEnterpriseCourses: jest.fn(),
+  useEnterpriseBudgets: jest.fn(),
   usePaginatedData: jest.fn(() => ({ itemCount: 0, pageCount: 0, data: [] })),
 }));
 
@@ -280,6 +282,24 @@ describe('Rendering tests', () => {
         topCoursesByEnrollments: [],
         topSubjectsByEnrollments: [],
       },
+    });
+
+    hooks.useEnterpriseCourses.mockReturnValue({
+      isFetching: false,
+      isError: false,
+      data: [
+        { value: 'course-v1:edX+TST101+2024', label: 'Test Course 1' },
+        { value: 'course-v1:edX+TST102+2024', label: 'Test Course 2' },
+      ],
+    });
+
+    hooks.useEnterpriseBudgets.mockReturnValue({
+      isFetching: false,
+      isError: false,
+      data: [
+        { subsidyAccessPolicyUuid: 'budget-uuid-1', subsidyAccessPolicyDisplayName: 'Budget 1' },
+        { subsidyAccessPolicyUuid: 'budget-uuid-2', subsidyAccessPolicyDisplayName: 'Budget 2' },
+      ],
     });
 
     render(

@@ -13,6 +13,7 @@ import { formatTimestamp } from '../../utils';
 import AdminSearchForm from './AdminSearchForm';
 import ModuleActivityReport from './tabs/ModuleActivityReport';
 import EnterpriseDataApiService from '../../data/services/EnterpriseDataApiService';
+import { TRACK_LEARNER_PROGRESS_TARGETS } from '../ProductTours/AdminOnboardingTours/constants';
 
 const LearnerReport = ({
   tableMetadata,
@@ -74,6 +75,7 @@ const LearnerReport = ({
     const tabs = [];
     tabs.push(
       <Tab
+        id={TRACK_LEARNER_PROGRESS_TARGETS.FULL_PROGRESS_REPORT}
         eventKey="learner-progress-report"
         title={intl.formatMessage({
           id: 'adminPortal.lpr.tab.learnerProgressReport.title',
@@ -113,6 +115,7 @@ const LearnerReport = ({
     if (!isModuleReportEmpty) {
       tabs.push(
         <Tab
+          id={TRACK_LEARNER_PROGRESS_TARGETS.MODULE_ACTIVITY}
           eventKey="module-activity"
           title={intl.formatMessage({
             id: 'adminPortal.lpr.tab.moduleActivity.title',
@@ -148,7 +151,7 @@ const LearnerReport = ({
   ]);
 
   return (
-    <>
+    <div id={TRACK_LEARNER_PROGRESS_TARGETS.PROGRESS_REPORT}>
       <div className="row" id="learner-progress-report">
         <div className="col">
           <div className="row">
@@ -198,7 +201,7 @@ const LearnerReport = ({
           {visibleTabs}
         </Tabs>
       </div>
-    </>
+    </div>
   );
 };
 
