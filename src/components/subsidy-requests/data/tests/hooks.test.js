@@ -150,15 +150,16 @@ describe('useSubsidyRequestConfiguration', () => {
       });
     });
 
-    it('should create a configuration with subsidyType set to coupon if the enterprise has coupons', async () => {
+    it('should create a configuration with subsidyType set to license (coupons no longer supported)', async () => {
       const expectedConfigurationResponse = createSubsidyRequestConfigurationResponse(
         {
-          subsidyType: SUPPORTED_SUBSIDY_TYPES.coupon,
+          subsidyType: SUPPORTED_SUBSIDY_TYPES.license,
         },
       );
 
-      EcommerceApiService.fetchCouponOrders.mockResolvedValue({ data: { results: [{ uuid: 'test-coup-uuid' }] } });
-      LicenseManagerApiService.fetchSubscriptions.mockResolvedValue({ data: { results: [] } });
+      // Coupons are no longer supported - always return empty results
+      EcommerceApiService.fetchCouponOrders.mockResolvedValue({ data: { results: [] } });
+      LicenseManagerApiService.fetchSubscriptions.mockResolvedValue({ data: { results: [{ uuid: 'test-sub-uuid' }] } });
       EnterpriseAccessApiService.createSubsidyRequestConfiguration.mockResolvedValue(expectedConfigurationResponse);
 
       const { result } = renderHook(() => useSubsidyRequestConfiguration({
@@ -169,7 +170,7 @@ describe('useSubsidyRequestConfiguration', () => {
       await waitFor(() => {
         expect(EnterpriseAccessApiService.createSubsidyRequestConfiguration).toHaveBeenCalledWith({
           enterpriseId: TEST_ENTERPRISE_UUID,
-          subsidyType: SUPPORTED_SUBSIDY_TYPES.coupon,
+          subsidyType: SUPPORTED_SUBSIDY_TYPES.license,
         });
 
         expect(result.current.subsidyRequestConfiguration).toEqual(
@@ -260,23 +261,23 @@ describe('useSubsidyRequestConfiguration', () => {
     EnterpriseAccessApiService.getSubsidyRequestConfiguration.mockResolvedValueOnce(
       createSubsidyRequestConfigurationResponse({
         subsidyType: null,
-        subsidyRequestsEnabled: false,
+        subsidyRequestsEnabled: true, // Must be true for the update to trigger
       }),
     ).mockResolvedValueOnce(
       createSubsidyRequestConfigurationResponse({
-        subsidyType: SUPPORTED_SUBSIDY_TYPES.coupon,
+        subsidyType: SUPPORTED_SUBSIDY_TYPES.license,
         subsidyRequestsEnabled: false,
       }),
     );
 
     EnterpriseAccessApiService.updateSubsidyRequestConfiguration.mockResolvedValueOnce(
       createSubsidyRequestConfigurationResponse({
-        subsidyType: SUPPORTED_SUBSIDY_TYPES.coupon,
+        subsidyType: SUPPORTED_SUBSIDY_TYPES.license,
         subsidyRequestsEnabled: false,
       }),
     );
 
-    const enterpriseSubsidyTypesForRequests = [SUPPORTED_SUBSIDY_TYPES.coupon];
+    const enterpriseSubsidyTypesForRequests = [SUPPORTED_SUBSIDY_TYPES.license];
     renderHook(() => useSubsidyRequestConfiguration({
       enterpriseId: TEST_ENTERPRISE_UUID,
       enterpriseSubsidyTypesForRequests,
@@ -285,7 +286,7 @@ describe('useSubsidyRequestConfiguration', () => {
     await waitFor(() => {
       expect(EnterpriseAccessApiService.updateSubsidyRequestConfiguration)
         .toHaveBeenCalledWith(TEST_ENTERPRISE_UUID, {
-          subsidy_type: SUPPORTED_SUBSIDY_TYPES.coupon,
+          subsidy_type: SUPPORTED_SUBSIDY_TYPES.license,
           subsidy_requests_enabled: undefined,
         });
     });

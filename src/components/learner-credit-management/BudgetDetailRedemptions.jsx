@@ -87,6 +87,7 @@ const BudgetDetailRedemptions = ({ enterpriseFeatures, enterpriseUUID }) => {
     enterpriseFeatures.topDownAssignmentRealTimeLcm,
   );
 
+  // Fetch enterprise offer data with graceful error handling - will be null if API fails
   const { data: enterpriseOfferMetadata } = useEnterpriseOffer(enterpriseOfferId);
   const { data: subsidyAccessPolicy } = useSubsidyAccessPolicy(subsidyAccessPolicyId);
 
@@ -101,6 +102,7 @@ const BudgetDetailRedemptions = ({ enterpriseFeatures, enterpriseUUID }) => {
 
   const { status } = getBudgetStatus({
     intl,
+    // Use enterprise offer dates if available, fall back to subsidy access policy dates
     startDateStr: enterpriseOfferMetadata?.startDatetime || subsidyAccessPolicy?.subsidyActiveDatetime,
     endDateStr: enterpriseOfferMetadata?.endDatetime || subsidyAccessPolicy?.subsidyExpirationDatetime,
     isBudgetRetired: !!subsidyAccessPolicy?.retired,

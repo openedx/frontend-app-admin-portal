@@ -36,6 +36,7 @@ const InviteModalBudgetCard = ({
     budgetType,
   );
 
+  // Fetch enterprise offer with graceful error handling
   const { isLoading: isLoadingEnterpriseOffer, data: enterpriseOfferMetadata } = useEnterpriseOffer(enterpriseOfferId);
 
   const policyOrOfferId = subsidyAccessPolicyId || enterpriseOfferId;
