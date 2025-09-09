@@ -42,6 +42,7 @@ export const HELP_CENTER_GROUPS_INVITE_LINK = 'https://business-support.edx.org/
 
 export const API_CLIENT_DOCUMENTATION = 'https://edx-enterprise-api.readthedocs.io/en/latest/index.html';
 export const API_TERMS_OF_SERVICE = 'https://courses.edx.org/api-admin/terms-of-service/';
+export const ENTERPRISE_HELP_GROUPING = 'https://enterprise-support.edx.org/s/article/Grouping-Functionality';
 export const ENTERPRISE_CUSTOMER_SUPPORT_EMAIL = 'enterprise-support@edx.org';
 
 export const ACTIVATE_TOAST_MESSAGE = 'Learning platform integration successfully activated.';
