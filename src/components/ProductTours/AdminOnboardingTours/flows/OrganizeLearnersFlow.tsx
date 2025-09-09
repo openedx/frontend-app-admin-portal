@@ -1,3 +1,4 @@
+import React from 'react';
 import { useIntl, FormattedMessage } from '@edx/frontend-platform/i18n';
 import { Hyperlink } from '@openedx/paragon';
 
