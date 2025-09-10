@@ -23,6 +23,7 @@ import RevokeBulkAction from './bulk-actions/RevokeBulkAction';
 import LicenseManagementTableActionColumn from './LicenseManagementTableActionColumn';
 import LicenseManagementUserBadge from './LicenseManagementUserBadge';
 import { SUBSCRIPTION_TABLE_EVENTS } from '../../../../eventTracking';
+import { ADMINISTER_SUBSCRIPTIONS_TARGETS } from '../../../ProductTours/AdminOnboardingTours/constants';
 import { CheckboxFilter } from '../../../CheckboxFilter';
 
 const userRecentAction = (user, intl) => {
@@ -62,7 +63,7 @@ const selectColumn = {
 };
 
 const CustomCheckboxFilter = (props) => (
-  <div id="license-allocation-filters">
+  <div id={ADMINISTER_SUBSCRIPTIONS_TARGETS.LICENSE_ALLOCATION_FILTERS}>
     <CheckboxFilter {...props} />
   </div>
 );

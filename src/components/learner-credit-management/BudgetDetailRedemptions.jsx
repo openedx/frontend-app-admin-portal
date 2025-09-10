@@ -10,6 +10,7 @@ import {
   getBudgetStatus, useBudgetId, useBudgetRedemptions, useEnterpriseOffer, useSubsidyAccessPolicy,
 } from './data';
 import { BUDGET_STATUSES } from '../EnterpriseApp/data/constants';
+import { ALLOCATE_LEARNING_BUDGETS_TARGETS } from '../ProductTours/AdminOnboardingTours/constants';
 
 const BudgetDetailRedemptionsDescription = ({
   status,
@@ -106,7 +107,7 @@ const BudgetDetailRedemptions = ({ enterpriseFeatures, enterpriseUUID }) => {
   });
 
   return (
-    <section data-testid="spent-section" id="assignment-spent-budget-table">
+    <section data-testid="spent-section" id={ALLOCATE_LEARNING_BUDGETS_TARGETS.BUDGET_SPENT_TABLE}>
       <h3 className="mb-3" ref={spentHeadingRef}>
         <FormattedMessage
           id="lcm.budget.detail.page.spent.heading"

@@ -1,22 +1,15 @@
 import React, { useContext } from 'react';
 import PropTypes from 'prop-types';
 import {
-  Stack,
-  Row,
-  Col,
-  Card,
-  Hyperlink,
-  Container,
-  Skeleton,
+  Card, Col, Container, Hyperlink, Row, Skeleton, Stack,
 } from '@openedx/paragon';
 import { connect } from 'react-redux';
 import { Helmet } from 'react-helmet';
-
 import { useIntl, FormattedMessage } from '@edx/frontend-platform/i18n';
+
 import Hero from '../Hero';
 import MultipleBudgetsPicker from './MultipleBudgetsPicker';
 import { EnterpriseSubsidiesContext } from '../EnterpriseSubsidiesContext';
-
 import { configuration } from '../../config';
 import { useEnterpriseBudgets } from '../EnterpriseSubsidiesContext/data/hooks';
 

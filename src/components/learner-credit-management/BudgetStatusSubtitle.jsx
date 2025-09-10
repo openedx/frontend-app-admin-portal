@@ -48,13 +48,13 @@ const BudgetStatusSubtitle = ({
       intl.formatMessage({
         id: 'lcm.budget.detail.page.overview.enroll.groups.browse.and.enroll',
         defaultMessage: 'Browse & Enroll',
-        description: 'Enrollment type for budgets that are browsable and enrollable',
+        description: 'Enrollment type for budgets that are browseable and enrollable',
       }),
       popoverText:
       intl.formatMessage({
         id: 'lcm.budget.detail.page.overview.enroll.groups.browse.and.enroll.popover',
         defaultMessage: 'Available to members added to this budget',
-        description: 'Popover text for budgets that are browsable and enrollable',
+        description: 'Popover text for budgets that are browseable and enrollable',
       }),
       icon: <Icon size="xs" src={GroupAdd} className="ml-1 d-inline-flex" svgAttrs={{ transform: 'translate(0,2)' }} />,
     },

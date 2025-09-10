@@ -13,6 +13,7 @@ import findTheRightCourse from '../assets/phoneScroll.svg';
 import nameYourLearners from '../assets/reading.svg';
 import confirmSpend from '../assets/wallet.svg';
 import EVENT_NAMES from '../../../eventTracking';
+import { ALLOCATE_LEARNING_BUDGETS_TARGETS } from '../../ProductTours/AdminOnboardingTours/constants';
 
 const FindTheRightCourseIllustration = (props) => (
   <img data-testid="find-the-right-course-illustration" src={findTheRightCourse} alt="" {...props} />
@@ -31,7 +32,7 @@ const NoBudgetActivityEmptyState = ({ enterpriseId }) => {
   const isLargeOrGreater = useIsLargeOrGreater();
 
   return (
-    <Card id="no-budget-activity">
+    <Card id={ALLOCATE_LEARNING_BUDGETS_TARGETS.NO_ASSIGNMENT_BUDGET_ACTIVITY}>
       <Card.Section className={classNames('text-center', { 'bg-light-300': isLargeOrGreater })}>
         <h3 className={classNames({ 'mb-4.5': isLargeOrGreater })}>
           No budget activity yet? Assign a course!
