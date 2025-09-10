@@ -12,11 +12,6 @@ import { getAuthenticatedHttpClient } from '@edx/frontend-platform/auth';
 import Progress from './Progress';
 import { queryClient } from '../../test/testUtils';
 import * as hooks from '../data/hooks';
-import { useAnalyticsFilters } from '../AnalyticsFiltersContext';
-
-jest.mock('../AnalyticsFiltersContext', () => ({
-  useAnalyticsFilters: jest.fn(),
-}));
 
 jest.mock('../data/hooks', () => ({
   useEnterpriseAnalyticsAggregatesData: jest.fn(),
@@ -44,22 +39,6 @@ describe('Progress Component', () => {
   });
 
   test('renders all progress tab sections', async () => {
-    useAnalyticsFilters.mockReturnValue({
-      startDate: '2021-01-01',
-      setStartDate: jest.fn(),
-      endDate: '2021-12-31',
-      setEndDate: jest.fn(),
-      granularity: 'Daily',
-      setGranularity: jest.fn(),
-      calculation: 'Total',
-      setCalculation: jest.fn(),
-      groupUUID: 'group-123',
-      setGroupUUID: jest.fn(),
-      currentDate: '2021-12-31',
-      groups: [],
-      isGroupsLoading: false,
-    });
-
     hooks.useEnterpriseAnalyticsAggregatesData.mockReturnValue({
       data: { minEnrollmentDate: '2021-01-01' },
     });

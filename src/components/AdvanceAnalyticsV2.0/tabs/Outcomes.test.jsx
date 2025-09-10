@@ -14,7 +14,6 @@ import Outcomess from './Outcomes';
 import { queryClient } from '../../test/testUtils';
 import EnterpriseDataApiService from '../../../data/services/EnterpriseDataApiService';
 import * as hooks from '../data/hooks';
-import { useAnalyticsFilters } from '../AnalyticsFiltersContext';
 
 const mockAnalyticsSkillsData = {
   topSkills: [
@@ -71,10 +70,6 @@ jest.mock('@edx/frontend-enterprise-utils', () => {
   });
 });
 
-jest.mock('../AnalyticsFiltersContext', () => ({
-  useAnalyticsFilters: jest.fn(),
-}));
-
 jest.mock('../data/hooks', () => ({
   useEnterpriseAnalyticsAggregatesData: jest.fn(),
   useEnterpriseAnalyticsData: jest.fn(),
@@ -103,20 +98,6 @@ const findReact = (dom, traverseUp = 0) => {
 
 describe('Rendering tests', () => {
   test('renders all sections', async () => {
-    useAnalyticsFilters.mockReturnValue({
-      startDate: '2021-01-01',
-      setStartDate: jest.fn(),
-      endDate: '2021-12-31',
-      setEndDate: jest.fn(),
-      granularity: 'Daily',
-      calculation: 'Total',
-      groupUUID: 'group-123',
-      setGroupUUID: jest.fn(),
-      currentDate: '2021-12-31',
-      groups: [],
-      isGroupsLoading: false,
-    });
-
     hooks.useEnterpriseAnalyticsAggregatesData.mockReturnValue({
       data: { minEnrollmentDate: '2021-01-01' },
     });
@@ -186,20 +167,6 @@ describe('Rendering tests', () => {
   });
 
   test('calls sendEnterpriseTrackEvent on chart click', async () => {
-    useAnalyticsFilters.mockReturnValue({
-      startDate: '2021-01-01',
-      setStartDate: jest.fn(),
-      endDate: '2021-12-31',
-      setEndDate: jest.fn(),
-      granularity: 'Daily',
-      calculation: 'Total',
-      groupUUID: 'group-123',
-      setGroupUUID: jest.fn(),
-      currentDate: '2021-12-31',
-      groups: [],
-      isGroupsLoading: false,
-    });
-
     hooks.useEnterpriseAnalyticsAggregatesData.mockReturnValue({
       data: { minEnrollmentDate: '2021-01-01' },
     });
