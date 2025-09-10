@@ -28,9 +28,7 @@ const AnalyticsFilters = ({
   groupUUID,
   setGroupUUID,
   currentDate,
-  data,
   groups,
-  isFetching,
   isGroupsLoading,
   budgets,
   isBudgetsFetching,
@@ -114,7 +112,6 @@ const AnalyticsFilters = ({
                   controlClassName="font-weight-normal analytics-filter-form-controls rounded-0"
                   as="select"
                   onChange={(e) => handleDateRangeChange(e.target.value)}
-                  disabled={isFetching}
                   defaultValue={dateRangeValue}
                   value={dateRangeValue}
                 >
@@ -169,9 +166,7 @@ const AnalyticsFilters = ({
                   controlClassName="font-weight-normal analytics-filter-form-controls rounded-0"
                   type="date"
                   value={startDate || get90DayPriorDate()}
-                  min={data?.minEnrollmentDate || ''}
                   onChange={(e) => handleStartDateChange(e.target.value)}
-                  disabled={isFetching}
                 />
               </Form.Group>
             </div>
@@ -190,7 +185,6 @@ const AnalyticsFilters = ({
                   value={endDate || currentDate || ''}
                   max={currentDate || ''}
                   onChange={(e) => handleEndDateChange(e.target.value)}
-                  disabled={isFetching}
                 />
               </Form.Group>
             </div>
@@ -209,7 +203,6 @@ const AnalyticsFilters = ({
                     as="select"
                     value={calculation}
                     onChange={(e) => setCalculation(e.target.value)}
-                    disabled={isFetching}
                   >
                     <option value={CALCULATION.TOTAL}>
                       {intl.formatMessage({
@@ -256,7 +249,6 @@ const AnalyticsFilters = ({
                     as="select"
                     value={granularity}
                     onChange={(e) => setGranularity(e.target.value)}
-                    disabled={isFetching}
                   >
                     <option value={GRANULARITY.DAILY}>
                       {intl.formatMessage({
@@ -418,7 +410,6 @@ const AnalyticsFilters = ({
                     controlClassName="font-weight-normal analytics-filter-form-controls rounded-0"
                     as="select"
                     onChange={(e) => setCourseType(e.target.value)}
-                    disabled={isFetching}
                     defaultValue={COURSE_TYPES.ALL_COURSE_TYPES}
                     value={courseType}
                   >
@@ -470,9 +461,7 @@ AnalyticsFilters.propTypes = {
   groupUUID: PropTypes.string,
   setGroupUUID: PropTypes.func.isRequired,
   currentDate: PropTypes.string.isRequired,
-  data: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
   groups: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
-  isFetching: PropTypes.bool.isRequired,
   isGroupsLoading: PropTypes.bool.isRequired,
   activeTab: PropTypes.string.isRequired,
   isEnterpriseCoursesFetching: PropTypes.bool,

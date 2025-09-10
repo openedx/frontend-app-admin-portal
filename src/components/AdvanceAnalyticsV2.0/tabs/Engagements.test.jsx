@@ -15,7 +15,6 @@ import Engagements from './Engagements';
 import { queryClient } from '../../test/testUtils';
 import EnterpriseDataApiService from '../../../data/services/EnterpriseDataApiService';
 import * as hooks from '../data/hooks';
-import { useAnalyticsFilters } from '../AnalyticsFiltersContext';
 
 const mockEngagementTableData = {
   next: null,
@@ -197,10 +196,6 @@ jest.mock('@edx/frontend-enterprise-utils', () => {
   });
 });
 
-jest.mock('../AnalyticsFiltersContext', () => ({
-  useAnalyticsFilters: jest.fn(),
-}));
-
 jest.mock('../data/hooks', () => ({
   useEnterpriseAnalyticsAggregatesData: jest.fn(),
   useEnterpriseEngagementData: jest.fn(),
@@ -237,20 +232,6 @@ describe('Rendering tests', () => {
 
     axiosMock.onGet(/\/enrollments\/stats(\?.*)/).reply(200, mockEnrollmentChartsData);
     axiosMock.onGet(/\/enrollments(\?.*)/).reply(200, mockEnrollmentTableData);
-
-    useAnalyticsFilters.mockReturnValue({
-      startDate: '2021-01-01',
-      setStartDate: jest.fn(),
-      endDate: '2021-12-31',
-      setEndDate: jest.fn(),
-      granularity: 'Daily',
-      calculation: 'Total',
-      groupUUID: 'group-123',
-      setGroupUUID: jest.fn(),
-      currentDate: '2021-12-31',
-      groups: [],
-      isGroupsLoading: false,
-    });
 
     hooks.useEnterpriseAnalyticsAggregatesData.mockReturnValue({
       isFetching: false,
@@ -369,20 +350,6 @@ describe('Rendering tests', () => {
 
     axiosMock.onGet(/\/enrollments\/stats(\?.*)/).reply(200, mockEnrollmentChartsData);
     axiosMock.onGet(/\/enrollments(\?.*)/).reply(200, mockEnrollmentTableData);
-
-    useAnalyticsFilters.mockReturnValue({
-      startDate: '2021-01-01',
-      setStartDate: jest.fn(),
-      endDate: '2021-12-31',
-      setEndDate: jest.fn(),
-      granularity: 'Daily',
-      calculation: 'Total',
-      groupUUID: 'group-123',
-      setGroupUUID: jest.fn(),
-      currentDate: '2021-12-31',
-      groups: [],
-      isGroupsLoading: false,
-    });
 
     hooks.useEnterpriseAnalyticsAggregatesData.mockReturnValue({
       isFetching: false,

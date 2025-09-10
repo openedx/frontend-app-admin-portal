@@ -4,42 +4,26 @@ import PropTypes from 'prop-types';
 import { ANALYTICS_TABS } from '../constants';
 import {
   useEnterpriseCompletionsData,
-  useEnterpriseAnalyticsAggregatesData,
   useEnterpriseCourses,
 } from '../data/hooks';
 import AnalyticsFilters from '../AnalyticsFilters';
-import { useAnalyticsFilters } from '../AnalyticsFiltersContext';
 import TopCoursesByCompletionTable from '../tables/TopCoursesByCompletionTable';
 import TopSubjectsByCompletionTable from '../tables/TopSubjectsByCompletionTable';
 import IndividualCompletionsTable from '../tables/IndividualCompletionsTable';
 import { get90DayPriorDate } from '../data/utils';
-import { ALL_COURSES } from '../data/constants';
+import { ALL_COURSES, GRANULARITY, CALCULATION } from '../data/constants';
+import { START_DATE_DEFAULT_TO_TODAY_THRESHOLD_DAYS, useAllFlexEnterpriseGroups } from '../../learner-credit-management/data';
 
 const Progress = ({ enterpriseId }) => {
-  // Filters
-  const {
-    granularity,
-    setGranularity,
-    calculation,
-    setCalculation,
-    groupUUID,
-    setGroupUUID,
-    currentDate,
-    groups,
-    isGroupsLoading,
-  } = useAnalyticsFilters();
+  const currentDate = new Date().toISOString().split('T')[0];
 
+  // Filters
   const [startDate, setStartDate] = useState(get90DayPriorDate());
   const [endDate, setEndDate] = useState(currentDate);
+  const [granularity, setGranularity] = useState(GRANULARITY.WEEKLY);
+  const [calculation, setCalculation] = useState(CALCULATION.TOTAL);
+  const [groupUUID, setGroupUUID] = useState('');
   const [course, setCourse] = useState(ALL_COURSES);
-
-  // Stats Data
-  const { data: statsData } = useEnterpriseAnalyticsAggregatesData({
-    enterpriseCustomerUUID: enterpriseId,
-    startDate,
-    endDate,
-    course,
-  });
 
   // Completions data
   const {
@@ -64,6 +48,11 @@ const Progress = ({ enterpriseId }) => {
     endDate,
     groupUUID,
   });
+
+  // Groups Data
+  const {
+    isLoading: isGroupsLoading, data: groups,
+  } = useAllFlexEnterpriseGroups(enterpriseId);
 
   return (
     <div className="tab-Progress mt-4">
@@ -116,7 +105,7 @@ const Progress = ({ enterpriseId }) => {
             <TopCoursesByCompletionTable
               isFetching={isFetching}
               data={completionsData?.topCoursesByCompletions}
-              startDate={startDate || statsData?.minEnrollmentDate}
+              startDate={startDate}
               endDate={endDate || currentDate}
               granularity={granularity}
               calculation={calculation}
@@ -129,7 +118,7 @@ const Progress = ({ enterpriseId }) => {
             <TopSubjectsByCompletionTable
               isFetching={isFetching}
               data={completionsData?.topSubjectsByCompletions}
-              startDate={startDate || statsData?.minEnrollmentDate}
+              startDate={START_DATE_DEFAULT_TO_TODAY_THRESHOLD_DAYS}
               endDate={endDate || currentDate}
               granularity={granularity}
               calculation={calculation}
@@ -142,7 +131,7 @@ const Progress = ({ enterpriseId }) => {
       <div className="bg-primary-100 rounded-lg container-fluid mb-3">
         <div className="h-100 overflow-hidden">
           <IndividualCompletionsTable
-            startDate={startDate || statsData?.minEnrollmentDate}
+            startDate={startDate}
             endDate={endDate || currentDate}
             enterpriseId={enterpriseId}
             groupUUID={groupUUID}
