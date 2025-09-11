@@ -104,6 +104,7 @@ export const transformUtilizationTableResults = results => results.map(result =>
   userEmail: result.userEmail,
   courseTitle: result.courseTitle,
   courseListPrice: result.courseListPrice,
+  courseRunStartDate: result.courseRunStartDate,
   enrollmentDate: result.enrollmentDate,
   uuid: uuidv4(),
   courseKey: result.courseKey,
