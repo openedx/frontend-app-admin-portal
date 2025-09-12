@@ -58,10 +58,10 @@ const CheckpointOverlay: FC<CheckpointOverlayProps> = ({ target }) => {
           if (targetElement) {
             const boundingRect = targetElement.getBoundingClientRect();
             setRect({
-              top: boundingRect.top,
-              left: boundingRect.left,
-              width: boundingRect.width,
-              height: boundingRect.height,
+              top: boundingRect.top - 10,
+              left: boundingRect.left - 10,
+              width: boundingRect.width + 20,
+              height: boundingRect.height + 20,
             });
           }
         };
