@@ -16,14 +16,18 @@ const initialBnrRequestsState = {
   itemCount: 0,
   pageCount: 0,
   currentPage: 1,
+  learnerRequestStateCounts: [],
 };
 
 // Map table column accessors to API field names for sorting
 const API_FIELDS_BY_TABLE_COLUMN_ACCESSOR = {
   requestDetails: 'requestDetails',
-  amount: 'amount',
+  amount: 'course_price',
   requestDate: 'requestDate',
   requestStatus: 'requestStatus',
+  learnerRequestState: 'learner_request_state',
+  lastActionStatus: 'latest_action_status',
+  recentAction: 'latest_action_time',
 };
 
 export const applySortByToOptions = (sortBy, options) => {
@@ -52,6 +56,8 @@ export const applyFiltersToOptions = (filters, options) => {
   }
   const emailSearchQuery = filters.find(filter => filter.id === 'requestDetails')?.value;
   const statusFilter = filters.find(filter => filter.id === 'requestStatus')?.value;
+  const learnerRequestStateFilter = filters.find(filter => filter.id === 'learnerRequestState')?.value;
+  const lastActionStatusFilter = filters.find(filter => filter.id === 'lastActionStatus')?.value;
 
   if (emailSearchQuery) {
     Object.assign(options, {
@@ -64,7 +70,32 @@ export const applyFiltersToOptions = (filters, options) => {
       state: statusFilter.join(','),
     });
   }
+
+  if (learnerRequestStateFilter && learnerRequestStateFilter.length > 0) {
+    if (learnerRequestStateFilter.length === 1) {
+      Object.assign(options, {
+        learner_request_state: learnerRequestStateFilter[0],
+      });
+    } else {
+      Object.assign(options, {
+        learner_request_state__in: learnerRequestStateFilter.join(','),
+      });
+    }
+  }
+
+  if (lastActionStatusFilter && lastActionStatusFilter.length > 0) {
+    if (lastActionStatusFilter.length === 1) {
+      Object.assign(options, {
+        latest_action_status: lastActionStatusFilter[0],
+      });
+    } else {
+      Object.assign(options, {
+        latest_action_status__in: lastActionStatusFilter.join(','),
+      });
+    }
+  }
 };
+
 export const applyOverviewFiltersToOptions = (filters, options) => {
   if (!filters || filters.length === 0) {
     return;
@@ -102,6 +133,8 @@ const transformApiDataToTableData = (apiResults) => apiResults.map((item) => {
     lastActionErrorReason: item?.latestAction?.errorReason,
     lastActionDate,
     latestAction: item?.latestAction,
+    // Add learner request state from API (camelCase after transformation)
+    learnerRequestState: item?.learnerRequestState,
   };
 });
 
@@ -151,11 +184,26 @@ const useBnrSubsidyRequests = ({
       const data = camelCaseObject(response.data);
       const transformedResults = transformApiDataToTableData(data.results || []);
 
+      const learnerRequestStateCounts = Object.entries(
+        transformedResults.reduce((counts, request) => {
+          const { learnerRequestState } = request;
+          if (learnerRequestState) {
+            // eslint-disable-next-line no-param-reassign
+            counts[learnerRequestState] = (counts[learnerRequestState] || 0) + 1;
+          }
+          return counts;
+        }, {}),
+      ).map(([learnerRequestState, count]) => ({
+        learnerRequestState,
+        count,
+      }));
+
       setBnrRequests({
         itemCount: data.count || 0,
         pageCount: data.numPages || Math.ceil((data.count || 0) / (options.page_size || 10)),
         results: transformedResults || [],
         currentPage: options.page,
+        learnerRequestStateCounts,
       });
       setIsLoading(false);
 

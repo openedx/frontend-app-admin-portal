@@ -11,6 +11,7 @@ import {
   transformSubsidySummary,
   retrieveBudgetDetailActivityOverview,
   transformRequestOverview,
+  transformLearnerRequestStateCounts,
 } from '../utils';
 import {
   COURSE_PACING_MAP,
@@ -720,5 +721,38 @@ describe('transformRequestOverview', () => {
       { name: 'Cancelled', number: 0, value: 'cancelled' },
       { name: 'Declined', number: 0, value: 'declined' },
     ]);
+  });
+});
+
+describe('transformLearnerRequestStateCounts (PR #1643)', () => {
+  it('should transform learner request state counts with new labels', () => {
+    const learnerRequestStateCounts = [
+      { learnerRequestState: 'waiting', count: 10 },
+      { learnerRequestState: 'accepted', count: 5 },
+    ];
+
+    const result = transformLearnerRequestStateCounts(learnerRequestStateCounts);
+
+    expect(result).toEqual([
+      { name: 'Waiting For Learner', number: 10, value: 'waiting' },
+      { name: 'Redeemed By Learner', number: 5, value: 'accepted' },
+    ]);
+  });
+
+  it('should filter out unknown states', () => {
+    const learnerRequestStateCounts = [
+      { learnerRequestState: 'waiting', count: 10 },
+      { learnerRequestState: 'unknown_state', count: 5 },
+    ];
+
+    const result = transformLearnerRequestStateCounts(learnerRequestStateCounts);
+
+    expect(result).toEqual([
+      { name: 'Waiting For Learner', number: 10, value: 'waiting' },
+    ]);
+  });
+
+  it('should handle null input', () => {
+    expect(transformLearnerRequestStateCounts(null)).toEqual([]);
   });
 });

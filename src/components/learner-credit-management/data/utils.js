@@ -18,6 +18,7 @@ import {
   NO_BALANCE_REMAINING_DOLLAR_THRESHOLD,
   START_DATE_DEFAULT_TO_TODAY_THRESHOLD_DAYS,
   APPROVED_REQUEST_TYPE,
+  LEARNER_CREDIT_REQUEST_STATE_LABELS,
 } from './constants';
 import { capitalizeFirstLetter } from '../../../utils';
 
@@ -820,5 +821,27 @@ export const transformRequestOverview = (requestStates) => {
       name: capitalizeFirstLetter(state),
       number: count,
       value: state,
+    }));
+};
+
+/**
+ * Transforms learnerRequestStateCounts into filter options for DataTable
+ * @param {Array} learnerRequestStateCounts - Array of objects with learnerRequestState and count
+ * @returns {Array} Array of filter options with name, number, and value
+ */
+export const transformLearnerRequestStateCounts = (learnerRequestStateCounts) => {
+  if (!learnerRequestStateCounts) {
+    return [];
+  }
+
+  return learnerRequestStateCounts
+    .filter(({ learnerRequestState }) => {
+      const displayName = LEARNER_CREDIT_REQUEST_STATE_LABELS[learnerRequestState];
+      return !!displayName;
+    })
+    .map(({ learnerRequestState, count }) => ({
+      name: LEARNER_CREDIT_REQUEST_STATE_LABELS[learnerRequestState],
+      number: count,
+      value: learnerRequestState,
     }));
 };

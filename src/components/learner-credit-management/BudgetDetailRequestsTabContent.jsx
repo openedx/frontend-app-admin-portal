@@ -15,7 +15,6 @@ const BudgetDetailRequestsTabContent = ({ enterpriseId }) => {
   const {
     isLoading,
     bnrRequests,
-    requestsOverview,
     fetchBnrRequests,
     refreshRequests,
   } = useBnrSubsidyRequests({ enterpriseId });
@@ -35,7 +34,9 @@ const BudgetDetailRequestsTabContent = ({ enterpriseId }) => {
         itemCount={bnrRequests.itemCount}
         data={bnrRequests.results}
         fetchData={fetchBnrRequests}
-        requestStatusFilterChoices={requestsOverview}
+        tableData={{
+          requestStatusCounts: bnrRequests.learnerRequestStateCounts || [],
+        }}
         onApprove={(row) => {
           setSelectedRequest(row);
           setIsApproveModalOpen(true);
