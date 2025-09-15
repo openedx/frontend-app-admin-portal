@@ -209,6 +209,7 @@ export const LEARNER_CREDIT_REQUEST_STATES = {
   cancelled: 'cancelled',
   expired: 'expired',
   reversed: 'reversed',
+  declined: 'declined',
 };
 
 // Human-readable labels for learner credit request states
@@ -221,4 +222,5 @@ export const LEARNER_CREDIT_REQUEST_STATE_LABELS = {
   [LEARNER_CREDIT_REQUEST_STATES.cancelled]: 'Cancelled',
   [LEARNER_CREDIT_REQUEST_STATES.expired]: 'Expired',
   [LEARNER_CREDIT_REQUEST_STATES.reversed]: 'Refunded',
+  [LEARNER_CREDIT_REQUEST_STATES.declined]: 'Declined',
 };
