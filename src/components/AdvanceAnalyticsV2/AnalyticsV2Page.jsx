@@ -18,6 +18,7 @@ import { GRANULARITY, CALCULATION } from './data/constants';
 import { DEFAULT_GROUP } from './constants';
 import { formatTimestamp } from '../../utils';
 import { useAllFlexEnterpriseGroups } from '../learner-credit-management/data';
+import { ANALYTICS_INSIGHTS_TARGETS } from '../ProductTours/AdminOnboardingTours/constants';
 
 const AnalyticsV2Page = ({ enterpriseId }) => {
   const [activeTab, setActiveTab] = useState('enrollments');
@@ -60,7 +61,7 @@ const AnalyticsV2Page = ({ enterpriseId }) => {
           </div>
         </div>
 
-        <div className="row filter-container" id="analytics-date-range">
+        <div className="row filter-container" id={ANALYTICS_INSIGHTS_TARGETS.DATE_RANGE}>
           <div className="col">
             <Form.Group>
               <Form.Label>
@@ -224,7 +225,7 @@ const AnalyticsV2Page = ({ enterpriseId }) => {
           </div>
         </div>
 
-        <div className="row stats-container d-flex justify-content-center" id="analytics-metrics">
+        <div className="row stats-container d-flex justify-content-center" id={ANALYTICS_INSIGHTS_TARGETS.METRICS}>
           <Stats
             data={data}
             isFetching={isFetching}
@@ -298,7 +299,7 @@ const AnalyticsV2Page = ({ enterpriseId }) => {
                 defaultMessage: 'Leaderboard',
                 description: 'Title for the leaderboard tab in advance analytics.',
               })}
-              id="analytics-leaderboard"
+              id={ANALYTICS_INSIGHTS_TARGETS.LEADERBOARD}
             >
               <Leaderboard
                 startDate={startDate || data?.minEnrollmentDate}
@@ -313,7 +314,7 @@ const AnalyticsV2Page = ({ enterpriseId }) => {
                 defaultMessage: 'Skills',
                 description: 'Title for the skills tab in advance analytics.',
               })}
-              id="analytics-skills"
+              id={ANALYTICS_INSIGHTS_TARGETS.SKILLS}
             >
               <Skills
                 startDate={startDate || data?.minEnrollmentDate}

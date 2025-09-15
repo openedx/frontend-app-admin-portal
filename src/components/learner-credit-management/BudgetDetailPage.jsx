@@ -18,6 +18,7 @@ const BudgetDetailPage = () => {
     isError: isSubsidyAccessPolicyError,
     error,
   } = useSubsidyAccessPolicy(subsidyAccessPolicyId);
+  // Fetch enterprise offer with graceful error handling
   const {
     data: enterpriseOffer,
     isInitialLoading: isEnterpriseOfferInitialLoading,

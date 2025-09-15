@@ -46,20 +46,23 @@ export const ADMINISTER_SUBSCRIPTIONS_TARGETS = {
 export const ALLOCATE_LEARNING_BUDGETS_TARGETS = {
   SIDEBAR: 'learner-credit-link',
   VIEW_BUDGET: 'learner-credit-view-budget-button',
-  ASSIGNMENT_BUDGET_DETAIL_CARD: 'assignment-budget-detail-card',
+  BUDGET_DETAIL_CARD: 'budget-detail-card',
   NO_ASSIGNMENT_BUDGET_ACTIVITY: 'no-budget-activity',
   NEW_ASSIGNMENT_BUDGET_BUTTON: 'new-assignment-button',
+  UTILIZATION_DETAILS_DROPDOWN: 'assignment-budget-utilization-details',
+  INVITE_MEMBERS_BUDGET_BUTTON: 'invite-members-button',
   TRACK_BUDGET_ACTIVITY: 'track-budget-activity',
-  ASSIGNMENT_BUDGET_TABLE: 'assignment-budget-table',
-  ASSIGNMENT_BUDGET_SPENT_TABLE: 'assignment-spent-budget-table',
-  ASSIGNMENT_BUDGET_CATALOG_TAB: 'assignment-budget-catalog-tab',
+  BUDGET_TABLE: 'budget-table',
+  BUDGET_SPENT_TABLE: 'spent-budget-table',
+  BUDGET_CATALOG_TAB: 'budget-catalog-tab',
+  BUDGET_MEMBERS_TAB: 'budget-members-tab',
   LEARNER_CREDIT_MANAGEMENT_BREADCRUMBS: 'learner-credit-management-breadcrumbs',
 };
 
 // targets that will trigger an index reset
 export const RESET_TARGETS = [
   ADMINISTER_SUBSCRIPTIONS_TARGETS.SUBSCRIPTION_PLANS_DETAIL_PAGE,
-  ALLOCATE_LEARNING_BUDGETS_TARGETS.ASSIGNMENT_BUDGET_DETAIL_CARD,
+  ALLOCATE_LEARNING_BUDGETS_TARGETS.BUDGET_DETAIL_CARD,
   ORGANIZE_LEARNER_TARGETS.GROUP_DETAIL_CARD,
 ];
 

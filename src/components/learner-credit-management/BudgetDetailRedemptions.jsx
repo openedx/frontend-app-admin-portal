@@ -10,6 +10,7 @@ import {
   getBudgetStatus, useBudgetId, useBudgetRedemptions, useEnterpriseOffer, useSubsidyAccessPolicy,
 } from './data';
 import { BUDGET_STATUSES } from '../EnterpriseApp/data/constants';
+import { ALLOCATE_LEARNING_BUDGETS_TARGETS } from '../ProductTours/AdminOnboardingTours/constants';
 
 const BudgetDetailRedemptionsDescription = ({
   status,
@@ -86,6 +87,7 @@ const BudgetDetailRedemptions = ({ enterpriseFeatures, enterpriseUUID }) => {
     enterpriseFeatures.topDownAssignmentRealTimeLcm,
   );
 
+  // Fetch enterprise offer data with graceful error handling - will be null if API fails
   const { data: enterpriseOfferMetadata } = useEnterpriseOffer(enterpriseOfferId);
   const { data: subsidyAccessPolicy } = useSubsidyAccessPolicy(subsidyAccessPolicyId);
 
@@ -100,13 +102,14 @@ const BudgetDetailRedemptions = ({ enterpriseFeatures, enterpriseUUID }) => {
 
   const { status } = getBudgetStatus({
     intl,
+    // Use enterprise offer dates if available, fall back to subsidy access policy dates
     startDateStr: enterpriseOfferMetadata?.startDatetime || subsidyAccessPolicy?.subsidyActiveDatetime,
     endDateStr: enterpriseOfferMetadata?.endDatetime || subsidyAccessPolicy?.subsidyExpirationDatetime,
     isBudgetRetired: !!subsidyAccessPolicy?.retired,
   });
 
   return (
-    <section data-testid="spent-section" id="assignment-spent-budget-table">
+    <section data-testid="spent-section" id={ALLOCATE_LEARNING_BUDGETS_TARGETS.BUDGET_SPENT_TABLE}>
       <h3 className="mb-3" ref={spentHeadingRef}>
         <FormattedMessage
           id="lcm.budget.detail.page.spent.heading"

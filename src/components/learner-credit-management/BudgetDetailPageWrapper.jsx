@@ -23,6 +23,7 @@ function getBudgetDisplayName({
   if (subsidyAccessPolicy?.displayName) {
     displayName = subsidyAccessPolicy.displayName;
   } else if (enterpriseOffer?.displayName) {
+    // Use enterprise offer display name if subsidy access policy doesn't have one
     displayName = enterpriseOffer.displayName;
   }
   return displayName;
@@ -30,7 +31,7 @@ function getBudgetDisplayName({
 
 const BudgetDetailPageWrapper = ({
   subsidyAccessPolicy,
-  enterpriseOffer,
+  enterpriseOffer, // Will be null/undefined if ecommerce API fails
   includeHero,
   children,
 }) => {

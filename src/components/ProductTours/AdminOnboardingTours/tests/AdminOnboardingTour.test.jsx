@@ -9,6 +9,8 @@ import { ADMIN_TOUR_EVENT_NAMES } from '../constants';
 import useHydrateAdminOnboardingData from '../data/useHydrateAdminOnboardingData';
 import { queryClient } from '../../../test/testUtils';
 import { SubsidyRequestsContext } from '../../../subsidy-requests';
+import { orderBudgets, useBudgetDetailActivityOverview, useSubsidyAccessPolicy } from '../../../learner-credit-management/data';
+import { useEnterpriseBudgets } from '../../../EnterpriseSubsidiesContext/data/hooks';
 
 const mockAdminUuid = 'test-admin-uuid';
 
@@ -52,6 +54,16 @@ jest.mock('@edx/frontend-enterprise-utils', () => {
     sendEnterpriseTrackEvent: jest.fn(),
   });
 });
+
+jest.mock('../../../learner-credit-management/data', () => ({
+  orderBudgets: jest.fn(),
+  useBudgetDetailActivityOverview: jest.fn(),
+  useSubsidyAccessPolicy: jest.fn(),
+}));
+
+jest.mock('../../../EnterpriseSubsidiesContext/data/hooks', () => ({
+  useEnterpriseBudgets: jest.fn(),
+}));
 
 jest.mock('@edx/frontend-platform/i18n', () => ({
   useIntl: () => ({
@@ -107,6 +119,29 @@ describe('AdminOnboardingTour', () => {
   beforeEach(() => {
     useHydrateAdminOnboardingData.mockReturnValue({ data: { hasEnterpriseMembers: true, hasEnterpriseGroups: true } });
     tourResult = null;
+    useBudgetDetailActivityOverview.mockReturnValue({
+      isLoading: false,
+      isFetching: false,
+      data: {
+        spentTransactions: { count: 0 },
+        contentAssignments: { count: 0 },
+      },
+    });
+    useEnterpriseBudgets.mockReturnValue(
+      {
+        data: { budgets: [{ id: 'test-id' }] },
+      },
+    );
+    orderBudgets.mockReturnValue([
+      {
+        id: 'test-id',
+      },
+    ]);
+    useSubsidyAccessPolicy.mockReturnValue({
+      data: {
+        policyType: 'AssignedLearnerCreditAccessPolicy',
+      },
+    });
   });
 
   afterEach(() => {

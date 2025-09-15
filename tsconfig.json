@@ -2,7 +2,8 @@
   "extends": "@edx/typescript-config",
   "compilerOptions": {
     "rootDir": ".",
-    "outDir": "dist"
+    "outDir": "dist",
+    "jsx": "react",
   },
   "include": [
     "types.d.ts",

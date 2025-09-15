@@ -44,7 +44,7 @@ import {
   mockAssignableSubsidyAccessPolicyWithSpendNoAllocations,
   mockAssignableSubsidyAccessPolicyWithSpendNoRedeemed,
   mockEnterpriseOfferId,
-  mockEnterpriseOfferMetadata,
+  mockEnterpriseOfferMetadata, // TODO: remove when ecommerce is decommisioned.
   mockPerLearnerSpendLimitSubsidyAccessPolicy,
   mockPerLearnerSpendLimitSubsidyAccessPolicyWithBnrEnabled,
   mockSpendLimitNoGroupsSubsidyAccessPolicy,
@@ -516,6 +516,7 @@ describe('<BudgetDetailPage />', () => {
       },
       isLoading: false,
     },
+    // TODO: remove when ecommerce is decommisioned.
     {
       subsidyAccessPolicy: null,
       subsidySummary: mockSubsidySummary,
@@ -953,6 +954,7 @@ describe('<BudgetDetailPage />', () => {
   });
 
   it.each([
+    // TODO: remove when ecommerce is decommisioned.
     {
       subsidyAccessPolicy: null,
       enterpriseOfferMetadata: mockEnterpriseOfferMetadata,
@@ -969,7 +971,7 @@ describe('<BudgetDetailPage />', () => {
     },
     {
       subsidyAccessPolicy: mockPerLearnerSpendLimitSubsidyAccessPolicy,
-      enterpriseOfferMetadata: null,
+      // enterpriseOfferMetadata: null, // Enterprise offers no longer supported
       budgetId: mockSubsidyAccessPolicyUUID,
       isTopDownAssignmentEnabled: true,
       expectedUseOfferRedemptionsArgs: [enterpriseUUID, null, mockSubsidyAccessPolicyUUID, true],

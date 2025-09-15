@@ -8,6 +8,7 @@ import { useIntl } from '@edx/frontend-platform/i18n';
 import { ROUTE_NAMES } from '../EnterpriseApp/data/constants';
 import EVENT_NAMES from '../../eventTracking';
 import { useBudgetId, useSubsidyAccessPolicy } from './data';
+import { ALLOCATE_LEARNING_BUDGETS_TARGETS } from '../ProductTours/AdminOnboardingTours/constants';
 
 const BudgetDetailPageBreadcrumbs = ({ enterpriseId, enterpriseSlug, displayName }) => {
   const { subsidyAccessPolicyId } = useBudgetId();
@@ -35,7 +36,7 @@ const BudgetDetailPageBreadcrumbs = ({ enterpriseId, enterpriseSlug, displayName
   return (
     <div className="small">
       <Breadcrumb
-        id="learner-credit-management-breadcrumbs"
+        id={ALLOCATE_LEARNING_BUDGETS_TARGETS.LEARNER_CREDIT_MANAGEMENT_BREADCRUMBS}
         ariaLabel="Learner Credit Management breadcrumb navigation"
         links={[{
           label: intl.formatMessage({

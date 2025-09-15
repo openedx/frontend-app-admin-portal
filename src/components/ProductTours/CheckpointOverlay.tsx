@@ -66,7 +66,7 @@ const CheckpointOverlay: FC<CheckpointOverlayProps> = ({ target }) => {
           }
         };
 
-        if (selector === `#${ALLOCATE_LEARNING_BUDGETS_TARGETS.ASSIGNMENT_BUDGET_DETAIL_CARD}`) {
+        if (selector === `#${ALLOCATE_LEARNING_BUDGETS_TARGETS.BUDGET_DETAIL_CARD}`) {
           setTimeout(findAndSetElement, 0);
         } else {
           findAndSetElement();
