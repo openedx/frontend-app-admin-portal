@@ -7,28 +7,24 @@ import FailedCancellation from './request-status-chips/FailedCancellation';
 import FailedRedemption from './request-status-chips/FailedRedemption';
 import { capitalizeFirstLetter } from '../../utils';
 import {
-  REQUEST_ERROR_STATES, REQUEST_RECENT_ACTIONS, useBudgetId, useSubsidyAccessPolicy,
+  REQUEST_ERROR_STATES, useBudgetId, useSubsidyAccessPolicy,
+  LEARNER_CREDIT_REQUEST_STATES, LEARNER_CREDIT_REQUEST_STATE_LABELS,
 } from './data';
 
 const RequestStatusTableCell = ({ enterpriseId, row }) => {
   const { original } = row;
   const {
-    learnerEmail,
-    lastActionStatus,
+    email: learnerEmail,
+    learnerRequestState,
     lastActionErrorReason,
-    requestStatus,
   } = original;
 
-  // Use lastActionStatus if available, otherwise fall back to requestStatus
-  // There is a lot of complexity around status field inconsistencies across different data sources,
-  // but these inconsistencies can only be resolved by API improvements.
   const { subsidyAccessPolicyId } = useBudgetId();
   const { data: subsidyAccessPolicy } = useSubsidyAccessPolicy(
     subsidyAccessPolicyId,
   );
   const sharedTrackEventMetadata = {
-    learnerEmail,
-    requestStatus,
+    learnerRequestState,
     subsidyAccessPolicy,
   };
 
@@ -39,50 +35,66 @@ const RequestStatusTableCell = ({ enterpriseId, row }) => {
     });
   };
 
-  // TODO: Consolidate status handling in future API improvements
-  // Currently we check both `lastActionErrorReason` and `lastActionStatus` which creates
-  // confusion since status information comes from two different sources. The API should
-  // be updated to return a single, unified status field to simplify this logic.
-  if (lastActionErrorReason === REQUEST_ERROR_STATES.failed_cancellation) {
+  const sendErrorStateTrackEvent = (eventName, eventMetadata = {}) => {
+    const errorReasonMetadata = {
+      erroredAction: {
+        errorReason: lastActionErrorReason || null,
+      },
+    };
+    const errorStateMetadata = {
+      ...sharedTrackEventMetadata,
+      ...errorReasonMetadata,
+      ...eventMetadata,
+    };
+    sendEnterpriseTrackEvent(
+      enterpriseId,
+      eventName,
+      errorStateMetadata,
+    );
+  };
+
+  // Learner request state is not available, so don't display anything.
+  if (!learnerRequestState) {
+    return null;
+  }
+
+  // Handle specific learner request states with appropriate chips
+  if (learnerRequestState === LEARNER_CREDIT_REQUEST_STATES.waiting) {
     return (
-      <FailedCancellation
-        learnerEmail={learnerEmail}
-        trackEvent={sendGenericTrackEvent}
-      />
+      <WaitingForLearner learnerEmail={learnerEmail} trackEvent={sendGenericTrackEvent} />
     );
   }
 
-  if (lastActionErrorReason === REQUEST_ERROR_STATES.failed_redemption) {
+  if (learnerRequestState === LEARNER_CREDIT_REQUEST_STATES.failed) {
+    // Determine which failure chip to display based on the error reason
+    if (lastActionErrorReason === REQUEST_ERROR_STATES.failed_cancellation) {
+      return <FailedCancellation trackEvent={sendErrorStateTrackEvent} />;
+    }
+    if (lastActionErrorReason === REQUEST_ERROR_STATES.failed_redemption) {
+      return <FailedRedemption trackEvent={sendErrorStateTrackEvent} />;
+    }
+    // For other failure cases, display a generic failed chip
     return (
-      <FailedRedemption trackEvent={sendGenericTrackEvent} />
+      <Chip variant="dark">
+        {LEARNER_CREDIT_REQUEST_STATE_LABELS.failed}
+      </Chip>
     );
   }
 
-  if (lastActionStatus === REQUEST_RECENT_ACTIONS.reminded || requestStatus === REQUEST_RECENT_ACTIONS.approved) {
-    return (
-      <WaitingForLearner
-        learnerEmail={learnerEmail}
-        trackEvent={sendGenericTrackEvent}
-      />
-    );
-  }
+  // For all other states, display the appropriate label
+  const displayLabel = LEARNER_CREDIT_REQUEST_STATE_LABELS[learnerRequestState]
+    || capitalizeFirstLetter(learnerRequestState);
 
-  return (
-    <Chip>
-      {`${capitalizeFirstLetter(requestStatus)}`}
-    </Chip>
-  );
+  return <Chip>{displayLabel}</Chip>;
 };
 
 RequestStatusTableCell.propTypes = {
   enterpriseId: PropTypes.string.isRequired,
   row: PropTypes.shape({
     original: PropTypes.shape({
-      requestStatus: PropTypes.string,
-      learnerEmail: PropTypes.string,
-      lastActionStatus: PropTypes.string,
+      email: PropTypes.string,
+      learnerRequestState: PropTypes.string,
       lastActionErrorReason: PropTypes.string,
-      recentAction: PropTypes.string,
     }).isRequired,
   }).isRequired,
 };
