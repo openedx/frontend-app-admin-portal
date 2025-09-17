@@ -43,6 +43,7 @@ describe('<LearnerCreditAllocationTable />', () => {
           userEmail: 'test@example.com',
           courseTitle: 'course-title',
           courseListPrice: 100,
+          courseRunStartDate: '3-2-23',
           enrollmentDate: '2-2-23',
           courseProductLine: 'OCM',
           courseKey: 'edX+DemoX',
@@ -60,6 +61,7 @@ describe('<LearnerCreditAllocationTable />', () => {
     expect(screen.getByText(props.tableData.results[0].courseTitle.toString(), {
       exact: false,
     }));
+    expect(screen.getByText('Mar 2, 2023', { exact: false }));
     expect(screen.getByText(props.tableData.results[0].courseListPrice.toString(), {
       exact: false,
     }));
@@ -125,6 +127,7 @@ describe('<LearnerCreditAllocationTable />', () => {
           courseTitle: 'course-title',
           courseKey: 'edX+CTL.SC101x',
           courseListPrice: 100,
+          courseRunStartDate: '3-2-25',
           enrollmentDate: '2-2-23',
           courseProductLine: 'OCM',
         }],

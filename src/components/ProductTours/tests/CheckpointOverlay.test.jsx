@@ -143,34 +143,34 @@ describe('CheckpointOverlay', () => {
       top: '0px',
       left: '0px',
       right: '0px',
-      height: `${mockRect.top}px`,
+      height: `${mockRect.top - 10}px`,
       backgroundColor: 'rgba(0, 0, 0, 0.5)',
     });
 
     // Check left section
     expect(sections[1]).toHaveStyle({
       position: 'absolute',
-      top: `${mockRect.top}px`,
+      top: `${mockRect.top - 10}px`,
       left: '0px',
-      width: `${mockRect.left}px`,
-      height: `${mockRect.height}px`,
+      width: `${mockRect.left - 10}px`,
+      height: `${mockRect.height + 20}px`,
       backgroundColor: 'rgba(0, 0, 0, 0.5)',
     });
 
     // Check right section
     expect(sections[2]).toHaveStyle({
       position: 'absolute',
-      top: `${mockRect.top}px`,
-      left: `${mockRect.left + mockRect.width}px`,
+      top: `${mockRect.top - 10}px`,
+      left: `${mockRect.left + mockRect.width + 10}px`,
       right: '0px',
-      height: `${mockRect.height}px`,
+      height: `${mockRect.height + 20}px`,
       backgroundColor: 'rgba(0, 0, 0, 0.5)',
     });
 
     // Check bottom section
     expect(sections[3]).toHaveStyle({
       position: 'absolute',
-      top: `${mockRect.top + mockRect.height}px`,
+      top: `${mockRect.top + mockRect.height + 10}px`,
       left: '0px',
       right: '0px',
       bottom: '0px',

@@ -44,7 +44,7 @@ import {
   mockAssignableSubsidyAccessPolicyWithSpendNoAllocations,
   mockAssignableSubsidyAccessPolicyWithSpendNoRedeemed,
   mockEnterpriseOfferId,
-  mockEnterpriseOfferMetadata,
+  mockEnterpriseOfferMetadata, // TODO: remove when ecommerce is decommisioned.
   mockPerLearnerSpendLimitSubsidyAccessPolicy,
   mockPerLearnerSpendLimitSubsidyAccessPolicyWithBnrEnabled,
   mockSpendLimitNoGroupsSubsidyAccessPolicy,
@@ -225,7 +225,9 @@ const mockApprovedRequest = {
   requestStatus: 'approved',
   lastActionStatus: 'waiting_for_learner',
   lastActionErrorReason: undefined,
-  latestAction: { status: 'approved', timestamp: '2023-10-27' },
+  latestAction: { status: 'approved', timestamp: '2023-10-27', recentAction: 'approved' },
+  learnerRequestState: 'waiting',
+  lastActionDate: 'Oct 27, 2023',
 };
 
 const createMockApprovedRequest = () => ({
@@ -514,6 +516,7 @@ describe('<BudgetDetailPage />', () => {
       },
       isLoading: false,
     },
+    // TODO: remove when ecommerce is decommisioned.
     {
       subsidyAccessPolicy: null,
       subsidySummary: mockSubsidySummary,
@@ -951,6 +954,7 @@ describe('<BudgetDetailPage />', () => {
   });
 
   it.each([
+    // TODO: remove when ecommerce is decommisioned.
     {
       subsidyAccessPolicy: null,
       enterpriseOfferMetadata: mockEnterpriseOfferMetadata,
@@ -967,7 +971,7 @@ describe('<BudgetDetailPage />', () => {
     },
     {
       subsidyAccessPolicy: mockPerLearnerSpendLimitSubsidyAccessPolicy,
-      enterpriseOfferMetadata: null,
+      // enterpriseOfferMetadata: null, // Enterprise offers no longer supported
       budgetId: mockSubsidyAccessPolicyUUID,
       isTopDownAssignmentEnabled: true,
       expectedUseOfferRedemptionsArgs: [enterpriseUUID, null, mockSubsidyAccessPolicyUUID, true],
@@ -1510,6 +1514,95 @@ describe('<BudgetDetailPage />', () => {
     expect(within(recentActionCell).getByText('Approved: Oct 27, 2023')).toBeInTheDocument();
   }, 30000);
 
+  it('handles new learner request states from PR #1643', async () => {
+    useParams.mockReturnValue({
+      enterpriseSlug: 'test-enterprise-slug',
+      enterpriseAppPage: 'test-enterprise-page',
+      budgetId: mockSubsidyAccessPolicyUUID,
+      activeTabKey: 'activity',
+    });
+    useSubsidyAccessPolicy.mockReturnValue({
+      isInitialLoading: false,
+      data: mockPerLearnerSpendLimitSubsidyAccessPolicyWithBnrEnabled,
+    });
+    useEnterpriseGroupLearners.mockReturnValue({
+      data: {
+        count: 0,
+        currentPage: 1,
+        next: null,
+        numPages: 1,
+        results: [],
+      },
+    });
+    useBudgetDetailActivityOverview.mockReturnValue({
+      isLoading: false,
+      data: {
+        approvedBnrRequests: { count: 2 },
+        contentAssignments: undefined,
+        spentTransactions: { count: 0 },
+      },
+    });
+
+    // Test the new learner request states added in PR #1643
+    const mockRequestsWithNewStates = [
+      {
+        ...mockApprovedRequest,
+        uuid: 'request-1',
+        learnerRequestState: 'failed',
+        lastActionErrorReason: 'failed_cancellation',
+        latestAction: { status: 'failed', recentAction: 'cancelled' },
+        lastActionDate: 'Oct 26, 2023',
+      },
+      {
+        ...mockApprovedRequest,
+        uuid: 'request-2',
+        learnerRequestState: 'accepted',
+        latestAction: { status: 'accepted', recentAction: 'accepted' },
+        lastActionDate: 'Oct 28, 2023',
+      },
+    ];
+
+    useBnrSubsidyRequests.mockReturnValue({
+      isLoading: false,
+      bnrRequests: {
+        itemCount: 2,
+        results: mockRequestsWithNewStates,
+        pageCount: 1,
+      },
+      fetchBnrRequests: jest.fn(),
+    });
+    useBudgetRedemptions.mockReturnValue({
+      isLoading: false,
+      budgetRedemptions: mockEmptyBudgetRedemptions,
+      fetchBudgetRedemptions: jest.fn(),
+    });
+    useEnterpriseRemovedGroupMembers.mockReturnValue({
+      isRemovedMembersLoading: false,
+      removedGroupMembersCount: 0,
+    });
+
+    renderWithRouter(<BudgetDetailPageWrapper />);
+
+    await waitFor(() => {
+      expect(screen.getByText('Pending')).toBeInTheDocument();
+    });
+
+    const pendingSection = within(
+      screen.getByText('Pending').closest('section'),
+    );
+    const tableElement = pendingSection.getByRole('table');
+    const dataRows = within(tableElement).getAllByRole('row').slice(1);
+
+    // Test new status labels from LEARNER_CREDIT_REQUEST_STATE_LABELS
+    const firstRowCells = within(dataRows[0]).getAllByRole('cell');
+    const failedStatusCell = firstRowCells[2];
+    expect(within(failedStatusCell).getByText('Failed: Cancellation')).toBeInTheDocument();
+
+    const secondRowCells = within(dataRows[1]).getAllByRole('cell');
+    const acceptedStatusCell = secondRowCells[2];
+    expect(within(acceptedStatusCell).getByText('Redeemed By Learner')).toBeInTheDocument();
+  }, 30000);
+
   it.skip.each([
     { sortByColumnHeader: 'Amount', expectedSortBy: [{ id: 'amount', desc: false }] },
     { sortByColumnHeader: 'Recent action', expectedSortBy: [{ id: 'recentAction', desc: true }] },
@@ -1824,6 +1917,7 @@ describe('<BudgetDetailPage />', () => {
         ...mockApprovedRequest.latestAction,
         errorReason: 'failed_cancellation',
       },
+      learnerRequestState: 'failed',
     };
     useBnrSubsidyRequests.mockReturnValue({
       isLoading: false,
@@ -1901,6 +1995,7 @@ describe('<BudgetDetailPage />', () => {
         ...mockApprovedRequest.latestAction,
         errorReason: 'failed_redemption',
       },
+      learnerRequestState: 'failed',
     };
     useBnrSubsidyRequests.mockReturnValue({
       isLoading: false,
@@ -1973,15 +2068,18 @@ describe('<BudgetDetailPage />', () => {
       {
         ...mockApprovedRequest,
         lastActionStatus: 'reminded',
+        learnerRequestState: 'waiting',
       },
       {
         ...createMockApprovedRequest(),
         lastActionStatus: 'refunded',
         lastActionErrorReason: 'failed_cancellation',
+        learnerRequestState: 'failed',
       },
       {
         ...createMockApprovedRequest(),
         lastActionStatus: 'completed',
+        learnerRequestState: 'waiting',
       },
     ];
     useBnrSubsidyRequests.mockReturnValue({

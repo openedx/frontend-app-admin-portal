@@ -16,6 +16,7 @@ import {
 } from './data';
 import { BUDGET_STATUSES } from '../EnterpriseApp/data/constants';
 import { isBudgetRetiredOrExpired } from './data/utils';
+import { ALLOCATE_LEARNING_BUDGETS_TARGETS } from '../ProductTours/AdminOnboardingTours/constants';
 
 const BudgetDetailAssignmentsHeader = ({
   status,
@@ -144,7 +145,7 @@ const BudgetDetailAssignments = ({
   }
 
   return (
-    <section className="budget-detail-assignments" id="assignment-budget-table">
+    <section className="budget-detail-assignments" id={ALLOCATE_LEARNING_BUDGETS_TARGETS.BUDGET_TABLE}>
       <BudgetDetailAssignmentsHeader status={status} />
       <BudgetAssignmentsTable
         isLoading={isLoading}

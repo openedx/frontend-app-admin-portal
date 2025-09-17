@@ -52,7 +52,7 @@ const portalConfiguration = (state = initialState, action) => {
         enterpriseBranding: action.payload.data.branding_configuration,
         identityProvider: action.payload.data.identity_provider,
         disableExpiryMessagingForLearnerCredit: action.payload.data.disable_expiry_messaging_for_learner_credit,
-        enableCodeManagementScreen: action.payload.data.enable_portal_code_management_screen,
+        enableCodeManagementScreen: action.payload.data.enable_portal_code_management_screen || false,
         enableReportingConfigScreen: action.payload.data.enable_portal_reporting_config_screen,
         enableSubscriptionManagementScreen: action.payload.data.enable_portal_subscription_management_screen, // eslint-disable-line max-len
         enableSamlConfigurationScreen: action.payload.data.enable_portal_saml_configuration_screen,

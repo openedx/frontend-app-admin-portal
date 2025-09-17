@@ -25,6 +25,7 @@ import EVENT_NAMES from '../../eventTracking';
 import { BUDGET_STATUSES } from '../EnterpriseApp/data/constants';
 import BudgetDetail from './BudgetDetail';
 import { useEnterpriseBudgets } from '../EnterpriseSubsidiesContext/data/hooks';
+import { ALLOCATE_LEARNING_BUDGETS_TARGETS } from '../ProductTours/AdminOnboardingTours/constants';
 
 const BudgetActions = ({
   budgetId,
@@ -271,7 +272,7 @@ const BudgetActions = ({
                   id="lcm.budget.detail.page.overview.budget.actions.all.people.choose.learn.description"
                   defaultMessage="All people in your organization can choose what to learn
                 from the catalog and spend from the available balance to enroll."
-                  description="Decription which tells that user can choose from the catalog and spend from the available balance to enroll"
+                  description="Description which tells that user can choose from the catalog and spend from the available balance to enroll"
                 />
               </p>
               <Link to={`/${enterpriseSlug}/admin/settings/access`}>
@@ -322,7 +323,7 @@ const BudgetActions = ({
       }
 
       return (
-        <div className="h-100 d-flex align-items-center pt-4 pt-lg-0">
+        <div className="h-100 d-flex align-items-center pt-4 pt-lg-0" id={ALLOCATE_LEARNING_BUDGETS_TARGETS.INVITE_MEMBERS_BUDGET_BUTTON}>
           <div>
             <h3>
               <FormattedMessage
@@ -395,7 +396,7 @@ const BudgetActions = ({
   }
 
   return (
-    <div className="h-100 d-flex align-items-center justify-content-center pt-4 pt-lg-0" id="new-assignment-button">
+    <div className="h-100 d-flex align-items-center justify-content-center pt-4 pt-lg-0" id={ALLOCATE_LEARNING_BUDGETS_TARGETS.NEW_ASSIGNMENT_BUDGET_BUTTON}>
       <div>
         <h3>
           <FormattedMessage

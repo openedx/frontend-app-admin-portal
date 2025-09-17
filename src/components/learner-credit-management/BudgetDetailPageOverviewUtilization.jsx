@@ -12,6 +12,7 @@ import { FormattedMessage, useIntl } from '@edx/frontend-platform/i18n';
 import { formatPrice, LEARNER_CREDIT_ROUTE } from './data';
 import EVENT_NAMES from '../../eventTracking';
 import { AssignedUtilizationDetails, BnRUtilizationDetails } from './utilization-details';
+import { ALLOCATE_LEARNING_BUDGETS_TARGETS } from '../ProductTours/AdminOnboardingTours/constants';
 
 const BudgetDetailPageOverviewUtilization = ({
   budgetId,
@@ -98,7 +99,7 @@ const BudgetDetailPageOverviewUtilization = ({
     <Collapsible
       className="mt-4 budget-utilization-container"
       styling="basic"
-      id="assignment-budget-utilization-details"
+      id={ALLOCATE_LEARNING_BUDGETS_TARGETS.UTILIZATION_DETAILS_DROPDOWN}
       title={(
         <h6 className="mb-0">
           <FormattedMessage

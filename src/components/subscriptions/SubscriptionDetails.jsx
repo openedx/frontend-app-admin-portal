@@ -14,6 +14,7 @@ import InviteLearnersButton from './buttons/InviteLearnersButton';
 import { SubscriptionContext } from './SubscriptionData';
 import SubscriptionExpirationBanner from './expiration/SubscriptionExpirationBanner';
 import { MANAGE_LEARNERS_TAB } from './data/constants';
+import { ADMINISTER_SUBSCRIPTIONS_TARGETS } from '../ProductTours/AdminOnboardingTours/constants';
 
 const SubscriptionDetails = ({
   enterpriseSlug,
@@ -36,11 +37,11 @@ const SubscriptionDetails = ({
   const backToSubscriptionsPath = `/${enterpriseSlug}/admin/subscriptions/${MANAGE_LEARNERS_TAB}`;
 
   return (
-    <div id="subscription-plans-detail-page">
+    <div id={ADMINISTER_SUBSCRIPTIONS_TARGETS.SUBSCRIPTION_PLANS_DETAIL_PAGE}>
       {hasMultipleSubscriptions && (
         <Row className="ml-0 mb-3">
           <Link to={backToSubscriptionsPath}>
-            <Button variant="outline-primary" id="subscription-navigation">
+            <Button variant="outline-primary" id={ADMINISTER_SUBSCRIPTIONS_TARGETS.SUBSCRIPTIONS_NAVIGATION}>
               <Icon src={ArrowBackIos} className="mr-2" />
               {intl.formatMessage({
                 id: 'admin.portal.subscription.details.back.to.subscriptions.button',

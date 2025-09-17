@@ -1,32 +1,34 @@
-import React from 'react';
 import PropTypes from 'prop-types';
 import { REQUEST_RECENT_ACTIONS } from './data';
 
 const RequestRecentActionTableCell = ({ row }) => {
   const { original } = row;
   const {
-    requestDate,
-    requestStatus,
     latestAction,
     lastActionDate,
   } = original;
 
-  const formatRequest = () => {
-    const hasRemindedAction = latestAction && latestAction.recentAction === REQUEST_RECENT_ACTIONS.reminded;
-    // Using reminded action if the latest action is 'reminded' else fall back to requestStatus
-    const status = hasRemindedAction ? latestAction.recentAction : requestStatus;
-    const formattedActionType = `${status.charAt(0).toUpperCase()}${status.slice(1)}`;
+  const formatRecentActionDisplay = () => {
+    // Check if latestAction exists and has recentAction property
+    if (!latestAction || !latestAction.recentAction) {
+      return {
+        actionType: 'No action',
+        timestamp: lastActionDate || 'N/A',
+      };
+    }
 
-    const formattedActionTimestamp = hasRemindedAction ? lastActionDate : requestDate;
-
-    return { formattedActionType, formattedActionTimestamp };
+    const actionType = latestAction.recentAction;
+    return {
+      actionType: `${REQUEST_RECENT_ACTIONS[actionType].charAt(0).toUpperCase()}${REQUEST_RECENT_ACTIONS[actionType].slice(1)}`,
+      timestamp: lastActionDate,
+    };
   };
 
-  const { formattedActionType, formattedActionTimestamp } = formatRequest();
+  const { actionType, timestamp } = formatRecentActionDisplay();
 
   return (
     <span>
-      {formattedActionType}: {formattedActionTimestamp}
+      {actionType}: {timestamp}
     </span>
   );
 };
@@ -34,12 +36,10 @@ const RequestRecentActionTableCell = ({ row }) => {
 RequestRecentActionTableCell.propTypes = {
   row: PropTypes.shape({
     original: PropTypes.shape({
-      requestDate: PropTypes.string.isRequired,
-      requestStatus: PropTypes.string.isRequired,
       latestAction: PropTypes.shape({
-        recentAction: PropTypes.string.isRequired,
-      }).isRequired,
-      lastActionDate: PropTypes.string.isRequired,
+        recentAction: PropTypes.string,
+      }),
+      lastActionDate: PropTypes.string,
     }).isRequired,
   }).isRequired,
 };

@@ -1,7 +1,7 @@
 import { getBudgetStatus } from '../utils';
 
 const transformSubsidySummaryToPolicy = (subsidySummary, enterpriseOfferMetadata) => {
-  // Check whether Enterprise Offer metadata is still fetching from the ecommerce API
+  // If no enterprise offer metadata available (API failure or service down), return null for graceful degradation
   if (!enterpriseOfferMetadata) {
     return null;
   }

@@ -58,15 +58,15 @@ const CheckpointOverlay: FC<CheckpointOverlayProps> = ({ target }) => {
           if (targetElement) {
             const boundingRect = targetElement.getBoundingClientRect();
             setRect({
-              top: boundingRect.top,
-              left: boundingRect.left,
-              width: boundingRect.width,
-              height: boundingRect.height,
+              top: boundingRect.top - 10,
+              left: boundingRect.left - 10,
+              width: boundingRect.width + 20,
+              height: boundingRect.height + 20,
             });
           }
         };
 
-        if (selector === `#${ALLOCATE_LEARNING_BUDGETS_TARGETS.ASSIGNMENT_BUDGET_DETAIL_CARD}`) {
+        if (selector === `#${ALLOCATE_LEARNING_BUDGETS_TARGETS.BUDGET_DETAIL_CARD}`) {
           setTimeout(findAndSetElement, 0);
         } else {
           findAndSetElement();

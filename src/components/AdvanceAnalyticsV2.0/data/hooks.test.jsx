@@ -390,4 +390,40 @@ describe('useEnterpriseAnalyticsAggregatesData', () => {
       requestOptions,
     );
   });
+  it('includes groupUUID in aggregates API request when provided', async () => {
+    const startDate = '2021-01-01';
+    const endDate = '2021-12-31';
+    const groupUUID = 'group-1234';
+
+    const requestOptions = {
+      startDate,
+      endDate,
+      groupUUID,
+    };
+
+    const queryParams = new URLSearchParams(snakeCaseObject(requestOptions));
+    const baseURL = `${EnterpriseDataApiService.enterpriseAdminAnalyticsV2BaseUrl}${TEST_ENTERPRISE_ID}`;
+    const analyticsURL = `${baseURL}/aggregates/stats?${queryParams.toString()}`;
+
+    axiosMock.onGet(analyticsURL).reply(200, {});
+
+    const { result } = renderHook(
+      () => useEnterpriseAnalyticsAggregatesData({
+        enterpriseCustomerUUID: TEST_ENTERPRISE_ID,
+        startDate,
+        endDate,
+        groupUUID,
+      }),
+      { wrapper },
+    );
+
+    await waitFor(() => {
+      expect(result.current.isFetching).toBe(false);
+    });
+
+    expect(EnterpriseDataApiService.fetchAdminAggregatesData).toHaveBeenCalledWith(
+      TEST_ENTERPRISE_ID,
+      requestOptions,
+    );
+  });
 });

@@ -69,8 +69,9 @@ describe('advanceAnalyticsQueryKeys', () => {
   });
 
   it('should return correct key for aggregates', () => {
-    const result = advanceAnalyticsQueryKeys.aggregates(enterpriseId, requestOptions);
-    expect(result).toEqual(['admin-analytics', 'aggregates', 'ent-001', 'us-east', 'alpha']);
+    const tabKey = 'engagements';
+    const result = advanceAnalyticsQueryKeys.aggregates(enterpriseId, requestOptions, tabKey);
+    expect(result).toEqual(['admin-analytics', 'aggregates-engagements', 'ent-001', 'us-east', 'alpha']);
   });
 });
 
