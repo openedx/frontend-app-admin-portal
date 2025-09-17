@@ -4,14 +4,22 @@ import useBudgetId from './useBudgetId';
 import useSubsidyAccessPolicy from './useSubsidyAccessPolicy';
 import { learnerCreditManagementQueryKeys } from '../constants';
 
-const useBudgetDetailActivityOverview = ({ enterpriseUUID, isTopDownAssignmentEnabled }) => {
+const useBudgetDetailActivityOverview = ({
+  enterpriseUUID, isTopDownAssignmentEnabled, paramBudgetId = '', paramSubsidyAccessPolicyId = '',
+}) => {
+  let budgetID = paramBudgetId;
+  let subsidyAccessPolicyID = paramSubsidyAccessPolicyId;
   const { budgetId, subsidyAccessPolicyId } = useBudgetId();
-  const { data: subsidyAccessPolicy } = useSubsidyAccessPolicy(subsidyAccessPolicyId);
+  if (paramSubsidyAccessPolicyId === '' || paramBudgetId === '') {
+    budgetID = budgetId;
+    subsidyAccessPolicyID = subsidyAccessPolicyId;
+  }
+  const { data: subsidyAccessPolicy } = useSubsidyAccessPolicy(subsidyAccessPolicyID);
   return useQuery({
-    queryKey: learnerCreditManagementQueryKeys.budgetActivityOverview(budgetId),
+    queryKey: learnerCreditManagementQueryKeys.budgetActivityOverview(budgetID),
     queryFn: (args) => retrieveBudgetDetailActivityOverview({
       ...args,
-      budgetId,
+      budgetID,
       subsidyAccessPolicy,
       enterpriseUUID,
       isTopDownAssignmentEnabled,
