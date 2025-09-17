@@ -10,7 +10,8 @@ import RequestAmountTableCell from './RequestAmountTableCell';
 import RequestRecentActionTableCell from './RequestRecentActionTableCell';
 import ApprovedRequestActionsTableCell from './ApprovedRequestActionsTableCell';
 import ApprovedRequestsTableRefreshAction from './ApprovedRequestsTableRefreshAction';
-import { DEFAULT_PAGE, PAGE_SIZE, REQUEST_STATUSES } from './data';
+import { DEFAULT_PAGE, PAGE_SIZE } from './data';
+import { transformLearnerRequestStateCounts } from './data/utils';
 
 const FilterStatus = (rest) => (
   <DataTable.FilterStatus showFilteredFields={false} {...rest} />
@@ -29,18 +30,7 @@ const BudgetDetailApprovedRequestTable = ({
   fetchTableData,
 }) => {
   const intl = useIntl();
-  const statusFilterChoices = tableData.requestStatusCounts
-    ? tableData.requestStatusCounts
-      .filter(({ lastActionStatus }) => {
-        const displayName = REQUEST_STATUSES[lastActionStatus];
-        return !!displayName;
-      })
-      .map(({ lastActionStatus, count }) => ({
-        name: REQUEST_STATUSES[lastActionStatus],
-        number: count,
-        value: lastActionStatus,
-      }))
-    : [];
+  const statusFilterChoices = transformLearnerRequestStateCounts(tableData.requestStatusCounts);
 
   const approvedRequestsTableData = (() => ({
     tableActions: [
@@ -51,8 +41,7 @@ const BudgetDetailApprovedRequestTable = ({
 
   return (
     <DataTable
-      // Temporarily disabling sorting for release
-      isSortable={false}
+      isSortable
       manualSortBy
       isPaginated
       manualPagination
@@ -93,13 +82,12 @@ const BudgetDetailApprovedRequestTable = ({
             description:
               'Column header for the status column in the approved requests table',
           }),
-          accessor: 'lastActionStatus',
+          accessor: 'learnerRequestState',
           Cell: RequestStatusTableCell,
           Filter: CheckboxFilter,
           filter: 'includesValue',
           filterChoices: statusFilterChoices,
-          // Temporarily disabling filters for release
-          disableFilters: true,
+          disableFilters: false,
         },
         {
           Header: intl.formatMessage({
@@ -157,7 +145,7 @@ BudgetDetailApprovedRequestTable.propTypes = {
     results: PropTypes.arrayOf(PropTypes.shape()),
     requestStatusCounts: PropTypes.arrayOf(
       PropTypes.shape({
-        requestStatus: PropTypes.string.isRequired,
+        learnerRequestState: PropTypes.string.isRequired,
         count: PropTypes.number.isRequired,
       }),
     ),
