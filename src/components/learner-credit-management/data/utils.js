@@ -136,6 +136,7 @@ export const transformUtilizationTableSubsidyTransactionResults = results => res
   reversal: result.reversal,
   userEmail: result.lmsUserEmail,
   courseTitle: result.contentTitle,
+  courseRunStartDate: result.courseRunStartDate,
   courseListPrice: result.unit === 'usd_cents' ? -1 * (result.quantity / 100) : -1 * results.quantity,
   uuid: result.uuid,
   // In the transaction list response, `parent_content_key` is the course key, and `content_key` is the course run key.
