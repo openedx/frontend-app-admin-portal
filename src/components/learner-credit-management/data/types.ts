@@ -8,6 +8,7 @@ export type SubsidyAccessPolicy = {
   groupAssociations: string[];
   subsidyActiveDatetime: string;
   subsidyExpirationDatetime: string;
+  subsidyUuid: string;
   retired: boolean;
   isRetiredOrExpired?: boolean;
   aggregates?: {
