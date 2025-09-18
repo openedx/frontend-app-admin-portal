@@ -7,19 +7,19 @@ import { learnerCreditManagementQueryKeys } from '../constants';
 const useBudgetDetailActivityOverview = ({
   enterpriseUUID, isTopDownAssignmentEnabled, paramBudgetId = '', paramSubsidyAccessPolicyId = '',
 }) => {
-  let budgetID = paramBudgetId;
-  let subsidyAccessPolicyID = paramSubsidyAccessPolicyId;
+  let localBudgetId = paramBudgetId;
+  let localSubsidyAccessPolicyId = paramSubsidyAccessPolicyId;
   const { budgetId, subsidyAccessPolicyId } = useBudgetId();
   if (paramSubsidyAccessPolicyId === '' || paramBudgetId === '') {
-    budgetID = budgetId;
-    subsidyAccessPolicyID = subsidyAccessPolicyId;
+    localBudgetId = budgetId;
+    localSubsidyAccessPolicyId = subsidyAccessPolicyId;
   }
-  const { data: subsidyAccessPolicy } = useSubsidyAccessPolicy(subsidyAccessPolicyID);
+  const { data: subsidyAccessPolicy } = useSubsidyAccessPolicy(localSubsidyAccessPolicyId);
   return useQuery({
-    queryKey: learnerCreditManagementQueryKeys.budgetActivityOverview(budgetID),
+    queryKey: learnerCreditManagementQueryKeys.budgetActivityOverview(localBudgetId),
     queryFn: (args) => retrieveBudgetDetailActivityOverview({
       ...args,
-      budgetID,
+      localBudgetId,
       subsidyAccessPolicy,
       enterpriseUUID,
       isTopDownAssignmentEnabled,
