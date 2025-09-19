@@ -19,7 +19,7 @@ const useBudgetDetailActivityOverview = ({
     queryKey: learnerCreditManagementQueryKeys.budgetActivityOverview(localBudgetId),
     queryFn: (args) => retrieveBudgetDetailActivityOverview({
       ...args,
-      localBudgetId,
+      budgetId: localBudgetId,
       subsidyAccessPolicy,
       enterpriseUUID,
       isTopDownAssignmentEnabled,
