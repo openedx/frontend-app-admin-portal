@@ -18,6 +18,8 @@ import EVENT_NAMES from '../../../eventTracking';
 import { get90DayPriorDate } from '../data/utils';
 import { ALL_COURSES, GRANULARITY, CALCULATION } from '../data/constants';
 import { useAllFlexEnterpriseGroups } from '../../learner-credit-management/data';
+import SkillsByEnrollmentChart from '../charts/SkillsByEnrollmentChart';
+import SkillsByLearningHoursChart from '../charts/SkillsByLearningHoursChart';
 
 const Outcomes = ({ enterpriseId }) => {
   const currentDate = new Date().toISOString().split('T')[0];
@@ -143,6 +145,28 @@ const Outcomes = ({ enterpriseId }) => {
         isError={isStatsError}
         activeTab={ANALYTICS_TABS.OUTCOMES}
       />
+
+      {/* Skills Chart */}
+      <div className="row py-3 gx-4 mb-2">
+        {/* Skills By Enrollment Chart */}
+        <div className="col-6">
+          <SkillsByEnrollmentChart
+            isFetching={isSkillsFetching}
+            isError={isSkillsError}
+            data={skillsData?.topSkillsByEnrollments}
+            onClick={handleChartClick}
+          />
+        </div>
+        {/* Skills By Learning Hours Charts */}
+        <div className="col-6">
+          <SkillsByLearningHoursChart
+            isFetching={isSkillsFetching}
+            isError={isSkillsError}
+            data={skillsData?.skillsByLearningHours}
+            onClick={handleChartClick}
+          />
+        </div>
+      </div>
 
       {/* Top Skills */}
       <TopSkillsChart
