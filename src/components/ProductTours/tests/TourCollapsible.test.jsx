@@ -269,8 +269,3 @@ describe('TourCollapsible', () => {
     expect(screen.queryByText('Administer subscriptions')).not.toBeInTheDocument();
   });
 });
-
-// Error:   74:33   error  Strings must use singlequote   @typescript-eslint/quotes
-// Error:   80:15   error  Unexpected newline after '('   function-paren-newline
-// Error:   81:117  error  Missing trailing comma         @typescript-eslint/comma-dangle
-// Error:   82:1    error  Unexpected newline before ')'  function-paren-newline
