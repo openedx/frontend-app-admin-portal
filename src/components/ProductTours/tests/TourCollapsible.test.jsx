@@ -71,14 +71,16 @@ const defaultState = {
 const defaultEnterpriseSubsidiesContextValue = {
   isLoadingCustomerAgreement: false,
   customerAgreement: {
-    subscriptions: [{ contents: "unimportant" }],
+    subscriptions: [{ contents: 'unimportant' }],
   },
 };
 
 const mockSetShowCollapsible = jest.fn();
 
 const setup = (
-  storeState = defaultState, showCollapsible = false, subsidiesContextValue = defaultEnterpriseSubsidiesContextValue
+  storeState = defaultState,
+  showCollapsible = false,
+  subsidiesContextValue = defaultEnterpriseSubsidiesContextValue,
 ) => {
   const store = mockStore(storeState);
   store.dispatch = jest.fn();
@@ -267,3 +269,8 @@ describe('TourCollapsible', () => {
     expect(screen.queryByText('Administer subscriptions')).not.toBeInTheDocument();
   });
 });
+
+// Error:   74:33   error  Strings must use singlequote   @typescript-eslint/quotes
+// Error:   80:15   error  Unexpected newline after '('   function-paren-newline
+// Error:   81:117  error  Missing trailing comma         @typescript-eslint/comma-dangle
+// Error:   82:1    error  Unexpected newline before ')'  function-paren-newline
