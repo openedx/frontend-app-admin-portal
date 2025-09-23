@@ -35,7 +35,6 @@ jest.mock('../AdminOnboardingTours/data/useFetchCompletedOnboardingFlows', () =>
   }),
 }));
 
-
 // Mock IconButton component
 jest.mock('@openedx/paragon', () => {
   const OriginalModule = jest.requireActual('@openedx/paragon');
@@ -72,13 +71,15 @@ const defaultState = {
 const defaultEnterpriseSubsidiesContextValue = {
   isLoadingCustomerAgreement: false,
   customerAgreement: {
-    subscriptions: [{contents: "unimportant"}],
+    subscriptions: [{ contents: "unimportant" }],
   },
 };
 
 const mockSetShowCollapsible = jest.fn();
 
-const setup = (storeState = defaultState, showCollapsible = false, subsidiesContextValue = defaultEnterpriseSubsidiesContextValue) => {
+const setup = (
+  storeState = defaultState, showCollapsible = false, subsidiesContextValue = defaultEnterpriseSubsidiesContextValue
+) => {
   const store = mockStore(storeState);
   store.dispatch = jest.fn();
 
@@ -245,7 +246,7 @@ describe('TourCollapsible', () => {
     expect(screen.queryByText('Administer subscriptions')).not.toBeInTheDocument();
   });
 
-    it('does not display administer subscriptions step when there are no subscription plans', () => {
+  it('does not display administer subscriptions step when there are no subscription plans', () => {
     const state = {
       enterpriseCustomerAdmin: {
         onboardingTourCompleted: false,

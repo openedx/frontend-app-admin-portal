@@ -1,4 +1,6 @@
-import React, { FC, useContext, useEffect, useState } from 'react';
+import React, {
+  FC, useContext, useEffect, useState,
+} from 'react';
 import { connect } from 'react-redux';
 import {
   IconButton, Icon, OverlayTrigger, Tooltip, Stack,
@@ -139,8 +141,8 @@ const TourCollapsible: FC<Props> = (
     const steps = QUICK_START_GUIDE_STEPS.filter(step => {
       switch (step.title) {
         case ADMINISTER_SUBSCRIPTIONS_TITLE:
-          return enableSubscriptionManagementScreen &&
-            (!isLoadingCustomerAgreement && !isEmpty(customerAgreement?.subscriptions));
+          return enableSubscriptionManagementScreen
+            && (!isLoadingCustomerAgreement && !isEmpty(customerAgreement?.subscriptions));
         case CUSTOMIZE_REPORTS_TITLE:
           return enableReportingConfigScreen;
         default:
@@ -167,6 +169,8 @@ const TourCollapsible: FC<Props> = (
     onboardingTourData?.onboardingTourCompleted,
     enableReportingConfigScreen,
     enableSubscriptionManagementScreen,
+    isLoadingCustomerAgreement,
+    customerAgreement?.subscriptions,
   ]);
 
   return (
