@@ -286,16 +286,16 @@ const messages = defineMessages({
     defaultMessage: '"New members" can be used to invite learners to utilize this budget.',
     description: 'Description for the allocate learning budgets invite-only bne flow step four',
   },
+  allocateLearningBudgetStepFiveAssignment: {
+    id: 'adminPortal.productTours.adminOnboarding.allocateLearningBudget.body.6.assignment',
+    defaultMessage: 'Track all budget activity, including pending assignments and enrollment spending.',
+    description: 'Description for the allocate learning budgets assignments flow step six',
+  },
   allocateLearningBudgetStepFiveAssignmentZeroState: {
     id: 'adminPortal.productTours.adminOnboarding.allocateLearningBudget.body.5.assignment.zeroState',
     defaultMessage: 'Once learners are using this budget, you\'ll be able to track all activity, including enrollment'
     + ' spending on the "Activity" tab.',
     description: 'Description for the allocate learning budgets flow step five zero state',
-  },
-  allocateLearningBudgetStepFiveAssignment: {
-    id: 'adminPortal.productTours.adminOnboarding.allocateAssignmentBudget.body.5.assignment',
-    defaultMessage: 'Expand "Utilization Details" to see a breakdown of spent funds and pending assignments.',
-    description: 'Description for the allocate learning budgets flow step five',
   },
   allocateLearningBudgetStepFiveInviteBnE: {
     id: 'adminPortal.productTours.adminOnboarding.allocateAssignmentBudget.body.5.inviteBne',
@@ -307,33 +307,28 @@ const messages = defineMessages({
     defaultMessage: 'Use the Catalog tab to browse available courses and assign them directly to learners.',
     description: 'Description for the allocate learning budgets flow step six for zero state.',
   },
-  allocateLearningBudgetStepSixAssignment: {
-    id: 'adminPortal.productTours.adminOnboarding.allocateLearningBudget.body.6.assignment',
-    defaultMessage: 'Track all budget activity, including pending assignments and enrollment spending.',
-    description: 'Description for the allocate learning budgets assignments flow step six',
-  },
   allocateLearningBudgetStepSixInviteBnE: {
     id: 'adminPortal.productTours.adminOnboarding.allocateAssignmentBudget.body.6.inviteBne',
     defaultMessage: 'View all learners invited to this budget, along with their status (Accepted, Invited, Removed),'
     + ' enrollments, and the option to remove members from the budget.',
     description: 'Description for the allocate learning budgets invite only Browse and Enroll flow step six',
   },
-  allocateLearningBudgetStepSevenAssignment: {
+  allocateLearningBudgetStepSixAssignment: {
     id: 'adminPortal.productTours.adminOnboarding.allocateLearningBudget.body.7.assignment',
     defaultMessage: 'The Assigned table helps you monitor learner assignments, send reminders, or cancel as needed.',
     description: 'Description for the allocate learning budgets flow step seven',
   },
-  allocateLearningBudgetStepEightAssignment: {
+  allocateLearningBudgetStepSevenAssignment: {
     id: 'adminPortal.productTours.adminOnboarding.allocateLearningBudget.body.8.assignment',
     defaultMessage: 'The Spent table allows you to review spending details for this budget.',
     description: 'Description for the allocate learning budgets flow step eight',
   },
-  allocateLearningBudgetStepNineAssignment: {
+  allocateLearningBudgetStepEightAssignment: {
     id: 'adminPortal.productTours.adminOnboarding.allocateAssignmentBudget.body.9.assignment',
     defaultMessage: 'Use the Catalog tab to browse available courses and assign them directly to learners.',
     description: 'Description for the allocate learning budgets flow step nine',
   },
-  allocateLearningBudgetStepTen: {
+  allocateLearningBudgetStepNine: {
     id: 'adminPortal.productTours.adminOnboarding.allocateAssignmentBudget.body.10',
     defaultMessage: 'To view more budgets, return to Learner Credit Management using the breadcrumbs or left-hand navigation.',
     description: 'Description for the allocate learning budgets flow step ten',
