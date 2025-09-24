@@ -9,6 +9,10 @@ const data = {
   sessions: 1892,
   hours: 25349876,
   completions: 265400,
+  uniqueSkillsGained: 300,
+  upskilledLearners: 200,
+  newSkillsLearned: 250,
+
 };
 describe('Stats', () => {
   it('renders the correct values for each engagement statistic', async () => {
@@ -43,10 +47,10 @@ describe('Stats', () => {
     expect(container.querySelector('.title-completions')?.textContent).toEqual('Completions');
     expect(container.querySelector('.value-completions')?.textContent).toEqual('265.4K');
     expect(container.querySelector('.title-unique-skills')?.textContent).toEqual('Unique skills gained');
-    expect(container.querySelector('.value-unique-skills')?.textContent).toEqual('0');
+    expect(container.querySelector('.value-unique-skills')?.textContent).toEqual('300');
     expect(container.querySelector('.title-upskilled-learners')?.textContent).toEqual('Upskilled learners');
-    expect(container.querySelector('.value-upskilled-learners')?.textContent).toEqual('0');
-    expect(container.querySelector('.title-new-skills')?.textContent).toContain('New skills learned in');
-    expect(container.querySelector('.value-new-skills')?.textContent).toEqual('0');
+    expect(container.querySelector('.value-upskilled-learners')?.textContent).toEqual('200');
+    expect(container.querySelector('.title-new-skills')?.textContent).toContain('New skills gained');
+    expect(container.querySelector('.value-new-skills')?.textContent).toEqual('250');
   });
 });

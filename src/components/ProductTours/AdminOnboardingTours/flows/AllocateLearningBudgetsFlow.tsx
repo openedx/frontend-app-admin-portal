@@ -68,7 +68,7 @@ const AllocateLearningBudgetsFlow = ({
   if (isOnBudgetPage) {
     if (policyType === 'Assignment') {
       // Assignment budget with spend or assignment activity
-      if (isOnBudgetPage && hasSpentTransactions && hasContentAssignments) {
+      if (isOnBudgetPage && (hasSpentTransactions || hasContentAssignments)) {
         return [
           {
             target: `#${ALLOCATE_LEARNING_BUDGETS_TARGETS.BUDGET_DETAIL_CARD}`,
@@ -82,40 +82,35 @@ const AllocateLearningBudgetsFlow = ({
             onAdvance: onAllocateAdvance,
             onBack: onAllocateBack,
           }, {
-            target: `#${ALLOCATE_LEARNING_BUDGETS_TARGETS.UTILIZATION_DETAILS_DROPDOWN}`,
-            placement: 'top',
-            body: intl.formatMessage(messages.allocateLearningBudgetStepFiveAssignment),
-            onAdvance: onAllocateAdvance,
-          }, {
             target: `#${ALLOCATE_LEARNING_BUDGETS_TARGETS.TRACK_BUDGET_ACTIVITY}`,
             placement: 'top',
-            body: intl.formatMessage(messages.allocateLearningBudgetStepSixAssignment),
+            body: intl.formatMessage(messages.allocateLearningBudgetStepFiveAssignment),
             onAdvance: onAllocateAdvance,
             onBack: onAllocateBack,
           }, {
             target: `#${ALLOCATE_LEARNING_BUDGETS_TARGETS.BUDGET_TABLE}`,
             placement: 'top',
-            body: intl.formatMessage(messages.allocateLearningBudgetStepSevenAssignment),
+            body: intl.formatMessage(messages.allocateLearningBudgetStepSixAssignment),
             onAdvance: onAllocateAdvance,
             onBack: onAllocateBack,
           }, {
             target: `#${ALLOCATE_LEARNING_BUDGETS_TARGETS.BUDGET_SPENT_TABLE}`,
             placement: 'top',
-            body: intl.formatMessage(messages.allocateLearningBudgetStepEightAssignment),
+            body: intl.formatMessage(messages.allocateLearningBudgetStepSevenAssignment),
             onAdvance: onAllocateAdvance,
             onBack: onAllocateBack,
           }, {
             target: `#${ALLOCATE_LEARNING_BUDGETS_TARGETS.BUDGET_CATALOG_TAB}`,
             placement: 'top',
-            body: intl.formatMessage(messages.allocateLearningBudgetStepNineAssignment),
+            body: intl.formatMessage(messages.allocateLearningBudgetStepEightAssignment),
             onAdvance: onAllocateAdvance,
             onBack: onAllocateBack,
           }, {
             target: `#${ALLOCATE_LEARNING_BUDGETS_TARGETS.LEARNER_CREDIT_MANAGEMENT_BREADCRUMBS}`,
             placement: 'top',
-            body: intl.formatMessage(messages.allocateLearningBudgetStepTen),
+            body: intl.formatMessage(messages.allocateLearningBudgetStepNine),
             onBack: onAllocateBack,
-            onEnd: handleEndTour,
+            onEnd: onAllocateEnd,
           },
         ];
       // Zero state assignment budget
@@ -146,7 +141,7 @@ const AllocateLearningBudgetsFlow = ({
           {
             target: `#${ALLOCATE_LEARNING_BUDGETS_TARGETS.LEARNER_CREDIT_MANAGEMENT_BREADCRUMBS}`,
             placement: 'top',
-            body: intl.formatMessage(messages.allocateLearningBudgetStepTen),
+            body: intl.formatMessage(messages.allocateLearningBudgetStepNine),
             onEnd: onAllocateEnd,
           },
         ];
@@ -168,7 +163,7 @@ const AllocateLearningBudgetsFlow = ({
         }, {
           target: `#${ALLOCATE_LEARNING_BUDGETS_TARGETS.LEARNER_CREDIT_MANAGEMENT_BREADCRUMBS}`,
           placement: 'top',
-          body: intl.formatMessage(messages.allocateLearningBudgetStepTen),
+          body: intl.formatMessage(messages.allocateLearningBudgetStepNine),
           onEnd: onAllocateEnd,
         },
       ];
@@ -207,7 +202,7 @@ const AllocateLearningBudgetsFlow = ({
         }, {
           target: `#${ALLOCATE_LEARNING_BUDGETS_TARGETS.LEARNER_CREDIT_MANAGEMENT_BREADCRUMBS}`,
           placement: 'top',
-          body: intl.formatMessage(messages.allocateLearningBudgetStepTen),
+          body: intl.formatMessage(messages.allocateLearningBudgetStepNine),
           onEnd: onAllocateEnd,
         },
       ];
@@ -238,11 +233,6 @@ const useAllocateLearningBudgetsFlow = (props: CreateTourFlowsProps): Array<Tour
   const params = useParams();
   const isTopDownAssignmentEnabled = props.enterpriseFeatures.topDownAssignmentRealTimeLcm;
 
-  const { data: budgetActivityOverview } = useBudgetDetailActivityOverview({
-    enterpriseUUID: props.enterpriseId,
-    isTopDownAssignmentEnabled,
-  });
-
   const { data: budgetsOverview } = useEnterpriseBudgets({
     enablePortalLearnerCreditManagementScreen: props.enablePortalLearnerCreditManagementScreen,
     enterpriseId: props.enterpriseId,
@@ -252,6 +242,14 @@ const useAllocateLearningBudgetsFlow = (props: CreateTourFlowsProps): Array<Tour
   const { budgets } = budgetsOverview || {};
   const orderedBudgets = orderBudgets(intl, budgets);
   const { data: subsidyAccessPolicy } = useSubsidyAccessPolicy(orderedBudgets[0]?.id);
+
+  const { data: budgetActivityOverview } = useBudgetDetailActivityOverview({
+    enterpriseUUID: props.enterpriseId,
+    isTopDownAssignmentEnabled,
+    paramBudgetId: orderedBudgets[0]?.id,
+    paramSubsidyAccessPolicyId: subsidyAccessPolicy?.uuid,
+  });
+
   let policyType;
   if (subsidyAccessPolicy) {
     if (subsidyAccessPolicy?.policyType === 'AssignedLearnerCreditAccessPolicy') {
