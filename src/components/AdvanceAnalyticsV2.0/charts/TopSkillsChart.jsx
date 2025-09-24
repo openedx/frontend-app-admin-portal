@@ -15,7 +15,7 @@ const TopSkillsChart = ({
   const markerSizes = calculateMarkerSizes(data, 'completions');
 
   return (
-    <div className="bg-primary-100 rounded-lg container-fluid p-3 mb-3 mt-3 outcomes-chart-container">
+    <div className="bg-primary-100 rounded-lg container-fluid p-3 mb-3 outcomes-chart-container">
       <div className="mb-4 h-100 overflow-hidden">
         <Header
           title={intl.formatMessage({
