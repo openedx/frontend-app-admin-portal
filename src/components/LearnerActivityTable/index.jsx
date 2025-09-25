@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import { injectIntl, intlShape } from '@edx/frontend-platform/i18n';
+import { useIntl } from '@edx/frontend-platform/i18n';
 
 import TableContainer from '../../containers/TableContainer';
 import {
@@ -9,9 +9,9 @@ import {
 } from '../../utils';
 import EnterpriseDataApiService from '../../data/services/EnterpriseDataApiService';
 
-class LearnerActivityTable extends React.Component {
-  getTableColumns() {
-    const { activity, intl } = this.props;
+const LearnerActivityTable = ({ activity, id }) => {
+  const intl = useIntl();
+  const getTableColumns = () => {
     const tableColumns = [
       {
         label: intl.formatMessage({
@@ -100,53 +100,48 @@ class LearnerActivityTable extends React.Component {
       return tableColumns.filter(column => column.key !== 'passed_date');
     }
     return tableColumns;
-  }
+  };
 
-  formatTableData = enrollments => enrollments.map(enrollment => ({
+  const formatTableData = enrollments => enrollments.map(enrollment => ({
     ...enrollment,
     user_email: <span data-hj-suppress>{enrollment.user_email}</span>,
-    last_activity_date: i18nFormatTimestamp({ intl: this.props.intl, timestamp: enrollment.last_activity_date }),
-    course_start_date: i18nFormatTimestamp({ intl: this.props.intl, timestamp: enrollment.course_start_date }),
-    course_end_date: i18nFormatTimestamp({ intl: this.props.intl, timestamp: enrollment.course_end_date }),
+    last_activity_date: i18nFormatTimestamp({ intl, timestamp: enrollment.last_activity_date }),
+    course_start_date: i18nFormatTimestamp({ intl, timestamp: enrollment.course_start_date }),
+    course_end_date: i18nFormatTimestamp({ intl, timestamp: enrollment.course_end_date }),
     enrollment_date: i18nFormatTimestamp({
-      intl: this.props.intl, timestamp: enrollment.enrollment_date,
+      intl, timestamp: enrollment.enrollment_date,
     }),
-    passed_date: i18nFormatPassedTimestamp({ intl: this.props.intl, timestamp: enrollment.passed_date }),
+    passed_date: i18nFormatPassedTimestamp({ intl, timestamp: enrollment.passed_date }),
     user_account_creation_date: i18nFormatTimestamp({
-      intl: this.props.intl, timestamp: enrollment.user_account_creation_date,
+      intl, timestamp: enrollment.user_account_creation_date,
     }),
-    progress_status: i18nFormatProgressStatus({ intl: this.props.intl, progressStatus: enrollment.progress_status }),
+    progress_status: i18nFormatProgressStatus({ intl, progressStatus: enrollment.progress_status }),
     course_list_price: enrollment.course_list_price ? `$${enrollment.course_list_price}` : '',
     current_grade: formatPercentage({ decimal: enrollment.current_grade }),
   }));
 
-  render() {
-    const { activity, id } = this.props;
-    return (
-      <TableContainer
-        id={id}
-        className={id}
-        key={id}
-        fetchMethod={(enterpriseId, options) => EnterpriseDataApiService.fetchCourseEnrollments(
-          enterpriseId,
-          {
-            learnerActivity: activity,
-            ...options,
-          },
-        )}
-        columns={this.getTableColumns()}
-        formatData={this.formatTableData}
-        tableSortable
-      />
-    );
-  }
-}
+  return (
+    <TableContainer
+      id={id}
+      className={id}
+      key={id}
+      fetchMethod={(enterpriseId, options) => EnterpriseDataApiService.fetchCourseEnrollments(
+        enterpriseId,
+        {
+          learnerActivity: activity,
+          ...options,
+        },
+      )}
+      columns={getTableColumns()}
+      formatData={formatTableData}
+      tableSortable
+    />
+  );
+};
 
 LearnerActivityTable.propTypes = {
   id: PropTypes.string.isRequired,
   activity: PropTypes.string.isRequired,
-  // injected
-  intl: intlShape.isRequired,
 };
 
-export default injectIntl(LearnerActivityTable);
+export default LearnerActivityTable;
