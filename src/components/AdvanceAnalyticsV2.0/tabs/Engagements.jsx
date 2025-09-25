@@ -9,15 +9,12 @@ import {
 import {
   useEnterpriseEngagementData,
   useEnterpriseAnalyticsAggregatesData,
-  useEnterpriseAnalyticsData,
   useEnterpriseEnrollmentsData,
   useEnterpriseCourses,
   useEnterpriseBudgets,
 } from '../data/hooks';
 import AnalyticsFilters from '../AnalyticsFilters';
 import Stats from '../Stats';
-import SkillsByEnrollmentChart from '../charts/SkillsByEnrollmentChart';
-import SkillsByLearningHoursChart from '../charts/SkillsByLearningHoursChart';
 import Leaderboard from '../tables/LeaderboardTable';
 import EnrollmentsOverTimeChart from '../charts/EnrollmentsOverTimeChart';
 import LearningHoursOverTimeChart from '../charts/LearningHoursOverTimeChart';
@@ -46,20 +43,6 @@ const Engagements = ({ enterpriseId }) => {
   const { isFetching: isStatsFetching, isError: isStatsError, data: statsData } = useEnterpriseAnalyticsAggregatesData({
     enterpriseCustomerUUID: enterpriseId,
     tabKey: ANALYTICS_TABS.ENGAGEMENTS,
-    startDate,
-    endDate,
-    groupUUID,
-    courseType,
-    course,
-    budgetUUID,
-  });
-
-  // Skills Data
-  const {
-    isFetching: isSkillsFetching, isError: isSkillsError, data: skillsData,
-  } = useEnterpriseAnalyticsData({
-    enterpriseCustomerUUID: enterpriseId,
-    key: ANALYTICS_TABS.SKILLS,
     startDate,
     endDate,
     groupUUID,
@@ -189,30 +172,8 @@ const Engagements = ({ enterpriseId }) => {
         activeTab={ANALYTICS_TABS.ENGAGEMENTS}
       />
 
-      {/* Skills Chart */}
-      <div className="row py-3 gx-4 mb-2">
-        {/* Skills By Enrollment Chart */}
-        <div className="col-6">
-          <SkillsByEnrollmentChart
-            isFetching={isSkillsFetching}
-            isError={isSkillsError}
-            data={skillsData?.topSkillsByEnrollments}
-            onClick={handleChartClick}
-          />
-        </div>
-        {/* Skills By Learning Hours Charts */}
-        <div className="col-6">
-          <SkillsByLearningHoursChart
-            isFetching={isSkillsFetching}
-            isError={isSkillsError}
-            data={skillsData?.skillsByLearningHours}
-            onClick={handleChartClick}
-          />
-        </div>
-      </div>
-
       {/* Leaderboard */}
-      <div className="bg-primary-100 rounded-lg container-fluid mb-3">
+      <div className="bg-primary-100 rounded-lg container-fluid mb-3 mt-3">
         <div className="h-100 overflow-hidden">
           <Leaderboard
             startDate={startDate}
