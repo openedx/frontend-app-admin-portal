@@ -7,16 +7,13 @@ import {
   getTranslatedBudgetStatus,
   getTranslatedBudgetTerm,
   orderBudgets,
-  startAndEnrollBySortLogic,
-  transformSubsidySummary,
   retrieveBudgetDetailActivityOverview,
-  transformRequestOverview,
+  startAndEnrollBySortLogic,
   transformLearnerRequestStateCounts,
+  transformRequestOverview,
+  transformSubsidySummary,
 } from '../utils';
-import {
-  COURSE_PACING_MAP,
-  EXEC_ED_OFFER_TYPE,
-} from '../constants';
+import { COURSE_PACING_MAP, EXEC_ED_OFFER_TYPE } from '../constants';
 import EnterpriseDataApiService from '../../../../data/services/EnterpriseDataApiService';
 import SubsidyApiService from '../../../../data/services/EnterpriseSubsidyApiService';
 import EnterpriseAccessApiService from '../../../../data/services/EnterpriseAccessApiService';
@@ -245,6 +242,19 @@ describe('orderBudgets', () => {
 
     // Since both offers have the same status ("active") and end date, they should be sorted alphabetically by name.
     expect(sortedBudgets.map((budget) => budget.name)).toEqual(['Budget A', 'Budget B']);
+  });
+
+  it('should handle offers with missing metadata', () => {
+    const budgetWithMissingMetadata = [
+      { name: 'Budget A', start: '2023-01-01T00:00:00Z', end: '2023-01-15T00:00:00Z' },
+      { name: 'Budget B', start: '2024-01-01T00:00:00Z', end: null },
+      { name: 'Budget C', start: null, end: '2024-01-15T00:00:00Z' },
+      { name: 'Budget D', start: null, end: null },
+      { name: 'Budget E', start: '2025-09-24-T00:00:00Z', end: '2050-09-24T00:00:00Z' },
+    ];
+    const sortedBudgets = orderBudgets(intl, budgetWithMissingMetadata);
+    console.log(sortedBudgets);
+    expect(sortedBudgets.map((budget) => budget.name)).toEqual(['Budget A', 'Budget C', 'Budget E', 'Budget B', 'Budget D']);
   });
 });
 
