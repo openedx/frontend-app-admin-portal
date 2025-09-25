@@ -253,7 +253,6 @@ describe('orderBudgets', () => {
       { name: 'Budget E', start: '2025-09-24-T00:00:00Z', end: '2050-09-24T00:00:00Z' },
     ];
     const sortedBudgets = orderBudgets(intl, budgetWithMissingMetadata);
-    console.log(sortedBudgets);
     expect(sortedBudgets.map((budget) => budget.name)).toEqual(['Budget A', 'Budget C', 'Budget E', 'Budget B', 'Budget D']);
   });
 });
