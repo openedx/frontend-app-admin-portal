@@ -11,10 +11,13 @@ import MockAdapter from 'axios-mock-adapter';
 import axios from 'axios';
 import { BrowserRouter as Router } from 'react-router-dom';
 import { getAuthenticatedHttpClient } from '@edx/frontend-platform/auth';
+import userEvent from '@testing-library/user-event';
 import Engagements from './Engagements';
 import { queryClient } from '../../test/testUtils';
 import EnterpriseDataApiService from '../../../data/services/EnterpriseDataApiService';
 import * as hooks from '../data/hooks';
+import EVENT_NAMES from '../../../eventTracking';
+import { DATE_RANGE } from '../data/constants';
 
 const mockEngagementTableData = {
   next: null,
@@ -394,5 +397,95 @@ describe('Rendering tests', () => {
       });
     }
     await waitFor(() => expect(sendEnterpriseTrackEvent).toHaveBeenCalledTimes(1));
+  });
+
+  test('calls sendEnterpriseTrackEvent on CSV download click', async () => {
+    hooks.useEnterpriseEngagementData.mockReturnValue({
+      isFetching: false,
+      isError: false,
+      data: mockEngagementChartsData,
+    });
+    hooks.useEnterpriseEnrollmentsData.mockReturnValue({
+      isFetching: false,
+      isError: false,
+      data: mockEnrollmentChartsData,
+    });
+    hooks.useEnterpriseAnalyticsAggregatesData.mockReturnValue({
+      isFetching: false,
+      isError: false,
+      data: mockEngagementChartsData,
+    });
+    hooks.useEnterpriseCourses.mockReturnValue({ isFetching: false, data: [] });
+    hooks.useEnterpriseBudgets.mockReturnValue({ isFetching: false, data: [] });
+
+    render(
+      <Router>
+        <QueryClientProvider client={queryClient()}>
+          <IntlProvider locale="en">
+            <Engagements enterpriseId="test-enterprise-id" />
+          </IntlProvider>
+        </QueryClientProvider>
+      </Router>,
+    );
+
+    const downloadLink = await screen.findByRole('link', { name: /download.*csv/i });
+    await userEvent.click(downloadLink);
+
+    await waitFor(() => {
+      expect(sendEnterpriseTrackEvent).toHaveBeenCalledWith(
+        'test-enterprise-id',
+        EVENT_NAMES.ANALYTICS_V2.ENGAGEMENT_CSV_DOWNLOAD_CLICKED,
+        expect.objectContaining({ entityId: expect.any(String) }),
+      );
+    });
+  });
+
+  test('calls sendEnterpriseTrackEvent on filter change', async () => {
+    hooks.useEnterpriseEngagementData.mockReturnValue({
+      isFetching: false,
+      isError: false,
+      data: mockEngagementChartsData,
+    });
+    hooks.useEnterpriseEnrollmentsData.mockReturnValue({
+      isFetching: false,
+      isError: false,
+      data: mockEnrollmentChartsData,
+    });
+    hooks.useEnterpriseAnalyticsAggregatesData.mockReturnValue({
+      isFetching: false,
+      isError: false,
+      data: mockEngagementChartsData,
+    });
+    hooks.useEnterpriseCourses.mockReturnValue({
+      isFetching: false,
+      data: [],
+    });
+    hooks.useEnterpriseBudgets.mockReturnValue({ isFetching: false, data: [] });
+
+    render(
+      <Router>
+        <QueryClientProvider client={queryClient()}>
+          <IntlProvider locale="en">
+            <Engagements enterpriseId="test-enterprise-id" />
+          </IntlProvider>
+        </QueryClientProvider>
+      </Router>,
+    );
+
+    const dateRangeSelect = screen.getByLabelText(/Date range options/i);
+
+    // change it to "Last 30 days"
+    await userEvent.selectOptions(dateRangeSelect, 'last_30_days');
+
+    await waitFor(() => {
+      expect(sendEnterpriseTrackEvent).toHaveBeenCalledWith(
+        'test-enterprise-id',
+        EVENT_NAMES.ANALYTICS_V2.ENGAGEMENT_FILTER_CLICKED,
+        {
+          name: 'Date range options',
+          value: DATE_RANGE.LAST_30_DAYS,
+        },
+      );
+    });
   });
 });

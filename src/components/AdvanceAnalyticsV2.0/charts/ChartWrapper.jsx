@@ -45,7 +45,8 @@ ChartWrapper.propTypes = {
   chartProps: PropTypes.shape({
     chartId: PropTypes.string.isRequired,
     data: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
-    onClick: PropTypes.func,
+    trackChartClick: PropTypes.func,
+    trackCsvDownloadClick: PropTypes.func,
     xKey: PropTypes.string,
     yKey: PropTypes.string,
     colorKey: PropTypes.string,

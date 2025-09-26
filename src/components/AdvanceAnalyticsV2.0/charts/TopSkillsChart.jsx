@@ -8,7 +8,7 @@ import DownloadCSVButton from '../DownloadCSVButton';
 import { constructChartHoverTemplate, calculateMarkerSizes } from '../data/utils';
 
 const TopSkillsChart = ({
-  isFetching, isError, data, startDate, endDate, onClick,
+  isFetching, isError, data, startDate, endDate, trackChartClick, trackCsvDownloadClick,
 }) => {
   const intl = useIntl();
 
@@ -32,6 +32,8 @@ const TopSkillsChart = ({
             <DownloadCSVButton
               jsonData={data || []}
               csvFileName={`Skills by Enrollment and Completion - ${startDate} - ${endDate}`}
+              entityId="top-skills-chart"
+              trackCsvDownloadClick={trackCsvDownloadClick}
             />
           )}
         />
@@ -43,7 +45,7 @@ const TopSkillsChart = ({
           chartProps={{
             chartId: 'top-skills-chart',
             data,
-            onClick,
+            trackChartClick,
             xKey: 'enrolls',
             yKey: 'completions',
             colorKey: 'skillType',
@@ -83,7 +85,8 @@ TopSkillsChart.propTypes = {
   data: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
   startDate: PropTypes.string.isRequired,
   endDate: PropTypes.string.isRequired,
-  onClick: PropTypes.func,
+  trackChartClick: PropTypes.func,
+  trackCsvDownloadClick: PropTypes.func,
 };
 
 export default TopSkillsChart;

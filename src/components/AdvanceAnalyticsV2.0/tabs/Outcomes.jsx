@@ -83,11 +83,32 @@ const Outcomes = ({ enterpriseId }) => {
     isLoading: isGroupsLoading, data: groups,
   } = useAllFlexEnterpriseGroups(enterpriseId);
 
-  const handleChartClick = (chartData) => {
+  const trackChartClick = (chartId) => {
     sendEnterpriseTrackEvent(
       enterpriseId,
-      `${EVENT_NAMES.ANALYTICS_V2.Outcomes_CHART_CLICKED}`,
-      { ...chartData },
+      `${EVENT_NAMES.ANALYTICS_V2.OUTCOMES_CHART_CLICKED}`,
+      { chartId },
+    );
+  };
+
+  // Event tracking for CSV download clicks
+  const trackCsvDownloadClick = (entityId) => {
+    sendEnterpriseTrackEvent(
+      enterpriseId,
+      `${EVENT_NAMES.ANALYTICS_V2.OUTCOMES_CSV_DOWNLOAD_CLICKED}`,
+      { entityId },
+    );
+  };
+
+  // Event tracking for filter clicks
+  const trackFilterClick = (filterName, filterValue) => {
+    sendEnterpriseTrackEvent(
+      enterpriseId,
+      `${EVENT_NAMES.ANALYTICS_V2.OUTCOMES_FILTER_CLICKED}`,
+      {
+        name: filterName,
+        value: filterValue,
+      },
     );
   };
 
@@ -134,6 +155,7 @@ const Outcomes = ({ enterpriseId }) => {
           activeTab={ANALYTICS_TABS.OUTCOMES}
           isEnterpriseCoursesFetching={isEnterpriseCoursesFetching}
           enterpriseCourses={enterpriseCourses}
+          trackFilterClick={trackFilterClick}
         />
       </div>
 
@@ -154,7 +176,7 @@ const Outcomes = ({ enterpriseId }) => {
             isFetching={isSkillsFetching}
             isError={isSkillsError}
             data={skillsData?.topSkillsByEnrollments}
-            onClick={handleChartClick}
+            trackChartClick={trackChartClick}
           />
         </div>
         {/* Skills By Learning Hours Charts */}
@@ -163,7 +185,7 @@ const Outcomes = ({ enterpriseId }) => {
             isFetching={isSkillsFetching}
             isError={isSkillsError}
             data={skillsData?.skillsByLearningHours}
-            onClick={handleChartClick}
+            trackChartClick={trackChartClick}
           />
         </div>
       </div>
@@ -175,7 +197,8 @@ const Outcomes = ({ enterpriseId }) => {
         data={skillsData?.topSkills}
         startDate={startDate}
         endDate={endDate || currentDate}
-        onClick={handleChartClick}
+        trackChartClick={trackChartClick}
+        trackCsvDownloadClick={trackCsvDownloadClick}
       />
 
       {/* Completions Over Time Chart */}
@@ -187,7 +210,8 @@ const Outcomes = ({ enterpriseId }) => {
         endDate={endDate || currentDate}
         granularity={granularity}
         calculation={calculation}
-        onClick={handleChartClick}
+        trackChartClick={trackChartClick}
+        trackCsvDownloadClick={trackCsvDownloadClick}
       />
 
       {/* Top Skills By Completions Chart */}
@@ -197,7 +221,8 @@ const Outcomes = ({ enterpriseId }) => {
         data={skillsData?.topSkillsByCompletions}
         startDate={startDate}
         endDate={endDate || currentDate}
-        onClick={handleChartClick}
+        trackChartClick={trackChartClick}
+        trackCsvDownloadClick={trackCsvDownloadClick}
       />
 
     </div>
