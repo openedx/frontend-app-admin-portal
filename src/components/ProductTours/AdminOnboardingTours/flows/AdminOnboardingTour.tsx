@@ -24,7 +24,6 @@ import useFetchCompletedOnboardingFlows from '../data/useFetchCompletedOnboardin
 
 interface AdminOnboardingTourProps {
   adminUuid: string;
-  aiButtonVisible: boolean;
   currentStep: number;
   enablePortalLearnerCreditManagementScreen: boolean;
   enterpriseFeatures: {
@@ -40,7 +39,6 @@ interface AdminOnboardingTourProps {
 const AdminOnboardingTour = (
   {
     adminUuid,
-    aiButtonVisible,
     currentStep,
     enablePortalLearnerCreditManagementScreen,
     enterpriseFeatures,
@@ -81,7 +79,7 @@ const AdminOnboardingTour = (
   const analyticsFlow = AnalyticsFlow({ handleAdvanceTour, handleBackTour, handleEndTour });
   const customizeReportsFlow = CustomizeReportsFlow({ handleEndTour });
   const learnerProgressFlow = LearnerProgressFlow({
-    aiButtonVisible, handleAdvanceTour, handleBackTour, handleEndTour,
+    handleAdvanceTour, handleBackTour, handleEndTour,
   });
   const organizeLearnersFlow = OrganizeLearnersFlow({
     enterpriseId, handleAdvanceTour, handleBackTour, handleEndTour,

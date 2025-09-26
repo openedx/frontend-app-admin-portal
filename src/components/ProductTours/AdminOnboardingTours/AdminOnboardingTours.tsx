@@ -11,17 +11,10 @@ import CheckpointOverlay from '../CheckpointOverlay';
 import '../_ProductTours.scss';
 import { RESET_TARGETS } from './constants';
 
-interface Insights {
-  learner_engagement?: any;
-  learner_progress?: any;
-}
-
 interface AdminOnboardingToursProps {
   adminUuid: string,
   enterpriseId: string;
   enterpriseSlug: string;
-  insights: Insights;
-  insightsLoading: boolean;
   isOpen: boolean;
   onClose: () => void;
   setTarget: Function,
@@ -33,10 +26,6 @@ interface AdminOnboardingToursProps {
 }
 
 interface RootState {
-  dashboardInsights: {
-    insights: Insights;
-    loading: boolean;
-  };
   enterpriseCustomerAdmin: {
     uuid: string;
   };
@@ -53,18 +42,16 @@ interface RootState {
 const AdminOnboardingTours: FC<AdminOnboardingToursProps> = ({
   enterpriseFeatures,
   enablePortalLearnerCreditManagementScreen,
-  adminUuid, enterpriseId, enterpriseSlug, insights, insightsLoading, isOpen, onClose, setTarget, targetSelector,
+  adminUuid, enterpriseId, enterpriseSlug, isOpen, onClose, setTarget, targetSelector,
 }) => {
   const intl = useIntl();
   const location = useLocation();
-  const aiButtonVisible = (insights?.learner_engagement && insights?.learner_progress) && !insightsLoading;
   const [currentStep, setCurrentStep] = useState(0);
   const prevPathnameRef = useRef(location.pathname);
   const adminOnboardingSteps = AdminOnboardingTour({
     enterpriseFeatures,
     enablePortalLearnerCreditManagementScreen,
     adminUuid,
-    aiButtonVisible,
     currentStep,
     setCurrentStep,
     enterpriseId,
@@ -150,11 +137,6 @@ const AdminOnboardingTours: FC<AdminOnboardingToursProps> = ({
 AdminOnboardingTours.propTypes = {
   adminUuid: PropTypes.string.isRequired,
   enterpriseSlug: PropTypes.string.isRequired,
-  insights: PropTypes.shape({
-    learner_engagement: PropTypes.shape({}),
-    learner_progress: PropTypes.shape({}),
-  }).isRequired,
-  insightsLoading: PropTypes.bool.isRequired,
   isOpen: PropTypes.bool.isRequired,
   onClose: PropTypes.func.isRequired,
   setTarget: PropTypes.func.isRequired,
@@ -164,8 +146,6 @@ const mapStateToProps = (state: RootState) => ({
   adminUuid: state.enterpriseCustomerAdmin.uuid,
   enterpriseId: state.portalConfiguration.enterpriseId,
   enterpriseSlug: state.portalConfiguration.enterpriseSlug,
-  insights: state.dashboardInsights.insights,
-  insightsLoading: state.dashboardInsights.loading,
   enablePortalLearnerCreditManagementScreen: state.portalConfiguration.enablePortalLearnerCreditManagementScreen,
   enterpriseFeatures: state.portalConfiguration.enterpriseFeatures,
 });
