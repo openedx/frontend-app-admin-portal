@@ -74,18 +74,10 @@ const AdministerSubscriptionsFlow = ({
   if (isOnDetailPage) {
     return [
       {
-        target: `#${ADMINISTER_SUBSCRIPTIONS_TARGETS.SIDEBAR}`,
-        placement: 'right',
-        title: intl.formatMessage(messages.administerSubscriptionsTitle),
-        body: intl.formatMessage(messages.administerSubscriptionsStepOneBody),
-        onAdvance,
-      },
-      {
         target: `#${ADMINISTER_SUBSCRIPTIONS_TARGETS.SUBSCRIPTION_PLANS_DETAIL_PAGE}`,
         placement: 'top',
         body: intl.formatMessage(messages.administerSubscriptionsStepFourBody),
         onAdvance,
-        onBack,
       },
       {
         target: `#${ADMINISTER_SUBSCRIPTIONS_TARGETS.INVITE_LEARNERS_BUTTON}`,
@@ -118,7 +110,7 @@ const AdministerSubscriptionsFlow = ({
     ];
   }
 
-  // Main subscription page flow (steps 1-4)
+  // Main subscription page flow (steps 1-3)
   const mainPageFlow: Array<TourStep> = [
     {
       target: `#${ADMINISTER_SUBSCRIPTIONS_TARGETS.SIDEBAR}`,
