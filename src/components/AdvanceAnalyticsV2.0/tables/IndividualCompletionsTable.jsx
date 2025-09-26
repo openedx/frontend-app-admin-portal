@@ -10,6 +10,7 @@ const IndividualCompletionsTable = ({
   enterpriseId,
   groupUUID,
   course,
+  trackCsvDownloadClick,
 }) => {
   const intl = useIntl();
 
@@ -28,11 +29,13 @@ const IndividualCompletionsTable = ({
             defaultMessage: 'See the individual completions from your organization.',
             description: 'Subtitle for the individual completions datatable.',
           })}
+          entityId="individual-completions-table"
           startDate={startDate}
           endDate={endDate}
           enterpriseId={enterpriseId}
           groupUUID={groupUUID}
           course={course}
+          trackCsvDownloadClick={trackCsvDownloadClick}
           enableCSVDownload
           tableColumns={[
             {
@@ -83,6 +86,7 @@ IndividualCompletionsTable.propTypes = {
     value: PropTypes.string.isRequired,
     label: PropTypes.string.isRequired,
   }),
+  trackCsvDownloadClick: PropTypes.func,
 };
 
 IndividualCompletionsTable.defaultProps = {
