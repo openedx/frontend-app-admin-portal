@@ -73,19 +73,19 @@ const messages = defineMessages({
     description: 'Description for the learner progress tracking step two',
   },
   trackLearnerProgressStepThreeBody: {
-    id: 'adminPortal.productTours.adminOnboarding.trackLearnerProgress.body.3',
-    defaultMessage: 'Get a quick AI-generated overview of your learner analytics with just one click.',
-    description: 'Description for the learner progress tracking step three',
-  },
-  trackLearnerProgressStepFourBody: {
     id: 'adminPortal.productTours.adminOnboarding.trackLearnerProgress.body.4',
     defaultMessage: 'Scroll down for a detailed, twice-daily updated progress report.',
     description: 'Description for the learner progress tracking step four',
   },
-  trackLearnerProgressStepFiveBody: {
+  trackLearnerProgressStepFourBody: {
     id: 'adminPortal.productTours.adminOnboarding.trackLearnerProgress.body.5',
     defaultMessage: 'Access the full Learner Progress Report here.',
     description: 'Description for the learner progress tracking step five',
+  },
+  trackLearnerProgressStepFiveBody: {
+    id: 'adminPortal.productTours.adminOnboarding.trackLearnerProgress.body.8',
+    defaultMessage: 'View module-level details for Executive Education courses.',
+    description: 'Description for the learner progress tracking step eight',
   },
   trackLearnerProgressStepSixBody: {
     id: 'adminPortal.productTours.adminOnboarding.trackLearnerProgress.body.6',
@@ -96,11 +96,6 @@ const messages = defineMessages({
     id: 'adminPortal.productTours.adminOnboarding.trackLearnerProgress.body.7',
     defaultMessage: 'Export the report as a CSV to gain insights and organize data efficiently.',
     description: 'Description for the learner progress tracking step seven',
-  },
-  trackLearnerProgressStepEightBody: {
-    id: 'adminPortal.productTours.adminOnboarding.trackLearnerProgress.body.8',
-    defaultMessage: 'View module-level details for Executive Education courses.',
-    description: 'Description for the learner progress tracking step eight',
   },
   organizeLearnersStepOneTitle: {
     id: 'adminPortal.productTours.adminOnboarding.organizeLearners.title.1',
