@@ -43,6 +43,9 @@ const LEARNER_PROGRESS_REPORT_EVENTS = {
 const ANALYTICS_V2_EVENTS = {
   ENGAGEMENT_CHART_CLICKED: `${ANALYTICS_V2_PREFIX}.engagement.chart.clicked`,
   OUTCOMES_CHART_CLICKED: `${ANALYTICS_V2_PREFIX}.outcomes.chart.clicked`,
+  ENGAGEMENT_CSV_DOWNLOAD_CLICKED: `${ANALYTICS_V2_PREFIX}.engagement.csv.download.clicked`,
+  PROGRESS_CSV_DOWNLOAD_CLICKED: `${ANALYTICS_V2_PREFIX}.progress.csv.download.clicked`,
+  OUTCOMES_CSV_DOWNLOAD_CLICKED: `${ANALYTICS_V2_PREFIX}.outcomes.csv.download.clicked`,
 };
 // learner profile view
 const LEARNER_PROFILE_VIEW_EVENTS = {

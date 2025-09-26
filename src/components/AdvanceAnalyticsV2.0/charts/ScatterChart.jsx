@@ -31,7 +31,7 @@ const ScatterChart = ({
   yAxisTitle,
   markerSizes,
   customDataKeys,
-  onClick,
+  trackChartClick,
   chartId,
 }) => {
   const intl = useIntl();
@@ -88,7 +88,7 @@ const ScatterChart = ({
       layout={layout}
       config={config}
       style={{ width: '100%', height: '100%' }}
-      onClick={onClick}
+      onClick={() => trackChartClick(chartId)}
     />
   );
 };
@@ -110,7 +110,7 @@ ScatterChart.propTypes = {
   yAxisTitle: PropTypes.string.isRequired,
   markerSizes: PropTypes.arrayOf(PropTypes.number).isRequired,
   customDataKeys: PropTypes.arrayOf(PropTypes.string),
-  onClick: PropTypes.func,
+  trackChartClick: PropTypes.func,
 };
 
 export default ScatterChart;

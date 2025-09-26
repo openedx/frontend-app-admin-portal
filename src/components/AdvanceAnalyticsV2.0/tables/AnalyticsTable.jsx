@@ -14,12 +14,14 @@ const AnalyticsTable = ({
   tableColumns,
   tableTitle,
   tableSubtitle,
+  entityId,
   startDate,
   endDate,
   enterpriseId,
   groupUUID,
   courseType,
   course,
+  trackCsvDownloadClick,
 }) => {
   const intl = useIntl();
   const [currentPage, setCurrentPage] = useState(0);
@@ -70,6 +72,7 @@ const AnalyticsTable = ({
             to={CSVDownloadURL}
             target="_blank"
             className="btn btn-sm btn-primary rounded-0"
+            onClick={() => trackCsvDownloadClick(entityId)}
           >
             <Icon src={Download} className="me-2" />
             <FormattedMessage
@@ -126,6 +129,7 @@ AnalyticsTable.propTypes = {
   tableColumns: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
   tableTitle: PropTypes.string.isRequired,
   tableSubtitle: PropTypes.string.isRequired,
+  entityId: PropTypes.string.isRequired,
   enterpriseId: PropTypes.string.isRequired,
   startDate: PropTypes.string.isRequired,
   endDate: PropTypes.string.isRequired,
@@ -135,6 +139,7 @@ AnalyticsTable.propTypes = {
     value: PropTypes.string.isRequired,
     label: PropTypes.string.isRequired,
   }),
+  trackCsvDownloadClick: PropTypes.func,
 };
 
 export default AnalyticsTable;

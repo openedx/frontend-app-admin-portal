@@ -11,6 +11,7 @@ const TopCoursesByLearningHoursTable = ({
   data = [],
   startDate,
   endDate,
+  trackCsvDownloadClick,
 }) => {
   const intl = useIntl();
 
@@ -67,6 +68,8 @@ const TopCoursesByLearningHoursTable = ({
             jsonData={topCoursesByEngagementForCSV}
             csvFileName={`Top Courses by learning hours - ${startDate} - ${endDate}`}
             className="px-1"
+            entityId="top-courses-by-learning-hours-table"
+            trackCsvDownloadClick={trackCsvDownloadClick}
           />
           )}
       />
@@ -102,6 +105,7 @@ TopCoursesByLearningHoursTable.propTypes = {
   data: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
   startDate: PropTypes.string,
   endDate: PropTypes.string,
+  trackCsvDownloadClick: PropTypes.func,
 };
 
 export default TopCoursesByLearningHoursTable;

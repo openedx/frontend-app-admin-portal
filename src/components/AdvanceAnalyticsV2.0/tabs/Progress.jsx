@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { FormattedMessage } from '@edx/frontend-platform/i18n';
 import PropTypes from 'prop-types';
+import { sendEnterpriseTrackEvent } from '@edx/frontend-enterprise-utils';
 import { ANALYTICS_TABS } from '../constants';
 import {
   useEnterpriseCompletionsData,
@@ -13,6 +14,7 @@ import IndividualCompletionsTable from '../tables/IndividualCompletionsTable';
 import { get90DayPriorDate } from '../data/utils';
 import { ALL_COURSES, GRANULARITY, CALCULATION } from '../data/constants';
 import { START_DATE_DEFAULT_TO_TODAY_THRESHOLD_DAYS, useAllFlexEnterpriseGroups } from '../../learner-credit-management/data';
+import EVENT_NAMES from '../../../eventTracking';
 
 const Progress = ({ enterpriseId }) => {
   const currentDate = new Date().toISOString().split('T')[0];
@@ -53,6 +55,15 @@ const Progress = ({ enterpriseId }) => {
   const {
     isLoading: isGroupsLoading, data: groups,
   } = useAllFlexEnterpriseGroups(enterpriseId);
+
+  // Event tracking for CSV download clicks
+  const trackCsvDownloadClick = (entityId) => {
+    sendEnterpriseTrackEvent(
+      enterpriseId,
+      `${EVENT_NAMES.ANALYTICS_V2.PROGRESS_CSV_DOWNLOAD_CLICKED}`,
+      { entityId },
+    );
+  };
 
   return (
     <div className="tab-Progress mt-4">
@@ -109,6 +120,7 @@ const Progress = ({ enterpriseId }) => {
               endDate={endDate || currentDate}
               granularity={granularity}
               calculation={calculation}
+              trackCsvDownloadClick={trackCsvDownloadClick}
             />
           </div>
         </div>
@@ -122,6 +134,7 @@ const Progress = ({ enterpriseId }) => {
               endDate={endDate || currentDate}
               granularity={granularity}
               calculation={calculation}
+              trackCsvDownloadClick={trackCsvDownloadClick}
             />
           </div>
         </div>
@@ -136,6 +149,7 @@ const Progress = ({ enterpriseId }) => {
             enterpriseId={enterpriseId}
             groupUUID={groupUUID}
             course={course}
+            trackCsvDownloadClick={trackCsvDownloadClick}
           />
         </div>
       </div>

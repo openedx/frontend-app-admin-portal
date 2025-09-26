@@ -8,7 +8,7 @@ import {
 import { Download, Check, Close } from '@openedx/paragon/icons';
 
 const DownloadCSVButton = ({
-  jsonData, csvFileName,
+  jsonData, csvFileName, entityId, trackCsvDownloadClick,
 }) => {
   const [buttonState, setButtonState] = useState('disabled');
   const [isToastShowing, showToast, hideToast] = useToggle(false);
@@ -39,6 +39,8 @@ const DownloadCSVButton = ({
     saveAs(blob, csvFileName);
     showToast();
     setButtonState('complete');
+
+    trackCsvDownloadClick(entityId);
   };
 
   const toastText = intl.formatMessage({
@@ -97,6 +99,8 @@ const DownloadCSVButton = ({
 DownloadCSVButton.propTypes = {
   jsonData: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
   csvFileName: PropTypes.string.isRequired,
+  entityId: PropTypes.string,
+  trackCsvDownloadClick: PropTypes.func,
 };
 
 export default DownloadCSVButton;
