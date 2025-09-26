@@ -32,7 +32,7 @@ const AdministerSubscriptionsFlow = ({
   const subscriptionUuid = params['*']?.split('/')[1];
   const isOnDetailPage = !!subscriptionUuid;
 
-  const { subsidyRequestConfiguration } = useContext(SubsidyRequestsContext);
+  const { isLoadingCustomerAgreement, subsidyRequestConfiguration } = useContext(SubsidyRequestsContext);
   const isSubsidyRequestsEnabled = subsidyRequestConfiguration?.subsidyRequestsEnabled;
   const subsidyType = subsidyRequestConfiguration?.subsidyType;
   const isRequestsTabShown = isSubsidyRequestsEnabled && subsidyType === SUPPORTED_SUBSIDY_TYPES.license;
@@ -70,6 +70,11 @@ const AdministerSubscriptionsFlow = ({
 
   const onAdvance = () => handleAdvanceTour(ADMIN_TOUR_EVENT_NAMES.ADMINISTER_SUBSCRIPTIONS_ADVANCE_EVENT_NAME);
   const onBack = () => handleBackTour(ADMIN_TOUR_EVENT_NAMES.ADMINISTER_SUBSCRIPTIONS_BACK_EVENT_NAME);
+
+  // Don't load the tour until we load the customer agreement
+  if (isLoadingCustomerAgreement) {
+    return [];
+  }
 
   if (isOnDetailPage) {
     return [
