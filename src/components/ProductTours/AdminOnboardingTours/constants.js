@@ -53,6 +53,7 @@ export const ALLOCATE_LEARNING_BUDGETS_TARGETS = {
   INVITE_MEMBERS_BUDGET_BUTTON: 'invite-members-button',
   TRACK_BUDGET_ACTIVITY: 'track-budget-activity',
   BUDGET_TABLE: 'budget-table',
+  ZERO_STATE_ASSIGN_CARD: 'zero-state-assign-card',
   BUDGET_SPENT_TABLE: 'spent-budget-table',
   BUDGET_CATALOG_TAB: 'budget-catalog-tab',
   BUDGET_MEMBERS_TAB: 'budget-members-tab',

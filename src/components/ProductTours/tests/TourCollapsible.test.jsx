@@ -9,6 +9,7 @@ import configureStore from 'redux-mock-store';
 
 import TourCollapsible from '../TourCollapsible';
 import { queryClient } from '../../test/testUtils';
+import { EnterpriseSubsidiesContext } from '../../EnterpriseSubsidiesContext';
 
 // Mock FloatingCollapsible component
 jest.mock('../../FloatingCollapsible', () => {
@@ -42,6 +43,10 @@ jest.mock('../../../data/actions/enterpriseCustomerAdmin', () => ({
   reopenOnboardingTour: jest.fn(),
 }));
 
+const mockEnterpriseSubsidiesContextValue = {
+  canManageLearnerCredit: true,
+};
+
 const mockStore = configureStore([]);
 
 const defaultState = {
@@ -65,11 +70,13 @@ const setup = (storeState = defaultState, showCollapsible = false) => {
     <QueryClientProvider client={queryClient()}>
       <IntlProvider locale="en">
         <Provider store={store}>
-          <TourCollapsible
-            onTourSelect={jest.fn()}
-            showCollapsible={showCollapsible}
-            setShowCollapsible={mockSetShowCollapsible}
-          />
+          <EnterpriseSubsidiesContext.Provider value={mockEnterpriseSubsidiesContextValue}>
+            <TourCollapsible
+              onTourSelect={jest.fn()}
+              showCollapsible={showCollapsible}
+              setShowCollapsible={mockSetShowCollapsible}
+            />
+          </EnterpriseSubsidiesContext.Provider>
         </Provider>
       </IntlProvider>,
     </QueryClientProvider>,

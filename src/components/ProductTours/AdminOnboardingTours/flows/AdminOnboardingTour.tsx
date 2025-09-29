@@ -76,7 +76,9 @@ const AdminOnboardingTour = (
   const administerSubscriptionsFlow = AdministerSubscriptionsFlow({
     currentStep, enterpriseSlug, handleEndTour, handleBackTour, setCurrentStep, targetSelector,
   });
-  const analyticsFlow = AnalyticsFlow({ handleAdvanceTour, handleBackTour, handleEndTour });
+  const analyticsFlow = AnalyticsFlow({
+    handleAdvanceTour, handleBackTour, handleEndTour,
+  });
   const customizeReportsFlow = CustomizeReportsFlow({ handleEndTour });
   const learnerProgressFlow = LearnerProgressFlow({
     handleAdvanceTour, handleBackTour, handleEndTour,
@@ -95,7 +97,6 @@ const AdminOnboardingTour = (
     setCurrentStep,
     targetSelector,
   });
-
   const setUpPreferencesFlow = SetUpPreferencesFlow({ handleEndTour });
 
   // Map target selectors to their respective flows

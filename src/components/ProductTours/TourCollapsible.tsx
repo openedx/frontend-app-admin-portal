@@ -1,4 +1,6 @@
-import React, { FC, useEffect, useState } from 'react';
+import React, {
+  FC, useContext, useEffect, useState,
+} from 'react';
 import { connect } from 'react-redux';
 import {
   IconButton, Icon, OverlayTrigger, Tooltip, Stack,
@@ -32,6 +34,7 @@ import { TOUR_TARGETS } from './constants';
 import useFetchCompletedOnboardingFlows from './AdminOnboardingTours/data/useFetchCompletedOnboardingFlows';
 import { configuration } from '../../config';
 import TourCompleteModal from './TourCompleteModal';
+import { EnterpriseSubsidiesContext } from '../EnterpriseSubsidiesContext';
 
 interface Props {
   adminUuid: string;
@@ -68,6 +71,7 @@ const TourCollapsible: FC<Props> = (
   const [onboardingSteps, setOnboardingSteps] = useState<StepDefinition[] | undefined>();
   const [showCompletedModal, setShowCompletedModal] = useState(false);
   const { data: onboardingTourData } = useFetchCompletedOnboardingFlows(adminUuid);
+  const { canManageLearnerCredit } = useContext(EnterpriseSubsidiesContext);
 
   const handleDismiss = () => {
     setShowCollapsible(false);
@@ -140,6 +144,8 @@ const TourCollapsible: FC<Props> = (
           return enableSubscriptionManagementScreen;
         case CUSTOMIZE_REPORTS_TITLE:
           return enableReportingConfigScreen;
+        case ALLOCATE_LEARNING_BUDGET_TITLE:
+          return canManageLearnerCredit;
         default:
           return true;
       }
@@ -160,6 +166,7 @@ const TourCollapsible: FC<Props> = (
     }
     setOnboardingSteps(steps);
   }, [
+    canManageLearnerCredit,
     onboardingTourData?.completedTourFlows,
     onboardingTourData?.onboardingTourCompleted,
     enableReportingConfigScreen,
