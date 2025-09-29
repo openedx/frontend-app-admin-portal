@@ -5,14 +5,12 @@ import { TourStep } from '../../types';
 import { configuration } from '../../../../config';
 
 interface CreateTourFlowsProps {
-  aiButtonVisible?: boolean;
   handleAdvanceTour: (advanceEventName: string) => void;
   handleEndTour: (endEventName: string, flowUuid?: string) => void;
   handleBackTour: (backEventName: string) => void;
 }
 
 const LearnerProgressFlow = ({
-  aiButtonVisible,
   handleAdvanceTour,
   handleEndTour,
   handleBackTour,
@@ -36,15 +34,21 @@ const LearnerProgressFlow = ({
   }, {
     target: `#${TRACK_LEARNER_PROGRESS_TARGETS.PROGRESS_REPORT}`,
     placement: 'top',
-    body: intl.formatMessage(messages.trackLearnerProgressStepFourBody),
+    body: intl.formatMessage(messages.trackLearnerProgressStepThreeBody),
     onAdvance: onLearnerAdvance,
     onBack: onLearnerBack,
   }, {
     target: `#${TRACK_LEARNER_PROGRESS_TARGETS.FULL_PROGRESS_REPORT}`,
     placement: 'top',
-    body: intl.formatMessage(messages.trackLearnerProgressStepFiveBody),
+    body: intl.formatMessage(messages.trackLearnerProgressStepFourBody),
     onAdvance: onLearnerAdvance,
     onBack: onLearnerBack,
+  }, {
+    target: `#${TRACK_LEARNER_PROGRESS_TARGETS.MODULE_ACTIVITY}`,
+    placement: 'top',
+    body: intl.formatMessage(messages.trackLearnerProgressStepFiveBody),
+    onBack: onLearnerBack,
+    onAdvance: onLearnerAdvance,
   }, {
     target: `#${TRACK_LEARNER_PROGRESS_TARGETS.FILTER}`,
     placement: 'top',
@@ -55,28 +59,12 @@ const LearnerProgressFlow = ({
     target: `#${TRACK_LEARNER_PROGRESS_TARGETS.CSV_DOWNLOAD}`,
     placement: 'top',
     body: intl.formatMessage(messages.trackLearnerProgressStepSevenBody),
-    onAdvance: onLearnerAdvance,
-    onBack: onLearnerBack,
-  }, {
-    target: `#${TRACK_LEARNER_PROGRESS_TARGETS.MODULE_ACTIVITY}`,
-    placement: 'top',
-    body: intl.formatMessage(messages.trackLearnerProgressStepEightBody),
     onBack: onLearnerBack,
     onEnd: () => handleEndTour(
       ADMIN_TOUR_EVENT_NAMES.LEARNER_PROGRESS_COMPLETED_EVENT_NAME,
       configuration.ADMIN_ONBOARDING_UUIDS.FLOW_TRACK_LEARNER_PROGRESS_UUID,
     ),
   }];
-
-  if (aiButtonVisible) {
-    learnerProgressFlow.splice(2, 0, {
-      target: `#${TRACK_LEARNER_PROGRESS_TARGETS.AI_SUMMARY}`,
-      placement: 'right',
-      body: intl.formatMessage(messages.trackLearnerProgressStepThreeBody),
-      onAdvance: onLearnerAdvance,
-      onBack: onLearnerBack,
-    });
-  }
 
   return learnerProgressFlow;
 };

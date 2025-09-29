@@ -186,15 +186,14 @@ describe('useAllocateLearningBudgetsFlow', () => {
 
       const { result } = renderHookWithProviders(() => useAllocateLearningBudgetsFlow(props));
 
-      expect(result.current).toHaveLength(8);
+      expect(result.current).toHaveLength(7);
       expect(result.current[0].target).toBe('#budget-detail-card');
       expect(result.current[1].target).toBe('#new-assignment-button');
-      expect(result.current[2].target).toBe('#assignment-budget-utilization-details');
-      expect(result.current[3].target).toBe('#track-budget-activity');
-      expect(result.current[4].target).toBe('#budget-table');
-      expect(result.current[5].target).toBe('#spent-budget-table');
-      expect(result.current[6].target).toBe('#budget-catalog-tab');
-      expect(result.current[7].target).toBe('#learner-credit-management-breadcrumbs');
+      expect(result.current[2].target).toBe('#track-budget-activity');
+      expect(result.current[3].target).toBe('#budget-table');
+      expect(result.current[4].target).toBe('#spent-budget-table');
+      expect(result.current[5].target).toBe('#budget-catalog-tab');
+      expect(result.current[6].target).toBe('#learner-credit-management-breadcrumbs');
     });
 
     it('should return learner credit detail page flow when on detail page with no spent transactions and no content assignments', () => {
@@ -256,7 +255,7 @@ describe('useAllocateLearningBudgetsFlow', () => {
       };
 
       const { result } = renderHookWithProviders(() => useAllocateLearningBudgetsFlow(props));
-      result.current[7].onEnd();
+      result.current[6].onEnd();
       expect(mockHandleEndTour).toHaveBeenCalledTimes(1);
     });
   });

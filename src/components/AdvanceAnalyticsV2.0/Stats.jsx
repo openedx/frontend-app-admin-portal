@@ -94,24 +94,24 @@ const Stats = ({
                 <p className="mb-0 small font-weight-normal title-unique-skills">
                   <FormattedMessage id="advance.analytics.outcomes.stats.unique.skills.title" defaultMessage="Unique skills gained" />
                 </p>
-                <p className="font-weight-bolder analytics-stat-number value-unique-skills">{formatNumber(0)}</p>
+                <p className="font-weight-bolder analytics-stat-number value-unique-skills">{formatNumber(data?.uniqueSkillsGained || 0)}</p>
               </div>
 
               <div className="col d-flex flex-column justify-content-center align-items-center">
                 <p className="mb-0 small font-weight-normal title-upskilled-learners">
                   <FormattedMessage id="advance.analytics.outcomes.stats.upskilled.learners.title" defaultMessage="Upskilled learners" />
                 </p>
-                <p className="font-weight-bolder analytics-stat-number value-upskilled-learners">{formatNumber(0)}</p>
+                <p className="font-weight-bolder analytics-stat-number value-upskilled-learners">{formatNumber(data?.upskilledLearners || 0)}</p>
               </div>
 
               <div className="col d-flex flex-column justify-content-center align-items-center">
                 <p className="mb-0 small font-weight-normal title-new-skills">
                   <FormattedMessage
-                    id="advance.analytics.outcomes.stats.new.skills.this.year.title"
-                    defaultMessage={`New skills learned in ${new Date().getFullYear()}`}
+                    id="advance.analytics.outcomes.stats.new.skills.gained.title"
+                    defaultMessage="New skills gained"
                   />
                 </p>
-                <p className="font-weight-bolder analytics-stat-number value-new-skills">{formatNumber(0)}</p>
+                <p className="font-weight-bolder analytics-stat-number value-new-skills">{formatNumber(data?.newSkillsLearned || 0)}</p>
               </div>
             </>
           )}
@@ -129,6 +129,9 @@ Stats.propTypes = {
     sessions: PropTypes.number,
     hours: PropTypes.number,
     completions: PropTypes.number,
+    uniqueSkillsGained: PropTypes.number,
+    upskilledLearners: PropTypes.number,
+    newSkillsLearned: PropTypes.number,
   }).isRequired,
   isFetching: PropTypes.bool.isRequired,
   isError: PropTypes.bool.isRequired,

@@ -10,15 +10,15 @@ import SubsidyApiService from '../../../data/services/EnterpriseSubsidyApiServic
 import { isPlanApproachingExpiry } from '../../BudgetExpiryAlertAndModal/data/utils';
 import { BUDGET_STATUSES } from '../../EnterpriseApp/data/constants';
 import {
+  APPROVED_REQUEST_TYPE,
   ASSIGNMENT_ENROLLMENT_DEADLINE,
   COURSE_PACING_MAP,
   DAYS_UNTIL_ASSIGNMENT_ALLOCATION_EXPIRATION,
   LATE_ENROLLMENTS_BUFFER_DAYS,
+  LEARNER_CREDIT_REQUEST_STATE_LABELS,
   LOW_REMAINING_BALANCE_PERCENT_THRESHOLD,
   NO_BALANCE_REMAINING_DOLLAR_THRESHOLD,
   START_DATE_DEFAULT_TO_TODAY_THRESHOLD_DAYS,
-  APPROVED_REQUEST_TYPE,
-  LEARNER_CREDIT_REQUEST_STATE_LABELS,
 } from './constants';
 import { capitalizeFirstLetter } from '../../../utils';
 
@@ -271,6 +271,17 @@ export const orderBudgets = (intl, budgets) => {
     }
 
     if (budgetA.end !== budgetB.end) {
+      // Handle null values: push null end dates to the end
+      if (budgetA.end === null && budgetB.end !== null) {
+        return 1; // budgetA (null) comes after budgetB (non-null)
+      }
+      if (budgetA.end !== null && budgetB.end === null) {
+        return -1; // budgetA (non-null) comes before budgetB (null)
+      }
+      if (budgetA.end === null && budgetB.end === null) {
+        return 0; // both null, equal
+      }
+      // Both are non-null, use existing comparison logic
       return budgetA.end.localeCompare(budgetB.end);
     }
 
