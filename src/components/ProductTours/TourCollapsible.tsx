@@ -1,5 +1,8 @@
-import React, { FC, useEffect, useState } from 'react';
+import React, {
+  FC, useContext, useEffect, useState,
+} from 'react';
 import { connect } from 'react-redux';
+import { isEmpty } from 'lodash-es';
 import {
   IconButton, Icon, OverlayTrigger, Tooltip, Stack,
 } from '@openedx/paragon';
@@ -32,6 +35,7 @@ import { TOUR_TARGETS } from './constants';
 import useFetchCompletedOnboardingFlows from './AdminOnboardingTours/data/useFetchCompletedOnboardingFlows';
 import { configuration } from '../../config';
 import TourCompleteModal from './TourCompleteModal';
+import { EnterpriseSubsidiesContext } from '../EnterpriseSubsidiesContext';
 
 interface Props {
   adminUuid: string;
@@ -68,6 +72,7 @@ const TourCollapsible: FC<Props> = (
   const [onboardingSteps, setOnboardingSteps] = useState<StepDefinition[] | undefined>();
   const [showCompletedModal, setShowCompletedModal] = useState(false);
   const { data: onboardingTourData } = useFetchCompletedOnboardingFlows(adminUuid);
+  const { isLoadingCustomerAgreement, customerAgreement } = useContext(EnterpriseSubsidiesContext);
 
   const handleDismiss = () => {
     setShowCollapsible(false);
@@ -137,7 +142,8 @@ const TourCollapsible: FC<Props> = (
     const steps = QUICK_START_GUIDE_STEPS.filter(step => {
       switch (step.title) {
         case ADMINISTER_SUBSCRIPTIONS_TITLE:
-          return enableSubscriptionManagementScreen;
+          return enableSubscriptionManagementScreen
+            && (!isLoadingCustomerAgreement && !isEmpty(customerAgreement?.subscriptions));
         case CUSTOMIZE_REPORTS_TITLE:
           return enableReportingConfigScreen;
         default:
@@ -164,6 +170,8 @@ const TourCollapsible: FC<Props> = (
     onboardingTourData?.onboardingTourCompleted,
     enableReportingConfigScreen,
     enableSubscriptionManagementScreen,
+    isLoadingCustomerAgreement,
+    customerAgreement?.subscriptions,
   ]);
 
   return (
