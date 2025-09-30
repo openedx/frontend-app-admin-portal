@@ -13,6 +13,7 @@ const requestsDisabled = {
     subsidyRequestsEnabled: false,
     subsidyType: 'license',
   },
+  isLoadingCustomerAgreement: false,
 };
 
 const requestsEnabled = {
@@ -20,6 +21,11 @@ const requestsEnabled = {
     subsidyRequestsEnabled: true,
     subsidyType: 'license',
   },
+};
+
+const isLoadingSubsidyRequests = {
+  ...requestsEnabled,
+  isLoadingCustomerAgreement: true,
 };
 
 jest.mock('react-router', () => ({
@@ -34,25 +40,23 @@ jest.mock('@edx/frontend-enterprise-utils', () => {
   });
 });
 
-const renderHookWithIntl = (hookFn) => renderHook(hookFn, {
-  wrapper: ({ children }) => (
-    <SubsidyRequestsContext.Provider value={requestsDisabled}>
-      <IntlProvider locale="en" messages={{}}>
-        {children}
-      </IntlProvider>
-    </SubsidyRequestsContext.Provider>
-  ),
-});
+const _renderHook = (hookFn, subsidyRequestContextValue) => {
+  return renderHook(hookFn, {
+    wrapper: ({ children }) => (
+      <SubsidyRequestsContext.Provider value={subsidyRequestContextValue}>
+        <IntlProvider locale="en" messages={{}}>
+          {children}
+        </IntlProvider>
+      </SubsidyRequestsContext.Provider>
+    ),
+  });
+};
 
-const renderHookWithCourseRequests = (hookFn) => renderHook(hookFn, {
-  wrapper: ({ children }) => (
-    <SubsidyRequestsContext.Provider value={requestsEnabled}>
-      <IntlProvider locale="en" messages={{}}>
-        {children}
-      </IntlProvider>
-    </SubsidyRequestsContext.Provider>
-  ),
-});
+const renderHookWithIntl = (hookFn) => _renderHook(hookFn, requestsDisabled);
+
+const renderHookWithCourseRequests = (hookFn) => _renderHook(hookFn, requestsEnabled);
+
+const renderHookLoadingCustomerAgreement = (hookFn) => _renderHook(hookFn, isLoadingSubsidyRequests);
 
 describe('AdministerSubscriptionsFlow', () => {
   const mockHandleEndTour = jest.fn();
@@ -151,7 +155,18 @@ describe('AdministerSubscriptionsFlow', () => {
       expect(typeof result.current[3].onEnd).toBe('function');
     });
   });
+  it('should return no steps when loading customer agreement', () => {
+    const { result } = renderHookLoadingCustomerAgreement(() => AdministerSubscriptionsFlow({
+      currentStep: 0,
+      enterpriseId,
+      enterpriseSlug: enterpriseId,
+      handleEndTour: mockHandleEndTour,
+      setCurrentStep: mockSetCurrentStep,
+      targetSelector: '',
+    }));
 
+    expect(result.current).toStrictEqual([]);
+  });
   it('should call handleAdvanceTour on intermediate steps', () => {
     const { result } = renderHookWithIntl(() => AdministerSubscriptionsFlow({
       currentStep: 0,
