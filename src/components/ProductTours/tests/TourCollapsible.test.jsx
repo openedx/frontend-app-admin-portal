@@ -70,6 +70,7 @@ const defaultState = {
 
 const defaultEnterpriseSubsidiesContextValue = {
   isLoadingCustomerAgreement: false,
+  canManageLearnerCredit: true,
   customerAgreement: {
     subscriptions: [{ contents: 'unimportant' }],
   },

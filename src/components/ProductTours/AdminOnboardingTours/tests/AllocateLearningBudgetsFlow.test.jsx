@@ -196,6 +196,42 @@ describe('useAllocateLearningBudgetsFlow', () => {
       expect(result.current[6].target).toBe('#learner-credit-management-breadcrumbs');
     });
 
+    it('should return learner credit detail page flow when on detail page with spent transactions and no content assignments', () => {
+      useBudgetDetailActivityOverview.mockReturnValue({
+        isLoading: false,
+        isFetching: false,
+        data: {
+          spentTransactions: { count: 1 },
+          contentAssignments: { count: 0 },
+        },
+      });
+
+      const props = {
+        currentStep: 0,
+        enablePortalLearnerCreditManagementScreen: true,
+        enterpriseFeatures: {
+          topDownAssignmentRealTimeLcm: true,
+        },
+        enterpriseId: 'test-enterprise-uuid',
+        enterpriseSlug: 'test-enterprise-slug',
+        handleBackTour: mockHandleBackTour,
+        handleEndTour: mockHandleEndTour,
+        setCurrentStep: mockSetCurrentStep,
+        targetSelector: '',
+      };
+
+      const { result } = renderHookWithProviders(() => useAllocateLearningBudgetsFlow(props));
+
+      expect(result.current).toHaveLength(7);
+      expect(result.current[0].target).toBe('#budget-detail-card');
+      expect(result.current[1].target).toBe('#new-assignment-button');
+      expect(result.current[2].target).toBe('#track-budget-activity');
+      expect(result.current[3].target).toBe('#zero-state-assign-card');
+      expect(result.current[4].target).toBe('#spent-budget-table');
+      expect(result.current[5].target).toBe('#budget-catalog-tab');
+      expect(result.current[6].target).toBe('#learner-credit-management-breadcrumbs');
+    });
+
     it('should return learner credit detail page flow when on detail page with no spent transactions and no content assignments', () => {
       useBudgetDetailActivityOverview.mockReturnValue({
         isLoading: false,

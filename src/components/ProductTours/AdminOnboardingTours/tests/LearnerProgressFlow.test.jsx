@@ -39,7 +39,7 @@ describe('tourFlows', () => {
 
     const flow = result.current;
 
-    expect(flow).toHaveLength(7);
+    expect(flow).toHaveLength(6);
     // can't test equality of onAdvance since it's an anonymous function
     expect(flow[0]).toMatchObject({
       target: `#${TRACK_LEARNER_PROGRESS_TARGETS.LEARNER_PROGRESS_SIDEBAR}`,
@@ -67,18 +67,12 @@ describe('tourFlows', () => {
     });
 
     expect(flow[4]).toMatchObject({
-      target: `#${TRACK_LEARNER_PROGRESS_TARGETS.MODULE_ACTIVITY}`,
-      placement: 'top',
-      body: messages.trackLearnerProgressStepFiveBody.defaultMessage,
-    });
-
-    expect(flow[5]).toMatchObject({
       target: `#${TRACK_LEARNER_PROGRESS_TARGETS.FILTER}`,
       placement: 'top',
       body: messages.trackLearnerProgressStepSixBody.defaultMessage,
     });
 
-    expect(flow[6]).toMatchObject({
+    expect(flow[5]).toMatchObject({
       target: `#${TRACK_LEARNER_PROGRESS_TARGETS.CSV_DOWNLOAD}`,
       placement: 'top',
       body: messages.trackLearnerProgressStepSevenBody.defaultMessage,
@@ -99,7 +93,6 @@ describe('tourFlows', () => {
     expect(mockFormatMessage).toHaveBeenCalledWith(messages.trackLearnerProgressStepTwoBody);
     expect(mockFormatMessage).toHaveBeenCalledWith(messages.trackLearnerProgressStepThreeBody);
     expect(mockFormatMessage).toHaveBeenCalledWith(messages.trackLearnerProgressStepFourBody);
-    expect(mockFormatMessage).toHaveBeenCalledWith(messages.trackLearnerProgressStepFiveBody);
     expect(mockFormatMessage).toHaveBeenCalledWith(messages.trackLearnerProgressStepSixBody);
     expect(mockFormatMessage).toHaveBeenCalledWith(messages.trackLearnerProgressStepSevenBody);
   });

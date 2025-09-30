@@ -72,6 +72,7 @@ const TourCollapsible: FC<Props> = (
   const [onboardingSteps, setOnboardingSteps] = useState<StepDefinition[] | undefined>();
   const [showCompletedModal, setShowCompletedModal] = useState(false);
   const { data: onboardingTourData } = useFetchCompletedOnboardingFlows(adminUuid);
+  const { canManageLearnerCredit } = useContext(EnterpriseSubsidiesContext);
   const { isLoadingCustomerAgreement, customerAgreement } = useContext(EnterpriseSubsidiesContext);
 
   const handleDismiss = () => {
@@ -146,6 +147,8 @@ const TourCollapsible: FC<Props> = (
             && (!isLoadingCustomerAgreement && !isEmpty(customerAgreement?.subscriptions));
         case CUSTOMIZE_REPORTS_TITLE:
           return enableReportingConfigScreen;
+        case ALLOCATE_LEARNING_BUDGET_TITLE:
+          return canManageLearnerCredit;
         default:
           return true;
       }
@@ -166,6 +169,7 @@ const TourCollapsible: FC<Props> = (
     }
     setOnboardingSteps(steps);
   }, [
+    canManageLearnerCredit,
     onboardingTourData?.completedTourFlows,
     onboardingTourData?.onboardingTourCompleted,
     enableReportingConfigScreen,

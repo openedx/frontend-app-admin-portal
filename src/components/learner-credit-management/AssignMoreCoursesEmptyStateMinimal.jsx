@@ -7,6 +7,7 @@ import {
   formatDate, formatPrice, useBudgetId, usePathToCatalogTab, useSubsidyAccessPolicy,
 } from './data';
 import nameYourLearner from './assets/reading.svg';
+import { ALLOCATE_LEARNING_BUDGETS_TARGETS } from '../ProductTours/AdminOnboardingTours/constants';
 
 const AssignMoreCoursesEmptyStateMinimal = () => {
   const { subsidyAccessPolicyId } = useBudgetId();
@@ -21,7 +22,7 @@ const AssignMoreCoursesEmptyStateMinimal = () => {
   const subsidyExpirationDate = subsidyAccessPolicy.subsidyExpirationDatetime;
 
   return (
-    <Card className="assign-more-courses-empty-state-minimal" orientation="horizontal">
+    <Card id={ALLOCATE_LEARNING_BUDGETS_TARGETS.ZERO_STATE_ASSIGN_CARD} className="assign-more-courses-empty-state-minimal" orientation="horizontal">
       <Card.ImageCap
         src={nameYourLearner}
         className="bg-light-300 d-flex justify-content-center py-3"
