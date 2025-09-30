@@ -2,6 +2,7 @@ import React, {
   FC, useContext, useEffect, useState,
 } from 'react';
 import { connect } from 'react-redux';
+import { isEmpty } from 'lodash-es';
 import {
   IconButton, Icon, OverlayTrigger, Tooltip, Stack,
 } from '@openedx/paragon';
@@ -9,7 +10,6 @@ import {
   CreditCard, InsertChartOutlined, MoneyOutline, Person, Question, Settings, TextSnippet, TrendingUp,
 } from '@openedx/paragon/icons';
 import { useIntl } from '@edx/frontend-platform/i18n';
-import { isEmpty } from 'lodash-es';
 
 import FloatingCollapsible from '../FloatingCollapsible';
 import messages, {
