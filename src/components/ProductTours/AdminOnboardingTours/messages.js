@@ -282,9 +282,9 @@ const messages = defineMessages({
     description: 'Description for the allocate learning budgets invite-only bne flow step four',
   },
   allocateLearningBudgetStepFiveAssignment: {
-    id: 'adminPortal.productTours.adminOnboarding.allocateLearningBudget.body.6.assignment',
+    id: 'adminPortal.productTours.adminOnboarding.allocateLearningBudget.body.5.assignment',
     defaultMessage: 'Track all budget activity, including pending assignments and enrollment spending.',
-    description: 'Description for the allocate learning budgets assignments flow step six',
+    description: 'Description for the allocate learning budgets assignments flow step five',
   },
   allocateLearningBudgetStepFiveAssignmentZeroState: {
     id: 'adminPortal.productTours.adminOnboarding.allocateLearningBudget.body.5.assignment.zeroState',
