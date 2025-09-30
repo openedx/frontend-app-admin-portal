@@ -40,23 +40,21 @@ jest.mock('@edx/frontend-enterprise-utils', () => {
   });
 });
 
-const _renderHook = (hookFn, subsidyRequestContextValue) => {
-  return renderHook(hookFn, {
-    wrapper: ({ children }) => (
-      <SubsidyRequestsContext.Provider value={subsidyRequestContextValue}>
-        <IntlProvider locale="en" messages={{}}>
-          {children}
-        </IntlProvider>
-      </SubsidyRequestsContext.Provider>
-    ),
-  });
-};
+const renderHookWithContext = (hookFn, subsidyRequestContextValue) => renderHook(hookFn, {
+  wrapper: ({ children }) => (
+    <SubsidyRequestsContext.Provider value={subsidyRequestContextValue}>
+      <IntlProvider locale="en" messages={{}}>
+        {children}
+      </IntlProvider>
+    </SubsidyRequestsContext.Provider>
+  ),
+});
 
-const renderHookWithIntl = (hookFn) => _renderHook(hookFn, requestsDisabled);
+const renderHookWithIntl = (hookFn) => renderHookWithContext(hookFn, requestsDisabled);
 
-const renderHookWithCourseRequests = (hookFn) => _renderHook(hookFn, requestsEnabled);
+const renderHookWithCourseRequests = (hookFn) => renderHookWithContext(hookFn, requestsEnabled);
 
-const renderHookLoadingCustomerAgreement = (hookFn) => _renderHook(hookFn, isLoadingSubsidyRequests);
+const renderHookLoadingCustomerAgreement = (hookFn) => renderHookWithContext(hookFn, isLoadingSubsidyRequests);
 
 describe('AdministerSubscriptionsFlow', () => {
   const mockHandleEndTour = jest.fn();
