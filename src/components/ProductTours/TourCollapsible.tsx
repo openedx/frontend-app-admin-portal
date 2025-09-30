@@ -2,6 +2,7 @@ import React, {
   FC, useContext, useEffect, useState,
 } from 'react';
 import { connect } from 'react-redux';
+import { isEmpty } from 'lodash-es';
 import {
   IconButton, Icon, OverlayTrigger, Tooltip, Stack,
 } from '@openedx/paragon';
@@ -72,6 +73,7 @@ const TourCollapsible: FC<Props> = (
   const [showCompletedModal, setShowCompletedModal] = useState(false);
   const { data: onboardingTourData } = useFetchCompletedOnboardingFlows(adminUuid);
   const { canManageLearnerCredit } = useContext(EnterpriseSubsidiesContext);
+  const { isLoadingCustomerAgreement, customerAgreement } = useContext(EnterpriseSubsidiesContext);
 
   const handleDismiss = () => {
     setShowCollapsible(false);
@@ -141,7 +143,8 @@ const TourCollapsible: FC<Props> = (
     const steps = QUICK_START_GUIDE_STEPS.filter(step => {
       switch (step.title) {
         case ADMINISTER_SUBSCRIPTIONS_TITLE:
-          return enableSubscriptionManagementScreen;
+          return enableSubscriptionManagementScreen
+            && (!isLoadingCustomerAgreement && !isEmpty(customerAgreement?.subscriptions));
         case CUSTOMIZE_REPORTS_TITLE:
           return enableReportingConfigScreen;
         case ALLOCATE_LEARNING_BUDGET_TITLE:
@@ -171,6 +174,8 @@ const TourCollapsible: FC<Props> = (
     onboardingTourData?.onboardingTourCompleted,
     enableReportingConfigScreen,
     enableSubscriptionManagementScreen,
+    isLoadingCustomerAgreement,
+    customerAgreement?.subscriptions,
   ]);
 
   return (

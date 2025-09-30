@@ -23,6 +23,18 @@ jest.mock('../../FloatingCollapsible', () => {
   return FloatingCollapsible;
 });
 
+jest.mock('../AdminOnboardingTours/data/useFetchCompletedOnboardingFlows', () => ({
+  ...jest.requireActual('../AdminOnboardingTours/data/useFetchCompletedOnboardingFlows'),
+  __esModule: true,
+  default: jest.fn().mockReturnValue({
+    data: [{
+      completedTourFlows: [],
+      onboardingTourCompleted: false,
+      onboardingTourDismissed: false,
+    }],
+  }),
+}));
+
 // Mock IconButton component
 jest.mock('@openedx/paragon', () => {
   const OriginalModule = jest.requireActual('@openedx/paragon');
@@ -43,10 +55,6 @@ jest.mock('../../../data/actions/enterpriseCustomerAdmin', () => ({
   reopenOnboardingTour: jest.fn(),
 }));
 
-const mockEnterpriseSubsidiesContextValue = {
-  canManageLearnerCredit: true,
-};
-
 const mockStore = configureStore([]);
 
 const defaultState = {
@@ -60,9 +68,21 @@ const defaultState = {
   },
 };
 
+const defaultEnterpriseSubsidiesContextValue = {
+  isLoadingCustomerAgreement: false,
+  canManageLearnerCredit: true,
+  customerAgreement: {
+    subscriptions: [{ contents: 'unimportant' }],
+  },
+};
+
 const mockSetShowCollapsible = jest.fn();
 
-const setup = (storeState = defaultState, showCollapsible = false) => {
+const setup = (
+  storeState = defaultState,
+  showCollapsible = false,
+  subsidiesContextValue = defaultEnterpriseSubsidiesContextValue,
+) => {
   const store = mockStore(storeState);
   store.dispatch = jest.fn();
 
@@ -70,7 +90,7 @@ const setup = (storeState = defaultState, showCollapsible = false) => {
     <QueryClientProvider client={queryClient()}>
       <IntlProvider locale="en">
         <Provider store={store}>
-          <EnterpriseSubsidiesContext.Provider value={mockEnterpriseSubsidiesContextValue}>
+          <EnterpriseSubsidiesContext.Provider value={subsidiesContextValue}>
             <TourCollapsible
               onTourSelect={jest.fn()}
               showCollapsible={showCollapsible}
@@ -226,6 +246,27 @@ describe('TourCollapsible', () => {
       },
     };
     setup(state, true);
+    expect(screen.queryByText('Administer subscriptions')).not.toBeInTheDocument();
+  });
+
+  it('does not display administer subscriptions step when there are no subscription plans', () => {
+    const state = {
+      enterpriseCustomerAdmin: {
+        onboardingTourCompleted: false,
+        onboardingTourDismissed: false,
+        uuid: 'test-uuid',
+      },
+      portalConfiguration: {
+        enableSubscriptionManagementScreen: true,
+      },
+    };
+    const subsidiesContextValue = {
+      isLoadingCustomerAgreement: false,
+      customerAgreement: {
+        subscriptions: [],
+      },
+    };
+    setup(state, true, subsidiesContextValue);
     expect(screen.queryByText('Administer subscriptions')).not.toBeInTheDocument();
   });
 });
