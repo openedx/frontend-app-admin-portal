@@ -74,7 +74,7 @@ const AdminOnboardingTour = (
   }
 
   const administerSubscriptionsFlow = AdministerSubscriptionsFlow({
-    currentStep, enterpriseSlug, handleEndTour, handleBackTour, setCurrentStep, targetSelector,
+    currentStep, enterpriseId, enterpriseSlug, handleEndTour, handleBackTour, setCurrentStep, targetSelector,
   });
   const analyticsFlow = AnalyticsFlow({
     handleAdvanceTour, handleBackTour, handleEndTour,

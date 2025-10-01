@@ -7,6 +7,7 @@ import { sendEnterpriseTrackEvent } from '@edx/frontend-enterprise-utils';
 import { SubsidyRequestsContext } from '../../../subsidy-requests';
 import AdministerSubscriptionsFlow from '../flows/AdministerSubscriptionsFlow';
 import { ADMIN_TOUR_EVENT_NAMES } from '../constants';
+import * as hooks from '../../../EnterpriseSubsidiesContext/data/hooks';
 
 const requestsDisabled = {
   subsidyRequestConfiguration: {
@@ -27,6 +28,10 @@ const isLoadingSubsidyRequests = {
   ...requestsEnabled,
   isLoadingCustomerAgreement: true,
 };
+
+const customerAgreement = { subscriptions: [{ uuid: 'subscription-id' }] };
+
+const customerAgreement2Subs = { subscriptions: [{ uuid: 'subscription-id' }, { uuid: 'subscription-id-2' }] };
 
 jest.mock('react-router', () => ({
   useParams: jest.fn(),
@@ -69,6 +74,10 @@ describe('AdministerSubscriptionsFlow', () => {
     beforeEach(() => {
       useParams.mockReturnValue({
         '*': 'subscriptions',
+      });
+      jest.spyOn(hooks, 'useCustomerAgreement').mockReturnValue({
+        customerAgreement: customerAgreement2Subs,
+        isLoading: false,
       });
     });
 
@@ -154,6 +163,10 @@ describe('AdministerSubscriptionsFlow', () => {
     });
   });
   it('should return no steps when loading customer agreement', () => {
+    jest.spyOn(hooks, 'useCustomerAgreement').mockReturnValue({
+      customerAgreement: customerAgreement2Subs,
+      isLoading: true,
+    });
     const { result } = renderHookLoadingCustomerAgreement(() => AdministerSubscriptionsFlow({
       currentStep: 0,
       enterpriseId,
@@ -166,6 +179,10 @@ describe('AdministerSubscriptionsFlow', () => {
     expect(result.current).toStrictEqual([]);
   });
   it('should call handleAdvanceTour on intermediate steps', () => {
+    jest.spyOn(hooks, 'useCustomerAgreement').mockReturnValue({
+      customerAgreement: customerAgreement2Subs,
+      isLoading: false,
+    });
     const { result } = renderHookWithIntl(() => AdministerSubscriptionsFlow({
       currentStep: 0,
       enterpriseId,
@@ -185,6 +202,10 @@ describe('AdministerSubscriptionsFlow', () => {
     beforeEach(() => {
       useParams.mockReturnValue({
         '*': 'subscriptions/manage-learners/test-subscription-uuid',
+      });
+      jest.spyOn(hooks, 'useCustomerAgreement').mockReturnValue({
+        customerAgreement: customerAgreement2Subs,
+        isLoading: false,
       });
     });
 
@@ -247,6 +268,10 @@ describe('AdministerSubscriptionsFlow', () => {
     it('should detect main page when no subscription UUID in URL', () => {
       useParams.mockReturnValue({
         '*': 'subscriptions',
+      });
+      jest.spyOn(hooks, 'useCustomerAgreement').mockReturnValue({
+        customerAgreement: customerAgreement2Subs,
+        isLoading: false,
       });
 
       const { result } = renderHookWithIntl(() => AdministerSubscriptionsFlow({
@@ -317,10 +342,68 @@ describe('AdministerSubscriptionsFlow', () => {
     });
   });
 
+  describe('Single subscription page flow', () => {
+    beforeEach(() => {
+      useParams.mockReturnValue({
+        '*': 'subscriptions',
+      });
+      jest.spyOn(hooks, 'useCustomerAgreement').mockReturnValue({
+        customerAgreement,
+        isLoading: false,
+      });
+    });
+
+    it('should return main subscription page flow when on main page', () => {
+      const { result } = renderHookWithIntl(() => AdministerSubscriptionsFlow({
+        currentStep: 0,
+        enterpriseId,
+        enterpriseSlug: enterpriseId,
+        handleEndTour: mockHandleEndTour,
+        setCurrentStep: mockSetCurrentStep,
+        targetSelector: '',
+      }));
+
+      expect(result.current).toHaveLength(4);
+      expect(result.current[0].target).toBe('#subscriptions-sidebar');
+      expect(result.current[1].target).toBe('#subscription-plans-detail-single-page');
+      expect(result.current[2].target).toBe('#license-allocation-section');
+      expect(result.current[3].target).toBe('#license-allocation-filters');
+    });
+    it('should have correct step properties for single subscription flow', () => {
+      const { result } = renderHookWithIntl(() => AdministerSubscriptionsFlow({
+        currentStep: 0,
+        enterpriseId,
+        enterpriseSlug: enterpriseId,
+        handleEndTour: mockHandleEndTour,
+        setCurrentStep: mockSetCurrentStep,
+        targetSelector: '',
+      }));
+
+      expect(result.current[0].title).toBe('Administer subscriptions');
+      expect(result.current[0].placement).toBe('right');
+      expect(typeof result.current[0].onAdvance).toBe('function');
+
+      expect(result.current[1].title).toBeUndefined();
+      expect(result.current[1].placement).toBe('top');
+      expect(typeof result.current[1].onAdvance).toBe('function');
+
+      expect(result.current[2].title).toBeUndefined();
+      expect(result.current[2].placement).toBe('top');
+      expect(typeof result.current[2].onAdvance).toBe('function');
+
+      expect(result.current[3].placement).toBe('right');
+      expect(typeof result.current[3].onEnd).toBe('function');
+    });
+  });
+
   describe('Flow integration', () => {
     it('should have correct step progression from main to detail flow', () => {
       useParams.mockReturnValue({
         '*': 'subscriptions',
+      });
+      jest.spyOn(hooks, 'useCustomerAgreement').mockReturnValue({
+        customerAgreement: customerAgreement2Subs,
+        isLoading: false,
       });
 
       const { result: mainFlow } = renderHookWithIntl(() => AdministerSubscriptionsFlow({

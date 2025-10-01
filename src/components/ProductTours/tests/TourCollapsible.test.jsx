@@ -10,6 +10,7 @@ import configureStore from 'redux-mock-store';
 import TourCollapsible from '../TourCollapsible';
 import { queryClient } from '../../test/testUtils';
 import { EnterpriseSubsidiesContext } from '../../EnterpriseSubsidiesContext';
+import { features } from '../../../config';
 
 // Mock FloatingCollapsible component
 jest.mock('../../FloatingCollapsible', () => {
@@ -199,6 +200,7 @@ describe('TourCollapsible', () => {
   });
 
   it('displays all steps when features enabled', () => {
+    features.ANALYTICS = true;
     const state = {
       enterpriseCustomerAdmin: {
         onboardingTourCompleted: false,
@@ -206,6 +208,7 @@ describe('TourCollapsible', () => {
         uuid: 'test-uuid',
       },
       portalConfiguration: {
+        enableAnalyticsScreen: true,
         enableReportingConfigScreen: true,
         enableSubscriptionManagementScreen: true,
       },
@@ -217,6 +220,21 @@ describe('TourCollapsible', () => {
     expect(screen.queryByText('Organize learners')).toBeInTheDocument();
     expect(screen.queryByText('Customize reports')).toBeInTheDocument();
     expect(screen.queryByText('Set up preferences')).toBeInTheDocument();
+  });
+
+  it('does not display enrollment insights step when analytics is disabled', () => {
+    const state = {
+      enterpriseCustomerAdmin: {
+        onboardingTourCompleted: false,
+        onboardingTourDismissed: false,
+        uuid: 'test-uuid',
+      },
+      portalConfiguration: {
+        enableAnalyticsScreen: false,
+      },
+    };
+    setup(state, true);
+    expect(screen.queryByText('View enrollment insights')).not.toBeInTheDocument();
   });
 
   it('does not display reporting configuration step when reporting is disabled', () => {

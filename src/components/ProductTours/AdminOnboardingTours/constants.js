@@ -36,6 +36,7 @@ export const ADMINISTER_SUBSCRIPTIONS_TARGETS = {
   SUBSCRIPTION_PLANS_LIST: 'subscription-plans-list',
   MANAGE_LEARNERS_BUTTON: 'manage-learners-button',
   SUBSCRIPTION_PLANS_DETAIL_PAGE: 'subscription-plans-detail-page',
+  SUBSCRIPTION_PLANS_DETAIL_SINGLE_PAGE: 'subscription-plans-detail-single-page',
   INVITE_LEARNERS_BUTTON: 'invite-learners-button',
   LICENSE_ALLOCATION_SECTION: 'license-allocation-section',
   LICENSE_ALLOCATION_FILTERS: 'license-allocation-filters',

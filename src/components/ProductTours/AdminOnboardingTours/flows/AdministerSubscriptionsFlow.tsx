@@ -9,9 +9,11 @@ import { ADMINISTER_SUBSCRIPTIONS_TARGETS, ADMIN_TOUR_EVENT_NAMES } from '../con
 import messages from '../messages';
 import { TourStep } from '../../types';
 import { configuration } from '../../../../config';
+import { useCustomerAgreement } from '../../../EnterpriseSubsidiesContext/data/hooks';
 
 interface CreateTourFlowsProps {
   currentStep: number;
+  enterpriseId: string;
   enterpriseSlug: string;
   handleEndTour: (endEventName: string, flowUuid?: string) => void;
   handleBackTour: (backEventName: string) => void;
@@ -21,6 +23,7 @@ interface CreateTourFlowsProps {
 
 const AdministerSubscriptionsFlow = ({
   currentStep,
+  enterpriseId,
   enterpriseSlug,
   handleEndTour,
   handleBackTour,
@@ -33,6 +36,9 @@ const AdministerSubscriptionsFlow = ({
   const isOnDetailPage = !!subscriptionUuid;
 
   const { isLoadingCustomerAgreement, subsidyRequestConfiguration } = useContext(SubsidyRequestsContext);
+  const { customerAgreement, isLoading: isLoadingAgreement } = useCustomerAgreement({ enterpriseId });
+  const hasMultipleSubscriptions = customerAgreement?.subscriptions.length > 1;
+
   const isSubsidyRequestsEnabled = subsidyRequestConfiguration?.subsidyRequestsEnabled;
   const subsidyType = subsidyRequestConfiguration?.subsidyType;
   const isRequestsTabShown = isSubsidyRequestsEnabled && subsidyType === SUPPORTED_SUBSIDY_TYPES.license;
@@ -43,25 +49,29 @@ const AdministerSubscriptionsFlow = ({
 
   function handleAdvanceTour(advanceEventName: string) {
     const newIndex = currentStep + 1;
+    if (hasMultipleSubscriptions) {
+      const manageLearnersButton = document.getElementById(ADMINISTER_SUBSCRIPTIONS_TARGETS.MANAGE_LEARNERS_BUTTON);
+      if (manageLearnersButton && targetSelector === ADMINISTER_SUBSCRIPTIONS_TARGETS.MANAGE_LEARNERS_BUTTON) {
+        manageLearnersButton.click();
+        setCurrentStep(0);
+        sendEnterpriseTrackEvent(enterpriseSlug, advanceEventName, { 'completed-step': newIndex });
+        return;
+      }
 
-    const manageLearnersButton = document.getElementById(ADMINISTER_SUBSCRIPTIONS_TARGETS.MANAGE_LEARNERS_BUTTON);
-    if (manageLearnersButton && targetSelector === ADMINISTER_SUBSCRIPTIONS_TARGETS.MANAGE_LEARNERS_BUTTON) {
-      manageLearnersButton.click();
-      setCurrentStep(0);
-      sendEnterpriseTrackEvent(enterpriseSlug, advanceEventName, { 'completed-step': newIndex });
-      return;
-    }
+      const detailPageTargets = [
+        ADMINISTER_SUBSCRIPTIONS_TARGETS.SUBSCRIPTION_PLANS_DETAIL_PAGE,
+        ADMINISTER_SUBSCRIPTIONS_TARGETS.INVITE_LEARNERS_BUTTON,
+        ADMINISTER_SUBSCRIPTIONS_TARGETS.LICENSE_ALLOCATION_SECTION,
+        ADMINISTER_SUBSCRIPTIONS_TARGETS.LICENSE_ALLOCATION_FILTERS,
+        ADMINISTER_SUBSCRIPTIONS_TARGETS.SUBSCRIPTIONS_NAVIGATION,
+      ];
 
-    const detailPageTargets = [
-      ADMINISTER_SUBSCRIPTIONS_TARGETS.SUBSCRIPTION_PLANS_DETAIL_PAGE,
-      ADMINISTER_SUBSCRIPTIONS_TARGETS.INVITE_LEARNERS_BUTTON,
-      ADMINISTER_SUBSCRIPTIONS_TARGETS.LICENSE_ALLOCATION_SECTION,
-      ADMINISTER_SUBSCRIPTIONS_TARGETS.LICENSE_ALLOCATION_FILTERS,
-      ADMINISTER_SUBSCRIPTIONS_TARGETS.SUBSCRIPTIONS_NAVIGATION,
-    ];
-
-    if (detailPageTargets.includes(targetSelector as string)) {
-      sendEnterpriseTrackEvent(enterpriseSlug, advanceEventName, { 'completed-step': 3 + newIndex });
+      if (detailPageTargets.includes(targetSelector as string)) {
+        sendEnterpriseTrackEvent(enterpriseSlug, advanceEventName, { 'completed-step': 3 + newIndex });
+      } else {
+        sendEnterpriseTrackEvent(enterpriseSlug, advanceEventName, { 'completed-step': newIndex });
+      }
+    // we don't have a page change for a customer with a single subscription
     } else {
       sendEnterpriseTrackEvent(enterpriseSlug, advanceEventName, { 'completed-step': newIndex });
     }
@@ -72,8 +82,38 @@ const AdministerSubscriptionsFlow = ({
   const onBack = () => handleBackTour(ADMIN_TOUR_EVENT_NAMES.ADMINISTER_SUBSCRIPTIONS_BACK_EVENT_NAME);
 
   // Don't load the tour until we load the customer agreement
-  if (isLoadingCustomerAgreement) {
+  if (isLoadingCustomerAgreement || isLoadingAgreement) {
     return [];
+  }
+
+  if (!hasMultipleSubscriptions) {
+    return [
+      {
+        target: `#${ADMINISTER_SUBSCRIPTIONS_TARGETS.SIDEBAR}`,
+        placement: 'right',
+        title: intl.formatMessage(messages.administerSubscriptionsTitle),
+        body: intl.formatMessage(messages.administerSubscriptionsStepOneBodySingleSub),
+        onAdvance,
+      }, {
+        target: `#${ADMINISTER_SUBSCRIPTIONS_TARGETS.SUBSCRIPTION_PLANS_DETAIL_SINGLE_PAGE}`,
+        placement: 'top',
+        body: intl.formatMessage(messages.administerSubscriptionsStepFourBody),
+        onAdvance,
+        onBack,
+      }, {
+        target: `#${ADMINISTER_SUBSCRIPTIONS_TARGETS.LICENSE_ALLOCATION_SECTION}`,
+        placement: 'top',
+        body: intl.formatMessage(messages.administerSubscriptionsStepSixBody),
+        onAdvance,
+        onBack,
+      }, {
+        target: `#${ADMINISTER_SUBSCRIPTIONS_TARGETS.LICENSE_ALLOCATION_FILTERS}`,
+        placement: 'right',
+        body: intl.formatMessage(messages.administerSubscriptionsStepSevenBody),
+        onBack,
+        onEnd,
+      },
+    ];
   }
 
   if (isOnDetailPage) {
@@ -83,29 +123,25 @@ const AdministerSubscriptionsFlow = ({
         placement: 'top',
         body: intl.formatMessage(messages.administerSubscriptionsStepFourBody),
         onAdvance,
-      },
-      {
+      }, {
         target: `#${ADMINISTER_SUBSCRIPTIONS_TARGETS.INVITE_LEARNERS_BUTTON}`,
         placement: 'left',
         body: intl.formatMessage(messages.administerSubscriptionsStepFiveBody),
         onAdvance,
         onBack,
-      },
-      {
+      }, {
         target: `#${ADMINISTER_SUBSCRIPTIONS_TARGETS.LICENSE_ALLOCATION_SECTION}`,
         placement: 'top',
         body: intl.formatMessage(messages.administerSubscriptionsStepSixBody),
         onAdvance,
         onBack,
-      },
-      {
+      }, {
         target: `#${ADMINISTER_SUBSCRIPTIONS_TARGETS.LICENSE_ALLOCATION_FILTERS}`,
         placement: 'right',
         body: intl.formatMessage(messages.administerSubscriptionsStepSevenBody),
         onAdvance,
         onBack,
-      },
-      {
+      }, {
         target: `#${ADMINISTER_SUBSCRIPTIONS_TARGETS.SUBSCRIPTIONS_NAVIGATION}`,
         placement: 'right',
         body: intl.formatMessage(messages.administerSubscriptionsStepEightBody),
@@ -123,15 +159,13 @@ const AdministerSubscriptionsFlow = ({
       title: intl.formatMessage(messages.administerSubscriptionsTitle),
       body: intl.formatMessage(messages.administerSubscriptionsStepOneBody),
       onAdvance,
-    },
-    {
+    }, {
       target: `#${ADMINISTER_SUBSCRIPTIONS_TARGETS.SUBSCRIPTION_PLANS_LIST}`,
       placement: 'top',
       body: intl.formatMessage(messages.administerSubscriptionsStepTwoBody),
       onAdvance,
       onBack,
-    },
-    {
+    }, {
       target: `#${ADMINISTER_SUBSCRIPTIONS_TARGETS.MANAGE_LEARNERS_BUTTON}`,
       placement: 'left',
       body: intl.formatMessage(messages.administerSubscriptionsStepThreeBody),
