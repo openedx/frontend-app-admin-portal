@@ -26,6 +26,7 @@ const CourseFilterDropdown = ({
       className="w-100 course-filter-select"
       classNamePrefix="course-filter-select"
       filterOption={(option, input) => option.label.toLowerCase().includes(input.toLowerCase())}
+      aria-label="Filter by course"
     />
   </div>
 );

@@ -8,7 +8,7 @@ import DownloadCSVButton from '../DownloadCSVButton';
 import { constructChartHoverTemplate, sumEntitiesByMetric } from '../data/utils';
 
 const EnrollmentsOverTimeChart = ({
-  isFetching, isError, data, startDate, endDate, onClick,
+  isFetching, isError, data, startDate, endDate, trackChartClick, trackCsvDownloadClick,
 }) => {
   const intl = useIntl();
 
@@ -45,6 +45,8 @@ const EnrollmentsOverTimeChart = ({
             <DownloadCSVButton
               jsonData={enrollmentsOverTimeForCSV}
               csvFileName={`Enrolments over time - ${startDate} - ${endDate}`}
+              entityId="enrollments-over-time-chart"
+              trackCsvDownloadClick={trackCsvDownloadClick}
             />
       )}
         />
@@ -56,7 +58,7 @@ const EnrollmentsOverTimeChart = ({
             chartProps={{
               chartId: 'enrollments-over-time-chart',
               data: aggregatedData,
-              onClick,
+              trackChartClick,
               xKey: 'enterpriseEnrollmentDate',
               yKey: 'enrollmentCount',
               colorKey: null,
@@ -86,7 +88,8 @@ EnrollmentsOverTimeChart.propTypes = {
   data: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
   startDate: PropTypes.string.isRequired,
   endDate: PropTypes.string.isRequired,
-  onClick: PropTypes.func,
+  trackChartClick: PropTypes.func,
+  trackCsvDownloadClick: PropTypes.func,
 };
 
 export default EnrollmentsOverTimeChart;

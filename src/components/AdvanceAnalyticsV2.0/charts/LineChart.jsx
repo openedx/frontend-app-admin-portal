@@ -17,7 +17,7 @@ import PropTypes from 'prop-types';
  * @returns The rendered Plotly line chart.
  */
 const LineChart = ({
-  data, xKey, yKey, colorKey, colorMap, hovertemplate, xAxisTitle, yAxisTitle, onClick, chartId,
+  data, xKey, yKey, colorKey, colorMap, hovertemplate, xAxisTitle, yAxisTitle, trackChartClick, chartId,
 }) => {
   const traces = useMemo(() => {
     if (!colorKey) {
@@ -69,7 +69,7 @@ const LineChart = ({
       layout={layout}
       config={config}
       style={{ width: '100%', height: '100%' }}
-      onClick={onClick}
+      onClick={() => trackChartClick(chartId)}
     />
   );
 };
@@ -88,7 +88,7 @@ LineChart.propTypes = {
   hovertemplate: PropTypes.string.isRequired,
   xAxisTitle: PropTypes.string,
   yAxisTitle: PropTypes.string.isRequired,
-  onClick: PropTypes.func,
+  trackChartClick: PropTypes.func,
 };
 
 export default LineChart;

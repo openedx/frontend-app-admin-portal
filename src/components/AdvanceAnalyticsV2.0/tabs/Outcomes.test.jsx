@@ -10,9 +10,12 @@ import '@testing-library/jest-dom';
 import axios from 'axios';
 import { BrowserRouter as Router } from 'react-router-dom';
 import { getAuthenticatedHttpClient } from '@edx/frontend-platform/auth';
+import userEvent from '@testing-library/user-event';
 import Outcomess from './Outcomes';
 import { queryClient } from '../../test/testUtils';
 import EnterpriseDataApiService from '../../../data/services/EnterpriseDataApiService';
+import EVENT_NAMES from '../../../eventTracking';
+import { DATE_RANGE } from '../data/constants';
 import * as hooks from '../data/hooks';
 
 const mockAnalyticsSkillsData = {
@@ -201,5 +204,84 @@ describe('Rendering tests', () => {
       });
     }
     await waitFor(() => expect(sendEnterpriseTrackEvent).toHaveBeenCalledTimes(1));
+  });
+
+  test('calls sendEnterpriseTrackEvent on filter change', async () => {
+    hooks.useEnterpriseAnalyticsAggregatesData.mockReturnValue({
+      data: { minEnrollmentDate: '2021-01-01' },
+    });
+
+    hooks.useEnterpriseAnalyticsData.mockReturnValue({
+      isFetching: false,
+      isError: false,
+      data: mockAnalyticsSkillsData,
+    });
+
+    hooks.useEnterpriseCompletionsData.mockReturnValue({
+      isFetching: false,
+      data: mockCompletionsChartsData,
+    });
+
+    render(
+      <Router>
+        <QueryClientProvider client={queryClient()}>
+          <IntlProvider locale="en">
+            <Outcomess enterpriseId="33ce6562-95e0-4ecf-a2a7-7d407eb96f69" />
+          </IntlProvider>
+        </QueryClientProvider>
+      </Router>,
+    );
+
+    const dateRangeSelect = screen.getByLabelText(/Date range options/i);
+
+    await userEvent.selectOptions(dateRangeSelect, 'last_30_days');
+
+    await waitFor(() => {
+      expect(sendEnterpriseTrackEvent).toHaveBeenCalledWith(
+        '33ce6562-95e0-4ecf-a2a7-7d407eb96f69',
+        EVENT_NAMES.ANALYTICS_V2.OUTCOMES_FILTER_CLICKED,
+        {
+          name: 'Date range options',
+          value: DATE_RANGE.LAST_30_DAYS,
+        },
+      );
+    });
+  });
+
+  test('calls sendEnterpriseTrackEvent on CSV download click', async () => {
+    hooks.useEnterpriseAnalyticsAggregatesData.mockReturnValue({
+      data: { minEnrollmentDate: '2021-01-01' },
+    });
+
+    hooks.useEnterpriseCompletionsData.mockReturnValue({
+      isFetching: false,
+      data: mockCompletionsChartsData,
+    });
+
+    render(
+      <Router>
+        <QueryClientProvider client={queryClient()}>
+          <IntlProvider locale="en">
+            <Outcomess enterpriseId="33ce6562-95e0-4ecf-a2a7-7d407eb96f69" />
+          </IntlProvider>
+        </QueryClientProvider>
+      </Router>,
+    );
+
+    const buttons = await screen.findAllByRole('button', { name: /download csv/i });
+    const downloadButton = buttons[0];
+
+    expect(downloadButton).toBeInTheDocument();
+    expect(downloadButton).toBeEnabled();
+
+    await userEvent.click(downloadButton);
+
+    await waitFor(() => {
+      expect(sendEnterpriseTrackEvent).toHaveBeenCalledWith(
+        '33ce6562-95e0-4ecf-a2a7-7d407eb96f69',
+        EVENT_NAMES.ANALYTICS_V2.OUTCOMES_CSV_DOWNLOAD_CLICKED,
+        expect.objectContaining({ entityId: expect.any(String) }),
+      );
+    });
   });
 });

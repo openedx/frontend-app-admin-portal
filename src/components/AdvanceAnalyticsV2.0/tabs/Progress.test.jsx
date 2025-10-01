@@ -4,51 +4,74 @@ import {
 } from '@testing-library/react';
 import { QueryClientProvider } from '@tanstack/react-query';
 import { IntlProvider } from '@edx/frontend-platform/i18n';
+import { sendEnterpriseTrackEvent } from '@edx/frontend-enterprise-utils';
 import '@testing-library/jest-dom';
-import MockAdapter from 'axios-mock-adapter';
+// eslint-disable-next-line import/no-extraneous-dependencies
 import axios from 'axios';
 import { BrowserRouter as Router } from 'react-router-dom';
 import { getAuthenticatedHttpClient } from '@edx/frontend-platform/auth';
+import userEvent from '@testing-library/user-event';
 import Progress from './Progress';
 import { queryClient } from '../../test/testUtils';
+import EnterpriseDataApiService from '../../../data/services/EnterpriseDataApiService';
 import * as hooks from '../data/hooks';
+import EVENT_NAMES from '../../../eventTracking';
+import { DATE_RANGE } from '../data/constants';
 
-jest.mock('../data/hooks', () => ({
-  useEnterpriseAnalyticsAggregatesData: jest.fn(),
-  useEnterpriseCompletionsData: jest.fn(),
-  useEnterpriseCourses: jest.fn(),
-}));
+const mockProgressChartsData = {
+  topCoursesByCompletions: [
+    {
+      completionCount: 390,
+      courseKey: 'MandarinX+MX502X',
+      courseTitle: 'MandarinX: Mandarin Chinese Level 1',
+      enrollType: 'certificate',
+    },
+  ],
+  topSubjectsByCompletions: [
+    {
+      completionCount: 2245,
+      courseSubject: 'computer-science',
+      enrollType: 'certificate',
+    },
+  ],
+};
 
-jest.mock('../tables/TopCoursesByCompletionTable', () => function MockTopCoursesByCompletionTable() {
-  return <div>TopCoursesByCompletionTable</div>;
-});
-jest.mock('../tables/TopSubjectsByCompletionTable', () => function MockTopSubjectsByCompletionTable() {
-  return <div>TopSubjectsByCompletionTable</div>;
-});
-jest.mock('../tables/IndividualCompletionsTable', () => function MockIndividualCompletionsTable() {
-  return <div>IndividualCompletionsTable</div>;
-});
+const mockAnalyticsSkillsData = {
+  topSkills: [],
+  topSkillsByEnrollments: [],
+  topSkillsByCompletions: [],
+};
 
-const axiosMock = new MockAdapter(axios);
+jest.spyOn(EnterpriseDataApiService, 'fetchAdminAnalyticsData');
 getAuthenticatedHttpClient.mockReturnValue(axios);
 
-describe('Progress Component', () => {
-  afterEach(() => {
-    axiosMock.reset();
-    jest.resetAllMocks();
+jest.mock('@edx/frontend-enterprise-utils', () => {
+  const originalModule = jest.requireActual('@edx/frontend-enterprise-utils');
+  return ({
+    ...originalModule,
+    sendEnterpriseTrackEvent: jest.fn(),
   });
+});
 
-  test('renders all progress tab sections', async () => {
-    hooks.useEnterpriseAnalyticsAggregatesData.mockReturnValue({
-      data: { minEnrollmentDate: '2021-01-01' },
+jest.mock('../data/hooks', () => ({
+  useEnterpriseAnalyticsData: jest.fn(),
+  useEnterpriseCompletionsData: jest.fn(),
+  useEnterpriseCourses: jest.fn(),
+  useEnterpriseBudgets: jest.fn(),
+  usePaginatedData: jest.fn(() => ({ itemCount: 0, pageCount: 0, data: [] })),
+}));
+
+describe('Rendering tests', () => {
+  test('renders all sections', async () => {
+    hooks.useEnterpriseAnalyticsData.mockReturnValue({
+      isFetching: false,
+      isError: false,
+      data: mockAnalyticsSkillsData,
     });
 
     hooks.useEnterpriseCompletionsData.mockReturnValue({
       isFetching: false,
-      data: {
-        topCoursesByCompletions: [],
-        topSubjectsByCompletions: [],
-      },
+      data: mockProgressChartsData,
     });
 
     hooks.useEnterpriseCourses.mockReturnValue({
@@ -60,27 +83,164 @@ describe('Progress Component', () => {
       ],
     });
 
+    hooks.useEnterpriseBudgets.mockReturnValue({
+      isFetching: false,
+      isError: false,
+      data: [
+        { subsidyAccessPolicyUuid: 'budget-uuid-1', subsidyAccessPolicyDisplayName: 'Budget 1' },
+        { subsidyAccessPolicyUuid: 'budget-uuid-2', subsidyAccessPolicyDisplayName: 'Budget 2' },
+      ],
+    });
+
     render(
       <Router>
         <QueryClientProvider client={queryClient()}>
           <IntlProvider locale="en">
-            <Progress enterpriseId="abc-123" />
+            <Progress enterpriseId="33ce6562-95e0-4ecf-a2a7-7d407eb96f69" />
           </IntlProvider>
         </QueryClientProvider>
       </Router>,
     );
 
-    // Assert presence of major static content and mocked table components
-    await waitFor(() => {
-      expect(screen.getByRole('heading', { name: 'Progress' })).toBeInTheDocument();
+    const sections = [
+      {
+        title: 'Progress',
+        subtitle: 'This tab displays metrics that describe your learners and their learning progress, as well as popular subjects and courses in your organization. Use the date range and filters section to filter all the visualizations below it on the page. Dig deeper into the specific topics by downloading their associated CSVs.',
+      },
+      {
+        title: 'Date range and filters',
+        subtitle: '',
+      },
+      {
+        title: 'Top 10 courses by completion',
+        subtitle: 'See the courses in which your learners are most often achieving a passing grade.',
+      },
+      {
+        title: 'Top 10 subjects by completion',
+        subtitle: 'See the subjects in which your learners are most often achieving a passing grade.',
+      },
+      {
+        title: 'Leaderboard',
+        subtitle: 'Explore the top learners ranked by Progress metrics. The list is sorted by learning hours by default. To dive deeper, download the full CSV to explore and sort by other metrics. Only learners who have passed the course and completed at least one Progress activity (watching a video, submitting a problem, or posting in forums) are included.',
+      },
+      {
+        title: 'Individual Completions',
+        subtitle: 'See the individual completions from your organization.',
+      },
+    ];
+
+    sections.forEach(({ title, subtitle }) => async () => {
+      await waitFor(() => expect(screen.getByText(title)).toBeInTheDocument());
+      await waitFor(() => expect(screen.getByText(subtitle)).toBeInTheDocument());
+    });
+    expect(sendEnterpriseTrackEvent).toHaveBeenCalledTimes(0);
+  });
+
+  test('calls sendEnterpriseTrackEvent on CSV download click', async () => {
+    hooks.useEnterpriseAnalyticsData.mockReturnValue({
+      isFetching: false,
+      isError: false,
+      data: mockAnalyticsSkillsData,
     });
 
-    expect(
-      screen.getByText(/This tab displays metrics that describe your learners/),
-    ).toBeInTheDocument();
+    hooks.useEnterpriseCompletionsData.mockReturnValue({
+      isFetching: false,
+      data: mockProgressChartsData,
+    });
 
-    expect(screen.getByText('TopCoursesByCompletionTable')).toBeInTheDocument();
-    expect(screen.getByText('TopSubjectsByCompletionTable')).toBeInTheDocument();
-    expect(screen.getByText('IndividualCompletionsTable')).toBeInTheDocument();
+    hooks.useEnterpriseCourses.mockReturnValue({
+      isFetching: false,
+      isError: false,
+      data: [
+        { value: 'course-v1:edX+TST101+2024', label: 'Test Course 1' },
+        { value: 'course-v1:edX+TST102+2024', label: 'Test Course 2' },
+      ],
+    });
+
+    hooks.useEnterpriseBudgets.mockReturnValue({
+      isFetching: false,
+      isError: false,
+      data: [
+        { subsidyAccessPolicyUuid: 'budget-uuid-1', subsidyAccessPolicyDisplayName: 'Budget 1' },
+        { subsidyAccessPolicyUuid: 'budget-uuid-2', subsidyAccessPolicyDisplayName: 'Budget 2' },
+      ],
+    });
+
+    render(
+      <Router>
+        <QueryClientProvider client={queryClient()}>
+          <IntlProvider locale="en">
+            <Progress enterpriseId="33ce6562-95e0-4ecf-a2a7-7d407eb96f69" />
+          </IntlProvider>
+        </QueryClientProvider>
+      </Router>,
+    );
+
+    const downloadLink = await screen.findByRole('link', { name: /download.*csv/i });
+    await userEvent.click(downloadLink);
+
+    await waitFor(() => {
+      expect(sendEnterpriseTrackEvent).toHaveBeenCalledWith(
+        '33ce6562-95e0-4ecf-a2a7-7d407eb96f69',
+        EVENT_NAMES.ANALYTICS_V2.PROGRESS_CSV_DOWNLOAD_CLICKED,
+        expect.objectContaining({ entityId: expect.any(String) }),
+      );
+    });
+  });
+
+  test('calls sendEnterpriseTrackEvent on filter change', async () => {
+    hooks.useEnterpriseAnalyticsData.mockReturnValue({
+      isFetching: false,
+      isError: false,
+      data: mockAnalyticsSkillsData,
+    });
+
+    hooks.useEnterpriseCompletionsData.mockReturnValue({
+      isFetching: false,
+      data: mockProgressChartsData,
+    });
+
+    hooks.useEnterpriseCourses.mockReturnValue({
+      isFetching: false,
+      isError: false,
+      data: [
+        { value: 'course-v1:edX+TST101+2024', label: 'Test Course 1' },
+        { value: 'course-v1:edX+TST102+2024', label: 'Test Course 2' },
+      ],
+    });
+
+    hooks.useEnterpriseBudgets.mockReturnValue({
+      isFetching: false,
+      isError: false,
+      data: [
+        { subsidyAccessPolicyUuid: 'budget-uuid-1', subsidyAccessPolicyDisplayName: 'Budget 1' },
+        { subsidyAccessPolicyUuid: 'budget-uuid-2', subsidyAccessPolicyDisplayName: 'Budget 2' },
+      ],
+    });
+
+    render(
+      <Router>
+        <QueryClientProvider client={queryClient()}>
+          <IntlProvider locale="en">
+            <Progress enterpriseId="33ce6562-95e0-4ecf-a2a7-7d407eb96f69" />
+          </IntlProvider>
+        </QueryClientProvider>
+      </Router>,
+    );
+    const dateRangeSelect = screen.getByLabelText(/Date range options/i);
+
+    // change it to "Last 30 days"
+    await userEvent.selectOptions(dateRangeSelect, 'last_30_days');
+
+    await waitFor(() => {
+      expect(sendEnterpriseTrackEvent).toHaveBeenCalledWith(
+        '33ce6562-95e0-4ecf-a2a7-7d407eb96f69',
+        EVENT_NAMES.ANALYTICS_V2.PROGRESS_FILTER_CLICKED,
+        {
+          name: 'Date range options',
+          value: DATE_RANGE.LAST_30_DAYS,
+        },
+      );
+    });
   });
 });

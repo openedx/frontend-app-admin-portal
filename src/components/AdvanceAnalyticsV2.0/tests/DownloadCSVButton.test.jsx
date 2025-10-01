@@ -32,10 +32,15 @@ for (let i = 0; i < mockJsonData.length; i++) {
   mockJsonAsCSV += `${mockJsonData[i].date},${mockJsonData[i].count},${mockJsonData[i].enroll_type}\n`;
 }
 
+const mockTrackCsvDownloadClick = jest.fn();
+
 const DEFAULT_PROPS = {
   jsonData: mockJsonData,
   csvFileName: 'completions.csv',
+  entityId: 'test-entity',
+  trackCsvDownloadClick: mockTrackCsvDownloadClick,
 };
+
 describe('DownloadCSVButton', () => {
   it('renders download csv button correctly', async () => {
     render(
@@ -47,7 +52,7 @@ describe('DownloadCSVButton', () => {
     expect(screen.getByTestId('plotly-charts-download-csv-button')).toBeInTheDocument();
   });
 
-  it('handles successful CSV download', async () => {
+  it('handles successful CSV download and calls tracking', async () => {
     const user = userEvent.setup();
     render(
       <IntlProvider locale="en">
@@ -62,5 +67,7 @@ describe('DownloadCSVButton', () => {
       new Blob([mockJsonAsCSV], { type: 'text/csv' }),
       'completions.csv',
     );
+
+    expect(mockTrackCsvDownloadClick).toHaveBeenCalledWith('test-entity');
   });
 });

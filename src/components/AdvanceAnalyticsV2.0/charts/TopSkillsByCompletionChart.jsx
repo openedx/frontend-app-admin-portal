@@ -8,7 +8,7 @@ import Header from '../Header';
 import { skillsColorMap } from '../data/constants';
 
 const TopSkillsByCompletionChart = ({
-  isFetching, isError, data, startDate, endDate, onClick,
+  isFetching, isError, data, startDate, endDate, trackChartClick, trackCsvDownloadClick,
 }) => {
   const intl = useIntl();
 
@@ -35,6 +35,8 @@ const TopSkillsByCompletionChart = ({
               <DownloadCSVButton
                 jsonData={topSkillsByCompletionForCSV || []}
                 csvFileName={`Top Skills by Completion - ${startDate} - ${endDate}`}
+                entityId="top-skills-by-completions-chart"
+                trackCsvDownloadClick={trackCsvDownloadClick}
               />
           )}
           />
@@ -46,7 +48,7 @@ const TopSkillsByCompletionChart = ({
           chartProps={{
             chartId: 'top-skills-by-completins-chart',
             data,
-            onClick,
+            trackChartClick,
             xKey: 'skillName',
             yKey: 'count',
             colorKey: 'subjectName',
@@ -78,7 +80,8 @@ TopSkillsByCompletionChart.propTypes = {
   data: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
   startDate: PropTypes.string.isRequired,
   endDate: PropTypes.string.isRequired,
-  onClick: PropTypes.func,
+  trackChartClick: PropTypes.func,
+  trackCsvDownloadClick: PropTypes.func,
 };
 
 export default TopSkillsByCompletionChart;
