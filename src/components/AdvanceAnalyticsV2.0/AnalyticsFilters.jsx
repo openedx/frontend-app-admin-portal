@@ -43,6 +43,7 @@ const AnalyticsFilters = ({
   const intl = useIntl();
   const [collapsed, setCollapsed] = useState(false);
   const isProgressOrOutcomesTab = activeTab === ANALYTICS_TABS.PROGRESS || activeTab === ANALYTICS_TABS.OUTCOMES;
+  const filterByCourseStartDate = false; // To be implemented in future
   const [dateRangeValue, setDateRangeValue] = useState(DATE_RANGE.LAST_90_DAYS);
 
   const handleDateRangeChange = (selectedRange) => {
@@ -377,7 +378,12 @@ const AnalyticsFilters = ({
             </div>
 
             {isProgressOrOutcomesTab && (
-            <div className="col">
+            <div
+              className="col"
+              style={!filterByCourseStartDate ? { visibility: 'hidden' } : {}}
+              aria-hidden={!filterByCourseStartDate ? 'true' : undefined}
+              tabIndex={!filterByCourseStartDate ? -1 : undefined}
+            >
               <Form.Group>
                 <Form.Label className="font-weight-normal d-flex align-items-center">
                   <span>

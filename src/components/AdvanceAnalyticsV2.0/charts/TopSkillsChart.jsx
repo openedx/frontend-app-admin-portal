@@ -37,43 +37,44 @@ const TopSkillsChart = ({
             />
           )}
         />
-
-        <ChartWrapper
-          isFetching={isFetching}
-          isError={isError}
-          chartType="ScatterChart"
-          chartProps={{
-            chartId: 'top-skills-chart',
-            data,
-            trackChartClick,
-            xKey: 'enrolls',
-            yKey: 'completions',
-            colorKey: 'skillType',
-            colorMap: skillsTypeColorMap,
-            xAxisTitle: intl.formatMessage({
-              id: 'advance.analytics.skills.tab.chart.top.skills.x.axis.title',
-              defaultMessage: 'Enrollments',
-              description: 'X-axis title for the top skills chart.',
-            }),
-            yAxisTitle: intl.formatMessage({
-              id: 'advance.analytics.skills.tab.chart.top.skills.y.axis.title',
-              defaultMessage: 'Completions',
-              description: 'Y-axis title for the top skills chart.',
-            }),
-            markerSizes, // Pass marker sizes directly to ScatterChart
-            customDataKeys: ['skillName', 'skillType'],
-            hovertemplate: constructChartHoverTemplate(intl, {
-              skill: '%{customdata[0]}',
-              enrollments: '%{x}',
-              completions: '%{y}',
-            }),
-          }}
-          loadingMessage={intl.formatMessage({
-            id: 'advance.analytics.skills.tab.chart.top.skills.loading.message',
-            defaultMessage: 'Loading top skills chart data',
-            description: 'Loading message for the top skills chart.',
-          })}
-        />
+        <div className="bg-white border-white rounded-lg container-fluid">
+          <ChartWrapper
+            isFetching={isFetching}
+            isError={isError}
+            chartType="ScatterChart"
+            chartProps={{
+              chartId: 'top-skills-chart',
+              data,
+              trackChartClick,
+              xKey: 'enrolls',
+              yKey: 'completions',
+              colorKey: 'skillType',
+              colorMap: skillsTypeColorMap,
+              xAxisTitle: intl.formatMessage({
+                id: 'advance.analytics.skills.tab.chart.top.skills.x.axis.title',
+                defaultMessage: 'Enrollments',
+                description: 'X-axis title for the top skills chart.',
+              }),
+              yAxisTitle: intl.formatMessage({
+                id: 'advance.analytics.skills.tab.chart.top.skills.y.axis.title',
+                defaultMessage: 'Completions',
+                description: 'Y-axis title for the top skills chart.',
+              }),
+              markerSizes, // Pass marker sizes directly to ScatterChart
+              customDataKeys: ['skillName', 'skillType'],
+              hovertemplate: constructChartHoverTemplate(intl, {
+                skill: '%{customdata[0]}',
+                enrollments: '%{x}',
+                completions: '%{y}',
+              }),
+            }}
+            loadingMessage={intl.formatMessage({
+              id: 'advance.analytics.skills.tab.chart.top.skills.loading.message',
+              defaultMessage: 'Loading top skills chart data',
+              description: 'Loading message for the top skills chart.',
+            })}
+          />
+        </div>
       </div>
     </div>
   );
