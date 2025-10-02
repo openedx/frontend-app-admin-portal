@@ -22,7 +22,7 @@ const SkillsByEnrollmentChart = ({
         <div className="bg-white border-white py-3 mb-2 rounded-lg container-fluid">
           <ChartWrapper
             isFetching={isFetching}
-            isError={isError}
+            isError={isError || !data?.length}
             chartType="BarChart"
             chartProps={{
               chartId: 'skills-by-enrollment-chart',

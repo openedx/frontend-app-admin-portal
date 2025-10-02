@@ -43,7 +43,7 @@ const TopSkillsByCompletionChart = ({
       <div className="bg-white border-white py-3 rounded-lg container-fluid">
         <ChartWrapper
           isFetching={isFetching}
-          isError={isError}
+          isError={isError || !data?.length}
           chartType="BarChart"
           chartProps={{
             chartId: 'top-skills-by-completins-chart',

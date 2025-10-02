@@ -53,7 +53,7 @@ const CompletionsOverTimeChart = ({
         <div className="bg-white border-white py-3 mb-2 rounded-lg container-fluid">
           <ChartWrapper
             isFetching={isFetching}
-            isError={isError}
+            isError={isError || !aggregatedData?.length}
             chartType="LineChart"
             chartProps={{
               chartId: 'completions-over-time-chart',

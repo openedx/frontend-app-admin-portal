@@ -40,7 +40,7 @@ const TopSkillsChart = ({
         <div className="bg-white border-white rounded-lg container-fluid">
           <ChartWrapper
             isFetching={isFetching}
-            isError={isError}
+            isError={isError || !data?.length}
             chartType="ScatterChart"
             chartProps={{
               chartId: 'top-skills-chart',
