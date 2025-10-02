@@ -19,6 +19,7 @@ const AnalyticsTable = ({
   endDate,
   enterpriseId,
   groupUUID,
+  budgetUUID,
   courseType,
   course,
   trackCsvDownloadClick,
@@ -35,6 +36,7 @@ const AnalyticsTable = ({
     startDate,
     endDate,
     groupUUID,
+    budgetUUID,
     // pages index from 1 in backend, frontend components index from 0
     currentPage: currentPage + 1,
     pageSize,
@@ -134,6 +136,7 @@ AnalyticsTable.propTypes = {
   startDate: PropTypes.string.isRequired,
   endDate: PropTypes.string.isRequired,
   groupUUID: PropTypes.string,
+  budgetUUID: PropTypes.string,
   courseType: PropTypes.string,
   course: PropTypes.shape({
     value: PropTypes.string.isRequired,
