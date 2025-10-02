@@ -5,7 +5,7 @@ import dayjs from 'dayjs';
 import Header from '../Header';
 import ChartWrapper from './ChartWrapper';
 import DownloadCSVButton from '../DownloadCSVButton';
-import { constructChartHoverTemplate, sumEntitiesByMetric } from '../data/utils';
+import { constructChartHoverTemplate, sumEntitiesByMetric, isDataEmpty } from '../data/utils';
 
 const CompletionsOverTimeChart = ({
   isFetching, isError, data, startDate, endDate, granularity, calculation, trackChartClick, trackCsvDownloadClick,
@@ -53,7 +53,7 @@ const CompletionsOverTimeChart = ({
         <div className="bg-white border-white py-3 mb-2 rounded-lg container-fluid">
           <ChartWrapper
             isFetching={isFetching}
-            isError={isError}
+            isError={isError || isDataEmpty(isFetching, aggregatedData)}
             chartType="LineChart"
             chartProps={{
               chartId: 'completions-over-time-chart',

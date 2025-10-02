@@ -222,3 +222,11 @@ export const get90DayPriorDate = () => {
     .split('T')[0];
   return newStartDate;
 };
+
+/** * Determines if there is no data available based on fetching status and data array.
+ * Returns true if not fetching and data is either null, undefined, or an empty array.
+ * @param {boolean} isFetching - Indicates if data is currently being fetched.
+ * @param {Array} data - The data array to check.
+ * @return {boolean} True if there is no data available, false otherwise.
+ */
+export const isDataEmpty = (isFetching, data) => !isFetching && (!data || data.length === 0);

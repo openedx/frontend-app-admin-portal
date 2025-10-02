@@ -5,7 +5,7 @@ import Header from '../Header';
 import ChartWrapper from './ChartWrapper';
 import { skillsTypeColorMap } from '../data/constants';
 import DownloadCSVButton from '../DownloadCSVButton';
-import { constructChartHoverTemplate, calculateMarkerSizes } from '../data/utils';
+import { constructChartHoverTemplate, calculateMarkerSizes, isDataEmpty } from '../data/utils';
 
 const TopSkillsChart = ({
   isFetching, isError, data, startDate, endDate, trackChartClick, trackCsvDownloadClick,
@@ -40,7 +40,7 @@ const TopSkillsChart = ({
         <div className="bg-white border-white rounded-lg container-fluid">
           <ChartWrapper
             isFetching={isFetching}
-            isError={isError}
+            isError={isError || isDataEmpty(isFetching, data)}
             chartType="ScatterChart"
             chartProps={{
               chartId: 'top-skills-chart',

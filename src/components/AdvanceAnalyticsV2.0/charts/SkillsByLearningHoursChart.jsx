@@ -1,6 +1,7 @@
 import PropTypes from 'prop-types';
 import { FormattedMessage, useIntl } from '@edx/frontend-platform/i18n';
 import ChartWrapper from './ChartWrapper';
+import { isDataEmpty } from '../data/utils';
 
 const SkillsByLearningHoursChart = ({
   isFetching, isError, data, trackChartClick,
@@ -33,7 +34,7 @@ const SkillsByLearningHoursChart = ({
         <div className="bg-white border-white py-3 mb-2 rounded-lg container-fluid overflow-auto">
           <ChartWrapper
             isFetching={isFetching}
-            isError={isError || !data?.length}
+            isError={isError || isDataEmpty(isFetching, data)}
             chartType="Treemap"
             chartProps={{
               chartId: 'skills-by-learning-hours-chart',
