@@ -37,6 +37,7 @@ const AdministerSubscriptionsFlow = ({
 
   const { isLoadingCustomerAgreement, subsidyRequestConfiguration } = useContext(SubsidyRequestsContext);
   const { customerAgreement, isLoading: isLoadingAgreement } = useCustomerAgreement({ enterpriseId });
+  // @ts-ignore
   const hasMultipleSubscriptions = customerAgreement?.subscriptions.length > 1;
 
   const isSubsidyRequestsEnabled = subsidyRequestConfiguration?.subsidyRequestsEnabled;
@@ -83,7 +84,14 @@ const AdministerSubscriptionsFlow = ({
 
   // Don't load the tour until we load the customer agreement
   if (isLoadingCustomerAgreement || isLoadingAgreement) {
-    return [];
+    return [
+      {
+        target: `#${ADMINISTER_SUBSCRIPTIONS_TARGETS.SIDEBAR}`,
+        placement: 'right',
+        title: intl.formatMessage(messages.administerSubscriptionsTitle),
+        body: intl.formatMessage(messages.administerSubscriptionsStepOneBodySingleSub),
+        onAdvance,
+      }];
   }
 
   if (!hasMultipleSubscriptions) {

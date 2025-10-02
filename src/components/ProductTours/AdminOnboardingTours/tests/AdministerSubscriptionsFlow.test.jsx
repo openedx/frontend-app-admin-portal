@@ -162,7 +162,7 @@ describe('AdministerSubscriptionsFlow', () => {
       expect(typeof result.current[3].onEnd).toBe('function');
     });
   });
-  it('should return no steps when loading customer agreement', () => {
+  it('should return first step when loading customer agreement', () => {
     jest.spyOn(hooks, 'useCustomerAgreement').mockReturnValue({
       customerAgreement: customerAgreement2Subs,
       isLoading: true,
@@ -175,8 +175,8 @@ describe('AdministerSubscriptionsFlow', () => {
       setCurrentStep: mockSetCurrentStep,
       targetSelector: '',
     }));
-
-    expect(result.current).toStrictEqual([]);
+    expect(result.current).toHaveLength(1);
+    expect(result.current[0].title).toBe('Administer subscriptions');
   });
   it('should call handleAdvanceTour on intermediate steps', () => {
     jest.spyOn(hooks, 'useCustomerAgreement').mockReturnValue({
