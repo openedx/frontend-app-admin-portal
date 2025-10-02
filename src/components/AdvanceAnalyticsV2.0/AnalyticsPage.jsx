@@ -31,8 +31,6 @@ const AnalyticsPage = ({ enterpriseId }) => {
             onSelect={(tab) => {
               setActiveTab(tab);
             }}
-            mountOnEnter
-            unmountOnExit
           >
             <Tab
               eventKey="engagements"

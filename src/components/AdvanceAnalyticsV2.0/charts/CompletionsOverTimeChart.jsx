@@ -50,31 +50,33 @@ const CompletionsOverTimeChart = ({
             />
         )}
         />
-        <ChartWrapper
-          isFetching={isFetching}
-          isError={isError}
-          chartType="LineChart"
-          chartProps={{
-            chartId: 'completions-over-time-chart',
-            data: aggregatedData,
-            trackChartClick,
-            xKey: 'passedDate',
-            yKey: 'completionCount',
-            colorKey: null,
-            colorMap: {},
-            xAxisTitle: '',
-            yAxisTitle: 'Number of Completions',
-            hovertemplate: constructChartHoverTemplate(intl, {
-              date: '%{x}',
-              completions: '%{y}',
-            }),
-          }}
-          loadingMessage={intl.formatMessage({
-            id: 'analytics.outcomes.tab.chart.top.courses.by.completions.loading.message',
-            defaultMessage: 'Loading top courses by completions chart data',
-            description: 'Loading message for the top courses by completions chart.',
-          })}
-        />
+        <div className="bg-white border-white py-3 mb-2 rounded-lg container-fluid">
+          <ChartWrapper
+            isFetching={isFetching}
+            isError={isError}
+            chartType="LineChart"
+            chartProps={{
+              chartId: 'completions-over-time-chart',
+              data: aggregatedData,
+              trackChartClick,
+              xKey: 'passedDate',
+              yKey: 'completionCount',
+              colorKey: null,
+              colorMap: {},
+              xAxisTitle: '',
+              yAxisTitle: 'Number of Completions',
+              hovertemplate: constructChartHoverTemplate(intl, {
+                date: '%{x}',
+                completions: '%{y}',
+              }),
+            }}
+            loadingMessage={intl.formatMessage({
+              id: 'analytics.outcomes.tab.chart.top.courses.by.completions.loading.message',
+              defaultMessage: 'Loading top courses by completions chart data',
+              description: 'Loading message for the top courses by completions chart.',
+            })}
+          />
+        </div>
       </div>
     </div>
   );

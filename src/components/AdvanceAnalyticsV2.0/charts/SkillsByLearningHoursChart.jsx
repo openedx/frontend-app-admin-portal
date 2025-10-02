@@ -33,7 +33,7 @@ const SkillsByLearningHoursChart = ({
         <div className="bg-white border-white py-3 mb-2 rounded-lg container-fluid">
           <ChartWrapper
             isFetching={isFetching}
-            isError={isError}
+            isError={isError || !data?.length}
             chartType="Treemap"
             chartProps={{
               chartId: 'skills-by-learning-hours-chart',
