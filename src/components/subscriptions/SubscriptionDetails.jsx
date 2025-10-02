@@ -53,7 +53,7 @@ const SubscriptionDetails = ({
         </Row>
       )}
       <SubscriptionExpirationBanner isSubscriptionPlanDetails />
-      <Row className="mb-4">
+      <Row id={ADMINISTER_SUBSCRIPTIONS_TARGETS.SUBSCRIPTION_PLANS_DETAIL_SINGLE_PAGE} className="mb-4">
         <Col className="mb-3 mb-lg-0">
           <div className="d-flex justify-content-between mb-3">
             <h2>{subscription.title}</h2>

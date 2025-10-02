@@ -201,6 +201,12 @@ const messages = defineMessages({
     + 'Invite learners, track usage, and manage licenses--all in one place.',
     description: 'Description for the administer subscriptions flow step one',
   },
+  administerSubscriptionsStepOneBodySingleSub: {
+    id: 'adminPortal.productTours.adminOnboarding.administerSubscriptions.body.1.single',
+    defaultMessage: 'Manage your subscription plan and give learners access to self-enroll in courses. '
+    + 'Invite learners, track usage, and manage licenses--all in one place.',
+    description: 'Description for the administer subscriptions flow step one',
+  },
   administerSubscriptionsStepTwoBody: {
     id: 'adminPortal.productTours.adminOnboarding.administerSubscriptions.body.2',
     defaultMessage: 'The list below shows active and expired subscription plans for you to view and manage.',

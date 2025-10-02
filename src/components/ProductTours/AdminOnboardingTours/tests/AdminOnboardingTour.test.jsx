@@ -10,7 +10,7 @@ import useHydrateAdminOnboardingData from '../data/useHydrateAdminOnboardingData
 import { queryClient } from '../../../test/testUtils';
 import { SubsidyRequestsContext } from '../../../subsidy-requests';
 import { orderBudgets, useBudgetDetailActivityOverview, useSubsidyAccessPolicy } from '../../../learner-credit-management/data';
-import { useEnterpriseBudgets } from '../../../EnterpriseSubsidiesContext/data/hooks';
+import { useCustomerAgreement, useEnterpriseBudgets } from '../../../EnterpriseSubsidiesContext/data/hooks';
 
 const mockAdminUuid = 'test-admin-uuid';
 
@@ -63,6 +63,7 @@ jest.mock('../../../learner-credit-management/data', () => ({
 
 jest.mock('../../../EnterpriseSubsidiesContext/data/hooks', () => ({
   useEnterpriseBudgets: jest.fn(),
+  useCustomerAgreement: jest.fn(),
 }));
 
 jest.mock('@edx/frontend-platform/i18n', () => ({
@@ -141,6 +142,10 @@ describe('AdminOnboardingTour', () => {
       data: {
         policyType: 'AssignedLearnerCreditAccessPolicy',
       },
+    });
+    useCustomerAgreement.mockReturnValue({
+      customerAgreement: { subscriptions: [{ uuid: 'subscription-id' }, { uuid: 'subscription-id-2' }] },
+      isLoading: false,
     });
   });
 

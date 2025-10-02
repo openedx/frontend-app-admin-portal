@@ -33,13 +33,14 @@ import {
 } from './AdminOnboardingTours/constants';
 import { TOUR_TARGETS } from './constants';
 import useFetchCompletedOnboardingFlows from './AdminOnboardingTours/data/useFetchCompletedOnboardingFlows';
-import { configuration } from '../../config';
+import { configuration, features } from '../../config';
 import TourCompleteModal from './TourCompleteModal';
 import { EnterpriseSubsidiesContext } from '../EnterpriseSubsidiesContext';
 
 interface Props {
   adminUuid: string;
   dismissOnboardingTour: (adminUuid: string) => void;
+  enableAnalyticsScreen: boolean;
   enableReportingConfigScreen: boolean;
   enableSubscriptionManagementScreen: boolean;
   onTourSelect?: (targetId: string) => void;
@@ -60,6 +61,7 @@ const TourCollapsible: FC<Props> = (
   {
     adminUuid,
     dismissOnboardingTour: dismissTour,
+    enableAnalyticsScreen,
     enableReportingConfigScreen,
     enableSubscriptionManagementScreen,
     onTourSelect,
@@ -145,10 +147,12 @@ const TourCollapsible: FC<Props> = (
         case ADMINISTER_SUBSCRIPTIONS_TITLE:
           return enableSubscriptionManagementScreen
             && (!isLoadingCustomerAgreement && !isEmpty(customerAgreement?.subscriptions));
-        case CUSTOMIZE_REPORTS_TITLE:
-          return enableReportingConfigScreen;
         case ALLOCATE_LEARNING_BUDGET_TITLE:
           return canManageLearnerCredit;
+        case CUSTOMIZE_REPORTS_TITLE:
+          return enableReportingConfigScreen;
+        case VIEW_ENROLLMENTS_INSIGHT_TITLE:
+          return features.ANALYTICS && enableAnalyticsScreen;
         default:
           return true;
       }
@@ -170,12 +174,13 @@ const TourCollapsible: FC<Props> = (
     setOnboardingSteps(steps);
   }, [
     canManageLearnerCredit,
-    onboardingTourData?.completedTourFlows,
-    onboardingTourData?.onboardingTourCompleted,
+    customerAgreement?.subscriptions,
+    enableAnalyticsScreen,
     enableReportingConfigScreen,
     enableSubscriptionManagementScreen,
     isLoadingCustomerAgreement,
-    customerAgreement?.subscriptions,
+    onboardingTourData?.completedTourFlows,
+    onboardingTourData?.onboardingTourCompleted,
   ]);
 
   return (
@@ -230,6 +235,7 @@ const TourCollapsible: FC<Props> = (
 
 const mapStateToProps = state => ({
   adminUuid: state.enterpriseCustomerAdmin.uuid as string,
+  enableAnalyticsScreen: state.portalConfiguration.enableAnalyticsScreen as boolean,
   enableReportingConfigScreen: state.portalConfiguration.enableReportingConfigScreen as boolean,
   enableSubscriptionManagementScreen: state.portalConfiguration.enableSubscriptionManagementScreen as boolean,
   onboardingTourCompleted: state.enterpriseCustomerAdmin.onboardingTourCompleted as boolean,
