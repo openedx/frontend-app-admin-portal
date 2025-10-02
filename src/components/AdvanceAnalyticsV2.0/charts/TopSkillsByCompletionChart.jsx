@@ -23,24 +23,24 @@ const TopSkillsByCompletionChart = ({
 
   return (
     <div className="bg-primary-100 rounded-lg p-3">
-      <div className="rounded-lg">
-        <div className="mb-3">
-          <Header
-            title={intl.formatMessage({
-              id: 'analytics.outcomes.tab.chart.top.skills.by.completion.title',
-              defaultMessage: 'Top Skills by Completion',
-              description: 'Title for the top skills by completion chart.',
-            })}
-            DownloadCSVComponent={(
-              <DownloadCSVButton
-                jsonData={topSkillsByCompletionForCSV || []}
-                csvFileName={`Top Skills by Completion - ${startDate} - ${endDate}`}
-                entityId="top-skills-by-completions-chart"
-                trackCsvDownloadClick={trackCsvDownloadClick}
-              />
-          )}
-          />
-        </div>
+      <div className="mb-3">
+        <Header
+          title={intl.formatMessage({
+            id: 'analytics.outcomes.tab.chart.top.skills.by.completion.title',
+            defaultMessage: 'Top Skills by Completion',
+            description: 'Title for the top skills by completion chart.',
+          })}
+          DownloadCSVComponent={(
+            <DownloadCSVButton
+              jsonData={topSkillsByCompletionForCSV || []}
+              csvFileName={`Top Skills by Completion - ${startDate} - ${endDate}`}
+              entityId="top-skills-by-completions-chart"
+              trackCsvDownloadClick={trackCsvDownloadClick}
+            />
+        )}
+        />
+      </div>
+      <div className="bg-white border-white py-3 rounded-lg container-fluid">
         <ChartWrapper
           isFetching={isFetching}
           isError={isError}
