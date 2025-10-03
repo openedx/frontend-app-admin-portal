@@ -5,7 +5,7 @@ import { propTypes } from 'react-markdown';
 import AnalyticsTable from './AnalyticsTable';
 
 const Leaderboard = ({
-  startDate, endDate, enterpriseId, courseType, course, trackCsvDownloadClick,
+  startDate, endDate, enterpriseId, courseType, course, groupUUID, budgetUUID, trackCsvDownloadClick,
 }) => {
   const intl = useIntl();
 
@@ -30,6 +30,8 @@ const Leaderboard = ({
           enterpriseId={enterpriseId}
           courseType={courseType}
           course={course}
+          groupUUID={groupUUID}
+          budgetUUID={budgetUUID}
           trackCsvDownloadClick={trackCsvDownloadClick}
           enableCSVDownload
           tableColumns={[
@@ -87,6 +89,8 @@ Leaderboard.propTypes = {
   startDate: PropTypes.string.isRequired,
   endDate: PropTypes.string.isRequired,
   courseType: PropTypes.string,
+  groupUUID: PropTypes.string,
+  budgetUUID: PropTypes.string,
   course: PropTypes.shape({
     value: PropTypes.string.isRequired,
     label: PropTypes.string.isRequired,
