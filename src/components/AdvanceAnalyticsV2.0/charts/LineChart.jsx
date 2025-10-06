@@ -13,11 +13,14 @@ import PropTypes from 'prop-types';
  * @param {string} hovertemplate - A template for the hover text.
  * @param {string} xAxisTitle - The title for the x-axis.
  * @param {string} yAxisTitle - The title for the y-axis.
+ * @param {function} trackChartClick - A function to be called when the chart is clicked.
+ * @param {string} chartId - A unique identifier for the chart.
+ * @param {Object} chartMargin - An object specifying the margins for the chart layout. Object with keys: t, b, l, r.
  *
  * @returns The rendered Plotly line chart.
  */
 const LineChart = ({
-  data, xKey, yKey, colorKey, colorMap, hovertemplate, xAxisTitle, yAxisTitle, trackChartClick, chartId,
+  data, xKey, yKey, colorKey, colorMap, hovertemplate, xAxisTitle, yAxisTitle, trackChartClick, chartId, chartMargin,
 }) => {
   const traces = useMemo(() => {
     if (!colorKey) {
@@ -50,7 +53,7 @@ const LineChart = ({
   }, [data, xKey, yKey, colorKey, colorMap, hovertemplate, chartId]);
 
   const layout = {
-    margin: { t: 0 },
+    margin: { t: 0, ...(chartMargin || {}) },
     legend: {
       title: '', yanchor: 'top', y: 0.99, xanchor: 'right', x: 0.99, bgcolor: 'white',
     },
@@ -89,6 +92,12 @@ LineChart.propTypes = {
   xAxisTitle: PropTypes.string,
   yAxisTitle: PropTypes.string.isRequired,
   trackChartClick: PropTypes.func,
+  chartMargin: PropTypes.shape({
+    t: PropTypes.number,
+    b: PropTypes.number,
+    l: PropTypes.number,
+    r: PropTypes.number,
+  }),
 };
 
 export default LineChart;

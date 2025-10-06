@@ -5,7 +5,7 @@ import dayjs from 'dayjs';
 import Header from '../Header';
 import ChartWrapper from './ChartWrapper';
 import DownloadCSVButton from '../DownloadCSVButton';
-import { constructChartHoverTemplate, sumEntitiesByMetric } from '../data/utils';
+import { constructChartHoverTemplate, sumEntitiesByMetric, isDataEmpty } from '../data/utils';
 
 const CompletionsOverTimeChart = ({
   isFetching, isError, data, startDate, endDate, granularity, calculation, trackChartClick, trackCsvDownloadClick,
@@ -28,8 +28,8 @@ const CompletionsOverTimeChart = ({
   );
 
   return (
-    <div className="bg-primary-100 rounded-lg container-fluid p-3 mb-3 mt-3 outcomes-chart-container">
-      <div className="mb-4 h-100 overflow-hidden">
+    <div className="bg-primary-100 rounded-lg p-3 mb-3">
+      <div className="chart-header">
         <Header
           title={intl.formatMessage({
             id: 'analytics.outcomes.tab.chart.completions.over.time.title',
@@ -50,10 +50,10 @@ const CompletionsOverTimeChart = ({
             />
         )}
         />
-        <div className="bg-white border-white py-3 mb-2 rounded-lg container-fluid">
+        <div className="bg-white border-white py-3 rounded-lg container-fluid">
           <ChartWrapper
             isFetching={isFetching}
-            isError={isError}
+            isError={isError || isDataEmpty(isFetching, aggregatedData)}
             chartType="LineChart"
             chartProps={{
               chartId: 'completions-over-time-chart',
@@ -69,6 +69,7 @@ const CompletionsOverTimeChart = ({
                 date: '%{x}',
                 completions: '%{y}',
               }),
+              chartMargin: { b: 40, r: 40 },
             }}
             loadingMessage={intl.formatMessage({
               id: 'analytics.outcomes.tab.chart.top.courses.by.completions.loading.message',

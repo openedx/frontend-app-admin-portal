@@ -204,6 +204,8 @@ const Engagements = ({ enterpriseId }) => {
             enterpriseId={enterpriseId}
             courseType={courseType}
             course={course}
+            groupUUID={groupUUID}
+            budgetUUID={budgetUUID}
             trackCsvDownloadClick={trackCsvDownloadClick}
           />
         </div>
