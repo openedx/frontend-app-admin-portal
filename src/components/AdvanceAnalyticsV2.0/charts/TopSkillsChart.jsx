@@ -15,8 +15,8 @@ const TopSkillsChart = ({
   const markerSizes = calculateMarkerSizes(data, 'completions');
 
   return (
-    <div className="bg-primary-100 rounded-lg container-fluid p-3 mb-3 outcomes-chart-container">
-      <div className="mb-4 h-100 overflow-hidden">
+    <div className="bg-primary-100 rounded-lg p-3 mb-3">
+      <div className="hart-header">
         <Header
           title={intl.formatMessage({
             id: 'advance.analytics.skills.tab.chart.top.skills.title',
@@ -37,7 +37,7 @@ const TopSkillsChart = ({
             />
           )}
         />
-        <div className="bg-white border-white rounded-lg container-fluid">
+        <div className="bg-white border-white py-3 rounded-lg container-fluid">
           <ChartWrapper
             isFetching={isFetching}
             isError={isError || isDataEmpty(isFetching, data)}
