@@ -2,13 +2,13 @@ import React, { useMemo } from 'react';
 import PropTypes from 'prop-types';
 import { useIntl } from '@edx/frontend-platform/i18n';
 import ChartWrapper from './ChartWrapper';
-import { constructChartHoverTemplate } from '../data/utils';
+import { constructChartHoverTemplate, isDataEmpty } from '../data/utils';
 import DownloadCSVButton from '../DownloadCSVButton';
 import Header from '../Header';
 import { skillsColorMap } from '../data/constants';
 
 const TopSkillsByCompletionChart = ({
-  isFetching, isError, data, startDate, endDate, onClick,
+  isFetching, isError, data, startDate, endDate, trackChartClick, trackCsvDownloadClick,
 }) => {
   const intl = useIntl();
 
@@ -23,30 +23,32 @@ const TopSkillsByCompletionChart = ({
 
   return (
     <div className="bg-primary-100 rounded-lg p-3">
-      <div className="rounded-lg">
-        <div className="mb-3">
-          <Header
-            title={intl.formatMessage({
-              id: 'analytics.outcomes.tab.chart.top.skills.by.completion.title',
-              defaultMessage: 'Top Skills by Completion',
-              description: 'Title for the top skills by completion chart.',
-            })}
-            DownloadCSVComponent={(
-              <DownloadCSVButton
-                jsonData={topSkillsByCompletionForCSV || []}
-                csvFileName={`Top Skills by Completion - ${startDate} - ${endDate}`}
-              />
-          )}
-          />
-        </div>
+      <div className="mb-3">
+        <Header
+          title={intl.formatMessage({
+            id: 'analytics.outcomes.tab.chart.top.skills.by.completion.title',
+            defaultMessage: 'Top Skills by Completion',
+            description: 'Title for the top skills by completion chart.',
+          })}
+          DownloadCSVComponent={(
+            <DownloadCSVButton
+              jsonData={topSkillsByCompletionForCSV || []}
+              csvFileName={`Top Skills by Completion - ${startDate} - ${endDate}`}
+              entityId="top-skills-by-completions-chart"
+              trackCsvDownloadClick={trackCsvDownloadClick}
+            />
+        )}
+        />
+      </div>
+      <div className="bg-white border-white py-3 rounded-lg container-fluid">
         <ChartWrapper
           isFetching={isFetching}
-          isError={isError}
+          isError={isError || isDataEmpty(isFetching, data)}
           chartType="BarChart"
           chartProps={{
             chartId: 'top-skills-by-completins-chart',
             data,
-            onClick,
+            trackChartClick,
             xKey: 'skillName',
             yKey: 'count',
             colorKey: 'subjectName',
@@ -78,7 +80,8 @@ TopSkillsByCompletionChart.propTypes = {
   data: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
   startDate: PropTypes.string.isRequired,
   endDate: PropTypes.string.isRequired,
-  onClick: PropTypes.func,
+  trackChartClick: PropTypes.func,
+  trackCsvDownloadClick: PropTypes.func,
 };
 
 export default TopSkillsByCompletionChart;

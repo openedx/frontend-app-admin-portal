@@ -9,6 +9,8 @@ import configureStore from 'redux-mock-store';
 
 import TourCollapsible from '../TourCollapsible';
 import { queryClient } from '../../test/testUtils';
+import { EnterpriseSubsidiesContext } from '../../EnterpriseSubsidiesContext';
+import { features } from '../../../config';
 
 // Mock FloatingCollapsible component
 jest.mock('../../FloatingCollapsible', () => {
@@ -21,6 +23,18 @@ jest.mock('../../FloatingCollapsible', () => {
   );
   return FloatingCollapsible;
 });
+
+jest.mock('../AdminOnboardingTours/data/useFetchCompletedOnboardingFlows', () => ({
+  ...jest.requireActual('../AdminOnboardingTours/data/useFetchCompletedOnboardingFlows'),
+  __esModule: true,
+  default: jest.fn().mockReturnValue({
+    data: [{
+      completedTourFlows: [],
+      onboardingTourCompleted: false,
+      onboardingTourDismissed: false,
+    }],
+  }),
+}));
 
 // Mock IconButton component
 jest.mock('@openedx/paragon', () => {
@@ -55,9 +69,21 @@ const defaultState = {
   },
 };
 
+const defaultEnterpriseSubsidiesContextValue = {
+  isLoadingCustomerAgreement: false,
+  canManageLearnerCredit: true,
+  customerAgreement: {
+    subscriptions: [{ contents: 'unimportant' }],
+  },
+};
+
 const mockSetShowCollapsible = jest.fn();
 
-const setup = (storeState = defaultState, showCollapsible = false) => {
+const setup = (
+  storeState = defaultState,
+  showCollapsible = false,
+  subsidiesContextValue = defaultEnterpriseSubsidiesContextValue,
+) => {
   const store = mockStore(storeState);
   store.dispatch = jest.fn();
 
@@ -65,11 +91,13 @@ const setup = (storeState = defaultState, showCollapsible = false) => {
     <QueryClientProvider client={queryClient()}>
       <IntlProvider locale="en">
         <Provider store={store}>
-          <TourCollapsible
-            onTourSelect={jest.fn()}
-            showCollapsible={showCollapsible}
-            setShowCollapsible={mockSetShowCollapsible}
-          />
+          <EnterpriseSubsidiesContext.Provider value={subsidiesContextValue}>
+            <TourCollapsible
+              onTourSelect={jest.fn()}
+              showCollapsible={showCollapsible}
+              setShowCollapsible={mockSetShowCollapsible}
+            />
+          </EnterpriseSubsidiesContext.Provider>
         </Provider>
       </IntlProvider>,
     </QueryClientProvider>,
@@ -172,6 +200,7 @@ describe('TourCollapsible', () => {
   });
 
   it('displays all steps when features enabled', () => {
+    features.ANALYTICS = true;
     const state = {
       enterpriseCustomerAdmin: {
         onboardingTourCompleted: false,
@@ -179,6 +208,7 @@ describe('TourCollapsible', () => {
         uuid: 'test-uuid',
       },
       portalConfiguration: {
+        enableAnalyticsScreen: true,
         enableReportingConfigScreen: true,
         enableSubscriptionManagementScreen: true,
       },
@@ -190,6 +220,21 @@ describe('TourCollapsible', () => {
     expect(screen.queryByText('Organize learners')).toBeInTheDocument();
     expect(screen.queryByText('Customize reports')).toBeInTheDocument();
     expect(screen.queryByText('Set up preferences')).toBeInTheDocument();
+  });
+
+  it('does not display enrollment insights step when analytics is disabled', () => {
+    const state = {
+      enterpriseCustomerAdmin: {
+        onboardingTourCompleted: false,
+        onboardingTourDismissed: false,
+        uuid: 'test-uuid',
+      },
+      portalConfiguration: {
+        enableAnalyticsScreen: false,
+      },
+    };
+    setup(state, true);
+    expect(screen.queryByText('View enrollment insights')).not.toBeInTheDocument();
   });
 
   it('does not display reporting configuration step when reporting is disabled', () => {
@@ -219,6 +264,27 @@ describe('TourCollapsible', () => {
       },
     };
     setup(state, true);
+    expect(screen.queryByText('Administer subscriptions')).not.toBeInTheDocument();
+  });
+
+  it('does not display administer subscriptions step when there are no subscription plans', () => {
+    const state = {
+      enterpriseCustomerAdmin: {
+        onboardingTourCompleted: false,
+        onboardingTourDismissed: false,
+        uuid: 'test-uuid',
+      },
+      portalConfiguration: {
+        enableSubscriptionManagementScreen: true,
+      },
+    };
+    const subsidiesContextValue = {
+      isLoadingCustomerAgreement: false,
+      customerAgreement: {
+        subscriptions: [],
+      },
+    };
+    setup(state, true, subsidiesContextValue);
     expect(screen.queryByText('Administer subscriptions')).not.toBeInTheDocument();
   });
 });

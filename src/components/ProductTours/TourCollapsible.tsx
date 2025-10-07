@@ -1,5 +1,8 @@
-import React, { FC, useEffect, useState } from 'react';
+import React, {
+  FC, useContext, useEffect, useState,
+} from 'react';
 import { connect } from 'react-redux';
+import { isEmpty } from 'lodash-es';
 import {
   IconButton, Icon, OverlayTrigger, Tooltip, Stack,
 } from '@openedx/paragon';
@@ -30,12 +33,14 @@ import {
 } from './AdminOnboardingTours/constants';
 import { TOUR_TARGETS } from './constants';
 import useFetchCompletedOnboardingFlows from './AdminOnboardingTours/data/useFetchCompletedOnboardingFlows';
-import { configuration } from '../../config';
+import { configuration, features } from '../../config';
 import TourCompleteModal from './TourCompleteModal';
+import { EnterpriseSubsidiesContext } from '../EnterpriseSubsidiesContext';
 
 interface Props {
   adminUuid: string;
   dismissOnboardingTour: (adminUuid: string) => void;
+  enableAnalyticsScreen: boolean;
   enableReportingConfigScreen: boolean;
   enableSubscriptionManagementScreen: boolean;
   onTourSelect?: (targetId: string) => void;
@@ -56,6 +61,7 @@ const TourCollapsible: FC<Props> = (
   {
     adminUuid,
     dismissOnboardingTour: dismissTour,
+    enableAnalyticsScreen,
     enableReportingConfigScreen,
     enableSubscriptionManagementScreen,
     onTourSelect,
@@ -68,6 +74,8 @@ const TourCollapsible: FC<Props> = (
   const [onboardingSteps, setOnboardingSteps] = useState<StepDefinition[] | undefined>();
   const [showCompletedModal, setShowCompletedModal] = useState(false);
   const { data: onboardingTourData } = useFetchCompletedOnboardingFlows(adminUuid);
+  const { canManageLearnerCredit } = useContext(EnterpriseSubsidiesContext);
+  const { isLoadingCustomerAgreement, customerAgreement } = useContext(EnterpriseSubsidiesContext);
 
   const handleDismiss = () => {
     setShowCollapsible(false);
@@ -137,9 +145,14 @@ const TourCollapsible: FC<Props> = (
     const steps = QUICK_START_GUIDE_STEPS.filter(step => {
       switch (step.title) {
         case ADMINISTER_SUBSCRIPTIONS_TITLE:
-          return enableSubscriptionManagementScreen;
+          return enableSubscriptionManagementScreen
+            && (!isLoadingCustomerAgreement && !isEmpty(customerAgreement?.subscriptions));
+        case ALLOCATE_LEARNING_BUDGET_TITLE:
+          return canManageLearnerCredit;
         case CUSTOMIZE_REPORTS_TITLE:
           return enableReportingConfigScreen;
+        case VIEW_ENROLLMENTS_INSIGHT_TITLE:
+          return features.ANALYTICS && enableAnalyticsScreen;
         default:
           return true;
       }
@@ -160,10 +173,14 @@ const TourCollapsible: FC<Props> = (
     }
     setOnboardingSteps(steps);
   }, [
-    onboardingTourData?.completedTourFlows,
-    onboardingTourData?.onboardingTourCompleted,
+    canManageLearnerCredit,
+    customerAgreement?.subscriptions,
+    enableAnalyticsScreen,
     enableReportingConfigScreen,
     enableSubscriptionManagementScreen,
+    isLoadingCustomerAgreement,
+    onboardingTourData?.completedTourFlows,
+    onboardingTourData?.onboardingTourCompleted,
   ]);
 
   return (
@@ -218,6 +235,7 @@ const TourCollapsible: FC<Props> = (
 
 const mapStateToProps = state => ({
   adminUuid: state.enterpriseCustomerAdmin.uuid as string,
+  enableAnalyticsScreen: state.portalConfiguration.enableAnalyticsScreen as boolean,
   enableReportingConfigScreen: state.portalConfiguration.enableReportingConfigScreen as boolean,
   enableSubscriptionManagementScreen: state.portalConfiguration.enableSubscriptionManagementScreen as boolean,
   onboardingTourCompleted: state.enterpriseCustomerAdmin.onboardingTourCompleted as boolean,

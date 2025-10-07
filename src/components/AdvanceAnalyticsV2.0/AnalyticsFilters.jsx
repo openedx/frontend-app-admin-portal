@@ -9,6 +9,7 @@ import {
 } from './data/constants';
 import { get90DayPriorDate } from './data/utils';
 import CourseFilterDropdown from './CourseFilterDropdown';
+import { ANALYTICS_TABS } from './constants';
 
 export const DEFAULT_GROUP = '';
 
@@ -37,11 +38,12 @@ const AnalyticsFilters = ({
   enterpriseCourses,
   budgetUUID,
   setBudgetUUID,
-
+  trackFilterClick,
 }) => {
   const intl = useIntl();
   const [collapsed, setCollapsed] = useState(false);
-  const isProgressOrOutcomesTab = activeTab === 'progress' || activeTab === 'outcomes';
+  const isProgressOrOutcomesTab = activeTab === ANALYTICS_TABS.PROGRESS || activeTab === ANALYTICS_TABS.OUTCOMES;
+  const filterByCourseStartDate = false; // To be implemented in future
   const [dateRangeValue, setDateRangeValue] = useState(DATE_RANGE.LAST_90_DAYS);
 
   const handleDateRangeChange = (selectedRange) => {
@@ -62,16 +64,19 @@ const AnalyticsFilters = ({
     }
     const newEndDate = new Date().toISOString().split('T')[0];
     setEndDate(newEndDate);
+    trackFilterClick('Date range options', selectedRange);
   };
 
   const handleStartDateChange = (selectedDate) => {
     setStartDate(selectedDate);
     setDateRangeValue(DATE_RANGE.CUSTOM);
+    trackFilterClick('Start date', selectedDate);
   };
 
   const handleEndDateChange = (selectedDate) => {
     setEndDate(selectedDate);
     setDateRangeValue(DATE_RANGE.CUSTOM);
+    trackFilterClick('End date', selectedDate);
   };
 
   return (
@@ -202,7 +207,10 @@ const AnalyticsFilters = ({
                     controlClassName="font-weight-normal analytics-filter-form-controls rounded-0"
                     as="select"
                     value={calculation}
-                    onChange={(e) => setCalculation(e.target.value)}
+                    onChange={(e) => {
+                      setCalculation(e.target.value);
+                      trackFilterClick('Calculation / Trends', e.target.value);
+                    }}
                   >
                     <option value={CALCULATION.TOTAL}>
                       {intl.formatMessage({
@@ -248,7 +256,10 @@ const AnalyticsFilters = ({
                     controlClassName="font-weight-normal analytics-filter-form-controls rounded-0"
                     as="select"
                     value={granularity}
-                    onChange={(e) => setGranularity(e.target.value)}
+                    onChange={(e) => {
+                      setGranularity(e.target.value);
+                      trackFilterClick('Date granularity', e.target.value);
+                    }}
                   >
                     <option value={GRANULARITY.DAILY}>
                       {intl.formatMessage({
@@ -292,7 +303,10 @@ const AnalyticsFilters = ({
                   controlClassName="font-weight-normal analytics-filter-form-controls rounded-0"
                   as="select"
                   value={groupUUID}
-                  onChange={(e) => setGroupUUID(e.target.value)}
+                  onChange={(e) => {
+                    setGroupUUID(e.target.value);
+                    trackFilterClick('Filter by group', e.target.value);
+                  }}
                   disabled={isGroupsLoading}
                 >
                   <option value={DEFAULT_GROUP}>
@@ -325,7 +339,10 @@ const AnalyticsFilters = ({
                     controlClassName="font-weight-normal analytics-filter-form-controls rounded-0"
                     as="select"
                     value={budgetUUID}
-                    onChange={(e) => setBudgetUUID(e.target.value)}
+                    onChange={(e) => {
+                      setBudgetUUID(e.target.value);
+                      trackFilterClick('Filter by budget', e.target.value);
+                    }}
                     disabled={isBudgetsFetching}
                   >
                     <option value="">
@@ -353,12 +370,20 @@ const AnalyticsFilters = ({
                 isFetching={isEnterpriseCoursesFetching}
                 enterpriseCourses={enterpriseCourses}
                 selectedCourse={course}
-                onChange={setCourse}
+                onChange={(selectedCourse) => {
+                  setCourse(selectedCourse);
+                  trackFilterClick('Filter by course', selectedCourse?.label);
+                }}
               />
             </div>
 
             {isProgressOrOutcomesTab && (
-            <div className="col">
+            <div
+              className="col"
+              style={!filterByCourseStartDate ? { visibility: 'hidden' } : {}}
+              aria-hidden={!filterByCourseStartDate ? 'true' : undefined}
+              tabIndex={!filterByCourseStartDate ? -1 : undefined}
+            >
               <Form.Group>
                 <Form.Label className="font-weight-normal d-flex align-items-center">
                   <span>
@@ -409,7 +434,10 @@ const AnalyticsFilters = ({
                   <Form.Control
                     controlClassName="font-weight-normal analytics-filter-form-controls rounded-0"
                     as="select"
-                    onChange={(e) => setCourseType(e.target.value)}
+                    onChange={(e) => {
+                      setCourseType(e.target.value);
+                      trackFilterClick('Filter by course type', e.target.value);
+                    }}
                     defaultValue={COURSE_TYPES.ALL_COURSE_TYPES}
                     value={courseType}
                   >
@@ -470,6 +498,7 @@ AnalyticsFilters.propTypes = {
   isBudgetsFetching: PropTypes.bool.isRequired,
   budgetUUID: PropTypes.string,
   setBudgetUUID: PropTypes.func.isRequired,
+  trackFilterClick: PropTypes.func,
 };
 
 export default AnalyticsFilters;

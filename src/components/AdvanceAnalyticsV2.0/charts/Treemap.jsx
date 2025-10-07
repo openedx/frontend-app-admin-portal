@@ -12,7 +12,7 @@ import PropTypes from 'prop-types';
  */
 
 const Treemap = ({
-  labels, values, parents, onClick, chartId,
+  labels, values, parents, trackChartClick, chartId,
 }) => {
   const treemapData = [{
     chartId,
@@ -43,7 +43,7 @@ const Treemap = ({
       layout={layout}
       config={config}
       style={{ width: '100%', height: '100%' }}
-      onClick={onClick}
+      onClick={() => trackChartClick(chartId)}
     />
   );
 };
@@ -55,7 +55,7 @@ Treemap.propTypes = {
     PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
   ).isRequired,
   parents: PropTypes.arrayOf(PropTypes.string).isRequired,
-  onClick: PropTypes.func,
+  trackChartClick: PropTypes.func,
 };
 
 export default Treemap;

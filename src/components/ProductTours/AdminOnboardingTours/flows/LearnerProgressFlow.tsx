@@ -44,12 +44,6 @@ const LearnerProgressFlow = ({
     onAdvance: onLearnerAdvance,
     onBack: onLearnerBack,
   }, {
-    target: `#${TRACK_LEARNER_PROGRESS_TARGETS.MODULE_ACTIVITY}`,
-    placement: 'top',
-    body: intl.formatMessage(messages.trackLearnerProgressStepFiveBody),
-    onBack: onLearnerBack,
-    onAdvance: onLearnerAdvance,
-  }, {
     target: `#${TRACK_LEARNER_PROGRESS_TARGETS.FILTER}`,
     placement: 'top',
     body: intl.formatMessage(messages.trackLearnerProgressStepSixBody),

@@ -5,10 +5,10 @@ import dayjs from 'dayjs';
 import Header from '../Header';
 import ChartWrapper from './ChartWrapper';
 import DownloadCSVButton from '../DownloadCSVButton';
-import { constructChartHoverTemplate, sumEntitiesByMetric } from '../data/utils';
+import { constructChartHoverTemplate, sumEntitiesByMetric, isDataEmpty } from '../data/utils';
 
 const CompletionsOverTimeChart = ({
-  isFetching, isError, data, startDate, endDate, granularity, calculation, onClick,
+  isFetching, isError, data, startDate, endDate, granularity, calculation, trackChartClick, trackCsvDownloadClick,
 }) => {
   const intl = useIntl();
 
@@ -28,8 +28,8 @@ const CompletionsOverTimeChart = ({
   );
 
   return (
-    <div className="bg-primary-100 rounded-lg container-fluid p-3 mb-3 mt-3 outcomes-chart-container">
-      <div className="mb-4 h-100 overflow-hidden">
+    <div className="bg-primary-100 rounded-lg p-3 mb-3">
+      <div className="chart-header">
         <Header
           title={intl.formatMessage({
             id: 'analytics.outcomes.tab.chart.completions.over.time.title',
@@ -45,34 +45,39 @@ const CompletionsOverTimeChart = ({
             <DownloadCSVButton
               jsonData={completionsOverTimeForCSV}
               csvFileName={`Completions over time - ${startDate} - ${endDate} (${granularity} ${calculation})`}
+              entityId="completions-over-time-chart"
+              trackCsvDownloadClick={trackCsvDownloadClick}
             />
         )}
         />
-        <ChartWrapper
-          isFetching={isFetching}
-          isError={isError}
-          chartType="LineChart"
-          chartProps={{
-            chartId: 'completions-over-time-chart',
-            data: aggregatedData,
-            onClick,
-            xKey: 'passedDate',
-            yKey: 'completionCount',
-            colorKey: null,
-            colorMap: {},
-            xAxisTitle: '',
-            yAxisTitle: 'Number of Completions',
-            hovertemplate: constructChartHoverTemplate(intl, {
-              date: '%{x}',
-              completions: '%{y}',
-            }),
-          }}
-          loadingMessage={intl.formatMessage({
-            id: 'analytics.outcomes.tab.chart.top.courses.by.completions.loading.message',
-            defaultMessage: 'Loading top courses by completions chart data',
-            description: 'Loading message for the top courses by completions chart.',
-          })}
-        />
+        <div className="bg-white border-white py-3 rounded-lg container-fluid">
+          <ChartWrapper
+            isFetching={isFetching}
+            isError={isError || isDataEmpty(isFetching, aggregatedData)}
+            chartType="LineChart"
+            chartProps={{
+              chartId: 'completions-over-time-chart',
+              data: aggregatedData,
+              trackChartClick,
+              xKey: 'passedDate',
+              yKey: 'completionCount',
+              colorKey: null,
+              colorMap: {},
+              xAxisTitle: '',
+              yAxisTitle: 'Number of Completions',
+              hovertemplate: constructChartHoverTemplate(intl, {
+                date: '%{x}',
+                completions: '%{y}',
+              }),
+              chartMargin: { b: 40, r: 40 },
+            }}
+            loadingMessage={intl.formatMessage({
+              id: 'analytics.outcomes.tab.chart.top.courses.by.completions.loading.message',
+              defaultMessage: 'Loading top courses by completions chart data',
+              description: 'Loading message for the top courses by completions chart.',
+            })}
+          />
+        </div>
       </div>
     </div>
   );
@@ -86,7 +91,8 @@ CompletionsOverTimeChart.propTypes = {
   endDate: PropTypes.string.isRequired,
   granularity: PropTypes.string.isRequired,
   calculation: PropTypes.string.isRequired,
-  onClick: PropTypes.func,
+  trackChartClick: PropTypes.func,
+  trackCsvDownloadClick: PropTypes.func,
 };
 
 export default CompletionsOverTimeChart;

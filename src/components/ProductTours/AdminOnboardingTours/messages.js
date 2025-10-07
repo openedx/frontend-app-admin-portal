@@ -201,6 +201,12 @@ const messages = defineMessages({
     + 'Invite learners, track usage, and manage licenses--all in one place.',
     description: 'Description for the administer subscriptions flow step one',
   },
+  administerSubscriptionsStepOneBodySingleSub: {
+    id: 'adminPortal.productTours.adminOnboarding.administerSubscriptions.body.1.single',
+    defaultMessage: 'Manage your subscription plan and give learners access to self-enroll in courses. '
+    + 'Invite learners, track usage, and manage licenses--all in one place.',
+    description: 'Description for the administer subscriptions flow step one',
+  },
   administerSubscriptionsStepTwoBody: {
     id: 'adminPortal.productTours.adminOnboarding.administerSubscriptions.body.2',
     defaultMessage: 'The list below shows active and expired subscription plans for you to view and manage.',
@@ -282,9 +288,9 @@ const messages = defineMessages({
     description: 'Description for the allocate learning budgets invite-only bne flow step four',
   },
   allocateLearningBudgetStepFiveAssignment: {
-    id: 'adminPortal.productTours.adminOnboarding.allocateLearningBudget.body.6.assignment',
+    id: 'adminPortal.productTours.adminOnboarding.allocateLearningBudget.body.5.assignment',
     defaultMessage: 'Track all budget activity, including pending assignments and enrollment spending.',
-    description: 'Description for the allocate learning budgets assignments flow step six',
+    description: 'Description for the allocate learning budgets assignments flow step five',
   },
   allocateLearningBudgetStepFiveAssignmentZeroState: {
     id: 'adminPortal.productTours.adminOnboarding.allocateLearningBudget.body.5.assignment.zeroState',
@@ -309,9 +315,14 @@ const messages = defineMessages({
     description: 'Description for the allocate learning budgets invite only Browse and Enroll flow step six',
   },
   allocateLearningBudgetStepSixAssignment: {
-    id: 'adminPortal.productTours.adminOnboarding.allocateLearningBudget.body.7.assignment',
+    id: 'adminPortal.productTours.adminOnboarding.allocateLearningBudget.body.6.assignment',
     defaultMessage: 'The Assigned table helps you monitor learner assignments, send reminders, or cancel as needed.',
-    description: 'Description for the allocate learning budgets flow step seven',
+    description: 'Description for the allocate learning budgets flow step six',
+  },
+  allocateLearningBudgetStepSixSpendNoAssignment: {
+    id: 'adminPortal.productTours.adminOnboarding.allocateLearningBudget.body.6.spendNoAssignment',
+    defaultMessage: 'Once you assign courses, you can monitor learner assignments, send reminders, or cancel as needed.',
+    description: 'Description for the allocate learning budgets flow step six for customers that have spend but no assignments.',
   },
   allocateLearningBudgetStepSevenAssignment: {
     id: 'adminPortal.productTours.adminOnboarding.allocateLearningBudget.body.8.assignment',

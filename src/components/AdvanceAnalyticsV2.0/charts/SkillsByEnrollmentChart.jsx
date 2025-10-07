@@ -2,11 +2,11 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { FormattedMessage, useIntl } from '@edx/frontend-platform/i18n';
 import ChartWrapper from './ChartWrapper';
-import { constructChartHoverTemplate } from '../data/utils';
+import { constructChartHoverTemplate, isDataEmpty } from '../data/utils';
 import { skillsColorMap } from '../data/constants';
 
 const SkillsByEnrollmentChart = ({
-  isFetching, isError, data, onClick,
+  isFetching, isError, data, trackChartClick,
 }) => {
   const intl = useIntl();
 
@@ -22,12 +22,12 @@ const SkillsByEnrollmentChart = ({
         <div className="bg-white border-white py-3 mb-2 rounded-lg container-fluid">
           <ChartWrapper
             isFetching={isFetching}
-            isError={isError}
+            isError={isError || isDataEmpty(isFetching, data)}
             chartType="BarChart"
             chartProps={{
               chartId: 'skills-by-enrollment-chart',
               data,
-              onClick,
+              trackChartClick,
               xKey: 'skillName',
               yKey: 'count',
               colorKey: 'subjectName',
@@ -56,7 +56,7 @@ SkillsByEnrollmentChart.propTypes = {
   isFetching: PropTypes.bool.isRequired,
   isError: PropTypes.bool.isRequired,
   data: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
-  onClick: PropTypes.func,
+  trackChartClick: PropTypes.func,
 };
 
 export default SkillsByEnrollmentChart;

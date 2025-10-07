@@ -1,10 +1,11 @@
 import React from 'react';
 import { useIntl } from '@edx/frontend-platform/i18n';
 import PropTypes from 'prop-types';
+import { propTypes } from 'react-markdown';
 import AnalyticsTable from './AnalyticsTable';
 
 const Leaderboard = ({
-  startDate, endDate, enterpriseId, courseType, course,
+  startDate, endDate, enterpriseId, courseType, course, groupUUID, budgetUUID, trackCsvDownloadClick,
 }) => {
   const intl = useIntl();
 
@@ -23,11 +24,15 @@ const Leaderboard = ({
             defaultMessage: 'Explore the top learners ranked by engagement metrics. The list is sorted by learning hours by default. To dive deeper, download the full CSV to explore and sort by other metrics. Only learners who have passed the course and completed at least one engagement activity (watching a video, submitting a problem, or posting in forums) are included.',
             description: 'Subtitle for the leaderboard datatable.',
           })}
+          entityId="leaderboard-table"
           startDate={startDate}
           endDate={endDate}
           enterpriseId={enterpriseId}
           courseType={courseType}
           course={course}
+          groupUUID={groupUUID}
+          budgetUUID={budgetUUID}
+          trackCsvDownloadClick={trackCsvDownloadClick}
           enableCSVDownload
           tableColumns={[
             {
@@ -84,10 +89,13 @@ Leaderboard.propTypes = {
   startDate: PropTypes.string.isRequired,
   endDate: PropTypes.string.isRequired,
   courseType: PropTypes.string,
+  groupUUID: PropTypes.string,
+  budgetUUID: PropTypes.string,
   course: PropTypes.shape({
     value: PropTypes.string.isRequired,
     label: PropTypes.string.isRequired,
   }),
+  trackCsvDownloadClick: propTypes.func,
 };
 
 export default Leaderboard;

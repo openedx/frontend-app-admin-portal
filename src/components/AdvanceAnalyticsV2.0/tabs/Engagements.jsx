@@ -104,11 +104,33 @@ const Engagements = ({ enterpriseId }) => {
     isLoading: isGroupsLoading, data: groups,
   } = useAllFlexEnterpriseGroups(enterpriseId);
 
-  const handleChartClick = (data) => {
+  // Event tracking for chart clicks
+  const trackChartClick = (chartId) => {
     sendEnterpriseTrackEvent(
       enterpriseId,
       `${EVENT_NAMES.ANALYTICS_V2.ENGAGEMENT_CHART_CLICKED}`,
-      { chartId: data?.points?.[0]?.data?.chartId },
+      { chartId },
+    );
+  };
+
+  // Event tracking for CSV download clicks
+  const trackCsvDownloadClick = (entityId) => {
+    sendEnterpriseTrackEvent(
+      enterpriseId,
+      `${EVENT_NAMES.ANALYTICS_V2.ENGAGEMENT_CSV_DOWNLOAD_CLICKED}`,
+      { entityId },
+    );
+  };
+
+  // Event tracking for filter clicks
+  const trackFilterClick = (filterName, filterValue) => {
+    sendEnterpriseTrackEvent(
+      enterpriseId,
+      `${EVENT_NAMES.ANALYTICS_V2.ENGAGEMENT_FILTER_CLICKED}`,
+      {
+        name: filterName,
+        value: filterValue,
+      },
     );
   };
 
@@ -160,6 +182,7 @@ const Engagements = ({ enterpriseId }) => {
           isBudgetsFetching={isBudgetsFetching}
           budgetUUID={budgetUUID}
           setBudgetUUID={setBudgetUUID}
+          trackFilterClick={trackFilterClick}
         />
       </div>
 
@@ -181,6 +204,9 @@ const Engagements = ({ enterpriseId }) => {
             enterpriseId={enterpriseId}
             courseType={courseType}
             course={course}
+            groupUUID={groupUUID}
+            budgetUUID={budgetUUID}
+            trackCsvDownloadClick={trackCsvDownloadClick}
           />
         </div>
       </div>
@@ -192,7 +218,8 @@ const Engagements = ({ enterpriseId }) => {
         data={engagementData?.engagementOverTime}
         startDate={startDate}
         endDate={endDate || currentDate}
-        onClick={handleChartClick}
+        trackChartClick={trackChartClick}
+        trackCsvDownloadClick={trackCsvDownloadClick}
       />
 
       {/* Enrollments Over Time Chart */}
@@ -202,7 +229,8 @@ const Engagements = ({ enterpriseId }) => {
         data={enrollmentsData?.enrollmentsOverTime}
         startDate={startDate}
         endDate={endDate || currentDate}
-        onClick={handleChartClick}
+        trackChartClick={trackChartClick}
+        trackCsvDownloadClick={trackCsvDownloadClick}
       />
 
       {/* Top 10 Courses Tables */}
@@ -215,6 +243,7 @@ const Engagements = ({ enterpriseId }) => {
               data={enrollmentsData?.topCoursesByEnrollments}
               startDate={startDate}
               endDate={endDate || currentDate}
+              trackCsvDownloadClick={trackCsvDownloadClick}
             />
           </div>
         </div>
@@ -226,6 +255,7 @@ const Engagements = ({ enterpriseId }) => {
               data={engagementData?.topCoursesByEngagement}
               startDate={startDate}
               endDate={endDate || currentDate}
+              trackCsvDownloadClick={trackCsvDownloadClick}
             />
           </div>
         </div>
@@ -241,6 +271,7 @@ const Engagements = ({ enterpriseId }) => {
               data={enrollmentsData?.topSubjectsByEnrollments}
               startDate={startDate}
               endDate={endDate || currentDate}
+              trackCsvDownloadClick={trackCsvDownloadClick}
             />
           </div>
         </div>
@@ -252,6 +283,7 @@ const Engagements = ({ enterpriseId }) => {
               data={engagementData?.topSubjectsByEngagement}
               startDate={startDate}
               endDate={endDate || currentDate}
+              trackCsvDownloadClick={trackCsvDownloadClick}
             />
           </div>
         </div>

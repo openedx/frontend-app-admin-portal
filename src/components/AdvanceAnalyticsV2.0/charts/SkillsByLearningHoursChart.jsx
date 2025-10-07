@@ -1,9 +1,10 @@
 import PropTypes from 'prop-types';
 import { FormattedMessage, useIntl } from '@edx/frontend-platform/i18n';
 import ChartWrapper from './ChartWrapper';
+import { isDataEmpty } from '../data/utils';
 
 const SkillsByLearningHoursChart = ({
-  isFetching, isError, data, onClick,
+  isFetching, isError, data, trackChartClick,
 }) => {
   const intl = useIntl();
   const parentLabel = intl.formatMessage({
@@ -23,22 +24,22 @@ const SkillsByLearningHoursChart = ({
 
   return (
     <div className="bg-primary-100 rounded-lg p-3 skills-chart-container h-100">
-      <div className="skills-by-learning-hours-chart-container h-100 overflow-hidden">
+      <div className="skills-by-learning-hours-chart-container h-100">
         <h2 className="font-weight-bold">
           <FormattedMessage
             id="advance.analytics.engagements.tab.skills.by.learning.hours.chart.heading"
             defaultMessage="Skills by learning hours"
           />
         </h2>
-        <div className="bg-white border-white py-3 mb-2 rounded-lg container-fluid">
+        <div className="bg-white border-white py-3 mb-2 rounded-lg container-fluid overflow-auto">
           <ChartWrapper
             isFetching={isFetching}
-            isError={isError}
+            isError={isError || isDataEmpty(isFetching, data)}
             chartType="Treemap"
             chartProps={{
               chartId: 'skills-by-learning-hours-chart',
               data: !!data,
-              onClick,
+              trackChartClick,
               labels,
               values,
               parents,
@@ -58,7 +59,7 @@ SkillsByLearningHoursChart.propTypes = {
   isFetching: PropTypes.bool.isRequired,
   isError: PropTypes.bool.isRequired,
   data: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
-  onClick: PropTypes.func,
+  trackChartClick: PropTypes.func,
 };
 
 export default SkillsByLearningHoursChart;

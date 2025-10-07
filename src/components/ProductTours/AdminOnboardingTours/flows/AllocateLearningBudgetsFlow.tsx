@@ -1,6 +1,7 @@
 import { useIntl } from '@edx/frontend-platform/i18n';
 import { sendEnterpriseTrackEvent } from '@edx/frontend-enterprise-utils';
 import { useParams } from 'react-router';
+
 import { ALLOCATE_LEARNING_BUDGETS_TARGETS, ADMIN_TOUR_EVENT_NAMES } from '../constants';
 import messages from '../messages';
 import { TourStep } from '../../types';
@@ -67,8 +68,8 @@ const AllocateLearningBudgetsFlow = ({
 
   if (isOnBudgetPage) {
     if (policyType === 'Assignment') {
-      // Assignment budget with spend or assignment activity
-      if (isOnBudgetPage && (hasSpentTransactions || hasContentAssignments)) {
+      // Assignment budget with spend and assignment activity
+      if (hasSpentTransactions && hasContentAssignments) {
         return [
           {
             target: `#${ALLOCATE_LEARNING_BUDGETS_TARGETS.BUDGET_DETAIL_CARD}`,
@@ -113,6 +114,51 @@ const AllocateLearningBudgetsFlow = ({
             onEnd: onAllocateEnd,
           },
         ];
+      } if (hasSpentTransactions && !hasContentAssignments) {
+        return [
+          {
+            target: `#${ALLOCATE_LEARNING_BUDGETS_TARGETS.BUDGET_DETAIL_CARD}`,
+            placement: 'top',
+            body: intl.formatMessage(messages.allocateLearningBudgetStepThreeAssignment),
+            onAdvance: onAllocateAdvance,
+          }, {
+            target: `#${ALLOCATE_LEARNING_BUDGETS_TARGETS.NEW_ASSIGNMENT_BUDGET_BUTTON}`,
+            placement: 'bottom',
+            body: intl.formatMessage(messages.allocateLearningBudgetStepFourAssignment),
+            onAdvance: onAllocateAdvance,
+            onBack: onAllocateBack,
+          }, {
+            target: `#${ALLOCATE_LEARNING_BUDGETS_TARGETS.TRACK_BUDGET_ACTIVITY}`,
+            placement: 'top',
+            body: intl.formatMessage(messages.allocateLearningBudgetStepFiveAssignment),
+            onAdvance: onAllocateAdvance,
+            onBack: onAllocateBack,
+          }, {
+            target: `#${ALLOCATE_LEARNING_BUDGETS_TARGETS.ZERO_STATE_ASSIGN_CARD}`,
+            placement: 'top',
+            body: intl.formatMessage(messages.allocateLearningBudgetStepSixSpendNoAssignment),
+            onAdvance: onAllocateAdvance,
+            onBack: onAllocateBack,
+          }, {
+            target: `#${ALLOCATE_LEARNING_BUDGETS_TARGETS.BUDGET_SPENT_TABLE}`,
+            placement: 'top',
+            body: intl.formatMessage(messages.allocateLearningBudgetStepSevenAssignment),
+            onAdvance: onAllocateAdvance,
+            onBack: onAllocateBack,
+          }, {
+            target: `#${ALLOCATE_LEARNING_BUDGETS_TARGETS.BUDGET_CATALOG_TAB}`,
+            placement: 'top',
+            body: intl.formatMessage(messages.allocateLearningBudgetStepEightAssignment),
+            onAdvance: onAllocateAdvance,
+            onBack: onAllocateBack,
+          }, {
+            target: `#${ALLOCATE_LEARNING_BUDGETS_TARGETS.LEARNER_CREDIT_MANAGEMENT_BREADCRUMBS}`,
+            placement: 'top',
+            body: intl.formatMessage(messages.allocateLearningBudgetStepNine),
+            onBack: onAllocateBack,
+            onEnd: onAllocateEnd,
+          },
+        ];
       // Zero state assignment budget
       } if (!hasSpentTransactions && !hasContentAssignments) {
         return [
@@ -131,8 +177,7 @@ const AllocateLearningBudgetsFlow = ({
             placement: 'top',
             body: intl.formatMessage(messages.allocateLearningBudgetStepFiveAssignmentZeroState),
             onAdvance: onAllocateAdvance,
-          },
-          {
+          }, {
             target: `#${ALLOCATE_LEARNING_BUDGETS_TARGETS.BUDGET_CATALOG_TAB}`,
             placement: 'top',
             body: intl.formatMessage(messages.allocateLearningBudgetStepSixAssignmentZeroState),

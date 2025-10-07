@@ -13,6 +13,7 @@ const TopSubjectsByCompletionTable = ({
   endDate,
   granularity,
   calculation,
+  trackCsvDownloadClick,
 }) => {
   const intl = useIntl();
 
@@ -68,6 +69,8 @@ const TopSubjectsByCompletionTable = ({
             jsonData={topSubjectsByCompletionsForCSV}
             csvFileName={`Top Subjects by Completion - ${startDate} - ${endDate} (${granularity} ${calculation})`}
             className="px-1"
+            entityId="top-subjects-by-completion-table"
+            trackCsvDownloadClick={trackCsvDownloadClick}
           />
           )}
       />
@@ -105,6 +108,7 @@ TopSubjectsByCompletionTable.propTypes = {
   endDate: PropTypes.string,
   granularity: PropTypes.string,
   calculation: PropTypes.string,
+  trackCsvDownloadClick: PropTypes.func,
 };
 
 export default TopSubjectsByCompletionTable;

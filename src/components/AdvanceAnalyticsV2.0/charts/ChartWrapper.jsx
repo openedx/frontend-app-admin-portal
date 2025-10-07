@@ -45,7 +45,8 @@ ChartWrapper.propTypes = {
   chartProps: PropTypes.shape({
     chartId: PropTypes.string.isRequired,
     data: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
-    onClick: PropTypes.func,
+    trackChartClick: PropTypes.func,
+    trackCsvDownloadClick: PropTypes.func,
     xKey: PropTypes.string,
     yKey: PropTypes.string,
     colorKey: PropTypes.string,
@@ -55,6 +56,12 @@ ChartWrapper.propTypes = {
     yAxisTitle: PropTypes.string,
     markerSizes: PropTypes.arrayOf(PropTypes.number), // An array of sizes for the markers.
     customDataKeys: PropTypes.arrayOf(PropTypes.string),
+    chartMargin: PropTypes.shape({
+      t: PropTypes.number,
+      b: PropTypes.number,
+      l: PropTypes.number,
+      r: PropTypes.number,
+    }),
   }).isRequired,
   loadingMessage: PropTypes.string.isRequired,
 };
