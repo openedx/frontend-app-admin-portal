@@ -17,6 +17,7 @@ import messages from '../messages';
  * @param {string} yAxisTitle - The title for the y-axis.
  * @param {number[]} markerSizes - An array of sizes for the markers.
  * @param {string[]} customDataKeys - Array of keys for custom data to be included in the hover template.
+ * @param {Object} chartMargin - An object specifying the margins for the chart layout. Object with keys: t, b, l, r.
  *
  * @returns The rendered Plotly scatter chart.
  */
@@ -33,6 +34,7 @@ const ScatterChart = ({
   customDataKeys,
   trackChartClick,
   chartId,
+  chartMargin,
 }) => {
   const intl = useIntl();
   const categories = Object.keys(colorMap);
@@ -63,7 +65,7 @@ const ScatterChart = ({
   }), [data, xKey, yKey, colorKey, colorMap, hovertemplate, categories, markerSizes, customDataKeys, intl, chartId]);
 
   const layout = {
-    margin: { t: 0 },
+    margin: { t: 0, ...(chartMargin || {}) },
     legend: {
       title: '', yanchor: 'top', y: 0.99, xanchor: 'left', x: 0.99, bgcolor: 'white', itemsizing: 'constant',
     },
@@ -111,6 +113,12 @@ ScatterChart.propTypes = {
   markerSizes: PropTypes.arrayOf(PropTypes.number).isRequired,
   customDataKeys: PropTypes.arrayOf(PropTypes.string),
   trackChartClick: PropTypes.func,
+  chartMargin: PropTypes.shape({
+    t: PropTypes.number,
+    b: PropTypes.number,
+    l: PropTypes.number,
+    r: PropTypes.number,
+  }),
 };
 
 export default ScatterChart;

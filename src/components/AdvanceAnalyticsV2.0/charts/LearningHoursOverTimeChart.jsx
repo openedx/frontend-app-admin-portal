@@ -5,7 +5,7 @@ import { useIntl } from '@edx/frontend-platform/i18n';
 import Header from '../Header';
 import ChartWrapper from './ChartWrapper';
 import DownloadCSVButton from '../DownloadCSVButton';
-import { constructChartHoverTemplate, sumEntitiesByMetric } from '../data/utils';
+import { constructChartHoverTemplate, sumEntitiesByMetric, isDataEmpty } from '../data/utils';
 
 const LearningHoursOverTimeChart = ({
   isFetching, isError, data, startDate, endDate, trackChartClick, trackCsvDownloadClick,
@@ -28,8 +28,8 @@ const LearningHoursOverTimeChart = ({
   );
 
   return (
-    <div className="bg-primary-100 rounded-lg container-fluid p-3 learning-hours-over-time-chart-container mb-3 engagement-chart-container">
-      <div className="mb-4 h-100 overflow-hidden">
+    <div className="bg-primary-100 rounded-lg p-3 mb-3">
+      <div className="chart-header">
         <Header
           title={intl.formatMessage({
             id: 'advance.analytics.engagement.tab.learning.hours.over.time.chart.title',
@@ -50,10 +50,10 @@ const LearningHoursOverTimeChart = ({
             />
           )}
         />
-        <div className="bg-white border-white py-3 mb-2 rounded-lg container-fluid">
+        <div className="bg-white border-white py-3 rounded-lg container-fluid">
           <ChartWrapper
             isFetching={isFetching}
-            isError={isError}
+            isError={isError || isDataEmpty(isFetching, aggregatedData)}
             chartType="LineChart"
             chartProps={{
               chartId: 'learning-hours-over-time-chart',
@@ -69,6 +69,7 @@ const LearningHoursOverTimeChart = ({
                 date: '%{x}',
                 learningHours: '%{y}',
               }),
+              chartMargin: { b: 40, r: 40 },
             }}
             loadingMessage={intl.formatMessage({
               id: 'advance.analytics.engagements.tab.learning.hours.over.time.chart.loading.message',

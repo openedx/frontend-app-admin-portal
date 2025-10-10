@@ -67,6 +67,7 @@ const TopSkillsChart = ({
                 enrollments: '%{x}',
                 completions: '%{y}',
               }),
+              chartMargin: { b: 50 },
             }}
             loadingMessage={intl.formatMessage({
               id: 'advance.analytics.skills.tab.chart.top.skills.loading.message',
