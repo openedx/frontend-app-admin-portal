@@ -213,8 +213,8 @@ const Engagements = ({ enterpriseId }) => {
 
       {/* Learning Hours Over Time Chart */}
       <LearningHoursOverTimeChart
-        isFetching={isEngagementError}
-        isError={isEngagementFetching}
+        isFetching={isEngagementFetching}
+        isError={isEngagementError}
         data={engagementData?.engagementOverTime}
         startDate={startDate}
         endDate={endDate || currentDate}
