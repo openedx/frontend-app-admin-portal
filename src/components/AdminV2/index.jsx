@@ -382,7 +382,7 @@ const Admin = ({
       <Alert.Heading>
         <FormattedMessage
           id="admin.portal.lpr.error.message.heading"
-          defaultMessage="Hey, nice to see you"
+          defaultMessage="Namaste, nice to see you"
           description="Error message heading for learner progress report page"
         />
       </Alert.Heading>
