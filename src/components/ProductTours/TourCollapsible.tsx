@@ -18,15 +18,15 @@ import messages, {
   ORGANIZE_LEARNERS_TITLE,
   SET_UP_PREFERENCES_TITLE,
   TRACK_LEARNER_PROGRESS_TITLE,
-  VIEW_ENROLLMENTS_INSIGHT_TITLE,
   CUSTOMIZE_REPORTS_TITLE,
+  ANALYTICS_V2_TITLE,
 } from './AdminOnboardingTours/messages';
 import { dismissOnboardingTour, reopenOnboardingTour } from '../../data/actions/enterpriseCustomerAdmin';
 import { Step } from './AdminOnboardingTours/OnboardingSteps';
 import {
   ADMINISTER_SUBSCRIPTIONS_TARGETS,
   ALLOCATE_LEARNING_BUDGETS_TARGETS,
-  ANALYTICS_INSIGHTS_TARGETS,
+  ANALYTICS_V2_TARGETS,
   CUSTOMIZE_REPORTS_SIDEBAR,
   ORGANIZE_LEARNER_TARGETS,
   TRACK_LEARNER_PROGRESS_TARGETS,
@@ -96,9 +96,9 @@ const TourCollapsible: FC<Props> = (
       completed: false,
     }, {
       icon: InsertChartOutlined,
-      title: VIEW_ENROLLMENTS_INSIGHT_TITLE,
+      title: ANALYTICS_V2_TITLE,
       timeEstimate: 1,
-      targetId: ANALYTICS_INSIGHTS_TARGETS.SIDEBAR,
+      targetId: ANALYTICS_V2_TARGETS.SIDEBAR,
       completed: false,
     }, {
       icon: MoneyOutline,
@@ -134,7 +134,7 @@ const TourCollapsible: FC<Props> = (
     const FLOW_UUID_MAPPING = new Map([
       [ALLOCATE_LEARNING_BUDGET_TITLE, configuration.ADMIN_ONBOARDING_UUIDS.FLOW_ALLOCATE_BUDGETS_UUID?.toString()],
       [TRACK_LEARNER_PROGRESS_TITLE, configuration.ADMIN_ONBOARDING_UUIDS.FLOW_TRACK_LEARNER_PROGRESS_UUID?.toString()],
-      [VIEW_ENROLLMENTS_INSIGHT_TITLE, configuration.ADMIN_ONBOARDING_UUIDS.FLOW_ENROLLMENT_INSIGHTS?.toString()],
+      [ANALYTICS_V2_TITLE, configuration.ADMIN_ONBOARDING_UUIDS.FLOW_ANALYTICS_UUID?.toString()],
       [ADMINISTER_SUBSCRIPTIONS_TITLE, configuration.ADMIN_ONBOARDING_UUIDS.FLOW_SUBSCRIPTIONS_UUID?.toString()],
       [ORGANIZE_LEARNERS_TITLE, configuration.ADMIN_ONBOARDING_UUIDS.FLOW_ORGANIZE_LEARNERS_UUID?.toString()],
       [CUSTOMIZE_REPORTS_TITLE, configuration.ADMIN_ONBOARDING_UUIDS.FLOW_CUSTOMIZE_REPORTS_UUID?.toString()],
@@ -151,7 +151,7 @@ const TourCollapsible: FC<Props> = (
           return canManageLearnerCredit;
         case CUSTOMIZE_REPORTS_TITLE:
           return enableReportingConfigScreen;
-        case VIEW_ENROLLMENTS_INSIGHT_TITLE:
+        case ANALYTICS_V2_TITLE:
           return features.ANALYTICS && enableAnalyticsScreen;
         default:
           return true;
