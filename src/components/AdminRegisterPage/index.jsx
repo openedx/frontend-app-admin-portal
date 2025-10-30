@@ -4,6 +4,7 @@ import { logError } from '@edx/frontend-platform/logging';
 import { getAuthenticatedUser } from '@edx/frontend-platform/auth';
 import { LoginRedirect, getProxyLoginUrl } from '@edx/frontend-enterprise-logistration';
 import { isEnterpriseUser, ENTERPRISE_ADMIN } from '@edx/frontend-enterprise-utils';
+import { v5 as uuidv5 } from 'uuid';
 
 import EnterpriseAppSkeleton from '../EnterpriseApp/EnterpriseAppSkeleton';
 import LmsApiService from '../../data/services/LmsApiService';
@@ -41,8 +42,10 @@ const AdminRegisterPage = () => {
       }
     };
     LmsApiService.loginRefresh().then(_ => {
-      if (!localStorage.getItem('first_visit_register_page')) {
-        localStorage.setItem('first_visit_register_page', 'true');
+      const obfuscatedId = uuidv5(String(_.userId), uuidv5.DNS);
+      const storageKey = `first_visit_register_page_${obfuscatedId}`;
+      if (!localStorage.getItem(storageKey)) {
+        localStorage.setItem(storageKey, 'true');
         window.location.reload();
       }
       return _;
