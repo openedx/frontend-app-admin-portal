@@ -19,7 +19,6 @@ const UserActivationPage = () => {
 
   const { enterpriseSlug } = useParams();
   const { roles, isActive } = user || {};
-
   useInterval(() => {
     if (user && !user.isActive) {
       hydrateAuthenticatedUser();

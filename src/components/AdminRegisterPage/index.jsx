@@ -12,13 +12,13 @@ const AdminRegisterPage = () => {
   const user = getAuthenticatedUser();
   const { enterpriseSlug } = useParams();
   const navigate = useNavigate();
-
   useEffect(() => {
     if (!user) {
       return;
     }
     const processEnterpriseAdmin = (enterpriseUUID) => {
-      const isEnterpriseAdmin = isEnterpriseUser(user, ENTERPRISE_ADMIN, enterpriseUUID);
+      const authenticatedUser = getAuthenticatedUser();
+      const isEnterpriseAdmin = isEnterpriseUser(authenticatedUser, ENTERPRISE_ADMIN, enterpriseUUID);
       if (isEnterpriseAdmin) {
         // user is authenticated and has the ``enterprise_admin`` JWT role, so redirect user to
         // account activation page to ensure they verify their email address.
@@ -40,7 +40,14 @@ const AdminRegisterPage = () => {
         logError(error);
       }
     };
-    getEnterpriseBySlug();
+    LmsApiService.loginRefresh().then(_ => {
+      if (!localStorage.getItem('first_visit_register_page')) {
+        localStorage.setItem('first_visit_register_page', 'true');
+        window.location.reload();
+      }
+      return _;
+    }).catch(error => logError(error));
+    getEnterpriseBySlug().then(data => data).catch(error => logError(error));
   }, [user, navigate, enterpriseSlug]);
 
   if (!user) {
