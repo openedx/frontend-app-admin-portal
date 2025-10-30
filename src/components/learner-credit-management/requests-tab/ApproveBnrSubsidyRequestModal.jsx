@@ -39,7 +39,7 @@ const ApproveBnrSubsidyRequestModal = ({
       await approveRequestFn({
         enterpriseId,
         subsidyAccessPolicyId,
-        subsidyRequestUUID: uuid,
+        subsidyRequestUUIDs: [uuid],
       });
       onSuccess();
     } catch (err) {

@@ -272,16 +272,16 @@ describe('EnterpriseAccessApiService', () => {
   });
 
   test('approveBnrSubsidyRequest calls enterprise-access to approve BNR subsidy request', () => {
-    const mockBnrSubsidyRequestUUID = 'test-bnr-subsidy-request-uuid';
+    const mockBnrSubsidyRequestUUIDs = ['test-bnr-subsidy-request-uuid'];
 
     EnterpriseAccessApiService.approveBnrSubsidyRequest({
       enterpriseId: mockEnterpriseUUID,
-      subsidyRequestUUID: mockBnrSubsidyRequestUUID,
+      subsidyRequestUUIDs: mockBnrSubsidyRequestUUIDs,
       subsidyAccessPolicyId: mockSubsidyAccessPolicyUUID,
     });
 
     expect(axios.post).toBeCalledWith(`${enterpriseAccessBaseUrl}/api/v1/learner-credit-requests/approve/`, {
-      learner_credit_request_uuid: mockBnrSubsidyRequestUUID,
+      learner_credit_request_uuids: mockBnrSubsidyRequestUUIDs,
       enterprise_customer_uuid: mockEnterpriseUUID,
       policy_uuid: mockSubsidyAccessPolicyUUID,
 

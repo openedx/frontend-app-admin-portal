@@ -362,16 +362,16 @@ class EnterpriseAccessApiService {
    * @param params - The parameters for approving the subsidy request
    * @param params.enterpriseId - The UUID of the enterprise customer
    * @param params.subsidyAccessPolicyId - The UUID of the subsidy policy
-   * @param params.subsidyRequestUUID - The UUID of the subsidy request to approve
+   * @param params.subsidyRequestUUIDs - The list of UUIDs of the subsidy requests to approve
    * @returns A promise that resolves to the API response for the approve operation
    */
   static approveBnrSubsidyRequest({
     enterpriseId,
     subsidyAccessPolicyId,
-    subsidyRequestUUID,
+    subsidyRequestUUIDs,
   }) {
     const options = {
-      learner_credit_request_uuid: subsidyRequestUUID,
+      learner_credit_request_uuids: subsidyRequestUUIDs,
       enterprise_customer_uuid: enterpriseId,
       policy_uuid: subsidyAccessPolicyId,
     };
