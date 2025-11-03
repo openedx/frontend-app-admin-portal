@@ -41,16 +41,16 @@ const AdminRegisterPage = () => {
         logError(error);
       }
     };
-    LmsApiService.loginRefresh().then(_ => {
-      const obfuscatedId = uuidv5(String(_.userId), uuidv5.DNS);
+    LmsApiService.loginRefresh().then(data => {
+      const obfuscatedId = uuidv5(String(data.userId), uuidv5.DNS);
       const storageKey = `first_visit_register_page_${obfuscatedId}`;
       if (!localStorage.getItem(storageKey)) {
         localStorage.setItem(storageKey, 'true');
         window.location.reload();
       }
-      return _;
+      return data;
     }).catch(error => logError(error));
-    getEnterpriseBySlug().then(data => data).catch(error => logError(error));
+    getEnterpriseBySlug().catch(error => logError(error));
   }, [user, navigate, enterpriseSlug]);
 
   if (!user) {
