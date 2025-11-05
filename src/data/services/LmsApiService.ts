@@ -82,11 +82,11 @@ class LmsApiService {
 
   static providerDataSyncUrl = `${LmsApiService.baseUrl}/auth/saml/v0/provider_data/sync_provider_data/`;
 
-  static lmsIntegrationUrl = `${LmsApiService.baseUrl}/integrated_channels/api/v1`;
+  static lmsIntegrationUrl = `${LmsApiService.baseUrl}/channel_integrations/api/v1`;
 
-  static lmsContentSyncStatusUrl = `${LmsApiService.baseUrl}/integrated_channels/api/v1/logs/content_sync_status`;
+  static lmsContentSyncStatusUrl = `${LmsApiService.baseUrl}/channel_integrations/api/v1/logs/content_sync_status`;
 
-  static lmsLearnerSyncStatusUrl = `${LmsApiService.baseUrl}/integrated_channels/api/v1/logs/learner_sync_status`;
+  static lmsLearnerSyncStatusUrl = `${LmsApiService.baseUrl}/channel_integrations/api/v1/logs/learner_sync_status`;
 
   static createPendingUsersUrl = `${LmsApiService.baseUrl}/enterprise/api/v1/link_pending_enterprise_users`;
 
