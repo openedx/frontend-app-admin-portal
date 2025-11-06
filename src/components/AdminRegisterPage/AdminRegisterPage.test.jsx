@@ -18,6 +18,13 @@ const mockEnterpriseCustomer = {
   uuid: 'dc3bfcf8-c61f-11ec-9d64-0242ac120002',
 };
 
+const mockLoginRefreshResponse = {
+  data: {
+    access_token: 'mock-access-token',
+    refresh_token: 'mock-refresh-token',
+  },
+};
+
 const mockNavigate = jest.fn();
 jest.mock('react-router-dom', () => ({
   ...jest.requireActual('react-router-dom'),
@@ -66,6 +73,9 @@ describe('<AdminRegisterPage />', () => {
         roles,
       });
       isEnterpriseUser.mockReturnValue(false);
+      LmsApiService.loginRefresh.mockImplementation(() => Promise.resolve({
+        data: mockLoginRefreshResponse,
+      }));
       LmsApiService.fetchEnterpriseBySlug.mockImplementation(() => Promise.resolve({
         data: mockEnterpriseCustomer,
       }));
@@ -81,6 +91,9 @@ describe('<AdminRegisterPage />', () => {
       roles: ['enterprise_admin:dc3bfcf8-c61f-11ec-9d64-0242ac120002'],
     });
     isEnterpriseUser.mockReturnValue(true);
+    LmsApiService.loginRefresh.mockImplementation(() => Promise.resolve({
+      data: mockLoginRefreshResponse,
+    }));
     LmsApiService.fetchEnterpriseBySlug.mockImplementation(() => Promise.resolve({
       data: mockEnterpriseCustomer,
     }));

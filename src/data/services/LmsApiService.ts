@@ -108,6 +108,8 @@ class LmsApiService {
 
   static enterpriseLearnerUrl = `${LmsApiService.baseUrl}/enterprise/api/v1/enterprise-learner/`;
 
+  static loginRefreshUrl = `${LmsApiService.baseUrl}/login_refresh`;
+
   static async createEnterpriseGroup(
     {
       groupName,
@@ -637,6 +639,12 @@ class LmsApiService {
     const response = await LmsApiService.apiClient().get(groupEndpoint);
     response.data = camelCaseObject(response.data);
     return response;
+  };
+
+  static loginRefresh = async () => {
+    const url = LmsApiService.loginRefreshUrl;
+    const response = await LmsApiService.apiClient().post(url);
+    return camelCaseObject(response.data);
   };
 }
 
