@@ -194,7 +194,6 @@ EnterpriseApp.propTypes = {
   enterpriseId: PropTypes.string,
   enterpriseName: PropTypes.string,
   enterpriseFeatures: PropTypes.shape({
-    topDownAssignmentRealTimeLcm: PropTypes.bool,
   }),
   enterpriseBranding: PropTypes.shape({
     primary_color: PropTypes.string,

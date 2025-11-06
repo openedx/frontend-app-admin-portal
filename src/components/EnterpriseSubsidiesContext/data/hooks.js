@@ -9,7 +9,6 @@ import { useIntl } from '@edx/frontend-platform/i18n';
 
 import EcommerceApiService from '../../../data/services/EcommerceApiService';
 import LicenseManagerApiService from '../../../data/services/LicenseManagerAPIService';
-import SubsidyApiService from '../../../data/services/EnterpriseSubsidyApiService';
 import { BUDGET_TYPES } from '../../EnterpriseApp/data/constants';
 import EnterpriseAccessApiService from '../../../data/services/EnterpriseAccessApiService';
 import { learnerCreditManagementQueryKeys, isBudgetRetiredOrExpired, getBudgetStatus } from '../../learner-credit-management/data';
@@ -18,7 +17,6 @@ import { isAssignableSubsidyAccessPolicyType } from '../../../utils';
 dayjs.extend(isBetween);
 
 async function fetchEnterpriseBudgets({
-  isTopDownAssignmentEnabled,
   enterpriseId,
   enablePortalLearnerCreditManagementScreen,
 }) {
@@ -31,10 +29,11 @@ async function fetchEnterpriseBudgets({
   }
 
   // Call the appropriate API based on the feature flag
-  const budgetPromisesToFulfill = isTopDownAssignmentEnabled
-    ? [undefined, EnterpriseAccessApiService.listSubsidyAccessPolicies(enterpriseId)]
-    : [SubsidyApiService.getSubsidyByCustomerUUID(enterpriseId, { subsidyType: 'learner_credit' }), undefined];
-
+  // Fetch subsidy access policies (top-down learner credit management is enabled by default)
+  const budgetPromisesToFulfill = [
+    undefined,
+    EnterpriseAccessApiService.listSubsidyAccessPolicies(enterpriseId),
+  ];
   // Attempt to fetch enterprise offers with graceful error handling
   budgetPromisesToFulfill.unshift(EcommerceApiService.fetchEnterpriseOffers());
 
@@ -115,7 +114,6 @@ async function fetchEnterpriseBudgets({
 export const useEnterpriseBudgets = ({
   enablePortalLearnerCreditManagementScreen,
   enterpriseId,
-  isTopDownAssignmentEnabled,
   queryOptions = {},
 }) => {
   const intl = useIntl();
@@ -124,7 +122,6 @@ export const useEnterpriseBudgets = ({
     queryKey: learnerCreditManagementQueryKeys.budgets(enterpriseId),
     queryFn: (args) => fetchEnterpriseBudgets({
       queryArgs: args,
-      isTopDownAssignmentEnabled,
       enterpriseId,
       enablePortalLearnerCreditManagementScreen,
     }),

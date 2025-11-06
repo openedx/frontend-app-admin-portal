@@ -191,6 +191,7 @@ describe('MembersTab', () => {
       enterpriseSlug: 'test-enterprise-slug',
       enterpriseAppPage: 'test-enterprise-page',
       activeTabKey: 'activity',
+      budgetId: 'test-budget-id',
     });
     useSubsidyAccessPolicy.mockReturnValue({
       isInitialLoading: false,
@@ -233,6 +234,7 @@ describe('MembersTab', () => {
       enterpriseSlug: 'test-enterprise-slug',
       enterpriseAppPage: 'test-enterprise-page',
       activeTabKey: 'members',
+      budgetId: 'test-budget-id',
     });
     useSubsidyAccessPolicy.mockReturnValue({
       isInitialLoading: false,
@@ -290,6 +292,7 @@ describe('MembersTab', () => {
       enterpriseSlug: 'test-enterprise-slug',
       enterpriseAppPage: 'test-enterprise-page',
       activeTabKey: 'members',
+      budgetId: 'test-budget-id',
     });
     useSubsidyAccessPolicy.mockReturnValue({
       isInitialLoading: false,
@@ -390,6 +393,7 @@ describe('MembersTab', () => {
       enterpriseSlug: 'test-enterprise-slug',
       enterpriseAppPage: 'test-enterprise-page',
       activeTabKey: 'members',
+      budgetId: 'test-budget-id',
     });
     useSubsidyAccessPolicy.mockReturnValue({
       isInitialLoading: false,
@@ -552,6 +556,7 @@ describe('MembersTab', () => {
       enterpriseSlug: 'test-enterprise-slug',
       enterpriseAppPage: 'test-enterprise-page',
       activeTabKey: 'members',
+      budgetId: 'test-budget-id',
     });
     useSubsidyAccessPolicy.mockReturnValue({
       isInitialLoading: false,
@@ -622,6 +627,7 @@ describe('MembersTab', () => {
       enterpriseSlug: 'test-enterprise-slug',
       enterpriseAppPage: 'test-enterprise-page',
       activeTabKey: 'members',
+      budgetId: 'test-budget-id',
     });
     useSubsidyAccessPolicy.mockReturnValue({
       isInitialLoading: false,
@@ -831,6 +837,7 @@ describe('MembersTab', () => {
         enterpriseSlug: 'test-enterprise-slug',
         enterpriseAppPage: 'test-enterprise-page',
         activeTabKey: 'members',
+        budgetId: 'test-budget-id',
       });
       useSubsidyAccessPolicy.mockReturnValue({
         isInitialLoading: false,

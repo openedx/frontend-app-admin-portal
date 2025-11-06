@@ -20,7 +20,6 @@ import BudgetStatusSubtitle from '../BudgetStatusSubtitle';
 
 const InviteModalBudgetCard = ({
   enterpriseUUID,
-  enterpriseFeatures,
 }) => {
   const intl = useIntl();
   const { subsidyAccessPolicyId, enterpriseOfferId } = useBudgetId();
@@ -54,7 +53,6 @@ const InviteModalBudgetCard = ({
     subsidySummary,
     budgetId: policyOrOfferId,
     enterpriseOfferMetadata,
-    isTopDownAssignmentEnabled: enterpriseFeatures.topDownAssignmentRealTimeLcm,
   });
 
   if (!subsidyAccessPolicy && (isLoadingSubsidySummary || isLoadingEnterpriseOffer)) {
@@ -101,7 +99,6 @@ const mapStateToProps = state => ({
 InviteModalBudgetCard.propTypes = {
   enterpriseUUID: PropTypes.string.isRequired,
   enterpriseFeatures: PropTypes.shape({
-    topDownAssignmentRealTimeLcm: PropTypes.bool,
   }).isRequired,
 };
 

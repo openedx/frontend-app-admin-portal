@@ -27,7 +27,6 @@ interface AdminOnboardingTourProps {
   currentStep: number;
   enablePortalLearnerCreditManagementScreen: boolean;
   enterpriseFeatures: {
-    topDownAssignmentRealTimeLcm: boolean;
   }
   enterpriseId: string;
   enterpriseSlug: string;

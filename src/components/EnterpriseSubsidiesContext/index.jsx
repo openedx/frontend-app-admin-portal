@@ -7,7 +7,6 @@ export const EnterpriseSubsidiesContext = createContext();
 export const useEnterpriseSubsidiesContext = ({
   enablePortalLearnerCreditManagementScreen,
   enterpriseId,
-  isTopDownAssignmentEnabled,
 }) => {
   const {
     isLoading: isLoadingBudgets,
@@ -15,7 +14,6 @@ export const useEnterpriseSubsidiesContext = ({
   } = useEnterpriseBudgets({
     enablePortalLearnerCreditManagementScreen,
     enterpriseId,
-    isTopDownAssignmentEnabled,
   });
 
   const {

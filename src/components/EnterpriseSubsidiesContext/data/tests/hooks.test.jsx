@@ -65,7 +65,6 @@ describe('useEnterpriseBudgets', () => {
     const { result } = renderHook(
       () => useEnterpriseBudgets({
         enablePortalLearnerCreditManagementScreen: false,
-        isTopDownAssignmentEnabled: false,
         enterpriseId: TEST_ENTERPRISE_UUID,
       }),
       { wrapper },
@@ -115,7 +114,6 @@ describe('useEnterpriseBudgets', () => {
     const { result } = renderHook(
       () => useEnterpriseBudgets({
         enablePortalLearnerCreditManagementScreen: true,
-        isTopDownAssignmentEnabled: false,
         enterpriseId: TEST_ENTERPRISE_UUID,
       }),
       { wrapper },
@@ -132,72 +130,6 @@ describe('useEnterpriseBudgets', () => {
         }),
       );
     });
-  });
-
-  it('should fetch Subsidy-associated budgets from enterprise-subsidy when LC2 feature flag is disabled', async () => {
-    const mockEnterpriseSubsidyResponse = [
-      {
-        uuid: 'offer-id',
-        title: 'offer-name',
-        activeDatetime: mockBudgetStart,
-        expirationDatetime: mockBudgetEnd,
-        isActive: true,
-      },
-    ];
-
-    getSubsidyByCustomerUUIDSpy.mockResolvedValue({
-      data: {
-        results: mockEnterpriseSubsidyResponse,
-      },
-    });
-
-    const { result } = renderHook(
-      () => useEnterpriseBudgets({
-        enablePortalLearnerCreditManagementScreen: true,
-        enterpriseId: TEST_ENTERPRISE_UUID,
-        isTopDownAssignmentEnabled: false,
-      }),
-      { wrapper },
-    );
-
-    await waitFor(() => {
-      expect(getSubsidyByCustomerUUIDSpy).toHaveBeenCalledTimes(1);
-      expect(getSubsidyByCustomerUUIDSpy).toHaveBeenCalledWith(
-        TEST_ENTERPRISE_UUID,
-        { subsidyType: 'learner_credit' },
-      );
-      expect(listSubsidyAccessPoliciesSpy).not.toHaveBeenCalled();
-    });
-
-    const expectedBudgets = [
-      {
-        id: 'offer-id',
-        name: 'offer-name',
-        start: mockBudgetStart,
-        end: mockBudgetEnd,
-        isCurrent: true,
-        source: BUDGET_TYPES.subsidy,
-      },
-      // Enterprise offers are included when ecommerce API succeeds (graceful degradation)
-      {
-        id: 'uuid',
-        name: 'offer-name',
-        start: mockBudgetStart,
-        end: mockBudgetEnd,
-        isCurrent: true,
-        source: BUDGET_TYPES.ecommerce,
-      },
-    ];
-
-    await waitFor(() => expect(result.current).toEqual(
-      expect.objectContaining({
-        isLoading: false,
-        data: {
-          budgets: expectedBudgets,
-          canManageLearnerCredit: true,
-        },
-      }),
-    ));
   });
 
   it('should fetch Subsidy Access Policies (budgets) from enterprise-access when LC2 feature flag is enabled', async () => {
@@ -232,7 +164,6 @@ describe('useEnterpriseBudgets', () => {
       () => useEnterpriseBudgets({
         enablePortalLearnerCreditManagementScreen: true,
         enterpriseId: TEST_ENTERPRISE_UUID,
-        isTopDownAssignmentEnabled: true,
       }),
       { wrapper },
     );
@@ -274,10 +205,7 @@ describe('useEnterpriseBudgets', () => {
     ));
   });
 
-  it.each([
-    { isTopDownAssignmentEnabled: false },
-    { isTopDownAssignmentEnabled: true },
-  ])('should log error when budgets API request cannot be fulfilled (%s)', async ({ isTopDownAssignmentEnabled }) => {
+  it('should log error when budgets API request cannot be fulfilled (%s)', async () => {
     const mockListSubsidiesError = 'error_list_subsidies';
     const mockListPoliciesError = 'error_list_policies';
 
@@ -292,7 +220,6 @@ describe('useEnterpriseBudgets', () => {
       () => useEnterpriseBudgets({
         enablePortalLearnerCreditManagementScreen: true,
         enterpriseId: TEST_ENTERPRISE_UUID,
-        isTopDownAssignmentEnabled,
       }),
       { wrapper },
     );
@@ -302,24 +229,12 @@ describe('useEnterpriseBudgets', () => {
       expect(logError).toHaveBeenCalledWith(mockListOffersError);
     });
 
-    if (isTopDownAssignmentEnabled) {
-      // Assert the failed API call to list subsidy access policies from enterprise-access
-      expect(listSubsidyAccessPoliciesSpy).toHaveBeenCalledTimes(1);
-      expect(listSubsidyAccessPoliciesSpy).toHaveBeenCalledWith(TEST_ENTERPRISE_UUID);
-      expect(getSubsidyByCustomerUUIDSpy).not.toHaveBeenCalled();
+    // Assert the failed API call to list subsidy access policies from enterprise-access
+    expect(listSubsidyAccessPoliciesSpy).toHaveBeenCalledTimes(1);
+    expect(listSubsidyAccessPoliciesSpy).toHaveBeenCalledWith(TEST_ENTERPRISE_UUID);
+    expect(getSubsidyByCustomerUUIDSpy).not.toHaveBeenCalled();
 
-      expect(logError).toHaveBeenCalledWith(mockListPoliciesError);
-    } else {
-      // Assert the failed API call to list subsidies from enterprise-subsidy
-      expect(getSubsidyByCustomerUUIDSpy).toHaveBeenCalledTimes(1);
-      expect(getSubsidyByCustomerUUIDSpy).toHaveBeenCalledWith(
-        TEST_ENTERPRISE_UUID,
-        { subsidyType: 'learner_credit' },
-      );
-      expect(listSubsidyAccessPoliciesSpy).not.toHaveBeenCalled();
-
-      expect(logError).toHaveBeenCalledWith(mockListSubsidiesError);
-    }
+    expect(logError).toHaveBeenCalledWith(mockListPoliciesError);
     expect(result.current).toEqual(
       expect.objectContaining({
         isLoading: false,
@@ -386,24 +301,6 @@ describe('useEnterpriseBudgets', () => {
         is_active: true,
       },
     ];
-    const mockOfferData = [
-      {
-        id: 'offer-1',
-        name: 'offer-name',
-        start: '2005-05-15T19:56:09Z',
-        end: '2006-05-15T19:56:09Z',
-        isCurrent: false,
-        source: BUDGET_TYPES.subsidy,
-      },
-      {
-        id: 'offer-2',
-        name: 'offer-name-2',
-        start: '2006-05-15T19:56:09Z',
-        end: '2099-05-15T19:56:09Z',
-        isCurrent: true,
-        source: BUDGET_TYPES.subsidy,
-      },
-    ];
 
     fetchEnterpriseOffersSpy.mockResolvedValueOnce({
       data: {
@@ -425,21 +322,12 @@ describe('useEnterpriseBudgets', () => {
     );
 
     await waitFor(() => {
-      expect(getSubsidyByCustomerUUIDSpy).toHaveBeenCalledTimes(1);
-      expect(getSubsidyByCustomerUUIDSpy).toHaveBeenCalledWith(
-        TEST_ENTERPRISE_UUID,
-        { subsidyType: 'learner_credit' },
-      );
+      expect(listSubsidyAccessPoliciesSpy).toHaveBeenCalledTimes(1);
+      expect(listSubsidyAccessPoliciesSpy).toHaveBeenCalledWith(TEST_ENTERPRISE_UUID);
+      expect(getSubsidyByCustomerUUIDSpy).not.toHaveBeenCalled();
     });
-    await waitFor(() => expect(result.current).toEqual(
-      expect.objectContaining({
-        isLoading: false,
-        data: {
-          budgets: mockOfferData,
-          canManageLearnerCredit: true,
-        },
-      }),
-    ));
+    // The test validates that the code path has been removed
+    await waitFor(() => expect(result.current.isLoading).toBe(false));
   });
 });
 

@@ -107,7 +107,6 @@ BudgetDetailAssignmentsHeader.propTypes = {
 const BudgetDetailAssignments = ({
   hasContentAssignments,
   hasSpentTransactions,
-  enterpriseFeatures,
   enterpriseId,
 }) => {
   const intl = useIntl();
@@ -115,7 +114,6 @@ const BudgetDetailAssignments = ({
   const { data: subsidyAccessPolicy } = useSubsidyAccessPolicy(subsidyAccessPolicyId);
   const isAssignableBudget = !!subsidyAccessPolicy?.isAssignable;
   const assignmentConfigurationUUID = subsidyAccessPolicy?.assignmentConfiguration?.uuid;
-  const isTopDownAssignmentEnabled = enterpriseFeatures.topDownAssignmentRealTimeLcm;
   const {
     isLoading,
     contentAssignments,
@@ -132,7 +130,7 @@ const BudgetDetailAssignments = ({
     isBudgetRetired: subsidyAccessPolicy.retired,
   });
 
-  if (!isTopDownAssignmentEnabled || !isAssignableBudget) {
+  if (!isAssignableBudget) {
     return null;
   }
 
@@ -166,7 +164,6 @@ BudgetDetailAssignments.propTypes = {
   hasContentAssignments: PropTypes.bool.isRequired,
   hasSpentTransactions: PropTypes.bool.isRequired,
   enterpriseFeatures: PropTypes.shape({
-    topDownAssignmentRealTimeLcm: PropTypes.bool,
   }).isRequired,
 };
 

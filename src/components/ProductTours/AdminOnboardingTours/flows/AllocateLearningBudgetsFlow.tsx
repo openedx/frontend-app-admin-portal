@@ -13,7 +13,6 @@ interface CreateTourFlowsProps {
   currentStep: number;
   enablePortalLearnerCreditManagementScreen: boolean;
   enterpriseFeatures: {
-    topDownAssignmentRealTimeLcm: boolean;
   };
   enterpriseId: string;
   enterpriseSlug: string;
@@ -276,12 +275,10 @@ const AllocateLearningBudgetsFlow = ({
 const useAllocateLearningBudgetsFlow = (props: CreateTourFlowsProps): Array<TourStep> => {
   const intl = useIntl();
   const params = useParams();
-  const isTopDownAssignmentEnabled = props.enterpriseFeatures.topDownAssignmentRealTimeLcm;
 
   const { data: budgetsOverview } = useEnterpriseBudgets({
     enablePortalLearnerCreditManagementScreen: props.enablePortalLearnerCreditManagementScreen,
     enterpriseId: props.enterpriseId,
-    isTopDownAssignmentEnabled,
   });
 
   const { budgets } = budgetsOverview || {};
@@ -290,7 +287,6 @@ const useAllocateLearningBudgetsFlow = (props: CreateTourFlowsProps): Array<Tour
 
   const { data: budgetActivityOverview } = useBudgetDetailActivityOverview({
     enterpriseUUID: props.enterpriseId,
-    isTopDownAssignmentEnabled,
     paramBudgetId: orderedBudgets[0]?.id,
     paramSubsidyAccessPolicyId: subsidyAccessPolicy?.uuid,
   });

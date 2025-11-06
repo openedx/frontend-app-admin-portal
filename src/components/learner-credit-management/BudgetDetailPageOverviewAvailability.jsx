@@ -31,7 +31,6 @@ const BudgetActions = ({
   budgetId,
   isAssignable,
   enterpriseId,
-  isTopDownAssignmentEnabled,
   status,
 }) => {
   const { enterpriseSlug, enterpriseAppPage } = useParams();
@@ -43,7 +42,6 @@ const BudgetActions = ({
   const supportUrl = configuration.ENTERPRISE_SUPPORT_URL;
   const globalGroup = enterpriseGroup?.appliesToAllContexts;
   const { data: budgets } = useEnterpriseBudgets({
-    isTopDownAssignmentEnabled,
     enterpriseId,
     enablePortalLearnerCreditManagementScreen: true,
     queryOptions: {
@@ -443,14 +441,12 @@ BudgetActions.propTypes = {
   isAssignable: PropTypes.bool.isRequired,
   enterpriseId: PropTypes.string.isRequired,
   status: PropTypes.string.isRequired,
-  isTopDownAssignmentEnabled: PropTypes.bool.isRequired,
 };
 
 const BudgetDetailPageOverviewAvailability = ({
   budgetId,
   isAssignable,
   budgetTotalSummary: { available, utilized, limit },
-  enterpriseFeatures,
   enterpriseId,
   status,
 }) => (
@@ -462,10 +458,9 @@ const BudgetDetailPageOverviewAvailability = ({
       <Col lg={5}>
         <BudgetActions
           budgetId={budgetId}
-          isAssignable={isAssignable && enterpriseFeatures.topDownAssignmentRealTimeLcm}
+          isAssignable={isAssignable}
           enterpriseId={enterpriseId}
           status={status}
-          isTopDownAssignmentEnabled={enterpriseFeatures.topDownAssignmentRealTimeLcm}
         />
       </Col>
     </Row>
@@ -481,7 +476,6 @@ BudgetDetailPageOverviewAvailability.propTypes = {
   }).isRequired,
   isAssignable: PropTypes.bool.isRequired,
   enterpriseFeatures: PropTypes.shape({
-    topDownAssignmentRealTimeLcm: PropTypes.bool,
   }).isRequired,
   enterpriseId: PropTypes.string.isRequired,
   status: PropTypes.string.isRequired,
