@@ -62,9 +62,6 @@ Note that the ``queryClient`` is a test utility function that populates the ``Qu
     const initialStore = {
       portalConfiguration: {
         enterpriseId: 'test-id',
-        enterpriseFeatures: {
-          topDownAssignmentRealTimeLcm: true,
-        },
         enablePortalLearnerCreditManagementScreen: true,
       },
     };

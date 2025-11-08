@@ -110,9 +110,6 @@ describe('AdminOnboardingTour', () => {
     targetSelector: undefined,
     enablePortalLearnerCreditManagementScreen: true,
     enterpriseUUID: 'test-enterprise-uuid',
-    enterpriseFeatures: {
-      topDownAssignmentRealTimeLcm: true,
-    },
   };
 
   let tourResult = null;

@@ -31,9 +31,6 @@ const initialStoreState = {
     enterpriseId: enterpriseUUID,
     enterpriseSlug,
     disableExpiryMessagingForLearnerCredit: false,
-    enterpriseFeatures: {
-      topDownAssignmentRealTimeLcm: true,
-    },
   },
 };
 const mockEnterpriseBudgetUuid = uuidv4();

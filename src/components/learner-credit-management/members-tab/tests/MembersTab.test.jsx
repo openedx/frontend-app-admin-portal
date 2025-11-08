@@ -75,9 +75,6 @@ const initialStoreState = {
     enterpriseId: enterpriseUUID,
     enterpriseSlug,
     enableLearnerPortal: true,
-    enterpriseFeatures: {
-      topDownAssignmentRealTimeLcm: true,
-    },
   },
 };
 
@@ -183,8 +180,6 @@ describe('MembersTab', () => {
     const initialState = {
       portalConfiguration: {
         ...initialStoreState.portalConfiguration,
-        enterpriseFeatures: {
-        },
       },
     };
     useParams.mockReturnValue({
@@ -226,8 +221,6 @@ describe('MembersTab', () => {
     const initialState = {
       portalConfiguration: {
         ...initialStoreState.portalConfiguration,
-        enterpriseFeatures: {
-        },
       },
     };
     useParams.mockReturnValue({
@@ -284,8 +277,6 @@ describe('MembersTab', () => {
     const initialState = {
       portalConfiguration: {
         ...initialStoreState.portalConfiguration,
-        enterpriseFeatures: {
-        },
       },
     };
     useParams.mockReturnValue({
@@ -385,8 +376,6 @@ describe('MembersTab', () => {
     const initialState = {
       portalConfiguration: {
         ...initialStoreState.portalConfiguration,
-        enterpriseFeatures: {
-        },
       },
     };
     useParams.mockReturnValue({
@@ -461,8 +450,6 @@ describe('MembersTab', () => {
     const initialState = {
       portalConfiguration: {
         ...initialStoreState.portalConfiguration,
-        enterpriseFeatures: {
-        },
       },
     };
     useParams.mockReturnValue({
@@ -548,8 +535,6 @@ describe('MembersTab', () => {
     const initialState = {
       portalConfiguration: {
         ...initialStoreState.portalConfiguration,
-        enterpriseFeatures: {
-        },
       },
     };
     useParams.mockReturnValue({
@@ -619,8 +604,6 @@ describe('MembersTab', () => {
     const initialState = {
       portalConfiguration: {
         ...initialStoreState.portalConfiguration,
-        enterpriseFeatures: {
-        },
       },
     };
     useParams.mockReturnValue({
@@ -689,8 +672,6 @@ describe('MembersTab', () => {
     const initialState = {
       portalConfiguration: {
         ...initialStoreState.portalConfiguration,
-        enterpriseFeatures: {
-        },
       },
     };
     useParams.mockReturnValue({
@@ -829,8 +810,6 @@ describe('MembersTab', () => {
       const initialState = {
         portalConfiguration: {
           ...initialStoreState.portalConfiguration,
-          enterpriseFeatures: {
-          },
         },
       };
       useParams.mockReturnValue({
@@ -904,8 +883,6 @@ describe('MembersTab', () => {
     const initialState = {
       portalConfiguration: {
         ...initialStoreState.portalConfiguration,
-        enterpriseFeatures: {
-        },
       },
     };
     useParams.mockReturnValue({

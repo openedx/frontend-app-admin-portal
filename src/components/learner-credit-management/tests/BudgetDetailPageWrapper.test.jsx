@@ -23,9 +23,6 @@ const defaultStoreState = {
     enterpriseId: enterpriseUUID,
     enterpriseSlug,
     enableLearnerPortal: true,
-    enterpriseFeatures: {
-      topDownAssignmentRealTimeLcm: true,
-    },
   },
 };
 
