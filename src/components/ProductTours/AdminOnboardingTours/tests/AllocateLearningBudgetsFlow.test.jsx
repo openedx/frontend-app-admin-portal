@@ -42,9 +42,6 @@ const renderHookWithProviders = (hookFn, storeState = {}) => {
   const defaultState = {
     portalConfiguration: {
       enterpriseId: 'test-enterprise-uuid',
-      enterpriseFeatures: {
-        topDownAssignmentRealTimeLcm: true,
-      },
     },
     ...storeState,
   };
@@ -105,9 +102,6 @@ describe('useAllocateLearningBudgetsFlow', () => {
       const props = {
         currentStep: 0,
         enablePortalLearnerCreditManagementScreen: true,
-        enterpriseFeatures: {
-          topDownAssignmentRealTimeLcm: true,
-        },
         enterpriseId: 'test-enterprise-uuid',
         enterpriseSlug: 'test-enterprise-slug',
         handleBackTour: mockHandleBackTour,
@@ -127,9 +121,6 @@ describe('useAllocateLearningBudgetsFlow', () => {
       const props = {
         currentStep: 0,
         enablePortalLearnerCreditManagementScreen: true,
-        enterpriseFeatures: {
-          topDownAssignmentRealTimeLcm: true,
-        },
         enterpriseId: 'test-enterprise-uuid',
         enterpriseSlug: 'test-enterprise-slug',
         handleBackTour: mockHandleBackTour,
@@ -173,9 +164,6 @@ describe('useAllocateLearningBudgetsFlow', () => {
       const props = {
         currentStep: 0,
         enablePortalLearnerCreditManagementScreen: true,
-        enterpriseFeatures: {
-          topDownAssignmentRealTimeLcm: true,
-        },
         enterpriseId: 'test-enterprise-uuid',
         enterpriseSlug: 'test-enterprise-slug',
         handleBackTour: mockHandleBackTour,
@@ -209,9 +197,6 @@ describe('useAllocateLearningBudgetsFlow', () => {
       const props = {
         currentStep: 0,
         enablePortalLearnerCreditManagementScreen: true,
-        enterpriseFeatures: {
-          topDownAssignmentRealTimeLcm: true,
-        },
         enterpriseId: 'test-enterprise-uuid',
         enterpriseSlug: 'test-enterprise-slug',
         handleBackTour: mockHandleBackTour,
@@ -245,9 +230,6 @@ describe('useAllocateLearningBudgetsFlow', () => {
       const props = {
         currentStep: 0,
         enablePortalLearnerCreditManagementScreen: true,
-        enterpriseFeatures: {
-          topDownAssignmentRealTimeLcm: true,
-        },
         enterpriseId: 'test-enterprise-uuid',
         enterpriseSlug: 'test-enterprise-slug',
         handleBackTour: mockHandleBackTour,
@@ -279,9 +261,6 @@ describe('useAllocateLearningBudgetsFlow', () => {
       const props = {
         currentStep: 0,
         enablePortalLearnerCreditManagementScreen: true,
-        enterpriseFeatures: {
-          topDownAssignmentRealTimeLcm: true,
-        },
         enterpriseId: 'test-enterprise-uuid',
         enterpriseSlug: 'test-enterprise-slug',
         handleBackTour: mockHandleBackTour,
@@ -313,9 +292,6 @@ describe('useAllocateLearningBudgetsFlow', () => {
       const props = {
         currentStep: 0,
         enablePortalLearnerCreditManagementScreen: true,
-        enterpriseFeatures: {
-          topDownAssignmentRealTimeLcm: true,
-        },
         enterpriseId: 'test-enterprise-uuid',
         enterpriseSlug: 'test-enterprise-slug',
         handleBackTour: mockHandleBackTour,
@@ -351,9 +327,6 @@ describe('useAllocateLearningBudgetsFlow', () => {
       const props = {
         currentStep: 0,
         enablePortalLearnerCreditManagementScreen: true,
-        enterpriseFeatures: {
-          topDownAssignmentRealTimeLcm: true,
-        },
         enterpriseId: 'test-enterprise-uuid',
         enterpriseSlug: 'test-enterprise-slug',
         handleBackTour: mockHandleBackTour,

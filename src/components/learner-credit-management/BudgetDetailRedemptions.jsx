@@ -14,7 +14,6 @@ import { ALLOCATE_LEARNING_BUDGETS_TARGETS } from '../ProductTours/AdminOnboardi
 
 const BudgetDetailRedemptionsDescription = ({
   status,
-  enterpriseFeatures,
 }) => {
   const { enterpriseOfferId, subsidyAccessPolicyId } = useBudgetId();
 
@@ -37,7 +36,7 @@ const BudgetDetailRedemptionsDescription = ({
         defaultMessage="Spent activity is driven by completed enrollments. "
         description="Description for the spent section of the budget detail page"
       />
-      {(enterpriseOfferId || (subsidyAccessPolicyId && !enterpriseFeatures.topDownAssignmentRealTimeLcm)) ? (
+      {(enterpriseOfferId || (subsidyAccessPolicyId)) ? (
         <FormattedMessage
           id="lcm.budget.detail.page.spent.description.enterprise"
           defaultMessage="Enrollment data is automatically updated every 12 hours. Come back later to view more recent enrollments."
@@ -65,7 +64,6 @@ const BudgetDetailRedemptionsDescription = ({
 BudgetDetailRedemptionsDescription.propTypes = {
   status: PropTypes.string.isRequired,
   enterpriseFeatures: PropTypes.shape({
-    topDownAssignmentRealTimeLcm: PropTypes.bool,
   }).isRequired,
 };
 
@@ -84,7 +82,6 @@ const BudgetDetailRedemptions = ({ enterpriseFeatures, enterpriseUUID }) => {
     enterpriseUUID,
     enterpriseOfferId,
     subsidyAccessPolicyId,
-    enterpriseFeatures.topDownAssignmentRealTimeLcm,
   );
 
   // Fetch enterprise offer data with graceful error handling - will be null if API fails
@@ -135,7 +132,6 @@ const mapStateToProps = state => ({
 BudgetDetailRedemptions.propTypes = {
   enterpriseUUID: PropTypes.string.isRequired,
   enterpriseFeatures: PropTypes.shape({
-    topDownAssignmentRealTimeLcm: PropTypes.bool,
   }).isRequired,
 };
 

@@ -354,7 +354,6 @@ export async function fetchSpentTransactions({
   enterpriseUUID,
   subsidyAccessPolicy,
   budgetId,
-  isTopDownAssignmentEnabled,
 }) {
   const options = {
     page: 1,
@@ -362,7 +361,7 @@ export async function fetchSpentTransactions({
   };
 
   let response;
-  const shouldFetchSubsidyTransactions = !!subsidyAccessPolicy && isTopDownAssignmentEnabled;
+  const shouldFetchSubsidyTransactions = !!subsidyAccessPolicy;
   if (shouldFetchSubsidyTransactions) {
     options.subsidyAccessPolicyUuid = budgetId;
     // Feature flag is enabled and the budget is a subsidy access policy, so pull from
@@ -410,16 +409,14 @@ export async function retrieveBudgetDetailActivityOverview({
   budgetId,
   subsidyAccessPolicy,
   enterpriseUUID,
-  isTopDownAssignmentEnabled,
 }) {
-  const isBudgetAssignable = !!(isTopDownAssignmentEnabled && subsidyAccessPolicy?.isAssignable);
+  const isBudgetAssignable = !!(subsidyAccessPolicy?.isAssignable);
   const isBnrEnabledSubsidy = subsidyAccessPolicy?.bnrEnabled;
   const promisesToFulfill = [
     fetchSpentTransactions({
       enterpriseUUID,
       subsidyAccessPolicy,
       budgetId,
-      isTopDownAssignmentEnabled,
     }),
   ];
   if (isBudgetAssignable) {

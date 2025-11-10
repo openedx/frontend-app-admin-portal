@@ -52,9 +52,6 @@ const initialStore = {
   portalConfiguration: {
     enterpriseId: enterpriseUUID,
     enterpriseSlug,
-    enterpriseFeatures: {
-      topDownAssignmentRealTimeLcm: true,
-    },
     enablePortalLearnerCreditManagementScreen: true,
   },
 };

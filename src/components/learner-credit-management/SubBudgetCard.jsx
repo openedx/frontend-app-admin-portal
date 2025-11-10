@@ -22,14 +22,12 @@ import { ALLOCATE_LEARNING_BUDGETS_TARGETS } from '../ProductTours/AdminOnboardi
 
 const BaseBackgroundFetchingWrapper = ({
   enterpriseId,
-  isTopDownAssignmentEnabled,
   enablePortalLearnerCreditManagementScreen,
   children,
 }) => {
   const { isFetching: isFetchingBudgets } = useEnterpriseBudgets({
     enablePortalLearnerCreditManagementScreen,
     enterpriseId,
-    isTopDownAssignmentEnabled,
   });
   return <span style={{ opacity: isFetchingBudgets ? 0.5 : 1 }}>{children}</span>;
 };
@@ -37,18 +35,15 @@ const BaseBackgroundFetchingWrapper = ({
 BaseBackgroundFetchingWrapper.propTypes = {
   children: PropTypes.node.isRequired,
   enterpriseId: PropTypes.string.isRequired,
-  isTopDownAssignmentEnabled: PropTypes.bool,
   enablePortalLearnerCreditManagementScreen: PropTypes.bool.isRequired,
 };
 
 BaseBackgroundFetchingWrapper.defaultProps = {
-  isTopDownAssignmentEnabled: false,
 };
 
 const mapStateToProps = state => ({
   enterpriseId: state.portalConfiguration.enterpriseId,
   enablePortalLearnerCreditManagementScreen: state.portalConfiguration.enablePortalLearnerCreditManagementScreen,
-  isTopDownAssignmentEnabled: state.portalConfiguration.isTopDownAssignmentEnabled,
   enterpriseFeatures: state.features,
 });
 
@@ -64,7 +59,6 @@ const BaseSubBudgetCard = ({
   displayName,
   enterpriseSlug,
   enterpriseId,
-  isTopDownAssignmentEnabled,
   enablePortalLearnerCreditManagementScreen,
   isLoading,
   isAssignable,
@@ -75,7 +69,6 @@ const BaseSubBudgetCard = ({
   const { isFetching: isFetchingBudgets } = useEnterpriseBudgets({
     enablePortalLearnerCreditManagementScreen,
     enterpriseId,
-    isTopDownAssignmentEnabled,
   });
   const intl = useIntl();
   const budgetLabel = getBudgetStatus({
@@ -182,7 +175,6 @@ const BaseSubBudgetCard = ({
 BaseSubBudgetCard.propTypes = {
   enterpriseSlug: PropTypes.string.isRequired,
   enterpriseId: PropTypes.string.isRequired,
-  isTopDownAssignmentEnabled: PropTypes.bool,
   enablePortalLearnerCreditManagementScreen: PropTypes.bool.isRequired,
   id: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
   start: PropTypes.string,
@@ -199,7 +191,6 @@ BaseSubBudgetCard.propTypes = {
 };
 
 BaseSubBudgetCard.defaultProps = {
-  isTopDownAssignmentEnabled: false,
 };
 
 export default connect(mapStateToProps)(BaseSubBudgetCard);

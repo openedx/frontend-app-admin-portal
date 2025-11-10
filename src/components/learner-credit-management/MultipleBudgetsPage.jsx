@@ -17,7 +17,6 @@ const MultipleBudgetsPage = ({
   enterpriseUUID,
   enterpriseSlug,
   enableLearnerPortal,
-  enterpriseFeatures,
   enablePortalLearnerCreditManagementScreen,
 }) => {
   const intl = useIntl();
@@ -30,7 +29,6 @@ const MultipleBudgetsPage = ({
   const { data: budgetsOverview } = useEnterpriseBudgets({
     enterpriseId: enterpriseUUID,
     enablePortalLearnerCreditManagementScreen,
-    isTopDownAssignmentEnabled: enterpriseFeatures.topDownAssignmentRealTimeLcm,
   });
   const {
     budgets = [],
@@ -123,7 +121,6 @@ MultipleBudgetsPage.propTypes = {
   enterpriseSlug: PropTypes.string.isRequired,
   enableLearnerPortal: PropTypes.bool.isRequired,
   enterpriseFeatures: PropTypes.shape({
-    topDownAssignmentRealTimeLcm: PropTypes.bool,
   }).isRequired,
   enablePortalLearnerCreditManagementScreen: PropTypes.bool.isRequired,
 };

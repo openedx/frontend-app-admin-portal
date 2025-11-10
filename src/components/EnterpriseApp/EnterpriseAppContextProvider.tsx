@@ -42,9 +42,6 @@ export type TEnterpriseAppContext = {
 interface EnterpriseAppContextProviderProps {
   enterpriseId: string;
   enterpriseName: string;
-  enterpriseFeatures: {
-    topDownAssignmentRealTimeLcm?: boolean;
-  };
   enablePortalLearnerCreditManagementScreen: boolean;
   children: React.ReactNode;
 }
@@ -68,7 +65,6 @@ export const EnterpriseAppContext = createContext<TEnterpriseAppContext>({
 const EnterpriseAppContextProvider: React.FC<EnterpriseAppContextProviderProps> = ({
   enterpriseId,
   enterpriseName,
-  enterpriseFeatures,
   enablePortalLearnerCreditManagementScreen,
   children,
 }) => {
@@ -77,7 +73,6 @@ const EnterpriseAppContextProvider: React.FC<EnterpriseAppContextProviderProps> 
   const enterpriseSubsidiesContext = useEnterpriseSubsidiesContext({
     enterpriseId,
     enablePortalLearnerCreditManagementScreen,
-    isTopDownAssignmentEnabled: enterpriseFeatures.topDownAssignmentRealTimeLcm,
   });
 
   // subsidy requests for the enterprise customer
@@ -129,9 +124,6 @@ const EnterpriseAppContextProvider: React.FC<EnterpriseAppContextProviderProps> 
 EnterpriseAppContextProvider.propTypes = {
   enterpriseId: PropTypes.string.isRequired,
   enterpriseName: PropTypes.string.isRequired,
-  enterpriseFeatures: PropTypes.shape({
-    topDownAssignmentRealTimeLcm: PropTypes.bool.isRequired,
-  }).isRequired,
   enablePortalLearnerCreditManagementScreen: PropTypes.bool.isRequired,
   // @ts-expect-error children is required by React.FC
   children: PropTypes.node,

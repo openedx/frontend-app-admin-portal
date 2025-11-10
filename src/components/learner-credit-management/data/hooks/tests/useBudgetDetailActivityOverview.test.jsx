@@ -49,7 +49,6 @@ describe('useBudgetDetailActivityOverview', () => {
     const { result } = renderHook(
       () => useBudgetDetailActivityOverview({
         enterpriseUUID: mockEnterpriseUUID,
-        isTopDownAssignmentEnabled: true,
       }),
       { wrapper },
     );
@@ -84,11 +83,9 @@ describe('useBudgetDetailActivityOverview', () => {
   });
 
   it.each([
-    { hasAssignableBudget: false, isTopDownAssignmentEnabled: false },
-    { hasAssignableBudget: true, isTopDownAssignmentEnabled: false },
-    { hasAssignableBudget: false, isTopDownAssignmentEnabled: true },
-    { hasAssignableBudget: true, isTopDownAssignmentEnabled: true },
-  ])('handles when budget is a subsidy access policy uuid (not an enterprise offer id) (%s)', async ({ hasAssignableBudget, isTopDownAssignmentEnabled }) => {
+    { hasAssignableBudget: false },
+    { hasAssignableBudget: true },
+  ])('handles when budget is a subsidy access policy uuid (not an enterprise offer id) (%s)', async ({ hasAssignableBudget }) => {
     useBudgetId.mockReturnValue({
       budgetId: mockSubsidyAccessPolicyUUID,
       subsidyAccessPolicyId: mockSubsidyAccessPolicyUUID,
@@ -97,7 +94,7 @@ describe('useBudgetDetailActivityOverview', () => {
       data: hasAssignableBudget ? mockAssignableSubsidyAccessPolicy : mockPerLearnerSpendLimitSubsidyAccessPolicy,
     });
     const mockListContentAssignments = jest.spyOn(EnterpriseAccessApiService, 'listContentAssignments');
-    if (hasAssignableBudget && isTopDownAssignmentEnabled) {
+    if (hasAssignableBudget) {
       mockListContentAssignments.mockResolvedValue({
         data: {
           count: 1,
@@ -106,43 +103,27 @@ describe('useBudgetDetailActivityOverview', () => {
       });
     }
     const mockFetchCustomerTransactions = jest.spyOn(SubsidyApiService, 'fetchCustomerTransactions');
-    const mockFetchCourseEnrollments = jest.spyOn(EnterpriseDataApiService, 'fetchCourseEnrollments');
     const mockSubsidyTransaction = { uuid: 'mock-transaction-uuid' };
-    const mockAnalyticsApiRedemption = { id: 'mock-course-enrollment-id' };
 
-    if (isTopDownAssignmentEnabled) {
-      mockFetchCustomerTransactions.mockResolvedValue({
-        data: {
-          count: 1,
-          results: [mockSubsidyTransaction],
-        },
-      });
-    } else {
-      mockFetchCourseEnrollments.mockResolvedValue({
-        data: {
-          count: 1,
-          results: [mockAnalyticsApiRedemption],
-        },
-      });
-    }
+    mockFetchCustomerTransactions.mockResolvedValue({
+      data: {
+        count: 1,
+        results: [mockSubsidyTransaction],
+      },
+    });
 
     const { result } = renderHook(
       () => useBudgetDetailActivityOverview({
         enterpriseUUID: mockEnterpriseUUID,
-        isTopDownAssignmentEnabled,
       }),
       { wrapper },
     );
 
     expect(useSubsidyAccessPolicy).toHaveBeenCalledWith(mockSubsidyAccessPolicyUUID);
 
-    if (isTopDownAssignmentEnabled) {
-      expect(mockFetchCustomerTransactions).toHaveBeenCalledTimes(1);
-    } else {
-      expect(mockFetchCourseEnrollments).toHaveBeenCalledTimes(1);
-    }
+    expect(mockFetchCustomerTransactions).toHaveBeenCalledTimes(1);
 
-    if (isTopDownAssignmentEnabled && hasAssignableBudget) {
+    if (hasAssignableBudget) {
       expect(mockListContentAssignments).toHaveBeenCalledTimes(1);
     } else {
       expect(mockListContentAssignments).not.toHaveBeenCalled();
@@ -155,11 +136,11 @@ describe('useBudgetDetailActivityOverview', () => {
     const expectedData = {
       spentTransactions: {
         count: 1,
-        results: [isTopDownAssignmentEnabled ? mockSubsidyTransaction : mockAnalyticsApiRedemption],
+        results: [mockSubsidyTransaction],
       },
     };
 
-    if (hasAssignableBudget && isTopDownAssignmentEnabled) {
+    if (hasAssignableBudget) {
       expectedData.contentAssignments = {
         count: 1,
         results: [{ id: 'mock-content-assignment-id' }],

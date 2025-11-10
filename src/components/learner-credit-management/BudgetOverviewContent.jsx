@@ -18,7 +18,6 @@ import { ALLOCATE_LEARNING_BUDGETS_TARGETS } from '../ProductTours/AdminOnboardi
 
 const BudgetOverviewContent = ({
   enterpriseUUID,
-  enterpriseFeatures,
 }) => {
   const intl = useIntl();
   const { subsidyAccessPolicyId, enterpriseOfferId } = useBudgetId();
@@ -54,7 +53,6 @@ const BudgetOverviewContent = ({
     subsidySummary,
     budgetId: policyOrOfferId,
     enterpriseOfferMetadata,
-    isTopDownAssignmentEnabled: enterpriseFeatures.topDownAssignmentRealTimeLcm,
   });
 
   if (!subsidyAccessPolicy && (isLoadingSubsidySummary || isLoadingEnterpriseOffer)) {
@@ -114,7 +112,6 @@ const mapStateToProps = state => ({
 BudgetOverviewContent.propTypes = {
   enterpriseUUID: PropTypes.string.isRequired,
   enterpriseFeatures: PropTypes.shape({
-    topDownAssignmentRealTimeLcm: PropTypes.bool,
   }).isRequired,
 };
 
