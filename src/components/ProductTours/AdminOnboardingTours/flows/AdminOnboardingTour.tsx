@@ -3,20 +3,20 @@ import { logError } from '@edx/frontend-platform/logging';
 
 import {
   ADMINISTER_SUBSCRIPTIONS_TARGETS,
-  ANALYTICS_INSIGHTS_TARGETS,
   CUSTOMIZE_REPORTS_SIDEBAR,
   ORGANIZE_LEARNER_TARGETS,
   TRACK_LEARNER_PROGRESS_TARGETS,
   ALLOCATE_LEARNING_BUDGETS_TARGETS,
+  ANALYTICS_V2_TARGETS,
 } from '../constants';
 
 import { TourStep } from '../../types';
 import LmsApiService from '../../../../data/services/LmsApiService';
 import AdministerSubscriptionsFlow from './AdministerSubscriptionsFlow';
 import useAllocateLearningBudgetsFlow from './AllocateLearningBudgetsFlow';
-import AnalyticsFlow from './AnalyticsFlow';
 import CustomizeReportsFlow from './CustomizeReportsFlow';
 import LearnerProgressFlow from './LearnerProgressFlow';
+import AnalyticsV2Flow from './AnalyticsV2Flow';
 import OrganizeLearnersFlow from './OrganizeLearnersFlow';
 import SetUpPreferencesFlow from './SetUpPreferencesFlow';
 import { TOUR_TARGETS } from '../../constants';
@@ -75,7 +75,7 @@ const AdminOnboardingTour = (
   const administerSubscriptionsFlow = AdministerSubscriptionsFlow({
     currentStep, enterpriseId, enterpriseSlug, handleEndTour, handleBackTour, setCurrentStep, targetSelector,
   });
-  const analyticsFlow = AnalyticsFlow({
+  const analyticsV2Flow = AnalyticsV2Flow({
     handleAdvanceTour, handleBackTour, handleEndTour,
   });
   const customizeReportsFlow = CustomizeReportsFlow({ handleEndTour });
@@ -102,8 +102,8 @@ const AdminOnboardingTour = (
   const flowMapping = {
     [TRACK_LEARNER_PROGRESS_TARGETS.LEARNER_PROGRESS_SIDEBAR]: learnerProgressFlow,
     ...Object.fromEntries(
-      Object.values(ANALYTICS_INSIGHTS_TARGETS)
-        .map(target => [target, analyticsFlow]),
+      Object.values(ANALYTICS_V2_TARGETS)
+        .map(target => [target, analyticsV2Flow]),
     ),
     ...Object.fromEntries(
       Object.values(ORGANIZE_LEARNER_TARGETS)

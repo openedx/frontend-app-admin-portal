@@ -2,7 +2,7 @@
 
 export const ROUTE_NAMES = {
   analytics: 'analytics',
-  analytics_v2: 'analytics-v2',
+  analytics_v1: 'analytics-v1',
   appearance: 'appearance',
   bulkEnrollment: 'enrollment',
   bulkEnrollmentResults: 'bulk-enrollment-results',

@@ -55,8 +55,10 @@ describe('EnterpriseAppRoutes', () => {
     expect(screen.getByText('This feature is currently unavailable in this environment.')).toBeInTheDocument();
   });
 
-  it('renders AnalyticsV2Page when ANALYTICS_SUPPORTED is true', () => {
+  it('renders AnalyticsV2Page when ANALYTICS_SUPPORTED and ADMIN_V1 is true', () => {
+    mockEnterpriseAppPage = 'analytics-v1';
     features.ANALYTICS_SUPPORTED = true;
+    features.ADMIN_V1 = true;
     renderWithProviders(defaultProps);
     expect(screen.getByText('AnalyticsV2Page Mock Component')).toBeInTheDocument();
   });
@@ -67,10 +69,9 @@ describe('EnterpriseAppRoutes', () => {
     renderWithProviders(defaultProps);
     expect(screen.getByText('AdminPage Mock Component')).toBeInTheDocument();
   });
-  it('renders RevisedAnalyticsV2Page when all flags are true', () => {
-    mockEnterpriseAppPage = 'analytics-v2';
+  it('renders RevisedAnalyticsV2Page by default', () => {
+    mockEnterpriseAppPage = 'analytics';
     features.ANALYTICS_SUPPORTED = true;
-    features.ADMIN_V2 = true;
     renderWithProviders(defaultProps);
     expect(screen.getByText('RevisedAnalyticsV2Page Mock Component')).toBeInTheDocument();
   });

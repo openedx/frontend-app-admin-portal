@@ -4,6 +4,7 @@ import {
   PORTAL_APPEARANCE_TOUR_COOKIE_NAME,
   LEARNER_CREDIT_COOKIE_NAME,
   HIGHLIGHTS_COOKIE_NAME,
+  ANALYTICS_COOKIE_NAME,
   LEARNER_DETAIL_PAGE_COOKIE_NAME,
 } from '../constants';
 import { SubsidyRequestsContext } from '../../subsidy-requests';
@@ -37,6 +38,17 @@ export const useHighlightsTour = (enableHighlights: boolean) : boolean => {
   const dismissedHighlightsTourCookie = global.localStorage.getItem(HIGHLIGHTS_COOKIE_NAME);
   const showHighlightsTour = enableHighlights && !dismissedHighlightsTourCookie;
   return showHighlightsTour;
+};
+
+/**
+  useAnalyticsTour returns true if
+  - analytics tour cookie is undefined or false
+ *  @returns {boolean}
+ */
+export const useAnalyticsTour = () : boolean => {
+  const dismissedAnalyticsTourCookie = global.localStorage.getItem(ANALYTICS_COOKIE_NAME);
+  const showAnalyticsTour = !dismissedAnalyticsTourCookie;
+  return showAnalyticsTour;
 };
 
 /**

@@ -3,12 +3,14 @@ const CONTENT_HIGHLIGHTS = 'highlights-link';
 const LEARNER_CREDIT = 'learner-credit-link';
 const PEOPLE_MANAGEMENT = 'people-management-link';
 const SETTINGS_SIDEBAR = 'settings-sidebar-link';
+const ANALYTICS_SIDEBAR = 'analytics-sidebar';
 
 export const TOUR_TARGETS = {
   CONTENT_HIGHLIGHTS,
   LEARNER_CREDIT,
   PEOPLE_MANAGEMENT,
   SETTINGS_SIDEBAR,
+  ANALYTICS_SIDEBAR,
 };
 
 export const BROWSE_AND_REQUEST_TOUR_COOKIE_NAME = 'dismissed-browse-and-request-tour';
@@ -16,6 +18,7 @@ export const HIGHLIGHTS_COOKIE_NAME = 'dismissed-highlights-tour';
 export const LEARNER_CREDIT_COOKIE_NAME = 'dismissed-learner-credit-tour';
 export const LEARNER_DETAIL_PAGE_COOKIE_NAME = 'dismissed-learner-detail-page-tour';
 export const PORTAL_APPEARANCE_TOUR_COOKIE_NAME = 'dismissed-portal-appearance-tour';
+export const ANALYTICS_COOKIE_NAME = 'dismissed-analytics-tour';
 
 export const COOKIE_NAMES = {
   BROWSE_AND_REQUEST_TOUR_COOKIE_NAME,
@@ -23,6 +26,7 @@ export const COOKIE_NAMES = {
   LEARNER_CREDIT_COOKIE_NAME,
   LEARNER_DETAIL_PAGE_COOKIE_NAME,
   PORTAL_APPEARANCE_TOUR_COOKIE_NAME,
+  ANALYTICS_COOKIE_NAME,
 };
 
 export const BROWSE_AND_REQUEST_ADVANCE_EVENT_NAME = 'edx.ui.enterprise.admin-portal.tours.browse-and-request.advanced';
@@ -42,6 +46,10 @@ export const LEARNER_DETAIL_PAGE_DISMISS_EVENT_NAME = 'edx.ui.enterprise.admin-p
 export const PORTAL_APPEARANCE_ADVANCE_EVENT_NAME = 'edx.ui.enterprise.admin-portal.tours.portal-appearance.advanced';
 export const PORTAL_APPEARANCE_DISMISS_EVENT_NAME = 'edx.ui.enterprise.admin-portal.tours.portal-appearance.dismissed';
 export const PORTAL_APPEARANCE_ON_END_EVENT_NAME = 'edx.ui.enterprise.admin-portal.tours.portal-appearance.navigated-to-page';
+
+export const ANALYTICS_ADVANCE_EVENT_NAME = 'edx.ui.enterprise.admin-portal.tours.analytics.advanced';
+export const ANALYTICS_DISMISS_EVENT_NAME = 'edx.ui.enterprise.admin-portal.tours.analytics.dismissed';
+export const ANALYTICS_ON_END_EVENT_NAME = 'edx.ui.enterprise.admin-portal.tours.analytics.navigated-to-page';
 
 export default {
   TOUR_TARGETS,

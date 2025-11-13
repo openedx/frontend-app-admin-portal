@@ -82,7 +82,7 @@ const EnterpriseAppRoutes = ({
         />
       )}
 
-      {enableAnalyticsPage && enterpriseAppPage === ROUTE_NAMES.analytics && (
+      {enableAnalyticsPage && enterpriseAppPage === ROUTE_NAMES.analytics_v1 && features.ADMIN_V1 && (
         <Route
           key="analytics"
           path="/"
@@ -92,7 +92,7 @@ const EnterpriseAppRoutes = ({
         />
       )}
 
-      {enableAnalyticsPage && enterpriseAppPage === ROUTE_NAMES.analytics_v2 && features.ADMIN_V2 && (
+      {enableAnalyticsPage && enterpriseAppPage === ROUTE_NAMES.analytics && (
       <Route
         key="analytics"
         path="/"

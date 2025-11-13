@@ -31,6 +31,13 @@ export const ANALYTICS_INSIGHTS_TARGETS = {
   SKILLS: 'analytics-skills',
 };
 
+export const ANALYTICS_V2_TARGETS = {
+  SIDEBAR: 'analytics-sidebar',
+  ENGAGEMENTS_TAB: 'analytics-v2-engagements-tab',
+  PROGRESS_TAB: 'analytics-v2-progress-tab',
+  OUTCOMES_TAB: 'analytics-v2-outcomes-tab',
+};
+
 export const ADMINISTER_SUBSCRIPTIONS_TARGETS = {
   SIDEBAR: 'subscriptions-sidebar',
   SUBSCRIPTION_PLANS_LIST: 'subscription-plans-list',
@@ -95,6 +102,10 @@ export const ADMIN_TOUR_EVENT_NAMES = {
   ALLOCATE_ASSIGNMENT_DISMISS_EVENT_NAME: 'edx.ui.enterprise.admin-portal.admin-onboarding-tours.allocate-assignment.dismiss',
   SET_UP_PREFERENCES_COMPLETED_EVENT_NAME: 'edx.ui.enterprise.admin-portal.admin-onboarding-tours.set-up-preferences.completed',
   SET_UP_PREFERENCES_DISMISS_EVENT_NAME: 'edx.ui.enterprise.admin-portal.admin-onboarding-tours.set-up-preferences.dismiss',
+  ANALYTICS_ADVANCE_EVENT_NAME: 'edx.ui.enterprise.admin-portal.admin-onboarding-tours.analytics.advance',
+  ANALYTICS_BACK_EVENT_NAME: 'edx.ui.enterprise.admin-portal.admin-onboarding-tours.analytics.back',
+  ANALYTICS_COMPLETED_EVENT_NAME: 'edx.ui.enterprise.admin-portal.admin-onboarding-tours.analytics.completed',
+  ANALYTICS_DISMISS_EVENT_NAME: 'edx.ui.enterprise.admin-portal.admin-onboarding-tours.analytics.dismiss',
 };
 
 export const ONBOARDING_WELCOME_MODAL_COOKIE_NAME = 'seen-onboarding-welcome-modal';
