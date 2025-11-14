@@ -224,7 +224,7 @@ const useBnrSubsidyRequests = ({
         applyOverviewFiltersToOptions(filters, options);
       }
 
-      const response = await EnterpriseAccessApiService.fetchBnrSubsidyRequestsOverviw(
+      const response = await EnterpriseAccessApiService.fetchBnrSubsidyRequestsOverview(
         enterpriseId,
         subsidyAccessPolicyId,
         options,

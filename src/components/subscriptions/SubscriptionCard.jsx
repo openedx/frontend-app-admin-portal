@@ -1,30 +1,49 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
 import dayjs from 'dayjs';
 import { Link } from 'react-router-dom';
 import {
-  Card, Badge, Button, Stack, Row, Col,
+  Badge, Button, Card, Col, Hyperlink, Row, Stack,
 } from '@openedx/paragon';
+import { FormattedMessage, getLocale } from '@edx/frontend-platform/i18n';
 
 import classNames from 'classnames';
-import { getSubscriptionStatus } from './data/utils';
-import { ACTIVE, SCHEDULED, SUBSCRIPTION_STATUS_BADGE_MAP } from './data/constants';
+import {
+  ACTIVE, FREE_TRIAL_BADGE, TRIAL, SCHEDULED, SUBSCRIPTION_STATUS_BADGE_MAP, ENDED,
+} from './data/constants';
+import { useUpcomingInvoiceAmount } from './data/hooks';
+import { SubscriptionContext } from './SubscriptionData';
 import { ADMINISTER_SUBSCRIPTIONS_TARGETS } from '../ProductTours/AdminOnboardingTours/constants';
+import { makePlural } from '../../utils';
+import { getSubscriptionStatus, openStripeBillingPortal } from './data/utils';
 
 const SubscriptionCard = ({
+  enterpriseUuid,
   subscription,
   createActions,
 }) => {
   const {
-    title,
-    startDate,
     expirationDate,
     licenses = {},
+    planType,
+    startDate,
+    title,
+    uuid: subPlanUuid,
   } = subscription;
-
+  const { setErrors } = useContext(SubscriptionContext);
+  const { invoiceAmount, currency, loadingStripeSummary } = useUpcomingInvoiceAmount(
+    { subPlanUuid, planType, setErrors },
+  );
   const formattedStartDate = dayjs(startDate).format('MMMM D, YYYY');
   const formattedExpirationDate = dayjs(expirationDate).format('MMMM D, YYYY');
   const subscriptionStatus = getSubscriptionStatus(subscription);
+
+  let subscriptionUpcomingPrice;
+  if (!loadingStripeSummary) {
+    const locale = getLocale();
+    subscriptionUpcomingPrice = `${invoiceAmount.toLocaleString(locale, { style: 'currency', currency, maximumFractionDigits: 0 })} ${currency.toUpperCase()}`;
+  }
 
   const renderDaysUntilPlanStartText = (className) => {
     if (!(subscriptionStatus === SCHEDULED)) {
@@ -39,8 +58,8 @@ const SubscriptionCard = ({
     return (
       <span className={classNames('d-block small', className)}>
         Plan begins in {
-          daysUntilPlanStart > 0 ? `${daysUntilPlanStart} day${daysUntilPlanStart > 1 ? 's' : ''}`
-            : `${hoursUntilPlanStart} hour${hoursUntilPlanStart > 1 ? 's' : ''}`
+          daysUntilPlanStart > 0 ? `${makePlural(daysUntilPlanStart, 'day')}`
+            : `${makePlural(hoursUntilPlanStart, 'hour')}`
         }
       </span>
     );
@@ -69,14 +88,41 @@ const SubscriptionCard = ({
   const renderCardHeader = () => {
     const subtitle = (
       <div className="d-flex flex-wrap align-items-center">
-        <Stack direction="horizontal" gap={3}>
-          <Badge variant={SUBSCRIPTION_STATUS_BADGE_MAP[subscriptionStatus].variant}>
-            {subscriptionStatus}
-          </Badge>
+        <Badge className="mr-2" variant={SUBSCRIPTION_STATUS_BADGE_MAP[subscriptionStatus].variant}>
+          {subscriptionStatus}
+        </Badge>
+        {planType === TRIAL && (
+          <>
+            <Badge className="mr-2" variant="info">
+              {FREE_TRIAL_BADGE}
+            </Badge>
+            {!(subscriptionStatus === ENDED) && (
+              <FormattedMessage
+                id="subscriptions.subscriptionCard.freeTrialDescription"
+                defaultMessage="Your 14-day free trial will conclude on {boldDate}. Your paid subscription will automatically start, and the {subscriptionUpcomingPrice} subscription fee will be charged to the card on file. {stripeLink}"
+                description="Message shown to warn customers with a free trial that they will be charged for the full subscription"
+                values={{
+                  boldDate: <span className="ml-1 font-weight-bold">{formattedExpirationDate}</span>,
+                  subscriptionUpcomingPrice: <span className="ml-1 font-weight-bold">{subscriptionUpcomingPrice}</span>,
+                  stripeLink: (
+                    <Hyperlink
+                      className="ml-2"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      onClick={() => (openStripeBillingPortal(enterpriseUuid))}
+                    >
+                      Manage subscription
+                    </Hyperlink>),
+                }}
+              />
+            )}
+          </>
+        )}
+        {planType !== TRIAL && (
           <span>
             {formattedStartDate} - {formattedExpirationDate}
           </span>
-        </Stack>
+        )}
       </div>
     );
 
@@ -89,7 +135,8 @@ const SubscriptionCard = ({
         subtitle={subtitle}
         actions={(
           <div>
-            {renderActions() || renderDaysUntilPlanStartText('mt-4')}
+            {renderActions()}
+            {renderDaysUntilPlanStartText('mt-4')}
           </div>
         )}
       />
@@ -135,15 +182,18 @@ const SubscriptionCard = ({
   );
 };
 
+const mapStateToProps = state => ({
+  enterpriseUuid: state.portalConfiguration.enterpriseId,
+});
+
 SubscriptionCard.defaultProps = {
   createActions: null,
 };
 
 SubscriptionCard.propTypes = {
+  enterpriseUuid: PropTypes.string.isRequired,
   subscription: PropTypes.shape({
-    startDate: PropTypes.string.isRequired,
     expirationDate: PropTypes.string.isRequired,
-    title: PropTypes.string.isRequired,
     licenses: PropTypes.shape({
       assigned: PropTypes.number.isRequired,
       activated: PropTypes.number.isRequired,
@@ -151,8 +201,12 @@ SubscriptionCard.propTypes = {
       unassigned: PropTypes.number.isRequired,
       total: PropTypes.number.isRequired,
     }),
+    planType: PropTypes.string.isRequired,
+    startDate: PropTypes.string.isRequired,
+    title: PropTypes.string.isRequired,
+    uuid: PropTypes.string.isRequired,
   }).isRequired,
   createActions: PropTypes.func,
 };
 
-export default SubscriptionCard;
+export default connect(mapStateToProps)(SubscriptionCard);

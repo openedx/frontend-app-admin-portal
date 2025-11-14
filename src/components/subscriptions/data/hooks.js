@@ -5,10 +5,13 @@ import { camelCaseObject } from '@edx/frontend-platform/utils';
 import LicenseManagerApiService from '../../../data/services/LicenseManagerAPIService';
 import {
   NETWORK_ERROR_MESSAGE,
+  STRIPE_EVENT_SUMMARY,
   SUBSCRIPTION_USERS,
   SUBSCRIPTION_USERS_OVERVIEW,
   SUBSCRIPTIONS,
+  TRIAL,
 } from './constants';
+import EnterpriseAccessApiService from '../../../data/services/EnterpriseAccessApiService';
 
 const subscriptionInitState = {
   results: [],
@@ -41,7 +44,7 @@ export const useSubscriptions = ({ enterpriseId, setErrors }) => {
             .forEach(customerAgreement => {
               // Push information about whether a particular subscription
               // should have expiration notices displayed for it down into
-              // that subcription.
+              // that subscription.
               const flattenedSubscriptionResults = customerAgreement.subscriptions.map(subscription => ({
                 ...subscription,
                 showExpirationNotifications: !(customerAgreement.disableExpirationNotifications || false),
@@ -231,5 +234,48 @@ export const useSubscriptionData = ({ enterpriseId }) => {
     setErrors,
     forceRefresh,
     loading,
+  };
+};
+
+/**
+ * This hook fetches a StripeEventSummary for pricing information about a trial SubscriptionPlan
+ * @param {string} subPlanUuid - The UUID of the SubscriptionPlan.
+ * @param {string} planType - The type of plan
+ * @param {func} setErrors - setErrors function from SubscriptionContext
+*/
+export const useUpcomingInvoiceAmount = ({ subPlanUuid, planType, setErrors }) => {
+  const [loadingStripeSummary, setLoadingStripeSummary] = useState(true);
+  const [invoiceAmount, setInvoiceAmount] = useState(null);
+  const [currency, setCurrency] = useState(null);
+  useEffect(() => {
+    const fetchStripeEvent = async () => {
+      try {
+        const response = await EnterpriseAccessApiService.fetchStripeEvent(subPlanUuid);
+        const results = camelCaseObject(response.data);
+        setInvoiceAmount(results.upcomingInvoiceAmountDue);
+        setCurrency(results.currency);
+      } catch (error) {
+        logError(error);
+        setErrors(s => ({
+          ...s,
+          [STRIPE_EVENT_SUMMARY]: NETWORK_ERROR_MESSAGE,
+        }));
+      } finally {
+        setLoadingStripeSummary(false);
+      }
+    };
+    // only trial plans will have associated StripeEventSummaries
+    if (planType === TRIAL) {
+      fetchStripeEvent();
+    } else {
+      // return early prevent unnecessary calls to enterprise-access for non-trial plans
+
+    }
+  }, [setErrors, planType, subPlanUuid]);
+
+  return {
+    invoiceAmount,
+    currency,
+    loadingStripeSummary,
   };
 };

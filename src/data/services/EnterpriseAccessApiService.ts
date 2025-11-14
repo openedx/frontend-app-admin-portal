@@ -426,13 +426,42 @@ class EnterpriseAccessApiService {
    * @param {string} enterpriseUUID - The UUID of the enterprise customer.
    * @returns {Promise<AxiosResponse>} - A promise that resolves to the API response.
    */
-  static fetchBnrSubsidyRequestsOverviw(enterpriseId, policyId, options = {}) {
+  static fetchBnrSubsidyRequestsOverview(enterpriseId, policyId, options = {}) {
     const params = new URLSearchParams({
       enterprise_customer_uuid: enterpriseId,
       policy_uuid: policyId,
       ...options,
     });
     const url = `${EnterpriseAccessApiService.baseUrl}/learner-credit-requests/overview/?${params.toString()}`;
+    return EnterpriseAccessApiService.apiClient().get(url);
+  }
+
+  /**
+   * Fetches the upcoming invoice amount for trial SubscriptionPlan
+   * @param {string} subPlanUuid - The UUID of the subscription plan.
+   *
+   * @returns A promise that resolves to an AxiosResponse with upcoming_invoice_amount_due
+   */
+  static fetchStripeEvent(subPlanUuid: string) {
+    const params = new URLSearchParams({
+      subscription_plan_uuid: subPlanUuid,
+    });
+    const url = `${EnterpriseAccessApiService.baseUrl}/stripe-event-summary/first-invoice-upcoming-amount-due/?${params.toString()}`;
+    return EnterpriseAccessApiService.apiClient().get(url);
+  }
+
+  /**
+   * Creates a stripe billing portal session in order to fetch the URL to the Stripe portal
+   * @param {string} enterpriseUuid - The UUID of the enterprise customer.
+   *
+   * @returns A promise that resolves to an AxiosResponse with Stripe billing portal session
+   */
+  static fetchStripeBillingPortalSession(enterpriseUuid: string) {
+    const params = new URLSearchParams({
+      enterprise_customer_uuid: enterpriseUuid,
+    });
+
+    const url = `${EnterpriseAccessApiService.baseUrl}/customer-billing/create-enterprise-admin-portal-session/?${params.toString()}`;
     return EnterpriseAccessApiService.apiClient().get(url);
   }
 }

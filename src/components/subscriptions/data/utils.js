@@ -1,12 +1,11 @@
 import dayjs from 'dayjs';
+import { logError } from '@edx/frontend-platform/logging';
+import { camelCaseObject } from '@edx/frontend-platform';
+
+import EnterpriseAccessApiService from '../../../data/services/EnterpriseAccessApiService';
 import {
-  SEEN_SUBSCRIPTION_EXPIRATION_MODAL_COOKIE_PREFIX,
-  ASSIGNED,
-  ACTIVE,
-  SCHEDULED,
-  ENDED,
-  REVOCABLE_STATUSES,
-  ENROLLABLE_STATUSES,
+  ASSIGNED, ACTIVE, ENDED, ENROLLABLE_STATUSES, REVOCABLE_STATUSES,
+  SCHEDULED, SEEN_SUBSCRIPTION_EXPIRATION_MODAL_COOKIE_PREFIX,
 } from './constants';
 
 export const getSubscriptionExpiringCookieName = ({
@@ -79,4 +78,21 @@ export const transformFiltersForRequest = (filters) => {
       filter_value: filter.filterValue,
     }),
   );
+};
+
+/**
+ * Opens a external link to a Stripe billing portal session
+ * @param {string} enterpriseUuid - The UUID of the Enterprise Customer.
+*/
+export const openStripeBillingPortal = async (enterpriseUuid) => {
+  try {
+    const response = await EnterpriseAccessApiService.fetchStripeBillingPortalSession(enterpriseUuid);
+    const results = camelCaseObject(response.data);
+    if (results.url) {
+      window.open(results.url, '_blank', 'noopener,noreferrer');
+    }
+  } catch (error) {
+    logError('Failed to open Stripe billing portal session.');
+    logError(error);
+  }
 };

@@ -14,6 +14,7 @@ export const REVOKED = 'revoked';
 export const REVOCABLE_STATUSES = [ACTIVATED, ASSIGNED];
 export const ENROLLABLE_STATUSES = [ACTIVATED, ASSIGNED];
 
+export const STRIPE_EVENT_SUMMARY = 'Stripe Event Summary';
 export const SUBSCRIPTIONS = 'Subscriptions';
 export const SUBSCRIPTION_USERS = 'Subscription Users';
 export const SUBSCRIPTION_USERS_OVERVIEW = 'Subscription Users Overview';
@@ -48,12 +49,16 @@ export const USER_STATUS_BADGE_MAP = {
 export const ACTIVE = 'Active';
 export const ENDED = 'Ended';
 export const SCHEDULED = 'Scheduled';
+export const TRIAL = 'Trial';
 
 export const SUBSCRIPTION_STATUS_BADGE_MAP = {
   [ACTIVE]: { variant: 'primary' },
   [SCHEDULED]: { variant: 'secondary' },
   [ENDED]: { variant: 'light' },
+  [TRIAL]: { variant: 'info' },
 };
+
+export const FREE_TRIAL_BADGE = 'Free Trial';
 
 // Browse and request constants `BrowseAndRequestAlert`
 export const BROWSE_AND_REQUEST_ALERT_COOKIE_PREFIX = 'dismissed-browse-and-request-alert';

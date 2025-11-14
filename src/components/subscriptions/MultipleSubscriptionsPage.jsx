@@ -27,7 +27,7 @@ const MultipleSubscriptionsPage = ({
   leadText,
   createActions,
 }) => {
-  const { loading, data } = useContext(SubscriptionContext);
+  const { data, loading } = useContext(SubscriptionContext);
   const subscriptions = data.results;
 
   if (loading) {

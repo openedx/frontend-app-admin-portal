@@ -1,6 +1,7 @@
 import dayjs from 'dayjs';
 import { ACTIVE, SCHEDULED, ENDED } from '../../data/constants';
-import { sortSubscriptionsByStatus, getSubscriptionStatus } from '../../data/utils';
+import { getSubscriptionStatus, openStripeBillingPortal, sortSubscriptionsByStatus } from '../../data/utils';
+import EnterpriseAccessApiService from '../../../../data/services/EnterpriseAccessApiService';
 
 describe('utils', () => {
   const scheduledSub = {
@@ -52,6 +53,20 @@ describe('utils', () => {
       const initialOrder = [expiredSub, activeSub, scheduledSub, activeSub2];
       const expectedOrder = [activeSub2, activeSub, scheduledSub, expiredSub];
       expect(sortSubscriptionsByStatus(initialOrder)).toEqual(expectedOrder);
+    });
+  });
+  describe('openStripeBillingPortal', () => {
+    jest.mock('../../../../data/services/EnterpriseAccessApiService', () => ({
+      fetchStripeBillingPortalSession: jest.fn().mockReturnValue({
+        data: {
+          url: 'https://fake-stripe-url.com',
+        },
+      }),
+    }));
+    it('should create new stripe billing portal', () => {
+      const spy = jest.spyOn(EnterpriseAccessApiService, 'fetchStripeBillingPortalSession');
+      openStripeBillingPortal('test-uuid');
+      expect(spy).toHaveBeenCalledWith('test-uuid');
     });
   });
 });
