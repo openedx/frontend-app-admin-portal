@@ -186,6 +186,9 @@ const getPageOptionsFromUrl = () => {
   if (query.has('search_start_date')) {
     pageOptions.search_start_date = query.get('search_start_date');
   }
+  if (query.has('search_enrollment')) {
+    pageOptions.search_enrollment = query.get('search_enrollment');
+  }
   return pageOptions;
 };
 
