@@ -19,7 +19,7 @@ import SearchBar from '../SearchBar';
 const AdminSearchForm = ({
   searchEnrollmentsList,
   searchParams: {
-    searchQuery, searchCourseQuery, searchDateQuery, searchBudgetQuery, searchGroupQuery,
+    searchQuery, searchCourseQuery, searchDateQuery, searchBudgetQuery, searchGroupQuery, searchEnrollmentQuery,
   },
   tableData = [],
   budgets,
@@ -37,7 +37,8 @@ const AdminSearchForm = ({
       return;
     }
     searchEnrollmentsList();
-  }, [searchEnrollmentsList, searchQuery, searchCourseQuery, searchDateQuery, searchBudgetQuery, searchGroupQuery]);
+  }, [searchEnrollmentsList, searchQuery, searchCourseQuery, searchDateQuery, searchBudgetQuery, searchGroupQuery,
+    searchEnrollmentQuery]);
 
   const onCourseSelect = (event) => {
     const updateParams = {
@@ -71,6 +72,19 @@ const AdminSearchForm = ({
     );
   };
 
+  const onEnrollmentSelect = (event) => {
+    const updateParams = {
+      search_enrollment: event.target.value,
+      page: 1,
+    };
+    updateUrl(navigate, location.pathname, updateParams);
+    sendEnterpriseTrackEvent(
+      enterpriseId,
+      EVENT_NAMES.LEARNER_PROGRESS_REPORT.FILTER_BY_ENROLLMENT_DROPDOWN,
+      { enrollment: event.target.value },
+    );
+  };
+
   const courseTitles = Array.from(new Set(tableData.map(en => en.course_title).sort()));
   const courseDates = Array.from(new Set(tableData.map(en => en.course_start_date).sort().reverse()));
   const columnWidth = (budgets?.length || groups?.length) ? 'col-md-3' : 'col-md-6';
@@ -79,6 +93,32 @@ const AdminSearchForm = ({
     <div className="row" id={TRACK_LEARNER_PROGRESS_TARGETS.FILTER}>
       <div className="col-12 pr-md-0 mb-0">
         <div className="row w-100 m-0">
+          <div className={classNames('col-12 my-2 my-md-0 px-0 px-md-2 px-lg-3', columnWidth)}>
+            <Form.Label id="search-email-label" className="mb-2">
+              <FormattedMessage
+                id="admin.portal.lpr.filter.by.email.input.label"
+                defaultMessage="Filter by email"
+                description="Label for the email filter dropdown in the admin portal LPR page"
+              />
+            </Form.Label>
+            <SearchBar
+              data-testid="admin-search-bar"
+              placeholder={intl.formatMessage({
+                id: 'admin.portal.lpr.filter.by.email.input.placeholder',
+                defaultMessage: 'Search by email...',
+                description: 'Placeholder text for the email filter input in the admin portal LPR page.',
+              })}
+              onSearch={query => updateUrl(navigate, location.pathname, {
+                search: query,
+                page: 1,
+              })}
+              onClear={() => updateUrl(navigate, location.pathname, { search: undefined })}
+              value={searchQuery}
+              aria-labelledby="search-email-label"
+              className="py-0"
+              inputProps={{ 'data-hj-suppress': true }}
+            />
+          </div>
           {groups?.length ? (
             <div className="col-12 col-md-3 my-2 my-md-0 px-0 px-md-2 px-lg-3">
               <Form.Group>
@@ -115,7 +155,79 @@ const AdminSearchForm = ({
               </Form.Group>
             </div>
           ) : null}
-
+          {budgets?.length ? (
+            <div className="col-12 col-md-3 my-2 my-md-0 px-0 px-md-2 px-lg-3">
+              <Form.Group>
+                <Form.Label className="search-label mb-2">
+                  <FormattedMessage
+                    id="admin.portal.lpr.filter.by.budget.dropdown.label"
+                    defaultMessage="Filter by budget"
+                    description="Label for the budget filter dropdown in the admin portal LPR page."
+                  />
+                </Form.Label>
+                <Form.Control
+                  data-testid="admin-search-form-control"
+                  className="w-100 budgets-dropdown"
+                  as="select"
+                  value={searchBudgetQuery}
+                  onChange={e => onBudgetSelect(e)}
+                >
+                  <option value="">
+                    {intl.formatMessage({
+                      id: 'admin.portal.lpr.filter.by.budget.dropdown.option.all.budgets',
+                      defaultMessage: 'All budgets',
+                      description: 'Label for the all budgets option in the budget filter dropdown in the admin portal LPR page.',
+                    })}
+                  </option>
+                  {budgets.map(budget => (
+                    <option
+                      value={budget.subsidy_access_policy_uuid}
+                      key={budget.subsidy_access_policy_uuid}
+                    >
+                      {budget.subsidy_access_policy_display_name}
+                    </option>
+                  ))}
+                </Form.Control>
+              </Form.Group>
+            </div>
+          ) : null }
+          {/* Filter by Enrollment */}
+          <div className="col-12 col-md-3 my-2 my-md-0 px-0 px-md-2 px-lg-3">
+            <Form.Group>
+              <Form.Label className="search-label mb-2">
+                <FormattedMessage
+                  id="admin.portal.lpr.filter.by.enrollment.dropdown.label"
+                  defaultMessage="Filter by enrollment"
+                />
+              </Form.Label>
+              <Form.Control
+                data-testid="admin-search-form-control"
+                className="w-100 enrollments-dropdown"
+                as="select"
+                value={searchEnrollmentQuery}
+                onChange={e => onEnrollmentSelect(e)}
+              >
+                <option value="">
+                  {intl.formatMessage({
+                    id: 'admin.portal.lpr.filter.by.enrollment.dropdown.option.all',
+                    defaultMessage: 'All',
+                  })}
+                </option>
+                <option value="enrolled">
+                  {intl.formatMessage({
+                    id: 'admin.portal.lpr.filter.by.enrollment.dropdown.option.enrolled',
+                    defaultMessage: 'Enrolled',
+                  })}
+                </option>
+                <option value="unenrolled">
+                  {intl.formatMessage({
+                    id: 'admin.portal.lpr.filter.by.enrollment.dropdown.option.unenrolled',
+                    defaultMessage: 'Unenrolled',
+                  })}
+                </option>
+              </Form.Control>
+            </Form.Group>
+          </div>
           <div className="col-12 col-md-3 px-0 pl-0 pr-md-2 pr-lg-3">
             <Form.Group>
               <Form.Label className="search-label mb-2">
@@ -211,68 +323,7 @@ const AdminSearchForm = ({
               </Form.Control>
             </Form.Group>
           </div>
-          {budgets?.length ? (
-            <div className="col-12 col-md-3 my-2 my-md-0 px-0 px-md-2 px-lg-3">
-              <Form.Group>
-                <Form.Label className="search-label mb-2">
-                  <FormattedMessage
-                    id="admin.portal.lpr.filter.by.budget.dropdown.label"
-                    defaultMessage="Filter by budget"
-                    description="Label for the budget filter dropdown in the admin portal LPR page."
-                  />
-                </Form.Label>
-                <Form.Control
-                  data-testid="admin-search-form-control"
-                  className="w-100 budgets-dropdown"
-                  as="select"
-                  value={searchBudgetQuery}
-                  onChange={e => onBudgetSelect(e)}
-                >
-                  <option value="">
-                    {intl.formatMessage({
-                      id: 'admin.portal.lpr.filter.by.budget.dropdown.option.all.budgets',
-                      defaultMessage: 'All budgets',
-                      description: 'Label for the all budgets option in the budget filter dropdown in the admin portal LPR page.',
-                    })}
-                  </option>
-                  {budgets.map(budget => (
-                    <option
-                      value={budget.subsidy_access_policy_uuid}
-                      key={budget.subsidy_access_policy_uuid}
-                    >
-                      {budget.subsidy_access_policy_display_name}
-                    </option>
-                  ))}
-                </Form.Control>
-              </Form.Group>
-            </div>
-          ) : null }
-          <div className={classNames('col-12 my-2 my-md-0 px-0 px-md-2 px-lg-3', columnWidth)}>
-            <Form.Label id="search-email-label" className="mb-2">
-              <FormattedMessage
-                id="admin.portal.lpr.filter.by.email.input.label"
-                defaultMessage="Filter by email"
-                description="Label for the email filter dropdown in the admin portal LPR page"
-              />
-            </Form.Label>
-            <SearchBar
-              data-testid="admin-search-bar"
-              placeholder={intl.formatMessage({
-                id: 'admin.portal.lpr.filter.by.email.input.placeholder',
-                defaultMessage: 'Search by email...',
-                description: 'Placeholder text for the email filter input in the admin portal LPR page.',
-              })}
-              onSearch={query => updateUrl(navigate, location.pathname, {
-                search: query,
-                page: 1,
-              })}
-              onClear={() => updateUrl(navigate, location.pathname, { search: undefined })}
-              value={searchQuery}
-              aria-labelledby="search-email-label"
-              className="py-0"
-              inputProps={{ 'data-hj-suppress': true }}
-            />
-          </div>
+
         </div>
       </div>
     </div>
@@ -291,6 +342,7 @@ AdminSearchForm.propTypes = {
     searchDateQuery: PropTypes.string,
     searchBudgetQuery: PropTypes.string,
     searchGroupQuery: PropTypes.string,
+    searchEnrollmentQuery: PropTypes.string,
   }).isRequired,
   tableData: PropTypes.arrayOf(PropTypes.shape({})),
   budgets: PropTypes.arrayOf(PropTypes.shape({})),

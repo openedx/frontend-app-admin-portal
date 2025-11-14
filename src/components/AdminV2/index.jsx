@@ -119,7 +119,7 @@ const Admin = ({
   }, [enterpriseId]);
 
   const getMetadataForAction = (actionSlugParam) => {
-    const expectedQueryParams = ['search', 'search_course', 'search_start_date', 'budget_uuid', 'group_uuid'];
+    const expectedQueryParams = ['search', 'search_course', 'search_start_date', 'budget_uuid', 'group_uuid', 'search_enrollment'];
     const filteredQueryParams = getFilteredQueryParams(location.search, expectedQueryParams);
 
     const defaultData = {
@@ -357,7 +357,7 @@ const Admin = ({
     const { search: searchQuery, pathname } = location;
     // remove the querys from the path
     const queryParams = new URLSearchParams(searchQuery);
-    ['search', 'search_course', 'search_start_date', 'budget_uuid', 'group_uuid'].forEach((searchTerm) => {
+    ['search', 'search_course', 'search_start_date', 'budget_uuid', 'group_uuid', 'search_enrollment'].forEach((searchTerm) => {
       queryParams.delete(searchTerm);
     });
     const resetQuery = queryParams.toString();
@@ -437,6 +437,7 @@ const Admin = ({
     searchDateQuery: queryParams.get('search_start_date') || '',
     searchBudgetQuery: queryParams.get('budget_uuid') || '',
     searchGroupQuery: queryParams.get('group_uuid') || '',
+    searchEnrollmentQuery: queryParams.get('search_enrollment') || '',
   };
   const hasCompleteInsights = insights?.learner_engagement && insights?.learner_progress;
 

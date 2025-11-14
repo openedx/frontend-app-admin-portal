@@ -38,6 +38,7 @@ const PEOPLE_MANAGEMENT_EVENTS = {
 // learner-progress-report
 const LEARNER_PROGRESS_REPORT_EVENTS = {
   FILTER_BY_GROUP_DROPDOWN: `${LEARNER_PROGRESS_REPORT_PREFIX}.group_filter.clicked`,
+  FILTER_BY_ENROLLMENT_DROPDOWN: `${LEARNER_PROGRESS_REPORT_PREFIX}.enrollment_filter.clicked`,
 };
 // analytics-v2
 const ANALYTICS_V2_EVENTS = {
