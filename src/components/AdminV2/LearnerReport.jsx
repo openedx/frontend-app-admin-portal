@@ -95,7 +95,7 @@ const LearnerReport = ({
                 {displaySearchBar() && (
                   <AdminSearchForm
                     searchParams={searchParams}
-                    searchEnrollmentsList={() => searchEnrollmentsList()}
+                    searchEnrollmentsList={searchEnrollmentsList}
                     tableData={getTableData() ? getTableData().results : []}
                     budgets={budgets}
                     groups={groups}

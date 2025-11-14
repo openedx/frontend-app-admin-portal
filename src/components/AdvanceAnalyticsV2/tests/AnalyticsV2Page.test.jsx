@@ -15,9 +15,6 @@ const mockStore = configureMockStore([thunk]);
 const store = mockStore({
   portalConfiguration: {
     enterpriseId: 'test-enterprise-id',
-    enterpriseFeatures: {
-      topDownAssignmentRealTimeLcm: true,
-    },
   },
   table: {},
   csv: {},

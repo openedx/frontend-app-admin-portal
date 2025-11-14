@@ -21,7 +21,6 @@ interface AdminOnboardingToursProps {
   targetSelector: string;
   enablePortalLearnerCreditManagementScreen: boolean;
   enterpriseFeatures: {
-    topDownAssignmentRealTimeLcm: boolean;
   };
 }
 
@@ -34,7 +33,6 @@ interface RootState {
     enablePortalLearnerCreditManagementScreen: boolean;
     enterpriseId: string;
     enterpriseFeatures: {
-      topDownAssignmentRealTimeLcm: boolean;
     };
   };
 }

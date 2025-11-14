@@ -29,12 +29,11 @@ const DEFAULT_TAB = BUDGET_DETAIL_ACTIVITY_TAB;
 function isSupportedTabKey({
   tabKey,
   enterpriseGroupLearners,
-  enterpriseFeatures,
   subsidyAccessPolicy,
   appliesToAllContexts,
 }) {
   const showCatalog = (subsidyAccessPolicy?.groupAssociations?.length > 0)
-    || (enterpriseFeatures.topDownAssignmentRealTimeLcm && !!subsidyAccessPolicy?.isAssignable)
+    || (!!subsidyAccessPolicy?.isAssignable)
     || subsidyAccessPolicy?.bnrEnabled;
   const supportedTabs = [BUDGET_DETAIL_ACTIVITY_TAB, BUDGET_DETAIL_REQUESTS_TAB];
   if (showCatalog) {

@@ -47,7 +47,6 @@ const useBudgetRedemptions = (
   enterpriseUUID,
   offerId = null,
   budgetId = null,
-  isTopDownAssignmentEnabled = false,
 ) => {
   const shouldTrackFetchEvents = useRef(false);
   const [isLoading, setIsLoading] = useState(true);
@@ -61,7 +60,7 @@ const useBudgetRedemptions = (
   const fetchBudgetRedemptions = useCallback((args) => {
     const fetch = async () => {
       try {
-        const shouldFetchSubsidyTransactions = budgetId && isTopDownAssignmentEnabled;
+        const shouldFetchSubsidyTransactions = budgetId;
         setIsLoading(true);
         const options = {
           page: args.pageIndex + 1, // `DataTable` uses zero-indexed array
@@ -134,7 +133,6 @@ const useBudgetRedemptions = (
     offerId,
     budgetId,
     shouldTrackFetchEvents,
-    isTopDownAssignmentEnabled,
     subsidyAccessPolicy?.subsidyUuid,
   ]);
 

@@ -13,8 +13,7 @@ import NoAssignableBudgetActivity from './empty-state/NoAssignableBudgetActivity
 import NoBnEBudgetActivity from './empty-state/NoBnEBudgetActivity';
 import NoBnRBudgetActivity from './empty-state/NoBnRBudgetActivity';
 
-const BudgetDetailActivityTabContents = ({ enterpriseUUID, enterpriseFeatures, appliesToAllContexts }) => {
-  const isTopDownAssignmentEnabled = enterpriseFeatures.topDownAssignmentRealTimeLcm;
+const BudgetDetailActivityTabContents = ({ enterpriseUUID, appliesToAllContexts }) => {
   const { enterpriseOfferId, subsidyAccessPolicyId } = useBudgetId();
   const { data: subsidyAccessPolicy } = useSubsidyAccessPolicy(subsidyAccessPolicyId);
   const isEnterpriseGroupsEnabled = !isEmpty(subsidyAccessPolicy?.groupAssociations);
@@ -25,7 +24,6 @@ const BudgetDetailActivityTabContents = ({ enterpriseUUID, enterpriseFeatures, a
     data: budgetActivityOverview,
   } = useBudgetDetailActivityOverview({
     enterpriseUUID,
-    isTopDownAssignmentEnabled,
   });
 
   // If the budget activity overview data is loading (either the initial request OR any
@@ -61,7 +59,7 @@ const BudgetDetailActivityTabContents = ({ enterpriseUUID, enterpriseFeatures, a
     );
   }
 
-  if (!isTopDownAssignmentEnabled || !subsidyAccessPolicy?.isAssignable) {
+  if (!subsidyAccessPolicy?.isAssignable) {
     if (subsidyAccessPolicy?.bnrEnabled) {
       return (
         <Stack gap={5}>
@@ -124,7 +122,6 @@ const mapStateToProps = state => ({
 BudgetDetailActivityTabContents.propTypes = {
   enterpriseUUID: PropTypes.string.isRequired,
   enterpriseFeatures: PropTypes.shape({
-    topDownAssignmentRealTimeLcm: PropTypes.bool,
   }).isRequired,
   appliesToAllContexts: PropTypes.bool.isRequired,
 };

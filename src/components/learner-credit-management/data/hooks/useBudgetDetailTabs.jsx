@@ -17,7 +17,6 @@ export const useBudgetDetailTabs = ({
   enterpriseGroupLearners,
   refreshMembersTab,
   setRefreshMembersTab,
-  enterpriseFeatures,
   ActivityTabElement,
   CatalogTabElement,
   MembersTabElement,
@@ -33,7 +32,7 @@ export const useBudgetDetailTabs = ({
   const isCatalogTabDisabled = isBudgetRetiredOrExpired(status);
   const isBnrEnabled = subsidyAccessPolicy?.bnrEnabled || false;
   const showCatalog = (subsidyAccessPolicy?.groupAssociations?.length > 0 && !appliesToAllContexts)
-    || (enterpriseFeatures.topDownAssignmentRealTimeLcm && !!subsidyAccessPolicy?.isAssignable) || isBnrEnabled;
+    || (!!subsidyAccessPolicy?.isAssignable) || isBnrEnabled;
 
   return useMemo(() => {
     const tabsArray = [];

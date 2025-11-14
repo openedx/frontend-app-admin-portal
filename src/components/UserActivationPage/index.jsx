@@ -72,7 +72,6 @@ const UserActivationPage = () => {
       </>
     );
   }
-
   // user data is hydrated with an unverified email address, so display a warning message since
   // they have not yet verified their email via the "Activate your account" flow, so we should
   // prevent access to the Admin Portal.

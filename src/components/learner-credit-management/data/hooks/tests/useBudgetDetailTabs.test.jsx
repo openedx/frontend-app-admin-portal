@@ -38,7 +38,6 @@ const mockProps = {
   enterpriseGroupLearners: { count: 5 },
   refreshMembersTab: false,
   setRefreshMembersTab: jest.fn(),
-  enterpriseFeatures: { topDownAssignmentRealTimeLcm: true },
   ActivityTabElement: () => <div>Activity</div>,
   CatalogTabElement: () => <div>Catalog</div>,
   MembersTabElement: () => <div>Members</div>,
@@ -89,7 +88,6 @@ describe('useBudgetDetailTabs', () => {
         bnrEnabled: false,
       },
       appliesToAllContexts: true,
-      enterpriseFeatures: { topDownAssignmentRealTimeLcm: false },
     };
 
     const { result } = renderHook(() => useBudgetDetailTabs(propsWithoutCatalog), { wrapper });
@@ -108,7 +106,6 @@ describe('useBudgetDetailTabs', () => {
         bnrEnabled: true,
       },
       appliesToAllContexts: true,
-      enterpriseFeatures: { topDownAssignmentRealTimeLcm: false },
     };
 
     const { result } = renderHook(() => useBudgetDetailTabs(propsWithoutCatalog), { wrapper });

@@ -20,7 +20,6 @@ const BudgetDetailPageOverviewUtilization = ({
   budgetAggregates,
   isAssignable,
   isBnREnabledPolicy,
-  enterpriseFeatures,
   enterpriseId,
   isRetired,
 }) => {
@@ -36,7 +35,6 @@ const BudgetDetailPageOverviewUtilization = ({
   if (
     !budgetId
     || isRetired
-    || !enterpriseFeatures.topDownAssignmentRealTimeLcm
     || utilized <= 0
     || (!isAssignable && !isBnREnabledPolicy)
   ) {
@@ -168,7 +166,6 @@ BudgetDetailPageOverviewUtilization.propTypes = {
   isAssignable: PropTypes.bool.isRequired,
   isBnREnabledPolicy: PropTypes.bool.isRequired,
   enterpriseFeatures: PropTypes.shape({
-    topDownAssignmentRealTimeLcm: PropTypes.bool,
   }).isRequired,
   enterpriseId: PropTypes.string.isRequired,
   isRetired: PropTypes.bool.isRequired,

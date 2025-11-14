@@ -5,7 +5,7 @@ import useSubsidyAccessPolicy from './useSubsidyAccessPolicy';
 import { learnerCreditManagementQueryKeys } from '../constants';
 
 const useBudgetDetailActivityOverview = ({
-  enterpriseUUID, isTopDownAssignmentEnabled, paramBudgetId = '', paramSubsidyAccessPolicyId = '',
+  enterpriseUUID, paramBudgetId = '', paramSubsidyAccessPolicyId = '',
 }) => {
   let localBudgetId = paramBudgetId;
   let localSubsidyAccessPolicyId = paramSubsidyAccessPolicyId;
@@ -22,7 +22,6 @@ const useBudgetDetailActivityOverview = ({
       budgetId: localBudgetId,
       subsidyAccessPolicy,
       enterpriseUUID,
-      isTopDownAssignmentEnabled,
     }),
   });
 };

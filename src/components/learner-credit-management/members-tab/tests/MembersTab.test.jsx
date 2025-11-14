@@ -75,9 +75,6 @@ const initialStoreState = {
     enterpriseId: enterpriseUUID,
     enterpriseSlug,
     enableLearnerPortal: true,
-    enterpriseFeatures: {
-      topDownAssignmentRealTimeLcm: true,
-    },
   },
 };
 
@@ -183,14 +180,13 @@ describe('MembersTab', () => {
     const initialState = {
       portalConfiguration: {
         ...initialStoreState.portalConfiguration,
-        enterpriseFeatures: {
-        },
       },
     };
     useParams.mockReturnValue({
       enterpriseSlug: 'test-enterprise-slug',
       enterpriseAppPage: 'test-enterprise-page',
       activeTabKey: 'activity',
+      budgetId: 'test-budget-id',
     });
     useSubsidyAccessPolicy.mockReturnValue({
       isInitialLoading: false,
@@ -225,14 +221,13 @@ describe('MembersTab', () => {
     const initialState = {
       portalConfiguration: {
         ...initialStoreState.portalConfiguration,
-        enterpriseFeatures: {
-        },
       },
     };
     useParams.mockReturnValue({
       enterpriseSlug: 'test-enterprise-slug',
       enterpriseAppPage: 'test-enterprise-page',
       activeTabKey: 'members',
+      budgetId: 'test-budget-id',
     });
     useSubsidyAccessPolicy.mockReturnValue({
       isInitialLoading: false,
@@ -282,14 +277,13 @@ describe('MembersTab', () => {
     const initialState = {
       portalConfiguration: {
         ...initialStoreState.portalConfiguration,
-        enterpriseFeatures: {
-        },
       },
     };
     useParams.mockReturnValue({
       enterpriseSlug: 'test-enterprise-slug',
       enterpriseAppPage: 'test-enterprise-page',
       activeTabKey: 'members',
+      budgetId: 'test-budget-id',
     });
     useSubsidyAccessPolicy.mockReturnValue({
       isInitialLoading: false,
@@ -382,14 +376,13 @@ describe('MembersTab', () => {
     const initialState = {
       portalConfiguration: {
         ...initialStoreState.portalConfiguration,
-        enterpriseFeatures: {
-        },
       },
     };
     useParams.mockReturnValue({
       enterpriseSlug: 'test-enterprise-slug',
       enterpriseAppPage: 'test-enterprise-page',
       activeTabKey: 'members',
+      budgetId: 'test-budget-id',
     });
     useSubsidyAccessPolicy.mockReturnValue({
       isInitialLoading: false,
@@ -457,8 +450,6 @@ describe('MembersTab', () => {
     const initialState = {
       portalConfiguration: {
         ...initialStoreState.portalConfiguration,
-        enterpriseFeatures: {
-        },
       },
     };
     useParams.mockReturnValue({
@@ -544,14 +535,13 @@ describe('MembersTab', () => {
     const initialState = {
       portalConfiguration: {
         ...initialStoreState.portalConfiguration,
-        enterpriseFeatures: {
-        },
       },
     };
     useParams.mockReturnValue({
       enterpriseSlug: 'test-enterprise-slug',
       enterpriseAppPage: 'test-enterprise-page',
       activeTabKey: 'members',
+      budgetId: 'test-budget-id',
     });
     useSubsidyAccessPolicy.mockReturnValue({
       isInitialLoading: false,
@@ -614,14 +604,13 @@ describe('MembersTab', () => {
     const initialState = {
       portalConfiguration: {
         ...initialStoreState.portalConfiguration,
-        enterpriseFeatures: {
-        },
       },
     };
     useParams.mockReturnValue({
       enterpriseSlug: 'test-enterprise-slug',
       enterpriseAppPage: 'test-enterprise-page',
       activeTabKey: 'members',
+      budgetId: 'test-budget-id',
     });
     useSubsidyAccessPolicy.mockReturnValue({
       isInitialLoading: false,
@@ -683,8 +672,6 @@ describe('MembersTab', () => {
     const initialState = {
       portalConfiguration: {
         ...initialStoreState.portalConfiguration,
-        enterpriseFeatures: {
-        },
       },
     };
     useParams.mockReturnValue({
@@ -823,14 +810,13 @@ describe('MembersTab', () => {
       const initialState = {
         portalConfiguration: {
           ...initialStoreState.portalConfiguration,
-          enterpriseFeatures: {
-          },
         },
       };
       useParams.mockReturnValue({
         enterpriseSlug: 'test-enterprise-slug',
         enterpriseAppPage: 'test-enterprise-page',
         activeTabKey: 'members',
+        budgetId: 'test-budget-id',
       });
       useSubsidyAccessPolicy.mockReturnValue({
         isInitialLoading: false,
@@ -897,8 +883,6 @@ describe('MembersTab', () => {
     const initialState = {
       portalConfiguration: {
         ...initialStoreState.portalConfiguration,
-        enterpriseFeatures: {
-        },
       },
     };
     useParams.mockReturnValue({
