@@ -22,7 +22,7 @@ jest.mock('lodash-es', () => ({
 
 jest.mock('../../../../../data/services/EnterpriseAccessApiService', () => ({
   fetchBnrSubsidyRequests: jest.fn(),
-  fetchBnrSubsidyRequestsOverviw: jest.fn(),
+  fetchBnrSubsidyRequestsOverview: jest.fn(),
 }));
 
 jest.mock('../../utils', () => ({
@@ -125,7 +125,7 @@ describe('useBnrSubsidyRequests', () => {
   beforeEach(() => {
     jest.clearAllMocks();
     EnterpriseAccessApiService.fetchBnrSubsidyRequests.mockResolvedValue(mockApiResponse);
-    EnterpriseAccessApiService.fetchBnrSubsidyRequestsOverviw.mockResolvedValue(mockOverviewResponse);
+    EnterpriseAccessApiService.fetchBnrSubsidyRequestsOverview.mockResolvedValue(mockOverviewResponse);
     camelCaseObject.mockImplementation((data) => data);
     debounce.mockImplementation((fn) => fn);
   });
