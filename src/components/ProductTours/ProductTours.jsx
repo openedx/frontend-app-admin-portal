@@ -9,6 +9,7 @@ import portalAppearanceTour from './portalAppearanceTour';
 import learnerCreditTour from './learnerCreditTour';
 import learnerDetailPageTour from './learnerDetailPageTour';
 import highlightsTour from './highlightsTour';
+import analyticsTour from './AnalyticsTour';
 import browseAndRequestTour from './browseAndRequestTour';
 import { disableAll, filterCheckpoints } from './data/utils';
 import AdminOnboardingTours from './AdminOnboardingTours/AdminOnboardingTours';
@@ -18,20 +19,21 @@ import {
   LEARNER_CREDIT_COOKIE_NAME,
   LEARNER_DETAIL_PAGE_COOKIE_NAME,
   PORTAL_APPEARANCE_TOUR_COOKIE_NAME,
+  ANALYTICS_COOKIE_NAME,
 } from './constants';
 
 import {
   useBrowseAndRequestTour, usePortalAppearanceTour, useLearnerCreditTour, useHighlightsTour,
-  useLearnerDetailPageTour,
+  useAnalyticsTour, useLearnerDetailPageTour,
 } from './data/hooks';
 import TourCollapsible from './TourCollapsible';
 import {
   ADMINISTER_SUBSCRIPTIONS_TARGETS,
   ALLOCATE_LEARNING_BUDGETS_TARGETS,
-  ANALYTICS_INSIGHTS_TARGETS,
   ORGANIZE_LEARNER_TARGETS,
   TRACK_LEARNER_PROGRESS_TARGETS,
   CUSTOMIZE_REPORTS_SIDEBAR,
+  ANALYTICS_V2_TARGETS,
 } from './AdminOnboardingTours/constants';
 import { ROUTE_NAMES } from '../EnterpriseApp/data/constants';
 import OnboardingWelcomeModal from './AdminOnboardingTours/OnboardingWelcomeModal';
@@ -60,6 +62,7 @@ const ProductTours = ({
   const enabledFeatures = {
     [BROWSE_AND_REQUEST_TOUR_COOKIE_NAME]: useBrowseAndRequestTour(enableLearnerPortal),
     [HIGHLIGHTS_COOKIE_NAME]: useHighlightsTour(FEATURE_CONTENT_HIGHLIGHTS),
+    [ANALYTICS_COOKIE_NAME]: useAnalyticsTour(),
     [LEARNER_CREDIT_COOKIE_NAME]: useLearnerCreditTour(),
     [LEARNER_DETAIL_PAGE_COOKIE_NAME]: useLearnerDetailPageTour(),
     [PORTAL_APPEARANCE_TOUR_COOKIE_NAME]: usePortalAppearanceTour(enablePortalAppearance),
@@ -67,6 +70,7 @@ const ProductTours = ({
   const newFeatureTourCheckpoints = {
     [BROWSE_AND_REQUEST_TOUR_COOKIE_NAME]: browseAndRequestTour({ enterpriseSlug }),
     [HIGHLIGHTS_COOKIE_NAME]: highlightsTour({ enterpriseSlug }),
+    [ANALYTICS_COOKIE_NAME]: analyticsTour({ enterpriseSlug }),
     [LEARNER_CREDIT_COOKIE_NAME]: learnerCreditTour({ enterpriseSlug }),
     [LEARNER_DETAIL_PAGE_COOKIE_NAME]: learnerDetailPageTour({ enterpriseSlug }),
     [PORTAL_APPEARANCE_TOUR_COOKIE_NAME]: portalAppearanceTour({ enterpriseSlug }),
@@ -85,7 +89,7 @@ const ProductTours = ({
       navigate(`/${enterpriseSlug}/admin/${ROUTE_NAMES.learners}/`);
     } else if (targetId === ORGANIZE_LEARNER_TARGETS.PEOPLE_MANAGEMENT_SIDEBAR) {
       navigate(`/${enterpriseSlug}/admin/${ROUTE_NAMES.peopleManagement}/`);
-    } else if (targetId === ANALYTICS_INSIGHTS_TARGETS.SIDEBAR) {
+    } else if (targetId === ANALYTICS_V2_TARGETS.SIDEBAR) {
       navigate(`/${enterpriseSlug}/admin/${ROUTE_NAMES.analytics}/`);
     } else if (targetId === ADMINISTER_SUBSCRIPTIONS_TARGETS.SIDEBAR) {
       navigate(`/${enterpriseSlug}/admin/${ROUTE_NAMES.subscriptionManagement}/`);

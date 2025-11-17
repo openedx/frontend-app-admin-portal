@@ -8,6 +8,7 @@ import Hero from '../Hero';
 import Engagements from './tabs/Engagements';
 import Progress from './tabs/Progress';
 import Outcomes from './tabs/Outcomes';
+import { ANALYTICS_V2_TARGETS } from '../ProductTours/AdminOnboardingTours/constants';
 
 const AnalyticsPage = ({ enterpriseId }) => {
   const [activeTab, setActiveTab] = useState('engagements');
@@ -33,6 +34,7 @@ const AnalyticsPage = ({ enterpriseId }) => {
             }}
           >
             <Tab
+              id={ANALYTICS_V2_TARGETS.ENGAGEMENTS_TAB}
               eventKey="engagements"
               title={intl.formatMessage({
                 id: 'analytics.engagement.tab.title.heading',
@@ -45,6 +47,7 @@ const AnalyticsPage = ({ enterpriseId }) => {
               />
             </Tab>
             <Tab
+              id={ANALYTICS_V2_TARGETS.PROGRESS_TAB}
               eventKey="Progress"
               title={intl.formatMessage({
                 id: 'advance.analytics.progress.tab.title.heading',
@@ -57,6 +60,7 @@ const AnalyticsPage = ({ enterpriseId }) => {
               />
             </Tab>
             <Tab
+              id={ANALYTICS_V2_TARGETS.OUTCOMES_TAB}
               eventKey="Outcomes"
               title={intl.formatMessage({
                 id: 'advance.analytics.outcomes.tab.title.heading',
