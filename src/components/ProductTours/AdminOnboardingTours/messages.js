@@ -2,7 +2,7 @@ import { defineMessages } from '@edx/frontend-platform/i18n';
 
 export const ORGANIZE_LEARNERS_TITLE = 'Organize learners';
 export const TRACK_LEARNER_PROGRESS_TITLE = 'Track learner progress';
-export const VIEW_ENROLLMENTS_INSIGHT_TITLE = 'View enrollment insights';
+export const ANALYTICS_V2_TITLE = 'View enrollment insights';
 export const ADMINISTER_SUBSCRIPTIONS_TITLE = 'Administer subscriptions';
 export const ALLOCATE_LEARNING_BUDGET_TITLE = 'Allocate learning budget';
 export const CUSTOMIZE_REPORTS_TITLE = 'Customize reports';
@@ -97,6 +97,31 @@ const messages = defineMessages({
     defaultMessage: 'Export the report as a CSV to gain insights and organize data efficiently.',
     description: 'Description for the learner progress tracking step seven',
   },
+  analyticsStepOneTitle: {
+    id: 'adminPortal.productTours.adminOnboarding.analytics.title.1',
+    defaultMessage: ANALYTICS_V2_TITLE,
+    description: 'Title for the analytics step one',
+  },
+  analyticsStepOneBody: {
+    id: 'adminPortal.productTours.adminOnboarding.analytics.body.1',
+    defaultMessage: 'Explore insights about your learners and their enrollments. Adjust date ranges, granularity, and analytics type to view data on enrollments, engagement, completions, leaderboards, and skills tracking.',
+    description: 'Description for the analytics tracking step one',
+  },
+  analyticsStepTwoBody: {
+    id: 'adminPortal.productTours.adminOnboarding.analytics.body.2',
+    defaultMessage: 'The Engagement tab will help you understand course enrollment, learning hours, top subjects, and completions by your learners. Filter data by date ranges, group, budget, and course.',
+    description: 'Description for the analytics tracking step two',
+  },
+  analyticsStepThreeBody: {
+    id: 'adminPortal.productTours.adminOnboarding.analytics.body.3',
+    defaultMessage: 'The Progress tab will help you summarize completed courses by your learners. Filter data by date ranges, group, budget, and course.',
+    description: 'Description for the analytics tracking step three',
+  },
+  analyticsStepFourBody: {
+    id: 'adminPortal.productTours.adminOnboarding.analytics.body.4',
+    defaultMessage: 'The Outcomes tab will help you visualize the skills your learner have gained from the courses. Filter data by date ranges, group, budget, and course.',
+    description: 'Description for the analytics tracking step four',
+  },
   organizeLearnersStepOneTitle: {
     id: 'adminPortal.productTours.adminOnboarding.organizeLearners.title.1',
     defaultMessage: ORGANIZE_LEARNERS_TITLE,
@@ -147,47 +172,6 @@ const messages = defineMessages({
     id: 'adminPortal.productTours.adminOnboarding.organizeLearners.withGroups.body.6',
     defaultMessage: '"View group" allows you to edit group details, add and remove learners, or track learner\'s progress.',
     description: 'Description for the organize learners flow with groups step six',
-  },
-  viewEnrollmentInsights: {
-    id: 'adminPortal.productTours.adminOnboarding.viewEnrollmentInsights.title.1',
-    defaultMessage: VIEW_ENROLLMENTS_INSIGHT_TITLE,
-    description: 'Title for the analytics step',
-  },
-  viewEnrollmentInsightsStepOneBody: {
-    id: 'adminPortal.productTours.adminOnboarding.viewEnrollmentInsights.body.1',
-    defaultMessage: 'Explore insights about your learners and their enrollments. '
-    + 'Adjust date ranges, granularity, and analytics type to view data on enrollments, engagement '
-    + 'completions, leaderboards, and skills tracking.',
-    description: 'Description for the analytics tracking step one',
-  },
-  viewEnrollmentInsightsStepTwoBody: {
-    id: 'adminPortal.productTours.adminOnboarding.viewEnrollmentInsights.body.2',
-    defaultMessage: 'Adjust the date range and granularity to customize the data displayed below.',
-    description: 'Description for the analytics tracking step two',
-  },
-  viewEnrollmentInsightsStepThreeBody: {
-    id: 'adminPortal.productTours.adminOnboarding.viewEnrollmentInsights.body.3',
-    defaultMessage: 'See quick metrics for Enrollments, Distinct Courses, Daily Sessions, Learning Hours, and '
-    + 'completions at a glance.',
-    description: 'Description for the analytics tracking step three',
-  },
-  viewEnrollmentInsightsStepFourBody: {
-    id: 'adminPortal.productTours.adminOnboarding.viewEnrollmentInsights.body.4',
-    defaultMessage: 'Use the Enrollments, Engagements, and Completions tabs to view learner activity from different '
-    + 'perspectives. Scroll down for a breakdown of metrics by Course, Subject, and Individual.',
-    description: 'Description for the analytics tracking step four',
-  },
-  viewEnrollmentInsightsStepFiveBody: {
-    id: 'adminPortal.productTours.adminOnboarding.viewEnrollmentInsights.body.5',
-    defaultMessage: 'See your top learners ranked by learning hours. Download the CSV for more detailed insights. Only '
-    + 'learners who completed a course and at least one engagement activity are included.',
-    description: 'Description for the analytics tracking step five',
-  },
-  viewEnrollmentInsightsStepSixBody: {
-    id: 'adminPortal.productTours.adminOnboarding.viewEnrollmentInsights.body.6',
-    defaultMessage: 'Discover the most in-demand skills in your organization based on course enrollments and completions. '
-    + 'Use these insights to understand learner interests and skill development trends.',
-    description: 'Description for the analytics tracking step six',
   },
 
   administerSubscriptionsTitle: {
