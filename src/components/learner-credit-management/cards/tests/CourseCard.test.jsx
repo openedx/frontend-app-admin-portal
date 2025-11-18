@@ -240,6 +240,7 @@ const CourseCardWrapper = ({
           <AppContext.Provider
             value={{
               config: { ENTERPRISE_LEARNER_PORTAL_URL: mockLearnerPortal },
+              authenticatedUser: { userId: '3' },
             }}
           >
             <BudgetDetailPageContext.Provider value={budgetDetailPageContextValue}>
@@ -699,6 +700,7 @@ describe('CourseCard', () => {
             content_price_cents: 10000,
             content_key: 'course-v1:edX+course-123x+3T2020',
             learner_emails: mockLearnerEmails,
+            admin_lms_user_id: '3',
           }),
         );
 
