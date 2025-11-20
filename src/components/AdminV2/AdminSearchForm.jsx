@@ -78,6 +78,11 @@ const AdminSearchForm = ({
       page: 1,
     };
     updateUrl(navigate, location.pathname, updateParams);
+    sendEnterpriseTrackEvent(
+      enterpriseId,
+      EVENT_NAMES.LEARNER_PROGRESS_REPORT.FILTER_BY_ENROLLMENT_DROPDOWN,
+      { enrollment: event.target.value },
+    );
   };
 
   const courseTitles = Array.from(new Set(tableData.map(en => en.course_title).sort()));

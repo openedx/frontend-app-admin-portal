@@ -197,18 +197,21 @@ describe('<AdminSearchForm />', () => {
       },
     );
   });
-  it('select the correct enrollment status', async () => {
+  it('selects the correct enrollment status', async () => {
     const user = userEvent.setup();
+
     const props = {
       ...DEFAULT_PROPS,
       location: { pathname: '/admin/learners' },
     };
-    render(
-      <AdminSearchFormWrapper {...props} />,
-    );
+
+    render(<AdminSearchFormWrapper {...props} />);
+
     const selectElement = screen.getByLabelText('Filter by enrollment');
-    // Test selecting "enrolled"
+
+    // --- Test selecting "enrolled" ---
     await user.selectOptions(selectElement, 'enrolled');
+
     expect(updateUrl).toHaveBeenCalledWith(
       undefined,
       '/admin/learners',
@@ -217,9 +220,19 @@ describe('<AdminSearchForm />', () => {
         page: 1,
       },
     );
+
+    expect(sendEnterpriseTrackEvent).toHaveBeenCalledWith(
+      props.enterpriseId,
+      EVENT_NAMES.LEARNER_PROGRESS_REPORT.FILTER_BY_ENROLLMENT_DROPDOWN,
+      { enrollment: 'enrolled' },
+    );
+
     updateUrl.mockClear();
-    // Test selecting "unenrolled"
+    sendEnterpriseTrackEvent.mockClear();
+
+    // --- Test selecting "unenrolled" ---
     await user.selectOptions(selectElement, 'unenrolled');
+
     expect(updateUrl).toHaveBeenCalledWith(
       undefined,
       '/admin/learners',
@@ -227,6 +240,12 @@ describe('<AdminSearchForm />', () => {
         search_enrollment: 'unenrolled',
         page: 1,
       },
+    );
+
+    expect(sendEnterpriseTrackEvent).toHaveBeenCalledWith(
+      props.enterpriseId,
+      EVENT_NAMES.LEARNER_PROGRESS_REPORT.FILTER_BY_ENROLLMENT_DROPDOWN,
+      { enrollment: 'unenrolled' },
     );
   });
 });
