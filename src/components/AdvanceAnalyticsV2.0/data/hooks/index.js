@@ -35,7 +35,6 @@ export const useEnterpriseAnalyticsData = ({
     calculation,
     page: currentPage,
     pageSize,
-    groupUUID,
   };
 
   if (courseType && courseType !== COURSE_TYPES.ALL_COURSE_TYPES) {
@@ -48,6 +47,10 @@ export const useEnterpriseAnalyticsData = ({
 
   if (budgetUUID) {
     requestOptions.budgetUUID = budgetUUID;
+  }
+
+  if (groupUUID) {
+    requestOptions.groupUUID = groupUUID;
   }
 
   return useQuery({

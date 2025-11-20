@@ -17,6 +17,8 @@ const DownloadCSVButton = ({
   useEffect(() => {
     if (jsonData.length > 0) {
       setButtonState('default');
+    } else {
+      setButtonState('disabled');
     }
   }, [jsonData]);
 
