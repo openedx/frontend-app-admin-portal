@@ -249,6 +249,38 @@ describe('useEnterpriseAnalyticsData', () => {
       },
     );
   });
+  it('includes groupUUID in API request when provided', async () => {
+    const startDate = '2021-01-01';
+    const endDate = '2021-12-31';
+    const groupUUID = 'group-1234';
+
+    const requestOptions = {
+      startDate,
+      endDate,
+      groupUUID,
+    };
+
+    const { result } = renderHook(
+      () => useEnterpriseAnalyticsData({
+        enterpriseCustomerUUID: TEST_ENTERPRISE_ID,
+        key: 'completions',
+        startDate,
+        endDate,
+        groupUUID,
+      }),
+      { wrapper },
+    );
+
+    await waitFor(() => {
+      expect(result.current.isFetching).toBe(false);
+    });
+
+    expect(EnterpriseDataApiService.fetchAdminAnalyticsData).toHaveBeenCalledWith(
+      TEST_ENTERPRISE_ID,
+      'completions',
+      requestOptions,
+    );
+  });
 });
 
 describe('useEnterpriseAnalyticsAggregatesData', () => {

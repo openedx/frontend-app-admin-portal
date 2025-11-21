@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import { DataTable, Icon } from '@openedx/paragon';
 import { Link } from 'react-router-dom';
 import { Download } from '@openedx/paragon/icons';
-import { analyticsDataTableKeys } from '../data/constants';
+import { analyticsDataTableKeys, COURSE_TYPES, ALL_COURSES } from '../data/constants';
 
 import { useEnterpriseAnalyticsData, usePaginatedData } from '../data/hooks';
 import EnterpriseDataApiService from '../../../data/services/EnterpriseDataApiService';
@@ -44,14 +44,31 @@ const AnalyticsTable = ({
     course,
   });
 
+  const csvDownloadOptions = {
+    start_date: startDate,
+    end_date: endDate,
+  };
+
+  if (courseType && courseType !== COURSE_TYPES.ALL_COURSE_TYPES) {
+    csvDownloadOptions.course_type = courseType;
+  }
+
+  if (course?.value && course?.value !== ALL_COURSES.value) {
+    csvDownloadOptions.course_key = course.value;
+  }
+
+  if (budgetUUID) {
+    csvDownloadOptions.budget_uuid = budgetUUID;
+  }
+
+  if (groupUUID) {
+    csvDownloadOptions.group_uuid = groupUUID;
+  }
+
   const CSVDownloadURL = EnterpriseDataApiService.getAnalyticsCSVDownloadURL(
     analyticsDataTableKeys[name],
     enterpriseId,
-    {
-      start_date: startDate,
-      end_date: endDate,
-      groupUUID,
-    },
+    csvDownloadOptions,
   );
 
   const fetchData = useCallback(
@@ -73,7 +90,7 @@ const AnalyticsTable = ({
           <Link
             to={CSVDownloadURL}
             target="_blank"
-            className="btn btn-sm btn-primary rounded-0"
+            className={`btn btn-sm btn-primary rounded-0  ${!data?.results?.length ? 'disabled' : ''}`}
             onClick={() => trackCsvDownloadClick(entityId)}
           >
             <Icon src={Download} className="me-2" />
