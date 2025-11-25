@@ -13,7 +13,7 @@ import {
 } from '@openedx/paragon';
 import { renderWithRouter } from '../../test/testUtils';
 import SubscriptionCard from '../SubscriptionCard';
-import { ENDED, FREE_TRIAL_BADGE, TRIAL } from '../data/constants';
+import { ENDED, FREE_TRIAL_BADGE, SELF_SERVICE_TRIAL } from '../data/constants';
 import EnterpriseAccessApiService from '../../../data/services/EnterpriseAccessApiService';
 
 const defaultSubscription = {
@@ -39,7 +39,7 @@ const trialSubscription = {
   title: 'Trial Plan',
   startDate: '2020-03-13',
   expirationDate: '2025-04-13',
-  planType: TRIAL,
+  planType: SELF_SERVICE_TRIAL,
 };
 const trialProps = {
   subscription: trialSubscription,
@@ -57,7 +57,7 @@ const endedTrialSubscription = {
   title: 'Trial Plan',
   startDate: '1999-03-13',
   expirationDate: '1999-04-13',
-  planType: TRIAL,
+  planType: SELF_SERVICE_TRIAL,
 };
 const endedTrialProps = {
   subscription: endedTrialSubscription,

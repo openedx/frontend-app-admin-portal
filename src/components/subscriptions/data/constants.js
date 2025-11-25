@@ -58,6 +58,10 @@ export const SUBSCRIPTION_STATUS_BADGE_MAP = {
   [TRIAL]: { variant: 'info' },
 };
 
+// Self-service plan types
+export const SELF_SERVICE_TRIAL = 'self-service-trial';
+export const SELF_SERVICE_PAID = 'self-service-paid';
+
 export const FREE_TRIAL_BADGE = 'Free Trial';
 
 // Browse and request constants `BrowseAndRequestAlert`
