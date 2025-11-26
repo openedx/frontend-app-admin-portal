@@ -5,11 +5,11 @@ import { camelCaseObject } from '@edx/frontend-platform/utils';
 import LicenseManagerApiService from '../../../data/services/LicenseManagerAPIService';
 import {
   NETWORK_ERROR_MESSAGE,
+  SELF_SERVICE_TRIAL,
   STRIPE_EVENT_SUMMARY,
   SUBSCRIPTION_USERS,
   SUBSCRIPTION_USERS_OVERVIEW,
   SUBSCRIPTIONS,
-  TRIAL,
 } from './constants';
 import EnterpriseAccessApiService from '../../../data/services/EnterpriseAccessApiService';
 
@@ -265,7 +265,7 @@ export const useUpcomingInvoiceAmount = ({ subPlanUuid, planType, setErrors }) =
       }
     };
     // only trial plans will have associated StripeEventSummaries
-    if (planType === TRIAL) {
+    if (planType === SELF_SERVICE_TRIAL) {
       fetchStripeEvent();
     } else {
       // return early prevent unnecessary calls to enterprise-access for non-trial plans

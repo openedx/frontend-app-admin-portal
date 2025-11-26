@@ -10,7 +10,7 @@ import {
 import { Error, Launch, SpinnerSimple } from '@openedx/paragon/icons';
 
 import SubscriptionCard from './SubscriptionCard';
-import { DEFAULT_LEAD_TEXT } from './data/constants';
+import { DEFAULT_LEAD_TEXT, SELF_SERVICE_PAID, SELF_SERVICE_TRIAL } from './data/constants';
 import EnterpriseAccessApiService from '../../data/services/EnterpriseAccessApiService';
 
 const MultipleSubscriptionsPicker = ({
@@ -18,7 +18,7 @@ const MultipleSubscriptionsPicker = ({
 }) => {
   const intl = useIntl();
   const [stripeSessionStatus, setStripeSessionStatus] = useState('default');
-  const hasSelfServiceSubs = subscriptions.some(sub => ['self-service-paid', 'self-service-trial'].includes(sub.planType));
+  const hasSelfServiceSubs = subscriptions.some(sub => [SELF_SERVICE_PAID, SELF_SERVICE_TRIAL].includes(sub.planType));
 
   const handleManageSubscriptionClick = async () => {
     setStripeSessionStatus('pending');

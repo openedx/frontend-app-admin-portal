@@ -5,7 +5,7 @@ import LicenseManagerApiService from '../../../../data/services/LicenseManagerAP
 import EnterpriseAccessApiService from '../../../../data/services/EnterpriseAccessApiService';
 import { useSubscriptionUsersOverview, useUpcomingInvoiceAmount } from '../../data/hooks';
 
-import { TRIAL } from '../../data/constants';
+import { SELF_SERVICE_TRIAL } from '../../data/constants';
 
 const TEST_SUBSCRIPTION_PLAN_UUID = 'test-plan-uuid-1';
 
@@ -130,7 +130,7 @@ describe('useUpcomingInvoiceAmount', () => {
 
     const { result } = renderHook(() => useUpcomingInvoiceAmount({
       uuid: TEST_PLAN_UUID,
-      planType: TRIAL,
+      planType: SELF_SERVICE_TRIAL,
       setErrors,
     }));
 

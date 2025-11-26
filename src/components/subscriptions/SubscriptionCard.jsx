@@ -10,7 +10,7 @@ import { FormattedMessage, getLocale } from '@edx/frontend-platform/i18n';
 
 import classNames from 'classnames';
 import {
-  ACTIVE, FREE_TRIAL_BADGE, TRIAL, SCHEDULED, SUBSCRIPTION_STATUS_BADGE_MAP, ENDED,
+  ACTIVE, ENDED, FREE_TRIAL_BADGE, SCHEDULED, SELF_SERVICE_TRIAL, SUBSCRIPTION_STATUS_BADGE_MAP,
 } from './data/constants';
 import { useUpcomingInvoiceAmount } from './data/hooks';
 import { SubscriptionContext } from './SubscriptionData';
@@ -91,7 +91,7 @@ const SubscriptionCard = ({
         <Badge className="mr-2" variant={SUBSCRIPTION_STATUS_BADGE_MAP[subscriptionStatus].variant}>
           {subscriptionStatus}
         </Badge>
-        {planType === TRIAL && (
+        {planType === SELF_SERVICE_TRIAL && (
           <>
             <Badge className="mr-2" variant="info">
               {FREE_TRIAL_BADGE}
@@ -118,7 +118,7 @@ const SubscriptionCard = ({
             )}
           </>
         )}
-        {planType !== TRIAL && (
+        {planType !== SELF_SERVICE_TRIAL && (
           <span>
             {formattedStartDate} - {formattedExpirationDate}
           </span>
