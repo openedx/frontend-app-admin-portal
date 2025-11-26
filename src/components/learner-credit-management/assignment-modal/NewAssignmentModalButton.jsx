@@ -9,7 +9,7 @@ import PropTypes from 'prop-types';
 import React, { useCallback, useContext, useState } from 'react';
 import { connect } from 'react-redux';
 import { generatePath, useNavigate, useParams } from 'react-router-dom';
-
+import { AppContext } from '@edx/frontend-platform/react';
 import { FormattedMessage, useIntl } from '@edx/frontend-platform/i18n';
 import { logError } from '@edx/frontend-platform/logging';
 import EnterpriseAccessApiService from '../../../data/services/EnterpriseAccessApiService';
@@ -67,6 +67,7 @@ const NewAssignmentModalButton = ({ enterpriseId, course, children }) => {
     aggregates,
     isLateRedemptionAllowed,
   } = subsidyAccessPolicy;
+  const { authenticatedUser } = useContext(AppContext);
   const sharedEnterpriseTrackEventMetadata = {
     subsidyAccessPolicyId,
     catalogUuid,
@@ -180,6 +181,7 @@ const NewAssignmentModalButton = ({ enterpriseId, course, children }) => {
       contentPriceCents: assignmentRun.contentPrice * 100, // Convert to USD cents
       contentKey: assignmentRun.key,
       learnerEmails: [...learnerEmails, ...groupLearnerEmails],
+      adminLmsUserId: authenticatedUser.userId, // Tracks the LMS admin user
     });
     const mutationArgs = {
       subsidyAccessPolicyId,
