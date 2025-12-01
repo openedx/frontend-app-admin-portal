@@ -345,6 +345,19 @@ describe('BudgetDetailRequestsTabContent', () => {
         expect(screen.getByTestId('decline-subsidy-request-modal-close-btn')).toBeInTheDocument();
       });
     });
+    it('should allow the user to enter a decline reason in the modal', async () => {
+      const user = userEvent.setup();
+      render(<BudgetDetailRequestsTabContentWrapper />);
+      await waitFor(() => {
+        expect(screen.getByRole('table')).toBeInTheDocument();
+      });
+      const declineButton = screen.getByRole('button', { name: /decline/i });
+      await user.click(declineButton);
+      const reasonInput = await screen.findByTestId('decline-subsidy-request-reason-input');
+      await user.type(reasonInput, 'This course is not approved.');
+      expect(reasonInput).toHaveValue('This course is not approved.');
+      expect(screen.getByText(/28\/250/i)).toBeInTheDocument();
+    });
 
     it('should call decline API with default options and refresh requests on successful decline', async () => {
       const user = userEvent.setup();
