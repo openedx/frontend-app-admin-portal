@@ -40,7 +40,7 @@ const SubscriptionCard = ({
   const subscriptionStatus = getSubscriptionStatus(subscription);
 
   let subscriptionUpcomingPrice;
-  if (!loadingStripeSummary) {
+  if (!loadingStripeSummary && invoiceAmount) {
     const locale = getLocale();
     subscriptionUpcomingPrice = `${invoiceAmount.toLocaleString(locale, { style: 'currency', currency, maximumFractionDigits: 0 })} ${currency.toUpperCase()}`;
   }
@@ -109,7 +109,11 @@ const SubscriptionCard = ({
                       className="ml-2"
                       target="_blank"
                       rel="noopener noreferrer"
-                      onClick={() => (openStripeBillingPortal(enterpriseUuid))}
+                      destination="#"
+                      onClick={e => {
+                        e.preventDefault();
+                        openStripeBillingPortal(enterpriseUuid);
+                      }}
                     >
                       Manage subscription
                     </Hyperlink>),

@@ -252,7 +252,7 @@ export const useUpcomingInvoiceAmount = ({ subPlanUuid, planType, setErrors }) =
       try {
         const response = await EnterpriseAccessApiService.fetchStripeEvent(subPlanUuid);
         const results = camelCaseObject(response.data);
-        setInvoiceAmount(results.upcomingInvoiceAmountDue);
+        setInvoiceAmount(results.upcomingInvoiceAmountDue / 100);
         setCurrency(results.currency);
       } catch (error) {
         logError(error);
