@@ -343,9 +343,20 @@ describe('BudgetDetailRequestsTabContent', () => {
         expect(screen.getByText(/Declining an enrollment request cannot be undone/)).toBeInTheDocument();
         expect(screen.getByTestId('decline-subsidy-request-modal-decline-btn')).toBeInTheDocument();
         expect(screen.getByTestId('decline-subsidy-request-modal-close-btn')).toBeInTheDocument();
-        expect(screen.getByTestId('decline-bnr-subsidy-request-modal-notify-learner-checkbox')).toBeInTheDocument();
-        expect(screen.getByTestId('decline-subsidy-request-modal-unlink-learner-checkbox')).toBeInTheDocument();
       });
+    });
+    it('should allow the user to enter a decline reason in the modal', async () => {
+      const user = userEvent.setup();
+      render(<BudgetDetailRequestsTabContentWrapper />);
+      await waitFor(() => {
+        expect(screen.getByRole('table')).toBeInTheDocument();
+      });
+      const declineButton = screen.getByRole('button', { name: /decline/i });
+      await user.click(declineButton);
+      const reasonInput = await screen.findByTestId('decline-subsidy-request-reason-input');
+      await user.type(reasonInput, 'This course is not approved.');
+      expect(reasonInput).toHaveValue('This course is not approved.');
+      expect(screen.getByText(/28\/250/i)).toBeInTheDocument();
     });
 
     it('should call decline API with default options and refresh requests on successful decline', async () => {
@@ -381,14 +392,14 @@ describe('BudgetDetailRequestsTabContent', () => {
           enterpriseId: 'test-enterprise-id',
           subsidyRequestUUID: 'request-1',
           sendNotification: true,
-          unlinkUsersFromEnterprise: false,
+          declineReason: '',
         });
         expect(mockRefreshRequests).toHaveBeenCalledTimes(1);
         expect(screen.queryByText('Are you sure?')).not.toBeInTheDocument();
       });
     });
 
-    it('should call decline API with custom options when checkboxes are modified', async () => {
+    it('should call decline API with default options', async () => {
       const user = userEvent.setup();
       const mockDeclineRequest = jest.fn().mockResolvedValue({});
 
@@ -403,16 +414,6 @@ describe('BudgetDetailRequestsTabContent', () => {
       const declineButton = screen.getByRole('button', { name: /decline/i });
       await user.click(declineButton);
 
-      await waitFor(() => {
-        expect(screen.getByTestId('decline-bnr-subsidy-request-modal-notify-learner-checkbox')).toBeInTheDocument();
-      });
-
-      const notifyCheckbox = screen.getByTestId('decline-bnr-subsidy-request-modal-notify-learner-checkbox');
-      const unlinkCheckbox = screen.getByTestId('decline-subsidy-request-modal-unlink-learner-checkbox');
-
-      await user.click(notifyCheckbox);
-      await user.click(unlinkCheckbox);
-
       const confirmButton = screen.getByTestId('decline-subsidy-request-modal-decline-btn');
       await user.click(confirmButton);
 
@@ -420,8 +421,8 @@ describe('BudgetDetailRequestsTabContent', () => {
         expect(mockDeclineRequest).toHaveBeenCalledWith({
           enterpriseId: 'test-enterprise-id',
           subsidyRequestUUID: 'request-1',
-          sendNotification: false,
-          unlinkUsersFromEnterprise: true,
+          sendNotification: true, // always true now as it would be sent by default
+          declineReason: '', // default empty
         });
       });
     });

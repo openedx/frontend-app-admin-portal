@@ -16,8 +16,7 @@ const DeclineBnrSubsidyRequestModal = ({
   onSuccess,
   onClose,
 }) => {
-  const [shouldNotifyLearner, setShouldNotifyLearner] = useState(true);
-  const [shouldUnlinkLearnerFromEnterprise, setShouldUnlinkLearnerFromEnterprise] = useState(false);
+  const [declineReason, setDeclineReason] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState();
 
@@ -40,8 +39,8 @@ const DeclineBnrSubsidyRequestModal = ({
       await declineRequestFn({
         enterpriseId,
         subsidyRequestUUID: uuid,
-        sendNotification: shouldNotifyLearner,
-        unlinkUsersFromEnterprise: shouldUnlinkLearnerFromEnterprise,
+        sendNotification: true, // always true as it would be by default
+        declineReason, // include the reason field
       });
       onSuccess();
     } catch (err) {
@@ -51,8 +50,7 @@ const DeclineBnrSubsidyRequestModal = ({
     }
   }, [
     uuid,
-    shouldNotifyLearner,
-    shouldUnlinkLearnerFromEnterprise,
+    declineReason,
     declineRequestFn,
     onSuccess,
     enterpriseId,
@@ -87,23 +85,22 @@ const DeclineBnrSubsidyRequestModal = ({
           Declining an enrollment request cannot be undone. If you change your mind, the learner will have to
           submit a new enrollment request.
         </p>
-        <Form.Checkbox
-          className="py-3"
-          data-testid="decline-bnr-subsidy-request-modal-notify-learner-checkbox"
-          checked={shouldNotifyLearner}
-          onChange={(e) => setShouldNotifyLearner(e.target.checked)}
-        >
-          Send the learner an email notification
-        </Form.Checkbox>
-        <Form.Checkbox
-          className="mt-1"
-          data-testid="decline-subsidy-request-modal-unlink-learner-checkbox"
-          checked={shouldUnlinkLearnerFromEnterprise}
-          onChange={(e) => setShouldUnlinkLearnerFromEnterprise(e.target.checked)}
-          description="Your learner won't know they have been disassociated."
-        >
-          Disassociate the learner with your organization
-        </Form.Checkbox>
+        {/* Reason input with character count + 250 limit */}
+        <Form.Group className="mt-3">
+          <Form.Control
+            as="textarea"
+            rows={2}
+            maxLength={250} // Max Character limit
+            placeholder="Reason for declining"
+            data-testid="decline-subsidy-request-reason-input"
+            value={declineReason}
+            onChange={(e) => setDeclineReason(e.target.value)}
+          />
+          <div className="text-right text-muted mt-1" style={{ fontSize: '0.85rem' }}>
+            {declineReason.length}/250 characters
+          </div>
+        </Form.Group>
+
       </ModalDialog.Body>
       <ModalDialog.Footer>
         <ActionRow>
