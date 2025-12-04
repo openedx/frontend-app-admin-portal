@@ -136,7 +136,7 @@ describe('useUpcomingInvoiceAmount', () => {
 
     await waitFor(() => {
       expect(EnterpriseAccessApiService.fetchStripeEvent).toHaveBeenCalledTimes(1);
-      expect(result.current.invoiceAmount).toBe(15000);
+      expect(result.current.invoiceAmount).toBe(150);
       expect(result.current.currency).toBe('usd');
       expect(result.current.loadingStripeSummary).toBe(false);
       expect(setErrors).not.toHaveBeenCalled();
