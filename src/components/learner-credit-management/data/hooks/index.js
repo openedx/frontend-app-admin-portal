@@ -25,3 +25,7 @@ export { default as useEnterpriseFlexGroups } from './useEnterpriseFlexGroups';
 export { default as useGroupDropdownToggle } from './useGroupDropdownToggle';
 export { default as useEnterpriseLearners } from './useEnterpriseLearners';
 export { default as useCatalogContainsContentItemsMultipleQueries } from './useCatalogContainsContentItemsMultipleQueries';
+export { default as useApproveBnrRequests } from './useApproveBnrRequests';
+export { default as useDeclineBnrRequests } from './useDeclineBnrRequests';
+export { default as useSuccessfulBulkApprovalToastContextValue } from './useSuccessfulBulkApprovalToastContextValue';
+export { default as useSuccessfulBulkDeclineToastContextValue } from './useSuccessfulBulkDeclineToastContextValue';

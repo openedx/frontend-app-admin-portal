@@ -9,6 +9,8 @@ import {
   useSuccessfulAssignmentToastContextValue,
   useSuccessfulCancellationToastContextValue,
   useSuccessfulReminderToastContextValue,
+  useSuccessfulBulkApprovalToastContextValue,
+  useSuccessfulBulkDeclineToastContextValue,
 } from './data';
 import useSuccessfulInvitationToastContextValue from './data/hooks/useSuccessfulInvitationToastContextValue';
 import useSuccessfulRemovalToastContextValue from './data/hooks/useSuccessfulRemovalToastContextValue';
@@ -51,6 +53,8 @@ const BudgetDetailPageWrapper = ({
   const successfulReminderToast = useSuccessfulReminderToastContextValue();
   const successfulInvitationToast = useSuccessfulInvitationToastContextValue();
   const successfulRemovalToast = useSuccessfulRemovalToastContextValue();
+  const successfulBulkApprovalToast = useSuccessfulBulkApprovalToastContextValue();
+  const successfulBulkDeclineToast = useSuccessfulBulkDeclineToastContextValue();
 
   const {
     isSuccessfulAssignmentAllocationToastOpen,
@@ -82,6 +86,18 @@ const BudgetDetailPageWrapper = ({
     closeToastForRemoval,
   } = successfulRemovalToast;
 
+  const {
+    isSuccessfulBulkApprovalToastOpen,
+    successfulBulkApprovalToastMessage,
+    closeToastForBulkApproval,
+  } = successfulBulkApprovalToast;
+
+  const {
+    isSuccessfulBulkDeclineToastOpen,
+    successfulBulkDeclineToastMessage,
+    closeToastForBulkDecline,
+  } = successfulBulkDeclineToast;
+
   const [inviteModalIsOpen, openInviteModal, closeInviteModal] = useToggle(false);
 
   const values = useMemo(() => ({
@@ -90,6 +106,8 @@ const BudgetDetailPageWrapper = ({
     successfulReminderToast,
     successfulInvitationToast,
     successfulRemovalToast,
+    successfulBulkApprovalToast,
+    successfulBulkDeclineToast,
     inviteModalIsOpen,
     openInviteModal,
     closeInviteModal,
@@ -97,7 +115,7 @@ const BudgetDetailPageWrapper = ({
     successfulAssignmentToast, successfulCancellationToast,
     successfulReminderToast, successfulInvitationToast,
     inviteModalIsOpen, openInviteModal, closeInviteModal,
-    successfulRemovalToast]);
+    successfulRemovalToast, successfulBulkApprovalToast, successfulBulkDeclineToast]);
 
   return (
     <BudgetDetailPageContext.Provider value={values}>
@@ -145,6 +163,20 @@ const BudgetDetailPageWrapper = ({
         show={isSuccessfulRemovalToastOpen}
       >
         {successfulRemovalToastMessage}
+      </Toast>
+
+      <Toast
+        onClose={closeToastForBulkApproval}
+        show={isSuccessfulBulkApprovalToastOpen}
+      >
+        {successfulBulkApprovalToastMessage}
+      </Toast>
+
+      <Toast
+        onClose={closeToastForBulkDecline}
+        show={isSuccessfulBulkDeclineToastOpen}
+      >
+        {successfulBulkDeclineToastMessage}
       </Toast>
     </BudgetDetailPageContext.Provider>
   );
