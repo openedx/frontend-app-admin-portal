@@ -371,12 +371,12 @@ class EnterpriseAccessApiService {
     subsidyRequestUUIDs,
   }) {
     const options = {
-      learner_credit_request_uuids: subsidyRequestUUIDs,
+      subsidy_request_uuids: subsidyRequestUUIDs,
       enterprise_customer_uuid: enterpriseId,
       policy_uuid: subsidyAccessPolicyId,
     };
 
-    const url = `${EnterpriseAccessApiService.baseUrl}/learner-credit-requests/approve/`;
+    const url = `${EnterpriseAccessApiService.baseUrl}/learner-credit-requests/bulk-approve/`;
     return EnterpriseAccessApiService.apiClient().post(url, options);
   }
 
