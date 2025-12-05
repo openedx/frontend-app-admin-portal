@@ -13,6 +13,15 @@ import AmountCell from './AmountCell';
 import BnrRequestStatusCell from './BnrRequestStatusCell';
 import TableTextFilter from '../TableTextFilter';
 import { transformLearnerRequestStateCounts } from '../data/utils';
+import RequestsTableApproveAction from './RequestsTableApproveAction';
+import RequestsTableDeclineAction from './RequestsTableDeclineAction';
+
+const selectColumn = {
+  id: 'selection',
+  Header: DataTable.ControlledSelectHeader,
+  Cell: DataTable.ControlledSelect,
+  disableSortBy: true,
+};
 
 const RequestsTable = ({
   onApprove,
@@ -88,6 +97,9 @@ const RequestsTable = ({
       manualSortBy
       isPaginated
       manualPagination
+      isSelectable
+      manualSelectColumn={selectColumn}
+      SelectionStatusComponent={DataTable.ControlledSelectionStatus}
       defaultColumnValues={{ Filter: TableTextFilter }}
       itemCount={itemCount}
       pageCount={pageCount}
@@ -110,6 +122,10 @@ const RequestsTable = ({
       }]}
       initialTableOptions={initialTableOptions}
       initialState={initialState}
+      bulkActions={[
+        <RequestsTableDeclineAction key="decline" requestStatusCounts={tableData.requestStatusCounts} />,
+        <RequestsTableApproveAction key="approve" requestStatusCounts={tableData.requestStatusCounts} />,
+      ]}
       {...rest}
     >
       <CustomTableControlBar
