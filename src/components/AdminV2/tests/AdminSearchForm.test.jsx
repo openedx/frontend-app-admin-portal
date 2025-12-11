@@ -50,10 +50,10 @@ describe('<AdminSearchForm />', () => {
     render(<AdminSearchFormWrapper {...DEFAULT_PROPS} />);
 
     const formControls = await screen.findAllByTestId('admin-search-form-control');
-    expect(formControls.length).toBe(2); // dropdowns
+    expect(formControls.length).toBe(3); // dropdowns
     const searchBar = await screen.findByTestId('admin-search-bar'); // search input
     expect(searchBar).toBeInTheDocument();
-    expect(formControls[1].textContent).toContain('Choose a course');
+    expect(formControls[2].textContent).toContain('Choose a course');
   });
 
   it.each([
@@ -69,6 +69,7 @@ describe('<AdminSearchForm />', () => {
       searchDateQuery: '',
       searchBudgetQuery: '',
       searchGroupQuery: '',
+      searchEnrollmentQuery: '',
     };
 
     const { rerender } = render(
@@ -194,6 +195,101 @@ describe('<AdminSearchForm />', () => {
         page: 1,
         search_start_date: '',
       },
+    );
+  });
+  it('selects the correct enrollment status', async () => {
+    const user = userEvent.setup();
+
+    const props = {
+      ...DEFAULT_PROPS,
+      location: { pathname: '/admin/learners' },
+    };
+
+    render(<AdminSearchFormWrapper {...props} />);
+
+    const selectElement = screen.getByLabelText('Filter by enrollment');
+
+    // --- Test selecting "enrolled" ---
+    await user.selectOptions(selectElement, 'enrolled');
+
+    expect(updateUrl).toHaveBeenCalledWith(
+      undefined,
+      '/admin/learners',
+      {
+        search_enrollment: 'enrolled',
+        page: 1,
+      },
+    );
+
+    expect(sendEnterpriseTrackEvent).toHaveBeenCalledWith(
+      props.enterpriseId,
+      EVENT_NAMES.LEARNER_PROGRESS_REPORT.FILTER_BY_ENROLLMENT_DROPDOWN,
+      { enrollment: 'enrolled' },
+    );
+
+    updateUrl.mockClear();
+    sendEnterpriseTrackEvent.mockClear();
+
+    // --- Test selecting "unenrolled" ---
+    await user.selectOptions(selectElement, 'unenrolled');
+
+    expect(updateUrl).toHaveBeenCalledWith(
+      undefined,
+      '/admin/learners',
+      {
+        search_enrollment: 'unenrolled',
+        page: 1,
+      },
+    );
+
+    expect(sendEnterpriseTrackEvent).toHaveBeenCalledWith(
+      props.enterpriseId,
+      EVENT_NAMES.LEARNER_PROGRESS_REPORT.FILTER_BY_ENROLLMENT_DROPDOWN,
+      { enrollment: 'unenrolled' },
+    );
+  });
+  it('calls updateUrl when searching by email', async () => {
+    const user = userEvent.setup();
+    const props = {
+      ...DEFAULT_PROPS,
+      location: { pathname: '/admin/learners' },
+    };
+
+    render(<AdminSearchFormWrapper {...props} />);
+
+    const searchBar = screen.getByTestId('admin-search-bar');
+    const input = searchBar.querySelector('input');
+
+    await user.type(input, 'test@example.com');
+    await user.keyboard('{Enter}');
+
+    expect(updateUrl).toHaveBeenCalledWith(
+      undefined,
+      '/admin/learners',
+      { search: 'test@example.com', page: 1 },
+    );
+  });
+
+  it('calls updateUrl when clearing search', async () => {
+    const user = userEvent.setup();
+    const props = {
+      ...DEFAULT_PROPS,
+      location: { pathname: '/admin/learners' },
+      searchParams: { searchQuery: 'test@example.com' },
+    };
+
+    render(<AdminSearchFormWrapper {...props} />);
+
+    const searchBar = screen.getByTestId('admin-search-bar');
+    const clearButton = searchBar.querySelector('button[aria-label*="clear" i], button[title*="clear" i]')
+      || screen.getByRole('button', { name: /clear/i });
+
+    await user.click(clearButton);
+
+    expect(updateUrl).toHaveBeenCalledWith(
+      undefined,
+      '/admin/learners',
+      { search: undefined },
     );
   });
 });
