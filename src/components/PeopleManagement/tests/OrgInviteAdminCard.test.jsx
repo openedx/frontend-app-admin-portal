@@ -1,0 +1,124 @@
+import React from 'react';
+import {
+  render, screen, fireEvent, waitFor,
+} from '@testing-library/react';
+import '@testing-library/jest-dom';
+import { IntlProvider } from '@edx/frontend-platform/i18n';
+import { useParams } from 'react-router';
+
+import OrgInviteAdminCard from '../OrgInviteAdminCard';
+
+/* ---------------- MOCKS ---------------- */
+
+jest.mock('react-router', () => ({
+  ...jest.requireActual('react-router'),
+  useParams: jest.fn(),
+}));
+
+jest.mock('../../../config', () => ({
+  configuration: {
+    LMS_BASE_URL: 'http://localhost:18000',
+  },
+}));
+
+jest.mock('../AdminActionsMenu', () => function AdminActionsMenuMock({ onRemove, onCopy }) {
+  return (
+    <div data-testid="admin-actions-menu">
+      <button type="button" onClick={onRemove}>Remove</button>
+      <button type="button" onClick={onCopy}>Copy</button>
+    </div>
+  );
+});
+jest.mock('../../settings/SettingsAccessTab/LinkCopiedToast', () => function LinkCopiedToastMock({ show, onClose }) {
+  if (!show) { return null; }
+  return (
+    <div data-testid="link-copied-toast">
+      <span>Link copied to clipboard</span>
+      {onClose && <button type="button" onClick={onClose}>Close</button>}
+    </div>
+  );
+});
+
+/* ---------------- TEST DATA ---------------- */
+
+const mockOriginal = {
+  id: 1,
+  name: 'John Doe',
+  email: 'john.doe@example.com',
+  invitedDate: 'Jan 01, 2024',
+  joinedDate: null,
+  status: 'Pending',
+};
+
+const props = {
+  original: mockOriginal,
+  onRemoveAdmin: jest.fn(),
+};
+
+const renderWithIntl = (ui) => render(
+  <IntlProvider locale="en">
+    {ui}
+  </IntlProvider>,
+);
+
+const mockWriteText = jest.fn(() => Promise.resolve());
+
+Object.defineProperty(navigator, 'clipboard', {
+  value: {
+    writeText: mockWriteText,
+  },
+  writable: true,
+  configurable: true,
+});
+
+describe('OrgInviteAdminCard', () => {
+  beforeEach(() => {
+    jest.clearAllMocks();
+    useParams.mockReturnValue({ enterpriseSlug: 'test-enterprise' });
+  });
+
+  it('renders admin details', () => {
+    renderWithIntl(<OrgInviteAdminCard {...props} />);
+
+    expect(screen.getByText('John Doe')).toBeInTheDocument();
+    expect(screen.getByText('john.doe@example.com')).toBeInTheDocument();
+    expect(screen.getByText(/joined org|invited date/i)).toBeInTheDocument();
+    expect(screen.getByText('Jan 01, 2024')).toBeInTheDocument();
+    expect(screen.getByText(/role/i)).toBeInTheDocument();
+    expect(screen.getByText('Pending')).toBeInTheDocument();
+  });
+
+  it('renders admin actions menu', () => {
+    renderWithIntl(<OrgInviteAdminCard {...props} />);
+    expect(screen.getByTestId('admin-actions-menu')).toBeInTheDocument();
+  });
+
+  it('calls onRemoveAdmin when Remove is clicked', () => {
+    renderWithIntl(<OrgInviteAdminCard {...props} />);
+    fireEvent.click(screen.getByText('Remove'));
+
+    expect(props.onRemoveAdmin).toHaveBeenCalledWith(mockOriginal);
+  });
+
+  it('copies invite link to clipboard when Copy is clicked', async () => {
+    renderWithIntl(<OrgInviteAdminCard {...props} />);
+    fireEvent.click(screen.getByText('Copy'));
+
+    await waitFor(() => {
+      expect(mockWriteText).toHaveBeenCalledWith(
+        'http://localhost:18000/test-enterprise/admin/register',
+      );
+    });
+  });
+
+  it('shows toast notification after copying link', async () => {
+    renderWithIntl(<OrgInviteAdminCard {...props} />);
+
+    expect(screen.queryByTestId('link-copied-toast')).not.toBeInTheDocument();
+
+    fireEvent.click(screen.getByText('Copy'));
+
+    const toast = await screen.findByTestId('link-copied-toast');
+    expect(toast).toBeInTheDocument();
+  });
+});

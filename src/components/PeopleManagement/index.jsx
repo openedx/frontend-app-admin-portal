@@ -17,6 +17,7 @@ import GroupCardGrid from './GroupCardGrid';
 import EVENT_NAMES from '../../eventTracking';
 import GroupInviteErrorToast from './GroupInviteErrorToast';
 import LearnerTabContent from './LearnerTabContent';
+import InviteAdminsTable from './InviteAdminsTable';
 
 const PeopleManagementPage = ({ enterpriseId, learnersTabEnabled }) => {
   const intl = useIntl();
@@ -130,6 +131,15 @@ const PeopleManagementPage = ({ enterpriseId, learnersTabEnabled }) => {
                   groupsCardSection={groupsCardSection}
                 />
               </div>
+            </Tab>
+            <Tab
+              eventKey="admins"
+              title={intl.formatMessage({
+                id: 'adminPortal.peopleManagement.tabs.admins',
+                defaultMessage: 'Admins',
+              })}
+            >
+              <InviteAdminsTable />
             </Tab>
           </Tabs>
         ) : (
