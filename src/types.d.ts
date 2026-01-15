@@ -196,6 +196,15 @@ declare global {
     },
   };
 
+  type EnterpriseAdminMember = {
+    enterprise_admin_user: {
+      user_id: string
+      email: string
+      joined_org: string
+      name: string
+      role: string
+    }
+  };
 }
 
 export {};
