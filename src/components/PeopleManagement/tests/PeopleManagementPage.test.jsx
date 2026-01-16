@@ -219,4 +219,91 @@ describe('<PeopleManagementPage >', () => {
       expect(screen.queryByText('Group deleted')).toBeInTheDocument();
     });
   });
+  describe('Learners Tab', () => {
+    it('does not render Learners tab when feature flag is disabled', () => {
+      useAllFlexEnterpriseGroups.mockReturnValue({ data: mockGroupsResponse });
+
+      const store = getMockStore({
+        portalConfiguration: {
+          enterpriseId: enterpriseUUID,
+          enterpriseSlug,
+          enterpriseFeatures: {
+            enterprise_invite_admins_enabled: false,
+          },
+        },
+      });
+
+      render(
+        <BrowserRouter>
+          <IntlProvider locale="en">
+            <Provider store={store}>
+              <EnterpriseSubsidiesContext.Provider value={defaultEnterpriseSubsidiesContextValue}>
+                <PeopleManagementPage />
+              </EnterpriseSubsidiesContext.Provider>
+            </Provider>
+          </IntlProvider>
+        </BrowserRouter>,
+      );
+
+      // Learners tab should NOT be present
+      expect(
+        screen.queryByRole('tab', { name: /learners/i }),
+      ).not.toBeInTheDocument();
+
+      // Tabs wrapper should NOT be rendered
+      expect(
+        screen.queryByRole('tablist'),
+      ).not.toBeInTheDocument();
+
+      // Learners content should still be visible
+      expect(
+        screen.getByText("Your organization's groups"),
+      ).toBeInTheDocument();
+
+      expect(
+        screen.getByText("Your organization's learners"),
+      ).toBeInTheDocument();
+    });
+
+    it('renders Learners tab when feature flag is enabled', () => {
+      useAllFlexEnterpriseGroups.mockReturnValue({ data: mockGroupsResponse });
+
+      const store = getMockStore({
+        portalConfiguration: {
+          enterpriseId: enterpriseUUID,
+          enterpriseSlug,
+          enterpriseFeatures: {
+            enterprise_invite_admins_enabled: true,
+          },
+        },
+      });
+
+      render(
+        <BrowserRouter>
+          <IntlProvider locale="en">
+            <Provider store={store}>
+              <EnterpriseSubsidiesContext.Provider value={defaultEnterpriseSubsidiesContextValue}>
+                <PeopleManagementPage />
+              </EnterpriseSubsidiesContext.Provider>
+            </Provider>
+          </IntlProvider>
+        </BrowserRouter>,
+      );
+
+      const learnersTab = screen.getByRole('tab', { name: /learners/i });
+
+      expect(learnersTab).toBeInTheDocument();
+      expect(learnersTab).toHaveAttribute('aria-selected', 'true');
+
+      // Tabs wrapper should be present
+      expect(
+        screen.getByRole('tablist'),
+      ).toBeInTheDocument();
+
+      // Learners content should be rendered inside the tab
+      expect(
+        screen.getByText("Your organization's groups"),
+      ).toBeInTheDocument();
+    });
+  });
 });
