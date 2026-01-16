@@ -437,16 +437,16 @@ class EnterpriseAccessApiService {
   }
 
   /**
-   * Fetches the upcoming invoice amount for trial SubscriptionPlan
+   * Fetches information regarding a trial SubscriptionPlan from Stripe
    * @param {string} subPlanUuid - The UUID of the subscription plan.
    *
-   * @returns A promise that resolves to an AxiosResponse with upcoming_invoice_amount_due
+   * @returns A promise that resolves to an AxiosResponse with upcoming_invoice_amount_due, currency, and canceled_date
    */
   static fetchStripeEvent(subPlanUuid: string) {
     const params = new URLSearchParams({
       subscription_plan_uuid: subPlanUuid,
     });
-    const url = `${EnterpriseAccessApiService.baseUrl}/stripe-event-summary/first-invoice-upcoming-amount-due/?${params.toString()}`;
+    const url = `${EnterpriseAccessApiService.baseUrl}/stripe-event-summary/get-stripe-subscription-plan-info/?${params.toString()}`;
     return EnterpriseAccessApiService.apiClient().get(url);
   }
 

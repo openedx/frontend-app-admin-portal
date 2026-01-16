@@ -59,8 +59,27 @@ const subsProps = {
   ],
 };
 
+jest.mock('@edx/frontend-platform/i18n', () => ({
+  ...jest.requireActual('@edx/frontend-platform/i18n'),
+  getLocale: () => 'en',
+}));
+
 jest.mock('../../../data/services/EnterpriseAccessApiService', () => ({
   fetchStripeBillingPortalSession: jest.fn(),
+}));
+
+jest.mock('../data/hooks', () => ({
+  ...jest.requireActual('../data/hooks'),
+  useStripeSubscriptionPlanInfo: jest.fn().mockReturnValue({
+    invoiceAmount: '2000',
+    currency: 'usd',
+    canceledDate: null,
+    loadingStripeSummary: false,
+  }),
+  useStripeBillingPortalSession: jest.fn().mockReturnValue({
+    stripeUrl: 'https://docs.stripe.com/',
+    loadingSession: false,
+  }),
 }));
 
 const mockStore = configureMockStore([thunk]);

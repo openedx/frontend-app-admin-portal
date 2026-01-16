@@ -10,9 +10,9 @@ import { FormattedMessage, getLocale } from '@edx/frontend-platform/i18n';
 
 import classNames from 'classnames';
 import {
-  ACTIVE, ENDED, FREE_TRIAL_BADGE, SCHEDULED, SELF_SERVICE_TRIAL, SUBSCRIPTION_STATUS_BADGE_MAP,
+  ACTIVE, CANCELED, FREE_TRIAL_BADGE, SCHEDULED, SELF_SERVICE_TRIAL, SUBSCRIPTION_STATUS_BADGE_MAP,
 } from './data/constants';
-import { useUpcomingInvoiceAmount } from './data/hooks';
+import { useStripeSubscriptionPlanInfo } from './data/hooks';
 import { SubscriptionContext } from './SubscriptionData';
 import { ADMINISTER_SUBSCRIPTIONS_TARGETS } from '../ProductTours/AdminOnboardingTours/constants';
 import { makePlural } from '../../utils';
@@ -32,12 +32,13 @@ const SubscriptionCard = ({
     uuid: subPlanUuid,
   } = subscription;
   const { setErrors } = useContext(SubscriptionContext);
-  const { invoiceAmount, currency, loadingStripeSummary } = useUpcomingInvoiceAmount(
-    { subPlanUuid, planType, setErrors },
-  );
+  const {
+    invoiceAmount, currency, canceledDate, loadingStripeSummary,
+  } = useStripeSubscriptionPlanInfo({ subPlanUuid, setErrors });
   const formattedStartDate = dayjs(startDate).format('MMMM D, YYYY');
   const formattedExpirationDate = dayjs(expirationDate).format('MMMM D, YYYY');
-  const subscriptionStatus = getSubscriptionStatus(subscription);
+  const formattedCanceledDate = dayjs(canceledDate).format('MMMM D, YYYY');
+  const subscriptionStatus = getSubscriptionStatus(subscription, canceledDate);
 
   let subscriptionUpcomingPrice;
   if (!loadingStripeSummary && invoiceAmount) {
@@ -96,29 +97,47 @@ const SubscriptionCard = ({
             <Badge className="mr-2" variant="info">
               {FREE_TRIAL_BADGE}
             </Badge>
-            {!(subscriptionStatus === ENDED) && (
-              <FormattedMessage
-                id="subscriptions.subscriptionCard.freeTrialDescription"
-                defaultMessage="Your 14-day free trial will conclude on {boldDate}. Your paid subscription will automatically start, and the {subscriptionUpcomingPrice} subscription fee will be charged to the card on file. {stripeLink}"
-                description="Message shown to warn customers with a free trial that they will be charged for the full subscription"
-                values={{
-                  boldDate: <span className="ml-1 font-weight-bold">{formattedExpirationDate}</span>,
-                  subscriptionUpcomingPrice: <span className="ml-1 font-weight-bold">{subscriptionUpcomingPrice}</span>,
-                  stripeLink: (
-                    <Hyperlink
-                      className="ml-2"
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      destination="#"
-                      onClick={e => {
-                        e.preventDefault();
-                        openStripeBillingPortal(enterpriseUuid);
-                      }}
-                    >
-                      Manage subscription
-                    </Hyperlink>),
-                }}
-              />
+            {(subscriptionStatus === SCHEDULED || subscriptionStatus === ACTIVE) && (
+              <span className="d-inline mt-2">
+                <FormattedMessage
+                  id="subscriptions.subscriptionCard.freeTrialDescription"
+                  defaultMessage="Your 14-day free trial will conclude on {boldDate}. Your paid subscription will automatically start, and the {subscriptionUpcomingPrice} subscription fee will be charged to the card on file. {stripeLink}"
+                  description="Message shown to warn customers with a free trial that they will be charged for the full subscription"
+                  values={{
+                    boldDate: <span className="font-weight-bold">{formattedExpirationDate}</span>,
+                    subscriptionUpcomingPrice: <span className="font-weight-bold">{subscriptionUpcomingPrice}</span>,
+                    stripeLink: (
+                      <Hyperlink
+                        className="ml-2"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        destination="#"
+                        onClick={e => {
+                          e.preventDefault();
+                          openStripeBillingPortal(enterpriseUuid);
+                        }}
+                      >
+                        Manage subscription
+                      </Hyperlink>),
+                  }}
+                />
+              </span>
+            )}
+            {subscriptionStatus === CANCELED && (
+              <span className="d-inline mt-2">
+                <FormattedMessage
+                  id="subscriptions.subscriptionCard.canceledTrialDescription"
+                  defaultMessage={
+                    'Your plan is scheduled to end on {cancellation_date}. Your learners can still access their courses until then. Changed your mind? '
+                    + "Click on the {boldButton} button above to keep your team's progress uninterrupted."
+                  }
+                  description="Message shown to inform customers that they have canceled their free trial"
+                  values={{
+                    cancellation_date: <span className="font-weight-bold">{formattedCanceledDate}</span>,
+                    boldButton: <span className="font-weight-bold">Manage Subscriptions</span>,
+                  }}
+                />
+              </span>
             )}
           </>
         )}
@@ -129,7 +148,6 @@ const SubscriptionCard = ({
         )}
       </div>
     );
-
     return (
       <Card.Header
         className={classNames({

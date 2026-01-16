@@ -3,9 +3,7 @@ import '@testing-library/jest-dom/extend-expect';
 
 import LicenseManagerApiService from '../../../../data/services/LicenseManagerAPIService';
 import EnterpriseAccessApiService from '../../../../data/services/EnterpriseAccessApiService';
-import { useSubscriptionUsersOverview, useUpcomingInvoiceAmount } from '../../data/hooks';
-
-import { SELF_SERVICE_TRIAL } from '../../data/constants';
+import { useStripeSubscriptionPlanInfo, useSubscriptionUsersOverview } from '../../data/hooks';
 
 const TEST_SUBSCRIPTION_PLAN_UUID = 'test-plan-uuid-1';
 
@@ -105,7 +103,7 @@ describe('useSubscriptionUsersOverview', () => {
   });
 });
 
-describe('useUpcomingInvoiceAmount', () => {
+describe('useStripeSubscriptionPlanInfo', () => {
   const TEST_PLAN_UUID = 'test-plan-uuid-1';
 
   beforeEach(() => {
@@ -121,6 +119,7 @@ describe('useUpcomingInvoiceAmount', () => {
       data: {
         upcoming_invoice_amount_due: 15000,
         currency: 'usd',
+        canceled_date: null,
       },
     };
 
@@ -128,9 +127,8 @@ describe('useUpcomingInvoiceAmount', () => {
 
     const setErrors = jest.fn();
 
-    const { result } = renderHook(() => useUpcomingInvoiceAmount({
+    const { result } = renderHook(() => useStripeSubscriptionPlanInfo({
       uuid: TEST_PLAN_UUID,
-      planType: SELF_SERVICE_TRIAL,
       setErrors,
     }));
 
@@ -138,27 +136,37 @@ describe('useUpcomingInvoiceAmount', () => {
       expect(EnterpriseAccessApiService.fetchStripeEvent).toHaveBeenCalledTimes(1);
       expect(result.current.invoiceAmount).toBe(150);
       expect(result.current.currency).toBe('usd');
+      expect(result.current.canceledDate).toBe(null);
       expect(result.current.loadingStripeSummary).toBe(false);
       expect(setErrors).not.toHaveBeenCalled();
     });
   });
 
-  test('does not fetch StripeEventSummary for non-trial plan', async () => {
+  test('fetches StripeEventSummary with cancellation information ', async () => {
+    const mockResponse = {
+      data: {
+        upcoming_invoice_amount_due: null,
+        currency: null,
+        canceled_date: '2025-09-15T19:56:09Z',
+      },
+    };
+
+    EnterpriseAccessApiService.fetchStripeEvent.mockResolvedValue(mockResponse);
+
     const setErrors = jest.fn();
 
-    const { result } = renderHook(() => useUpcomingInvoiceAmount({
+    const { result } = renderHook(() => useStripeSubscriptionPlanInfo({
       uuid: TEST_PLAN_UUID,
-      planType: 'Subscription',
       setErrors,
     }));
 
     await waitFor(() => {
-      expect(EnterpriseAccessApiService.fetchStripeEvent).not.toHaveBeenCalled();
-      expect(result.current.invoiceAmount).toBe(null);
+      expect(EnterpriseAccessApiService.fetchStripeEvent).toHaveBeenCalledTimes(1);
+      expect(result.current.invoiceAmount).toBe(0);
       expect(result.current.currency).toBe(null);
-      // hook should still mark loadingStripeSummary as true initially,
-      // but we expect it to remain true since no fetch was called
-      expect(result.current.loadingStripeSummary).toBe(true);
+      expect(result.current.canceledDate).toBe('2025-09-15T19:56:09Z');
+      expect(result.current.loadingStripeSummary).toBe(false);
+      expect(setErrors).not.toHaveBeenCalled();
     });
   });
 });

@@ -467,7 +467,7 @@ describe('EnterpriseAccessApiService', () => {
     });
 
     expect(axios.get).toBeCalledWith(
-      `${enterpriseAccessBaseUrl}/api/v1/stripe-event-summary/first-invoice-upcoming-amount-due/?${expectedParams.toString()}`,
+      `${enterpriseAccessBaseUrl}/api/v1/stripe-event-summary/get-stripe-subscription-plan-info/?${expectedParams.toString()}`,
     );
   });
 });

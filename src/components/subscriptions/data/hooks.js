@@ -5,7 +5,6 @@ import { camelCaseObject } from '@edx/frontend-platform/utils';
 import LicenseManagerApiService from '../../../data/services/LicenseManagerAPIService';
 import {
   NETWORK_ERROR_MESSAGE,
-  SELF_SERVICE_TRIAL,
   STRIPE_EVENT_SUMMARY,
   SUBSCRIPTION_USERS,
   SUBSCRIPTION_USERS_OVERVIEW,
@@ -238,22 +237,24 @@ export const useSubscriptionData = ({ enterpriseId }) => {
 };
 
 /**
- * This hook fetches a StripeEventSummary for pricing information about a trial SubscriptionPlan
+ * This hook fetches information about a Stripe trial SubscriptionPlan
  * @param {string} subPlanUuid - The UUID of the SubscriptionPlan.
- * @param {string} planType - The type of plan
  * @param {func} setErrors - setErrors function from SubscriptionContext
 */
-export const useUpcomingInvoiceAmount = ({ subPlanUuid, planType, setErrors }) => {
+export const useStripeSubscriptionPlanInfo = ({ subPlanUuid, setErrors }) => {
   const [loadingStripeSummary, setLoadingStripeSummary] = useState(true);
   const [invoiceAmount, setInvoiceAmount] = useState(null);
   const [currency, setCurrency] = useState(null);
+  const [canceledDate, setCanceledDate] = useState(null);
   useEffect(() => {
     const fetchStripeEvent = async () => {
       try {
         const response = await EnterpriseAccessApiService.fetchStripeEvent(subPlanUuid);
+        if (response.status === 404) { return; }
         const results = camelCaseObject(response.data);
         setInvoiceAmount(results.upcomingInvoiceAmountDue / 100);
         setCurrency(results.currency);
+        setCanceledDate(results.canceledDate);
       } catch (error) {
         logError(error);
         setErrors(s => ({
@@ -264,18 +265,13 @@ export const useUpcomingInvoiceAmount = ({ subPlanUuid, planType, setErrors }) =
         setLoadingStripeSummary(false);
       }
     };
-    // only trial plans will have associated StripeEventSummaries
-    if (planType === SELF_SERVICE_TRIAL) {
-      fetchStripeEvent();
-    } else {
-      // return early prevent unnecessary calls to enterprise-access for non-trial plans
-
-    }
-  }, [setErrors, planType, subPlanUuid]);
+    fetchStripeEvent();
+  }, [setErrors, subPlanUuid]);
 
   return {
     invoiceAmount,
     currency,
+    canceledDate,
     loadingStripeSummary,
   };
 };

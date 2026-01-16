@@ -4,7 +4,7 @@ import { camelCaseObject } from '@edx/frontend-platform';
 
 import EnterpriseAccessApiService from '../../../data/services/EnterpriseAccessApiService';
 import {
-  ASSIGNED, ACTIVE, ENDED, ENROLLABLE_STATUSES, REVOCABLE_STATUSES,
+  ASSIGNED, ACTIVE, CANCELED, ENDED, ENROLLABLE_STATUSES, REVOCABLE_STATUSES,
   SCHEDULED, SEEN_SUBSCRIPTION_EXPIRATION_MODAL_COOKIE_PREFIX,
 } from './constants';
 
@@ -21,7 +21,10 @@ export const canRemindLicense = (licenseStatus) => licenseStatus === ASSIGNED;
 
 export const canEnrollLicense = (licenseStatus) => ENROLLABLE_STATUSES.includes(licenseStatus);
 
-export const getSubscriptionStatus = (subscription) => {
+export const getSubscriptionStatus = (subscription, canceledDate) => {
+  if (canceledDate) {
+    return CANCELED;
+  }
   const now = dayjs();
 
   if (now.isBefore(subscription.startDate)) {
@@ -29,7 +32,6 @@ export const getSubscriptionStatus = (subscription) => {
   } if (now.isAfter(subscription.expirationDate)) {
     return ENDED;
   }
-
   return ACTIVE;
 };
 

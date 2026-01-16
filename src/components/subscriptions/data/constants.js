@@ -47,6 +47,7 @@ export const USER_STATUS_BADGE_MAP = {
 
 // Subscription statuses
 export const ACTIVE = 'Active';
+export const CANCELED = 'Canceled';
 export const ENDED = 'Ended';
 export const SCHEDULED = 'Scheduled';
 export const TRIAL = 'Trial';
@@ -54,6 +55,7 @@ export const TRIAL = 'Trial';
 export const SUBSCRIPTION_STATUS_BADGE_MAP = {
   [ACTIVE]: { variant: 'primary' },
   [SCHEDULED]: { variant: 'secondary' },
+  [CANCELED]: { variant: 'secondary' },
   [ENDED]: { variant: 'light' },
   [TRIAL]: { variant: 'info' },
 };
