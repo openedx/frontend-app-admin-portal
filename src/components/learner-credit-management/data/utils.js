@@ -854,3 +854,62 @@ export const transformLearnerRequestStateCounts = (learnerRequestStateCounts) =>
       value: learnerRequestState,
     }));
 };
+
+/**
+ * Converts an array of learner request state counts into an object keyed by state.
+ * @param {Array<{learnerRequestState: string, count: number}>} learnerRequestStateCounts
+ *   Array from budget overview API.
+ * @returns {Object<string, number>} Mapping of state names to counts (e.g., { waiting: 5 }).
+ */
+export const getLearnerRequestStateCountsByState = (learnerRequestStateCounts) => {
+  if (!learnerRequestStateCounts) {
+    return {};
+  }
+  return learnerRequestStateCounts.reduce((acc, item) => {
+    acc[item.learnerRequestState] = item.count;
+    return acc;
+  }, {});
+};
+
+/**
+ * Extracts metadata from selected approved request rows for bulk remind tracking.
+ * @param {Array} selectedFlatRows - Selected rows from the approved requests DataTable.
+ * @returns {{requestUuids: string[], totalSelectedRows: number, uniqueLearnerRequestState: Object<string, number>}}
+ */
+export const transformSelectedApprovedRequestRows = (selectedFlatRows) => {
+  const requestUuids = selectedFlatRows.map((item) => item.id);
+  const totalSelectedRows = selectedFlatRows.length;
+  const flatMappedLearnerRequestState = selectedFlatRows.map(
+    (item) => item?.original?.learnerRequestState,
+  );
+  const uniqueLearnerRequestState = {};
+  flatMappedLearnerRequestState.forEach((state) => {
+    uniqueLearnerRequestState[state] = (uniqueLearnerRequestState[state] || 0) + 1;
+  });
+  return { requestUuids, totalSelectedRows, uniqueLearnerRequestState };
+};
+
+/**
+ * Calculates the total number of requests to remind based on selection state.
+ * @param {Object} params
+ * @param {string[]} params.requestUuids - Array of selected request UUIDs.
+ * @param {boolean} params.isEntireTableSelected - Whether the entire table is selected.
+ * @param {Array<{learnerRequestState: string, count: number}>} params.learnerRequestStateCounts
+ *   State counts from overview API.
+ * @param {string} [params.remindableState='waiting'] - The state that can be reminded.
+ * @returns {number} Total count of requests to remind.
+ */
+export const calculateTotalToRemindApprovedRequests = ({
+  requestUuids,
+  isEntireTableSelected,
+  learnerRequestStateCounts,
+  remindableState = 'waiting',
+}) => {
+  if (isEntireTableSelected) {
+    const waitingStateCount = learnerRequestStateCounts?.find(
+      (item) => item.learnerRequestState === remindableState,
+    );
+    return waitingStateCount?.count || 0;
+  }
+  return requestUuids.length;
+};

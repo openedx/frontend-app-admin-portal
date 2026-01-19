@@ -277,7 +277,7 @@ describe('EnterpriseAccessApiService', () => {
 
     EnterpriseAccessApiService.approveBnrSubsidyRequest({
       enterpriseId: mockEnterpriseUUID,
-      subsidyRequestUUIDs: mockBnrSubsidyRequestUUIDs,
+      subsidyRequestUuids: mockBnrSubsidyRequestUUIDs,
       subsidyAccessPolicyId: mockSubsidyAccessPolicyUUID,
     });
 

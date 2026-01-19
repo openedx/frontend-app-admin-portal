@@ -59,7 +59,7 @@ const BudgetDetailApprovedRequestHeader = () => {
   );
 };
 
-const BudgetDetailApprovedRequest = ({ enterpriseId }) => {
+const BudgetDetailApprovedRequest = ({ enterpriseId, isRetiredOrExpired }) => {
   const { isLoading, bnrRequests, fetchApprovedRequests } = useBnrSubsidyRequests({ enterpriseId });
 
   const approvedRequests = {
@@ -76,6 +76,7 @@ const BudgetDetailApprovedRequest = ({ enterpriseId }) => {
         isLoading={isLoading}
         tableData={approvedRequests}
         fetchTableData={fetchApprovedRequests}
+        isRetiredOrExpired={isRetiredOrExpired}
       />
     </section>
   );
@@ -83,6 +84,11 @@ const BudgetDetailApprovedRequest = ({ enterpriseId }) => {
 
 BudgetDetailApprovedRequest.propTypes = {
   enterpriseId: PropTypes.string.isRequired,
+  isRetiredOrExpired: PropTypes.bool,
+};
+
+BudgetDetailApprovedRequest.defaultProps = {
+  isRetiredOrExpired: false,
 };
 
 const mapStateToProps = (state) => ({

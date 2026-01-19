@@ -112,7 +112,7 @@ describe('useRemindApprovedRequest', () => {
     const mockResponse = { data: { success: true } };
 
     beforeEach(() => {
-      EnterpriseAccessApiService.remindApprovedBnrSubsidyRequest.mockResolvedValue(mockResponse);
+      EnterpriseAccessApiService.remindApprovedBnrSubsidyRequests.mockResolvedValue(mockResponse);
     });
 
     it('should handle successful reminder flow', async () => {
@@ -158,9 +158,9 @@ describe('useRemindApprovedRequest', () => {
         await result.current.remindApprovedRequests();
       });
 
-      expect(EnterpriseAccessApiService.remindApprovedBnrSubsidyRequest).toHaveBeenCalledWith({
+      expect(EnterpriseAccessApiService.remindApprovedBnrSubsidyRequests).toHaveBeenCalledWith({
         enterpriseId: mockEnterpriseId,
-        subsidyRequestUUID: mockSubsidyRequestUUID,
+        subsidyRequestUuids: [mockSubsidyRequestUUID],
       });
     });
 
@@ -226,7 +226,7 @@ describe('useRemindApprovedRequest', () => {
     const mockError = new Error('API Error');
 
     beforeEach(() => {
-      EnterpriseAccessApiService.remindApprovedBnrSubsidyRequest.mockRejectedValue(mockError);
+      EnterpriseAccessApiService.remindApprovedBnrSubsidyRequests.mockRejectedValue(mockError);
     });
 
     it('should handle failed reminder flow', async () => {
@@ -261,7 +261,7 @@ describe('useRemindApprovedRequest', () => {
 
   describe('button state transitions', () => {
     it('should transition through states correctly on success', async () => {
-      EnterpriseAccessApiService.remindApprovedBnrSubsidyRequest.mockResolvedValue({ data: { success: true } });
+      EnterpriseAccessApiService.remindApprovedBnrSubsidyRequests.mockResolvedValue({ data: { success: true } });
 
       const { result } = renderHook(
         () => useRemindApprovedRequest(
@@ -287,7 +287,7 @@ describe('useRemindApprovedRequest', () => {
     });
 
     it('should transition through states correctly on error', async () => {
-      EnterpriseAccessApiService.remindApprovedBnrSubsidyRequest.mockRejectedValue(new Error('API Error'));
+      EnterpriseAccessApiService.remindApprovedBnrSubsidyRequests.mockRejectedValue(new Error('API Error'));
 
       const { result } = renderHook(
         () => useRemindApprovedRequest(
