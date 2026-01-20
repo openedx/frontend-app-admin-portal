@@ -61,6 +61,8 @@ export interface EnterpriseAdminResponse {
   data: EnterpriseAdminPayload;
 }
 
+export type EnterpriseAdminMemberListResponse = Promise<AxiosResponse<PaginatedCurrentPage<EnterpriseAdminMember>>>;
+
 class LmsApiService {
   static apiClient = getAuthenticatedHttpClient;
 
@@ -109,6 +111,8 @@ class LmsApiService {
   static enterpriseLearnerUrl = `${LmsApiService.baseUrl}/enterprise/api/v1/enterprise-learner/`;
 
   static loginRefreshUrl = `${LmsApiService.baseUrl}/login_refresh`;
+
+  static enterpriseAdminMembersUrl = `${LmsApiService.baseUrl}/enterprise/api/v1/enterprise-admin-members/`;
 
   static async createEnterpriseGroup(
     {
@@ -646,6 +650,15 @@ class LmsApiService {
     const response = await LmsApiService.apiClient().post(url);
     return camelCaseObject(response.data);
   };
+
+  static fetchEnterpriseAdminMembers(enterpriseUUID: string, options: any) : EnterpriseAdminMemberListResponse {
+    let url = `${LmsApiService.enterpriseAdminMembersUrl}${enterpriseUUID}/`;
+    if (options) {
+      const queryParams = new URLSearchParams(options);
+      url = `${LmsApiService.enterpriseAdminMembersUrl}${enterpriseUUID}?${queryParams.toString()}`;
+    }
+    return LmsApiService.apiClient().get(url, options);
+  }
 }
 
 export default LmsApiService;
