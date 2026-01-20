@@ -13,8 +13,11 @@ import {
 } from '@openedx/paragon';
 import { renderWithRouter } from '../../test/testUtils';
 import SubscriptionCard from '../SubscriptionCard';
-import { ENDED, FREE_TRIAL_BADGE, SELF_SERVICE_TRIAL } from '../data/constants';
+import {
+  CANCELED, ENDED, FREE_TRIAL_BADGE, SELF_SERVICE_TRIAL,
+} from '../data/constants';
 import EnterpriseAccessApiService from '../../../data/services/EnterpriseAccessApiService';
+import { useStripeSubscriptionPlanInfo } from '../data/hooks';
 
 const defaultSubscription = {
   uuid: 'ided',
@@ -70,6 +73,20 @@ const endedTrialProps = {
   },
 };
 
+const mockSubPlanInfoActive = {
+  invoiceAmount: '2000',
+  currency: 'usd',
+  canceledDate: null,
+  loadingStripeSummary: false,
+};
+
+const mockSubPlanInfoCanceled = {
+  invoiceAmount: null,
+  currency: null,
+  canceledDate: '2027-01-29T14:24:33Z',
+  loadingStripeSummary: false,
+};
+
 const responsiveContextValue = { width: breakpoints.extraSmall.maxWidth };
 
 jest.mock('dayjs', () => (date) => {
@@ -86,11 +103,7 @@ jest.mock('@edx/frontend-platform/i18n', () => ({
 
 jest.mock('../data/hooks', () => ({
   ...jest.requireActual('../data/hooks'),
-  useUpcomingInvoiceAmount: jest.fn().mockReturnValue({
-    invoiceAmount: '2000',
-    currency: 'usd',
-    loadingStripeSummary: false,
-  }),
+  useStripeSubscriptionPlanInfo: jest.fn(),
   useStripeBillingPortalSession: jest.fn().mockReturnValue({
     stripeUrl: 'https://docs.stripe.com/',
     loadingSession: false,
@@ -122,6 +135,7 @@ const SubscriptionCardWrapper = ({ initialState = initialStoreState, ...props })
 
 describe('SubscriptionCard', () => {
   it('displays subscription information', () => {
+    useStripeSubscriptionPlanInfo.mockReturnValue(mockSubPlanInfoActive);
     renderWithRouter(<SubscriptionCardWrapper {...defaultProps} />);
     const { title } = defaultSubscription;
     expect(screen.getByText(title));
@@ -133,6 +147,7 @@ describe('SubscriptionCard', () => {
     [dayjs().add(1, 'hours').toISOString(), '1 hour'],
     [dayjs().add(3, 'hours').toISOString(), '3 hours'],
   ])('displays days until plan starts text if there are no actions and the plan is scheduled', (startDate, expectedText) => {
+    useStripeSubscriptionPlanInfo.mockReturnValue(mockSubPlanInfoActive);
     renderWithRouter(
       <ResponsiveContext.Provider value={responsiveContextValue}>
         <SubscriptionCardWrapper
@@ -148,6 +163,7 @@ describe('SubscriptionCard', () => {
   });
 
   it('displays actions', () => {
+    useStripeSubscriptionPlanInfo.mockReturnValue(mockSubPlanInfoActive);
     const mockCreateActions = jest.fn(() => ([{
       variant: 'primary',
       to: '/',
@@ -164,6 +180,7 @@ describe('SubscriptionCard', () => {
   });
 
   it('displays trial subscription with additional subtitle and button', () => {
+    useStripeSubscriptionPlanInfo.mockReturnValue(mockSubPlanInfoActive);
     EnterpriseAccessApiService.fetchStripeBillingPortalSession.mockReturnValue({
       data: {
         url: 'https://fake-stripe-url.com',
@@ -186,11 +203,29 @@ describe('SubscriptionCard', () => {
   });
 
   it('does not render trial subtitle for an expired trial ', () => {
+    useStripeSubscriptionPlanInfo.mockReturnValue(mockSubPlanInfoActive);
     renderWithRouter(
       <SubscriptionCardWrapper {...endedTrialProps} />,
     );
     expect(screen.getByText(FREE_TRIAL_BADGE));
     expect(screen.getByText(ENDED));
+    expect(screen.queryByText('Your 14-day free trial will conclude')).not.toBeInTheDocument();
+  });
+
+  it('renders canceled trial messaging when subscription is canceled', () => {
+    useStripeSubscriptionPlanInfo.mockReturnValue(mockSubPlanInfoCanceled);
+    renderWithRouter(
+      <SubscriptionCardWrapper {...trialProps} />,
+    );
+
+    // Check for Canceled and Free Trial badge
+    expect(screen.getByText(CANCELED)).toBeInTheDocument();
+    expect(screen.getByText(FREE_TRIAL_BADGE)).toBeInTheDocument();
+
+    expect(screen.getByText(/Your plan is scheduled to end on/i)).toBeInTheDocument();
+    expect(screen.getByText('January 29, 2027')).toBeInTheDocument();
+
+    // Ensure the active-trial billing warning is NOT shown
     expect(screen.queryByText('Your 14-day free trial will conclude')).not.toBeInTheDocument();
   });
 });
