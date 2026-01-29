@@ -701,6 +701,7 @@ describe('CourseCard', () => {
             content_key: 'course-v1:edX+course-123x+3T2020',
             learner_emails: mockLearnerEmails,
             admin_lms_user_id: '3',
+            suppress_email: false,
           }),
         );
 
@@ -768,6 +769,50 @@ describe('CourseCard', () => {
         await user.click(cancelAssignmentCTA);
         expect(screen.queryByRole('dialog')).not.toBeInTheDocument();
       }
+    });
+    test('submits assignments with suppress_email true when user disables automated email', async () => {
+      const user = userEvent.setup();
+
+      setupAssignments({
+        hasAllocationException: false,
+        allocationExceptionReason: null,
+        courseImportantDates: {
+          courseStartDate: futureStartDate,
+          expectedCourseStartText: 'Course starts:',
+        },
+      });
+
+      renderWithRouter(<CourseCardWrapper {...defaultProps} />);
+
+      await user.click(getButtonElement('Assign'));
+      await user.click(screen.getByText(enrollByDropdownText));
+
+      const assignmentModal = within(screen.getByRole('dialog'));
+
+      // toggle the suppress email checkbox
+      const suppressToggle = assignmentModal.getByLabelText(/do not send/i);
+      await user.click(suppressToggle);
+
+      const textareaInput = assignmentModal.getByLabelText('Learner email addresses').closest('textarea');
+      await user.type(textareaInput, mockLearnerEmails.join('{enter}'));
+
+      await waitFor(() => expect(assignmentModal.getByText(`Summary (${mockLearnerEmails.length})`)).toBeInTheDocument());
+
+      const submitCTA = getButtonElement('Assign', { screenOverride: assignmentModal });
+      await user.click(submitCTA);
+
+      await waitFor(() => expect(mockAllocateContentAssignments).toHaveBeenCalled());
+
+      expect(mockAllocateContentAssignments).toHaveBeenCalledWith(
+        mockSubsidyAccessPolicy.uuid,
+        expect.objectContaining({
+          content_price_cents: 10000,
+          content_key: 'course-v1:edX+course-123x+3T2020',
+          learner_emails: mockLearnerEmails,
+          admin_lms_user_id: '3',
+          suppress_email: true,
+        }),
+      );
     });
 
     test('prevents allocation if emails are empty', async () => {

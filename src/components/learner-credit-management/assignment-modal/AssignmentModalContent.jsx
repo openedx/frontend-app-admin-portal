@@ -29,6 +29,8 @@ const AssignmentModalContent = ({
   enterpriseFlexGroups,
   onGroupSelectionsChanged,
   setHasSelectedBulkGroupAssign,
+  suppressEmail,
+  onSuppressEmailChange,
 }) => {
   const shouldShowGroupsDropdown = enterpriseFlexGroups?.length > 0;
   const { subsidyAccessPolicyId } = useBudgetId();
@@ -108,8 +110,13 @@ const AssignmentModalContent = ({
       );
     }
     if (allocationMetadata.canAllocate) {
-      onEmailAddressesChange(learnerEmails, { canAllocate: true });
-      onGroupSelectionsChanged(groupMemberEmails, { canAllocate: true });
+      onEmailAddressesChange(learnerEmails, {
+        canAllocate: true,
+      });
+
+      onGroupSelectionsChanged(groupMemberEmails, {
+        canAllocate: true,
+      });
     } else {
       onEmailAddressesChange([]);
       onGroupSelectionsChanged([]);
@@ -123,6 +130,16 @@ const AssignmentModalContent = ({
     groupMemberEmails,
     onGroupSelectionsChanged,
   ]);
+
+  const handleSuppressEmailChange = (e) => {
+    onSuppressEmailChange(e.target.checked);
+
+    sendEnterpriseTrackEvent(
+      enterpriseId,
+      EVENT_NAMES.LEARNER_CREDIT_MANAGEMENT.SUPPRESS_ASSIGNMENT_EMAIL_TOGGLED,
+      { suppressEmail: e.target.checked },
+    );
+  };
 
   return (
     <Container size="lg" className="py-3">
@@ -185,6 +202,27 @@ const AssignmentModalContent = ({
                 </Form.Control.Feedback>
               )}
             </Form.Group>
+            <Form.Group className="mb-4">
+              <Form.Check
+                type="checkbox"
+                id="suppress-assignment-email"
+                checked={suppressEmail}
+                onChange={handleSuppressEmailChange}
+                label={intl.formatMessage({
+                  id: 'lcm.assign.suppress.email',
+                  defaultMessage: 'Do not send automated learner email for this assignment',
+                  description: 'Checkbox to suppress automated LC assignment email',
+                })}
+              />
+              <Form.Text className="text-muted">
+                <FormattedMessage
+                  id="lcm.assign.suppress.email.help"
+                  defaultMessage="Use this when learners will receive a manual enrollment link instead of the automated email."
+                  description="Help text for suppress assignment email option"
+                />
+              </Form.Text>
+            </Form.Group>
+
             <h5 className="mb-3">
               <FormattedMessage
                 id="lcm.budget.detail.page.catalog.tab.assign.course.section.how.assigning.works"
@@ -277,6 +315,8 @@ AssignmentModalContent.propTypes = {
     acceptedMembersCount: PropTypes.number,
   })),
   setHasSelectedBulkGroupAssign: PropTypes.func,
+  suppressEmail: PropTypes.bool.isRequired,
+  onSuppressEmailChange: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = state => ({

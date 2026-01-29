@@ -58,6 +58,7 @@ const NewAssignmentModalButton = ({ enterpriseId, course, children }) => {
   } = useContext(BudgetDetailPageContext);
   const { data: subsidyAccessPolicy } = useSubsidyAccessPolicy(subsidyAccessPolicyId);
   const [hasSelectedBulkGroupAssign, setHasSelectedBulkGroupAssign] = useState(false);
+  const [suppressEmail, setSuppressEmail] = useState(false);
   const {
     subsidyUuid,
     assignmentConfiguration,
@@ -129,6 +130,7 @@ const NewAssignmentModalButton = ({ enterpriseId, course, children }) => {
   const handleCloseAssignmentModal = () => {
     close();
     setAssignButtonState('default');
+    setSuppressEmail(false);
   };
 
   // Callback function for when emails are changed in the
@@ -182,6 +184,7 @@ const NewAssignmentModalButton = ({ enterpriseId, course, children }) => {
       contentKey: assignmentRun.key,
       learnerEmails: [...learnerEmails, ...groupLearnerEmails],
       adminLmsUserId: authenticatedUser.userId, // Tracks the LMS admin user
+      suppressEmail,
     });
     const mutationArgs = {
       subsidyAccessPolicyId,
@@ -364,6 +367,8 @@ const NewAssignmentModalButton = ({ enterpriseId, course, children }) => {
           enterpriseFlexGroups={enterpriseFlexGroups}
           onGroupSelectionsChanged={handleGroupSelectionsChanged}
           setHasSelectedBulkGroupAssign={setHasSelectedBulkGroupAssign}
+          suppressEmail={suppressEmail}
+          onSuppressEmailChange={setSuppressEmail}
         />
       </FullscreenModal>
       <CreateAllocationErrorAlertModals
