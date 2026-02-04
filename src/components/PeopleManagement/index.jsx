@@ -2,27 +2,23 @@ import React, { useContext, useEffect, useState } from 'react';
 import { Helmet } from 'react-helmet';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import { useIntl, FormattedMessage } from '@edx/frontend-platform/i18n';
+import { useIntl } from '@edx/frontend-platform/i18n';
 import {
-  ActionRow, Button, Skeleton, Toast, useToggle,
+  Skeleton, Tab, Tabs, Toast, useToggle,
 } from '@openedx/paragon';
-import { Add } from '@openedx/paragon/icons';
 import { sendEnterpriseTrackEvent } from '@edx/frontend-enterprise-utils';
 
 import Hero from '../Hero';
 import { SUBSIDY_TYPES } from '../../data/constants/subsidyTypes';
 import { EnterpriseSubsidiesContext } from '../EnterpriseSubsidiesContext';
-import CreateGroupModal from './CreateGroupModal';
 import { useAllFlexEnterpriseGroups } from '../learner-credit-management/data';
 import ZeroState from './ZeroState';
 import GroupCardGrid from './GroupCardGrid';
-import PeopleManagementTable from './PeopleManagementTable';
 import EVENT_NAMES from '../../eventTracking';
-import ValidatedEmailsContextProvider from './data/ValidatedEmailsContextProvider';
 import GroupInviteErrorToast from './GroupInviteErrorToast';
-import { ORGANIZE_LEARNER_TARGETS } from '../ProductTours/AdminOnboardingTours/constants';
+import LearnerTabContent from './LearnerTabContent';
 
-const PeopleManagementPage = ({ enterpriseId }) => {
+const PeopleManagementPage = ({ enterpriseId, learnersTabEnabled }) => {
   const intl = useIntl();
   const PAGE_TITLE = intl.formatMessage({
     id: 'admin.portal.people.management.page',
@@ -50,6 +46,7 @@ const PeopleManagementPage = ({ enterpriseId }) => {
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [isModalOpen, openModal, closeModal] = useToggle(false);
   const [groups, setGroups] = useState();
+  const [activeTab, setActiveTab] = useState(learnersTabEnabled ? 'learners' : null);
 
   useEffect(() => {
     if (data !== undefined) {
@@ -107,73 +104,46 @@ const PeopleManagementPage = ({ enterpriseId }) => {
         closeToast={closeGroupInviteErrorModal}
       />
       <div className="mx-3 mt-4">
-        <span id={ORGANIZE_LEARNER_TARGETS.ORG_GROUPS}>
-          <ActionRow className="mb-4">
-            <span className="flex-column">
-              <span className="d-flex">
-                <h3 className="mt-2">
-                  <FormattedMessage
-                    id="adminPortal.peopleManagement.title"
-                    defaultMessage="Your organization's groups"
-                    description="Title for people management page."
-                  />
-                </h3>
-              </span>
-              {hasLearnerCredit && (
-              <FormattedMessage
-                id="adminPortal.peopleManagement.subtitle.lc"
-                defaultMessage="Monitor group learning progress, assign more courses, and invite members to new Learner Credit budgets."
-                description="Subtitle for people management with learner credit."
-              />
-              )}
-              {!hasLearnerCredit && hasOtherSubsidyTypes && (
-              <FormattedMessage
-                id="adminPortal.peopleManagement.subtitle.noLc"
-                defaultMessage="Monitor group learning progress."
-                description="Subtitle for people management without learner credit."
-              />
-              )}
-            </span>
-            <ActionRow.Spacer />
-            <Button
-              iconBefore={Add}
-              onClick={handleOnClickCreateGroup}
-              id={ORGANIZE_LEARNER_TARGETS.CREATE_GROUP_BUTTON}
+        {learnersTabEnabled ? (
+        // NOTE:  this Tabs wrapper is intentional as we’ll be adding additional tabs soon.
+          <Tabs
+            activeKey={activeTab}
+            onSelect={(key) => setActiveTab(key)}
+          >
+            <Tab
+              eventKey="learners"
+              title={intl.formatMessage({
+                id: 'adminPortal.peopleManagement.tabs.learners',
+                defaultMessage: 'Learners',
+                description: 'Learners tab title for people management page.',
+              })}
             >
-              <FormattedMessage
-                id="adminPortal.peopleManagement.newGroup.button"
-                defaultMessage="Create group"
-                description="CTA button text to open new group modal."
-              />
-            </Button>
-            <ValidatedEmailsContextProvider>
-              <CreateGroupModal
-                isModalOpen={isModalOpen}
-                openModel={openModal}
-                closeModal={closeModal}
-                onInviteError={handleInviteError}
-              />
-            </ValidatedEmailsContextProvider>
-          </ActionRow>
-          {groupsCardSection}
-        </span>
-        <h3 className="mt-3">
-          <FormattedMessage
-            id="adminPortal.peopleManagement.dataTable.title"
-            defaultMessage="Your organization's members"
-            description="Title for people management data table."
+              <div className="pt-4">
+                <LearnerTabContent
+                  hasLearnerCredit={hasLearnerCredit}
+                  hasOtherSubsidyTypes={hasOtherSubsidyTypes}
+                  handleOnClickCreateGroup={handleOnClickCreateGroup}
+                  isModalOpen={isModalOpen}
+                  openModal={openModal}
+                  closeModal={closeModal}
+                  handleInviteError={handleInviteError}
+                  groupsCardSection={groupsCardSection}
+                />
+              </div>
+            </Tab>
+          </Tabs>
+        ) : (
+          <LearnerTabContent
+            hasLearnerCredit={hasLearnerCredit}
+            hasOtherSubsidyTypes={hasOtherSubsidyTypes}
+            handleOnClickCreateGroup={handleOnClickCreateGroup}
+            isModalOpen={isModalOpen}
+            openModal={openModal}
+            closeModal={closeModal}
+            handleInviteError={handleInviteError}
+            groupsCardSection={groupsCardSection}
           />
-        </h3>
-        <p className="mb-2">
-          <FormattedMessage
-            id="adminPortal.peopleManagement.dataTable.subtitle"
-            defaultMessage="View all members of your organization."
-            description="Subtitle for people management members data table."
-          />
-        </p>
-        <span id={ORGANIZE_LEARNER_TARGETS.ORG_MEMBER_TABLE}>
-          <PeopleManagementTable />
-        </span>
+        )}
       </div>
     </>
   );
@@ -181,10 +151,16 @@ const PeopleManagementPage = ({ enterpriseId }) => {
 
 const mapStateToProps = (state) => ({
   enterpriseId: state.portalConfiguration.enterpriseId,
+  learnersTabEnabled: state.portalConfiguration.enterpriseFeatures?.enterprise_invite_admins_enabled ?? false,
 });
 
 PeopleManagementPage.propTypes = {
   enterpriseId: PropTypes.string.isRequired,
+  learnersTabEnabled: PropTypes.bool,
+};
+
+PeopleManagementPage.defaultProps = {
+  learnersTabEnabled: false,
 };
 
 export default connect(mapStateToProps)(PeopleManagementPage);

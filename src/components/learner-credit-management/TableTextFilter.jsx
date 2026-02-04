@@ -17,8 +17,9 @@ const TableTextFilter = ({
   column: {
     filterValue, setFilter, Header,
   },
+  label,
 }) => {
-  const inputText = `Search by ${formatHeaderForLabel(Header)}`;
+  const inputText = label || `Search by ${formatHeaderForLabel(Header)}`;
   return (
     <Form.Group>
       <Form.Control
@@ -42,6 +43,7 @@ TableTextFilter.propTypes = {
     setFilter: PropTypes.func,
     Header: PropTypes.oneOfType([PropTypes.func, PropTypes.node]),
   }).isRequired,
+  label: PropTypes.string,
 };
 
 export default TableTextFilter;
