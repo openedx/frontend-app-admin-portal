@@ -35,6 +35,19 @@ export interface RemindAllApprovedBnrSubsidyRequestsParams {
   options?: RemindAllApprovedRequestsOptions;
 }
 
+type ApproveBnrSubsidyRequestParams = {
+  enterpriseId: string;
+  subsidyAccessPolicyId: string;
+  subsidyRequestUUIDs: string[];
+};
+
+type ApproveBnrSubsidyRequestResponseData = {
+  approved?: string[];
+  failed?: string[];
+};
+
+export type ApproveBnrSubsidyRequestResponse = AxiosResponse<ApproveBnrSubsidyRequestResponseData>;
+
 class EnterpriseAccessApiService {
   static baseUrl = `${configuration.ENTERPRISE_ACCESS_BASE_URL}/api/v1`;
 
@@ -388,15 +401,15 @@ class EnterpriseAccessApiService {
   static approveBnrSubsidyRequest({
     enterpriseId,
     subsidyAccessPolicyId,
-    subsidyRequestUuids,
-  }) {
+    subsidyRequestUUIDs,
+  }: ApproveBnrSubsidyRequestParams): Promise<ApproveBnrSubsidyRequestResponse> {
     const options = {
-      learner_credit_request_uuids: subsidyRequestUuids,
+      learner_credit_request_uuids: subsidyRequestUUIDs,
       enterprise_customer_uuid: enterpriseId,
       policy_uuid: subsidyAccessPolicyId,
     };
 
-    const url = `${EnterpriseAccessApiService.baseUrl}/learner-credit-requests/approve/`;
+    const url = `${EnterpriseAccessApiService.baseUrl}/learner-credit-requests/bulk-approve/`;
     return EnterpriseAccessApiService.apiClient().post(url, options);
   }
 
