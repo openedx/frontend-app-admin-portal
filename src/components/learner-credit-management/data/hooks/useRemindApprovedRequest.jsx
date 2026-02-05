@@ -21,8 +21,8 @@ const useRemindApprovedRequest = (
   const remindApprovedRequests = useCallback(async () => {
     setRemindButtonState('pending');
     try {
-      const response = await EnterpriseAccessApiService.remindApprovedBnrSubsidyRequest({
-        subsidyRequestUUID,
+      const response = await EnterpriseAccessApiService.remindApprovedBnrSubsidyRequests({
+        subsidyRequestUuids: [subsidyRequestUUID],
         enterpriseId,
       });
 

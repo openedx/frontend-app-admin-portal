@@ -25,6 +25,16 @@ export type SubPlanStripeEventResponse = {
   data: SubPlanStripeEvent[];
 };
 
+export interface RemindAllApprovedRequestsOptions {
+  learnerRequestState?: string;
+}
+
+export interface RemindAllApprovedBnrSubsidyRequestsParams {
+  enterpriseId: string;
+  policyUuid: string;
+  options?: RemindAllApprovedRequestsOptions;
+}
+
 class EnterpriseAccessApiService {
   static baseUrl = `${configuration.ENTERPRISE_ACCESS_BASE_URL}/api/v1`;
 
@@ -372,16 +382,16 @@ class EnterpriseAccessApiService {
    * @param params - The parameters for approving the subsidy request
    * @param params.enterpriseId - The UUID of the enterprise customer
    * @param params.subsidyAccessPolicyId - The UUID of the subsidy policy
-   * @param params.subsidyRequestUUIDs - The list of UUIDs of the subsidy requests to approve
+   * @param params.subsidyRequestUuids - The list of UUIDs of the subsidy requests to approve
    * @returns A promise that resolves to the API response for the approve operation
    */
   static approveBnrSubsidyRequest({
     enterpriseId,
     subsidyAccessPolicyId,
-    subsidyRequestUUIDs,
+    subsidyRequestUuids,
   }) {
     const options = {
-      learner_credit_request_uuids: subsidyRequestUUIDs,
+      learner_credit_request_uuids: subsidyRequestUuids,
       enterprise_customer_uuid: enterpriseId,
       policy_uuid: subsidyAccessPolicyId,
     };
@@ -412,23 +422,50 @@ class EnterpriseAccessApiService {
   }
 
   /**
-   * Send reminder for an approved BNR (Browse and Request) subsidy request for an enterprise.
+   * Send reminder for approved BNR (Browse and Request) subsidy requests for an enterprise.
    *
-   * @param params - The parameters for reminding the approved subsidy request
-   * @param params.subsidyRequestUUID - The UUID of the approved bnr request for reminder
+   * @param params - The parameters for reminding the approved subsidy requests
+   * @param params.enterpriseId - The UUID of the enterprise customer
+   * @param params.subsidyRequestUuids - Array of UUIDs of the approved bnr requests for reminder
    * @returns A promise that resolves to the API response for the remind operation
    */
-  static remindApprovedBnrSubsidyRequest({
+  static remindApprovedBnrSubsidyRequests({
     enterpriseId,
-    subsidyRequestUUID,
+    subsidyRequestUuids,
   }) {
     const options = {
-      learner_credit_request_uuid: subsidyRequestUUID,
+      learner_credit_request_uuids: subsidyRequestUuids,
       enterprise_customer_uuid: enterpriseId,
     };
 
     const url = `${EnterpriseAccessApiService.baseUrl}/learner-credit-requests/remind/`;
     return EnterpriseAccessApiService.apiClient().post(url, options);
+  }
+
+  /**
+   * Send reminder for ALL approved BNR (Browse and Request) subsidy requests for an enterprise.
+   *
+   * @param params - The parameters for reminding all approved subsidy requests
+   * @param params.enterpriseId - The UUID of the enterprise customer
+   * @param params.policyUuid - The UUID of the subsidy access policy
+   * @param params.options - Additional options for filtering (e.g., learnerRequestState)
+   * @returns A promise that resolves to the API response for the remind-all operation
+   */
+  static remindAllApprovedBnrSubsidyRequests({
+    enterpriseId,
+    policyUuid,
+    options = {},
+  }: RemindAllApprovedBnrSubsidyRequestsParams): Promise<AxiosResponse> {
+    const { learnerRequestState } = options;
+    const body: Record<string, string> = {
+      enterprise_customer_uuid: enterpriseId,
+      policy_uuid: policyUuid,
+    };
+    if (learnerRequestState) {
+      body.learner_request_state = learnerRequestState;
+    }
+    const url = `${EnterpriseAccessApiService.baseUrl}/learner-credit-requests/remind-all/`;
+    return EnterpriseAccessApiService.apiClient().post(url, body);
   }
 
   /**

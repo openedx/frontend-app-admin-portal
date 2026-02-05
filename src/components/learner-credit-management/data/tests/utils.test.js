@@ -1,8 +1,10 @@
 import { createIntl } from '@edx/frontend-platform/i18n';
 import dayjs from 'dayjs';
 import {
+  calculateTotalToRemindApprovedRequests,
   getAssignableCourseRuns,
   getBudgetStatus,
+  getLearnerRequestStateCountsByState,
   getNormalizedStartDate,
   getTranslatedBudgetStatus,
   getTranslatedBudgetTerm,
@@ -11,6 +13,7 @@ import {
   startAndEnrollBySortLogic,
   transformLearnerRequestStateCounts,
   transformRequestOverview,
+  transformSelectedApprovedRequestRows,
   transformSubsidySummary,
 } from '../utils';
 import { COURSE_PACING_MAP, EXEC_ED_OFFER_TYPE } from '../constants';
@@ -763,5 +766,140 @@ describe('transformLearnerRequestStateCounts (PR #1643)', () => {
 
   it('should handle null input', () => {
     expect(transformLearnerRequestStateCounts(null)).toEqual([]);
+  });
+});
+
+describe('getLearnerRequestStateCountsByState', () => {
+  it('should convert array to object keyed by state', () => {
+    const learnerRequestStateCounts = [
+      { learnerRequestState: 'waiting', count: 10 },
+      { learnerRequestState: 'accepted', count: 5 },
+      { learnerRequestState: 'cancelled', count: 3 },
+    ];
+
+    const result = getLearnerRequestStateCountsByState(learnerRequestStateCounts);
+
+    expect(result).toEqual({
+      waiting: 10,
+      accepted: 5,
+      cancelled: 3,
+    });
+  });
+
+  it('should return empty object for null input', () => {
+    expect(getLearnerRequestStateCountsByState(null)).toEqual({});
+  });
+
+  it('should return empty object for undefined input', () => {
+    expect(getLearnerRequestStateCountsByState(undefined)).toEqual({});
+  });
+
+  it('should handle empty array', () => {
+    expect(getLearnerRequestStateCountsByState([])).toEqual({});
+  });
+});
+
+describe('transformSelectedApprovedRequestRows', () => {
+  it('should extract request UUIDs and count unique learner request states', () => {
+    const selectedFlatRows = [
+      { id: 'uuid-1', original: { learnerRequestState: 'waiting' } },
+      { id: 'uuid-2', original: { learnerRequestState: 'waiting' } },
+      { id: 'uuid-3', original: { learnerRequestState: 'accepted' } },
+    ];
+
+    const result = transformSelectedApprovedRequestRows(selectedFlatRows);
+
+    expect(result).toEqual({
+      requestUuids: ['uuid-1', 'uuid-2', 'uuid-3'],
+      totalSelectedRows: 3,
+      uniqueLearnerRequestState: {
+        waiting: 2,
+        accepted: 1,
+      },
+    });
+  });
+
+  it('should handle empty array', () => {
+    const result = transformSelectedApprovedRequestRows([]);
+
+    expect(result).toEqual({
+      requestUuids: [],
+      totalSelectedRows: 0,
+      uniqueLearnerRequestState: {},
+    });
+  });
+
+  it('should handle single row', () => {
+    const selectedFlatRows = [
+      { id: 'uuid-1', original: { learnerRequestState: 'waiting' } },
+    ];
+
+    const result = transformSelectedApprovedRequestRows(selectedFlatRows);
+
+    expect(result).toEqual({
+      requestUuids: ['uuid-1'],
+      totalSelectedRows: 1,
+      uniqueLearnerRequestState: { waiting: 1 },
+    });
+  });
+});
+
+describe('calculateTotalToRemindApprovedRequests', () => {
+  const learnerRequestStateCounts = [
+    { learnerRequestState: 'waiting', count: 25 },
+    { learnerRequestState: 'accepted', count: 10 },
+  ];
+
+  it('should return count from state counts when entire table is selected', () => {
+    const result = calculateTotalToRemindApprovedRequests({
+      requestUuids: ['uuid-1', 'uuid-2'],
+      isEntireTableSelected: true,
+      learnerRequestStateCounts,
+    });
+
+    expect(result).toBe(25);
+  });
+
+  it('should return number of selected UUIDs when table is not entirely selected', () => {
+    const result = calculateTotalToRemindApprovedRequests({
+      requestUuids: ['uuid-1', 'uuid-2', 'uuid-3'],
+      isEntireTableSelected: false,
+      learnerRequestStateCounts,
+    });
+
+    expect(result).toBe(3);
+  });
+
+  it('should return 0 when entire table is selected but no waiting state exists', () => {
+    const result = calculateTotalToRemindApprovedRequests({
+      requestUuids: ['uuid-1'],
+      isEntireTableSelected: true,
+      learnerRequestStateCounts: [
+        { learnerRequestState: 'accepted', count: 10 },
+      ],
+    });
+
+    expect(result).toBe(0);
+  });
+
+  it('should use custom remindableState when provided', () => {
+    const result = calculateTotalToRemindApprovedRequests({
+      requestUuids: ['uuid-1'],
+      isEntireTableSelected: true,
+      learnerRequestStateCounts,
+      remindableState: 'accepted',
+    });
+
+    expect(result).toBe(10);
+  });
+
+  it('should handle null learnerRequestStateCounts', () => {
+    const result = calculateTotalToRemindApprovedRequests({
+      requestUuids: ['uuid-1', 'uuid-2'],
+      isEntireTableSelected: true,
+      learnerRequestStateCounts: null,
+    });
+
+    expect(result).toBe(0);
   });
 });

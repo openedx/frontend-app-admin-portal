@@ -53,7 +53,7 @@ const BudgetDetailActivityTabContents = ({ enterpriseUUID, appliesToAllContexts 
 
     return (
       <Stack gap={5}>
-        <BudgetDetailApprovedRequest />
+        <BudgetDetailApprovedRequest isRetiredOrExpired={subsidyAccessPolicy?.isRetiredOrExpired} />
         <BudgetDetailRedemptions />
       </Stack>
     );
@@ -63,7 +63,7 @@ const BudgetDetailActivityTabContents = ({ enterpriseUUID, appliesToAllContexts 
     if (subsidyAccessPolicy?.bnrEnabled) {
       return (
         <Stack gap={5}>
-          <BudgetDetailApprovedRequest />
+          <BudgetDetailApprovedRequest isRetiredOrExpired={subsidyAccessPolicy?.isRetiredOrExpired} />
           <BudgetDetailRedemptions />
         </Stack>
       );

@@ -10,6 +10,7 @@ import RequestAmountTableCell from './RequestAmountTableCell';
 import RequestRecentActionTableCell from './RequestRecentActionTableCell';
 import ApprovedRequestActionsTableCell from './ApprovedRequestActionsTableCell';
 import ApprovedRequestsTableRefreshAction from './ApprovedRequestsTableRefreshAction';
+import ApprovedRequestBulkRemindAction from './ApprovedRequestBulkRemindAction';
 import { DEFAULT_PAGE, PAGE_SIZE } from './data';
 import { transformLearnerRequestStateCounts } from './data/utils';
 
@@ -28,6 +29,7 @@ const BudgetDetailApprovedRequestTable = ({
   isLoading,
   tableData,
   fetchTableData,
+  isRetiredOrExpired,
 }) => {
   const intl = useIntl();
   const statusFilterChoices = transformLearnerRequestStateCounts(tableData.requestStatusCounts);
@@ -37,6 +39,9 @@ const BudgetDetailApprovedRequestTable = ({
       <ApprovedRequestsTableRefreshAction refresh={fetchTableData} />,
     ],
     additionalColumns: [],
+    bulkActions: !isRetiredOrExpired ? [
+      <ApprovedRequestBulkRemindAction learnerRequestStateCounts={tableData.requestStatusCounts} />,
+    ] : [],
   }))();
 
   return (
@@ -134,7 +139,8 @@ const BudgetDetailApprovedRequestTable = ({
       itemCount={tableData.count || 0}
       pageCount={tableData.numPages || 1}
       EmptyTableComponent={CustomDataTableEmptyState}
-      bulkActions={[]}
+      isSelectable={!isRetiredOrExpired}
+      bulkActions={approvedRequestsTableData.bulkActions}
     />
   );
 };
@@ -153,6 +159,11 @@ BudgetDetailApprovedRequestTable.propTypes = {
     numPages: PropTypes.number.isRequired,
   }).isRequired,
   fetchTableData: PropTypes.func.isRequired,
+  isRetiredOrExpired: PropTypes.bool,
+};
+
+BudgetDetailApprovedRequestTable.defaultProps = {
+  isRetiredOrExpired: false,
 };
 
 export default BudgetDetailApprovedRequestTable;
