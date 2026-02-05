@@ -151,7 +151,7 @@ const PeopleManagementPage = ({ enterpriseId, learnersTabEnabled }) => {
 
 const mapStateToProps = (state) => ({
   enterpriseId: state.portalConfiguration.enterpriseId,
-  learnersTabEnabled: state.portalConfiguration.enterpriseFeatures?.enterprise_invite_admins_enabled ?? false,
+  learnersTabEnabled: state.portalConfiguration.enterpriseFeatures?.enterpriseInviteAdminsEnabled ?? false,
 });
 
 PeopleManagementPage.propTypes = {

@@ -228,7 +228,7 @@ describe('<PeopleManagementPage >', () => {
           enterpriseId: enterpriseUUID,
           enterpriseSlug,
           enterpriseFeatures: {
-            enterprise_invite_admins_enabled: false,
+            enterpriseInviteAdminsEnabled: false,
           },
         },
       });
@@ -273,7 +273,7 @@ describe('<PeopleManagementPage >', () => {
           enterpriseId: enterpriseUUID,
           enterpriseSlug,
           enterpriseFeatures: {
-            enterprise_invite_admins_enabled: true,
+            enterpriseInviteAdminsEnabled: true,
           },
         },
       });
