@@ -143,7 +143,7 @@ channel`_.
 For anything non-trivial, the best path is to open an issue in this repository
 with as many details about the issue you are facing as you can provide.
 
-https://github.com/openedx/frontend-app-admin-portal/issues
+https://github.com/edx/frontend-app-admin-portal/issues
 
 For more information about these options, see the `Getting Help`_ page.
 
