@@ -404,7 +404,7 @@ class EnterpriseAccessApiService {
     subsidyRequestUUIDs,
   }: ApproveBnrSubsidyRequestParams): Promise<ApproveBnrSubsidyRequestResponse> {
     const options = {
-      learner_credit_request_uuids: subsidyRequestUUIDs,
+      subsidy_request_uuids: subsidyRequestUUIDs,
       enterprise_customer_uuid: enterpriseId,
       policy_uuid: subsidyAccessPolicyId,
     };
