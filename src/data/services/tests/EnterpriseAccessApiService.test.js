@@ -282,7 +282,7 @@ describe('EnterpriseAccessApiService', () => {
     });
 
     expect(axios.post).toBeCalledWith(`${enterpriseAccessBaseUrl}/api/v1/learner-credit-requests/bulk-approve/`, {
-      learner_credit_request_uuids: mockBnrSubsidyRequestUUIDs,
+      subsidy_request_uuids: mockBnrSubsidyRequestUUIDs,
       enterprise_customer_uuid: mockEnterpriseUUID,
       policy_uuid: mockSubsidyAccessPolicyUUID,
     });
