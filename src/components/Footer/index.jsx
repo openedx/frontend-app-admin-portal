@@ -1,7 +1,7 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
-import { injectIntl, intlShape } from '@edx/frontend-platform/i18n';
+import { useIntl } from '@edx/frontend-platform/i18n';
 
 import { configuration } from '../../config';
 
@@ -9,92 +9,70 @@ import Img from '../Img';
 import messages from './messages';
 import './Footer.scss';
 
-class Footer extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      enterpriseLogoNotFound: false,
-    };
-  }
+const Footer = ({ enterpriseLogo = null, enterpriseSlug = null, enterpriseName = null }) => {
+  const [enterpriseLogoNotFound, setEnterpriseLogoNotFound] = useState(false);
 
-  componentDidUpdate(prevProps) {
-    const { enterpriseLogo } = this.props;
-    if (enterpriseLogo && enterpriseLogo !== prevProps.enterpriseLogo) {
-      this.setState({ // eslint-disable-line react/no-did-update-set-state
-        enterpriseLogoNotFound: false,
-      });
+  const { formatMessage } = useIntl();
+
+  useEffect(() => {
+    if (enterpriseLogo) {
+      setEnterpriseLogoNotFound(false);
     }
-  }
+  }, [enterpriseLogo]);
 
-  renderEnterpriseLogo() {
-    const { enterpriseLogo, enterpriseSlug, enterpriseName } = this.props;
-    return (
-      <Link className="logo pl-4" to={`/${enterpriseSlug}`}>
-        <Img
-          src={enterpriseLogo}
-          alt={`${enterpriseName} logo`}
-          onError={() => this.setState({ enterpriseLogoNotFound: true })}
-        />
-      </Link>
-    );
-  }
+  const renderEnterpriseLogo = () => (
+    <Link className="logo pl-4" to={`/${enterpriseSlug}`}>
+      <Img
+        src={enterpriseLogo}
+        alt={`${enterpriseName} logo`}
+        onError={() => setEnterpriseLogoNotFound(true)}
+      />
+    </Link>
+  );
 
-  render() {
-    const { enterpriseLogoNotFound } = this.state;
-    const { enterpriseLogo } = this.props;
-    const { formatMessage } = this.props.intl;
-
-    return (
-      <footer className="container-fluid py-4 border-top">
-        <div className="row justify-content-between align-items-center">
-          <div className="col-xs-12 col-md-4 logo-links">
-            <Link className="logo border-right pr-4" to="/">
-              <Img src={configuration.LOGO_TRADEMARK_URL} alt="edX logo" />
-            </Link>
-            {enterpriseLogo && !enterpriseLogoNotFound && this.renderEnterpriseLogo()}
-          </div>
-          <div className="col-xs-12 col-md footer-links">
-            <nav>
-              <ul className="nav justify-content-end small">
-                <li className="nav-item border-right">
-                  <a className="nav-link px-2" href="https://www.edx.org/edx-terms-service">
-                    {formatMessage(messages.termsOfService)}
-                  </a>
-                </li>
-                <li className="nav-item border-right">
-                  <a className="nav-link px-2" href="https://www.edx.org/edx-privacy-policy">
-                    {formatMessage(messages.privacyPolicy)}
-                  </a>
-                </li>
-                <li className="nav-item">
-                  <Link
-                    className="nav-link px-2"
-                    to={configuration.ENTERPRISE_SUPPORT_URL}
-                    target="_blank"
-                  >
-                    {formatMessage(messages.support)}
-                  </Link>
-                </li>
-              </ul>
-            </nav>
-          </div>
+  return (
+    <footer className="container-fluid py-4 border-top">
+      <div className="row justify-content-between align-items-center">
+        <div className="col-xs-12 col-md-4 logo-links">
+          <Link className="logo border-right pr-4" to="/">
+            <Img src={configuration.LOGO_TRADEMARK_URL} alt="edX logo" />
+          </Link>
+          {enterpriseLogo && !enterpriseLogoNotFound && renderEnterpriseLogo()}
         </div>
-      </footer>
-    );
-  }
-}
+        <div className="col-xs-12 col-md footer-links">
+          <nav>
+            <ul className="nav justify-content-end small">
+              <li className="nav-item border-right">
+                <a className="nav-link px-2" href="https://www.edx.org/edx-terms-service">
+                  {formatMessage(messages.termsOfService)}
+                </a>
+              </li>
+              <li className="nav-item border-right">
+                <a className="nav-link px-2" href="https://www.edx.org/edx-privacy-policy">
+                  {formatMessage(messages.privacyPolicy)}
+                </a>
+              </li>
+              <li className="nav-item">
+                <Link
+                  className="nav-link px-2"
+                  to={configuration.ENTERPRISE_SUPPORT_URL}
+                  target="_blank"
+                >
+                  {formatMessage(messages.support)}
+                </Link>
+              </li>
+            </ul>
+          </nav>
+        </div>
+      </div>
+    </footer>
+  );
+};
 
 Footer.propTypes = {
   enterpriseName: PropTypes.string,
   enterpriseSlug: PropTypes.string,
   enterpriseLogo: PropTypes.string,
-  intl: intlShape.isRequired, // injected by injectIntl
 };
 
-Footer.defaultProps = {
-  enterpriseName: null,
-  enterpriseSlug: null,
-  enterpriseLogo: null,
-};
-
-export default injectIntl(Footer);
+export default Footer;
