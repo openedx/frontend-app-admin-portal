@@ -233,4 +233,32 @@ describe('LmsApiService', () => {
     );
     expect(response).toEqual(mockPayload);
   });
+  test('fetchEnterpriseAdminMembers calls the LMS to fetch enterprise admin members', () => {
+    const enterpriseUUID = 'test-enterprise-id';
+
+    axios.get.mockReturnValue({
+      data: {
+        results: [
+          {
+            id: 1,
+            name: 'Admin User',
+            email: 'admin@edx.com',
+          },
+        ],
+      },
+    });
+
+    LmsApiService.fetchEnterpriseAdminMembers(enterpriseUUID, {
+      page: 1,
+      page_size: 10,
+    });
+
+    expect(axios.get).toBeCalledWith(
+      `${lmsBaseUrl}/enterprise/api/v1/enterprise-admin-members/${enterpriseUUID}?page=1&page_size=10`,
+      {
+        page: 1,
+        page_size: 10,
+      },
+    );
+  });
 });
