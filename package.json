@@ -59,7 +59,7 @@
     "history": "4.10.1",
     "html-react-parser": "3.0.16",
     "jest-environment-jsdom": "29.7.0",
-    "lodash-es": "^4.17.21",
+    "lodash-es": "^4.17.23",
     "plotly.js": "^2.33.0",
     "prop-types": "15.8.1",
     "react": "18.3.1",
