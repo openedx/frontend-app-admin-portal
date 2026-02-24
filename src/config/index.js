@@ -1,4 +1,4 @@
-import { hasFeatureFlagEnabled } from '@edx/frontend-enterprise-utils';
+import { hasFeatureFlagEnabled } from '@2uinc/frontend-enterprise-utils';
 
 const configuration = {
   BASE_URL: process.env.BASE_URL,

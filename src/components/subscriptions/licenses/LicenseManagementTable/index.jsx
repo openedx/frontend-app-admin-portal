@@ -6,7 +6,7 @@ import { debounce } from 'lodash-es';
 import {
   breakpoints, DataTable, TextFilter, Toast, useWindowSize,
 } from '@openedx/paragon';
-import { sendEnterpriseTrackEvent } from '@edx/frontend-enterprise-utils';
+import { sendEnterpriseTrackEvent } from '@2uinc/frontend-enterprise-utils';
 import { useIntl } from '@edx/frontend-platform/i18n';
 import { SubscriptionContext } from '../../SubscriptionData';
 import { defaultStatusFilter, SubscriptionDetailContext } from '../../SubscriptionDetailContextProvider';

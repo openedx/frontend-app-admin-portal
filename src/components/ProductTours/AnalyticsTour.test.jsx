@@ -1,4 +1,4 @@
-import { sendEnterpriseTrackEvent } from '@edx/frontend-enterprise-utils';
+import { sendEnterpriseTrackEvent } from '@2uinc/frontend-enterprise-utils';
 import analyticsTour from './AnalyticsTour';
 import {
   ANALYTICS_COOKIE_NAME,
@@ -10,7 +10,7 @@ import {
 import { disableAll } from './data/utils';
 
 // Mock dependencies
-jest.mock('@edx/frontend-enterprise-utils', () => ({
+jest.mock('@2uinc/frontend-enterprise-utils', () => ({
   sendEnterpriseTrackEvent: jest.fn(),
 }));
 

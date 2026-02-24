@@ -5,7 +5,7 @@ import '@testing-library/jest-dom/extend-expect';
 import {
   SEARCH_FACET_FILTERS,
   SearchContext,
-} from '@edx/frontend-enterprise-catalog-search';
+} from '@2uinc/frontend-enterprise-catalog-search';
 import { IntlProvider } from '@edx/frontend-platform/i18n';
 import { screen } from '@testing-library/react';
 import { QueryClientProvider } from '@tanstack/react-query';

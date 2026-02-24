@@ -5,7 +5,7 @@ import {
 } from '@openedx/paragon';
 import { getConfig } from '@edx/frontend-platform';
 import { FormattedMessage } from '@edx/frontend-platform/i18n';
-import { sendEnterpriseTrackEvent } from '@edx/frontend-enterprise-utils';
+import { sendEnterpriseTrackEvent } from '@2uinc/frontend-enterprise-utils';
 
 import { COURSE_TYPE_MAP } from '../constants';
 import { formatDate } from '../../learner-credit-management/data';

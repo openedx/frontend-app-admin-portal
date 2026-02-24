@@ -12,7 +12,7 @@ import {
   RemoveCircle,
 } from '@openedx/paragon/icons';
 
-import { sendEnterpriseTrackEvent } from '@edx/frontend-enterprise-utils';
+import { sendEnterpriseTrackEvent } from '@2uinc/frontend-enterprise-utils';
 import LicenseManagementRevokeModal from '../LicenseManagementModals/LicenseManagementRevokeModal';
 import LicenseManagementRemindModal from '../LicenseManagementModals/LicenseManagementRemindModal';
 import { canRemindLicense, canRevokeLicense } from '../../data/utils';

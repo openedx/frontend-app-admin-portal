@@ -1,6 +1,6 @@
 import { Chip } from '@openedx/paragon';
 import PropTypes from 'prop-types';
-import { sendEnterpriseTrackEvent } from '@edx/frontend-enterprise-utils';
+import { sendEnterpriseTrackEvent } from '@2uinc/frontend-enterprise-utils';
 import { connect } from 'react-redux';
 import FailedBadEmail from './assignments-status-chips/FailedBadEmail';
 import FailedCancellation from './assignments-status-chips/FailedCancellation';

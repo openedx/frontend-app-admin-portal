@@ -7,7 +7,7 @@ import { QueryCache, QueryClient } from '@tanstack/react-query';
 import { IntlProvider } from '@edx/frontend-platform/i18n';
 import { queryCacheOnErrorHandler } from '../../utils';
 
-// TODO: this could likely be replaced by `renderWithRouter` from `@edx/frontend-enterprise-utils`.
+// TODO: this could likely be replaced by `renderWithRouter` from `@2uinc/frontend-enterprise-utils`.
 export function renderWithRouter(
   ui,
   {

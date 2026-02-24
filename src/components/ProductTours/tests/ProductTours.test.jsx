@@ -41,8 +41,8 @@ import { accessibilitySettings } from '../../../../tests/accessibility-settings'
 
 const mockStore = configureMockStore([thunk]);
 
-jest.mock('@edx/frontend-enterprise-utils', () => {
-  const actualModule = jest.requireActual('@edx/frontend-enterprise-utils');
+jest.mock('@2uinc/frontend-enterprise-utils', () => {
+  const actualModule = jest.requireActual('@2uinc/frontend-enterprise-utils');
   return {
     ...actualModule,
     sendEnterpriseTrackEvent: jest.fn(),

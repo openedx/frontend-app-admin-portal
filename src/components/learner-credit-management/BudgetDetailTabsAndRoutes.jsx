@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { useNavigate, useParams } from 'react-router-dom';
 import { Tabs } from '@openedx/paragon';
-import { sendEnterpriseTrackEvent } from '@edx/frontend-enterprise-utils';
+import { sendEnterpriseTrackEvent } from '@2uinc/frontend-enterprise-utils';
 
 import {
   BUDGET_DETAIL_ACTIVITY_TAB,

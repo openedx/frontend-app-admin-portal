@@ -7,7 +7,7 @@ import {
 } from '@openedx/paragon';
 import { Info } from '@openedx/paragon/icons';
 import { logError } from '@edx/frontend-platform/logging';
-import { sendEnterpriseTrackEvent } from '@edx/frontend-enterprise-utils';
+import { sendEnterpriseTrackEvent } from '@2uinc/frontend-enterprise-utils';
 
 import { FormattedMessage, useIntl } from '@edx/frontend-platform/i18n';
 import { useLinkManagement } from '../data/hooks';

@@ -3,14 +3,14 @@ import { render, screen } from '@testing-library/react';
 import '@testing-library/jest-dom';
 import { IntlProvider } from '@edx/frontend-platform/i18n';
 import { MemoryRouter } from 'react-router-dom';
-import { sendEnterpriseTrackEvent } from '@edx/frontend-enterprise-utils';
+import { sendEnterpriseTrackEvent } from '@2uinc/frontend-enterprise-utils';
 import { axe } from 'jest-axe';
 import EVENT_NAMES from '../../../eventTracking';
 import LearnerAccess from '../LearnerDetailPage/LearnerAccess';
 import { accessibilitySettings } from '../../../../tests/accessibility-settings';
 
-jest.mock('@edx/frontend-enterprise-utils', () => {
-  const originalModule = jest.requireActual('@edx/frontend-enterprise-utils');
+jest.mock('@2uinc/frontend-enterprise-utils', () => {
+  const originalModule = jest.requireActual('@2uinc/frontend-enterprise-utils');
   return ({
     ...originalModule,
     sendEnterpriseTrackEvent: jest.fn(),

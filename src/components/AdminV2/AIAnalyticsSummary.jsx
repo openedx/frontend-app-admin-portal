@@ -6,7 +6,7 @@ import {
 } from '@openedx/paragon';
 import { FormattedMessage, defineMessages } from '@edx/frontend-platform/i18n';
 import { AutoFixHigh, Groups } from '@openedx/paragon/icons';
-import { sendEnterpriseTrackEvent } from '@edx/frontend-enterprise-utils';
+import { sendEnterpriseTrackEvent } from '@2uinc/frontend-enterprise-utils';
 import useAIAnalyticsSummary from '../AIAnalyticsSummary/data/hooks';
 
 export const SUMMARIZE_ANALYTICS_CLICK_SEGMENT_EVENT_NAME = 'edx.ui.enterprise.admin_portal.summarize_analytics.clicked';

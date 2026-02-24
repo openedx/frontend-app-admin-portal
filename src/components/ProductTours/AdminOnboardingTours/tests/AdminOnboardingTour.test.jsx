@@ -2,7 +2,7 @@ import { useEffect } from 'react';
 import { act, render } from '@testing-library/react';
 import '@testing-library/jest-dom';
 import { QueryClientProvider } from '@tanstack/react-query';
-import { sendEnterpriseTrackEvent } from '@edx/frontend-enterprise-utils';
+import { sendEnterpriseTrackEvent } from '@2uinc/frontend-enterprise-utils';
 
 import { axe } from 'jest-axe';
 import AdminOnboardingTour from '../flows/AdminOnboardingTour';
@@ -49,8 +49,8 @@ jest.mock('../../../../config', () => ({
 
 jest.mock('../data/useHydrateAdminOnboardingData');
 
-jest.mock('@edx/frontend-enterprise-utils', () => {
-  const originalModule = jest.requireActual('@edx/frontend-enterprise-utils');
+jest.mock('@2uinc/frontend-enterprise-utils', () => {
+  const originalModule = jest.requireActual('@2uinc/frontend-enterprise-utils');
   return ({
     ...originalModule,
     sendEnterpriseTrackEvent: jest.fn(),

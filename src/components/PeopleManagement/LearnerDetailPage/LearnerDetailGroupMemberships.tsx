@@ -6,7 +6,7 @@ import {
 } from '@openedx/paragon';
 import { NorthEast } from '@openedx/paragon/icons';
 import { useIntl } from '@edx/frontend-platform/i18n';
-import { sendEnterpriseTrackEvent } from '@edx/frontend-enterprise-utils';
+import { sendEnterpriseTrackEvent } from '@2uinc/frontend-enterprise-utils';
 
 import { groupDetailPageUrl } from '../utils';
 import { useEnterpriseGroupMemberships } from '../data/hooks';

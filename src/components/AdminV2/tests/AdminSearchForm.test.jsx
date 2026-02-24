@@ -2,7 +2,7 @@ import React from 'react';
 import { render, screen, waitFor } from '@testing-library/react';
 import '@testing-library/jest-dom';
 import { IntlProvider } from '@edx/frontend-platform/i18n';
-import { sendEnterpriseTrackEvent } from '@edx/frontend-enterprise-utils';
+import { sendEnterpriseTrackEvent } from '@2uinc/frontend-enterprise-utils';
 
 import userEvent from '@testing-library/user-event';
 import { axe } from 'jest-axe';
@@ -22,8 +22,8 @@ jest.mock('../../../utils', () => ({
   formatTimestamp: jest.fn(({ timestamp }) => timestamp), // Mock implementation
 }));
 
-jest.mock('@edx/frontend-enterprise-utils', () => {
-  const originalModule = jest.requireActual('@edx/frontend-enterprise-utils');
+jest.mock('@2uinc/frontend-enterprise-utils', () => {
+  const originalModule = jest.requireActual('@2uinc/frontend-enterprise-utils');
   return ({
     ...originalModule,
     sendEnterpriseTrackEvent: jest.fn(),

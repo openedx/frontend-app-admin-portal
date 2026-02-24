@@ -7,7 +7,7 @@ import {
   Breadcrumb, Card, Hyperlink, Icon, IconButton, IconButtonWithTooltip, Skeleton, useToggle,
 } from '@openedx/paragon';
 import { Delete, Edit } from '@openedx/paragon/icons';
-import { sendEnterpriseTrackEvent } from '@edx/frontend-enterprise-utils';
+import { sendEnterpriseTrackEvent } from '@2uinc/frontend-enterprise-utils';
 
 import { useEnterpriseGroupLearnersTableData, useEnterpriseGroupUuid } from '../data/hooks';
 import { ROUTE_NAMES } from '../../EnterpriseApp/data/constants';

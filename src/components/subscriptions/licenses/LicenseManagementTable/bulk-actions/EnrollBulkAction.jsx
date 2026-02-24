@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import { Button } from '@openedx/paragon';
 import { BookOpen } from '@openedx/paragon/icons';
-import { sendEnterpriseTrackEvent } from '@edx/frontend-enterprise-utils';
+import { sendEnterpriseTrackEvent } from '@2uinc/frontend-enterprise-utils';
 
 import BulkEnrollWarningModal from '../../../../BulkEnrollmentPage/BulkEnrollmentWarningModal';
 import BulkEnrollDialog from '../../../../BulkEnrollmentPage/BulkEnrollDialog';

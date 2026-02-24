@@ -3,7 +3,7 @@ import {
 } from 'react';
 import { debounce } from 'lodash-es';
 import { camelCaseObject } from '@edx/frontend-platform/utils';
-import { sendEnterpriseTrackEvent } from '@edx/frontend-enterprise-utils';
+import { sendEnterpriseTrackEvent } from '@2uinc/frontend-enterprise-utils';
 
 import EnterpriseAccessApiService from '../../../../data/services/EnterpriseAccessApiService';
 import EVENT_NAMES from '../../../../eventTracking';

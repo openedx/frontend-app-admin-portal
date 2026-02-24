@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 
 import { Chip, Hyperlink } from '@openedx/paragon';
-import { sendEnterpriseTrackEvent } from '@edx/frontend-enterprise-utils';
+import { sendEnterpriseTrackEvent } from '@2uinc/frontend-enterprise-utils';
 import { HELP_CENTER_GROUPS_INVITE_LINK } from '../../../settings/data/constants';
 import { useStatusChip } from '../../data';
 import BaseModalPopup from '../../assignments-status-chips/BaseModalPopup';

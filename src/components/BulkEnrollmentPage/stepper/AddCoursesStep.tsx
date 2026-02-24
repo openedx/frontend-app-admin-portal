@@ -1,6 +1,6 @@
 import React, { useContext, useEffect } from 'react';
 import { InstantSearch, Configure } from 'react-instantsearch-dom';
-import { SearchData, SearchHeader } from '@edx/frontend-enterprise-catalog-search';
+import { SearchData, SearchHeader } from '@2uinc/frontend-enterprise-catalog-search';
 import { connect } from 'react-redux';
 import { logError } from '@edx/frontend-platform/logging';
 import { Skeleton } from '@openedx/paragon';

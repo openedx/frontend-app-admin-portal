@@ -4,7 +4,7 @@ import {
   MemoryRouter, Routes, Route,
 } from 'react-router-dom';
 import { getAuthenticatedUser } from '@edx/frontend-platform/auth';
-import { isEnterpriseUser } from '@edx/frontend-enterprise-utils';
+import { isEnterpriseUser } from '@2uinc/frontend-enterprise-utils';
 import '@testing-library/jest-dom';
 import { axe } from 'jest-axe';
 import AdminRegisterPage from './index';
@@ -12,7 +12,7 @@ import LmsApiService from '../../data/services/LmsApiService';
 import { accessibilitySettings } from '../../../tests/accessibility-settings';
 
 jest.mock('../../data/services/LmsApiService');
-jest.mock('@edx/frontend-enterprise-utils');
+jest.mock('@2uinc/frontend-enterprise-utils');
 
 const TEST_ENTERPRISE_SLUG = 'test-enterprise';
 

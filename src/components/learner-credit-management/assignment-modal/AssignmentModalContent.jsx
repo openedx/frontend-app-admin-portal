@@ -6,7 +6,7 @@ import { debounce } from 'lodash-es';
 import {
   Card, Col, Container, Form, Row, Stack,
 } from '@openedx/paragon';
-import { sendEnterpriseTrackEvent } from '@edx/frontend-enterprise-utils';
+import { sendEnterpriseTrackEvent } from '@2uinc/frontend-enterprise-utils';
 import { FormattedMessage, useIntl } from '@edx/frontend-platform/i18n';
 
 import { connect } from 'react-redux';

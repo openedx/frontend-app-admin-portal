@@ -5,7 +5,7 @@ import { useState } from 'react';
 import { IntlProvider } from '@edx/frontend-platform/i18n';
 import algoliasearch from 'algoliasearch/lite';
 import thunk from 'redux-thunk';
-import { renderWithRouter, sendEnterpriseTrackEvent } from '@edx/frontend-enterprise-utils';
+import { renderWithRouter, sendEnterpriseTrackEvent } from '@2uinc/frontend-enterprise-utils';
 import configureMockStore from 'redux-mock-store';
 import { Provider } from 'react-redux';
 import { axe } from 'jest-axe';
@@ -47,8 +47,8 @@ const searchClient = algoliasearch(
   configuration.ALGOLIA.SEARCH_API_KEY,
 );
 
-jest.mock('@edx/frontend-enterprise-utils', () => {
-  const originalModule = jest.requireActual('@edx/frontend-enterprise-utils');
+jest.mock('@2uinc/frontend-enterprise-utils', () => {
+  const originalModule = jest.requireActual('@2uinc/frontend-enterprise-utils');
   return ({
     ...originalModule,
     sendEnterpriseTrackEvent: jest.fn(),

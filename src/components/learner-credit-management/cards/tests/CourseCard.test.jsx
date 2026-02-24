@@ -9,7 +9,7 @@ import { QueryClientProvider, useQueryClient } from '@tanstack/react-query';
 import { getConfig } from '@edx/frontend-platform';
 import { AppContext } from '@edx/frontend-platform/react';
 import { IntlProvider } from '@edx/frontend-platform/i18n';
-import { renderWithRouter, sendEnterpriseTrackEvent } from '@edx/frontend-enterprise-utils';
+import { renderWithRouter, sendEnterpriseTrackEvent } from '@2uinc/frontend-enterprise-utils';
 import dayjs from 'dayjs';
 import { axe } from 'jest-axe';
 import CourseCard from '../CourseCard';
@@ -37,8 +37,8 @@ jest.mock('@edx/frontend-platform', () => ({
   getConfig: jest.fn(() => ({})),
 }));
 
-jest.mock('@edx/frontend-enterprise-utils', () => ({
-  ...jest.requireActual('@edx/frontend-enterprise-utils'),
+jest.mock('@2uinc/frontend-enterprise-utils', () => ({
+  ...jest.requireActual('@2uinc/frontend-enterprise-utils'),
   sendEnterpriseTrackEvent: jest.fn(),
 }));
 

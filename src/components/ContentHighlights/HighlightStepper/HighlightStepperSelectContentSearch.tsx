@@ -4,7 +4,7 @@ import { useContextSelector } from 'use-context-selector';
 import { Configure, connectStateResults, InstantSearch } from 'react-instantsearch-dom';
 import { CardView, DataTable, Skeleton } from '@openedx/paragon';
 import { camelCaseObject } from '@edx/frontend-platform';
-import { SearchData, SearchHeader } from '@edx/frontend-enterprise-catalog-search';
+import { SearchData, SearchHeader } from '@2uinc/frontend-enterprise-catalog-search';
 import { connect } from 'react-redux';
 
 import { configuration } from '../../../config';

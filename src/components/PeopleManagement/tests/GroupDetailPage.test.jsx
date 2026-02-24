@@ -8,7 +8,7 @@ import { Provider } from 'react-redux';
 import userEvent from '@testing-library/user-event';
 import { QueryClientProvider, useQueryClient } from '@tanstack/react-query';
 
-import { renderWithRouter, sendEnterpriseTrackEvent } from '@edx/frontend-enterprise-utils';
+import { renderWithRouter, sendEnterpriseTrackEvent } from '@2uinc/frontend-enterprise-utils';
 import { IntlProvider } from '@edx/frontend-platform/i18n';
 import { axe } from 'jest-axe';
 import { useEnterpriseGroupUuid, useEnterpriseGroupLearnersTableData } from '../data/hooks';
@@ -50,8 +50,8 @@ jest.mock('react-router-dom', () => ({
     groupUuid: TEST_GROUP.uuid,
   }),
 }));
-jest.mock('@edx/frontend-enterprise-utils', () => {
-  const originalModule = jest.requireActual('@edx/frontend-enterprise-utils');
+jest.mock('@2uinc/frontend-enterprise-utils', () => {
+  const originalModule = jest.requireActual('@2uinc/frontend-enterprise-utils');
   return ({
     ...originalModule,
     sendEnterpriseTrackEvent: jest.fn(),

@@ -4,7 +4,7 @@ import { QueryClientProvider } from '@tanstack/react-query';
 import configureMockStore from 'redux-mock-store';
 import thunk from 'redux-thunk';
 import { Provider } from 'react-redux';
-import { renderWithRouter } from '@edx/frontend-enterprise-utils';
+import { renderWithRouter } from '@2uinc/frontend-enterprise-utils';
 import { v4 as uuidv4 } from 'uuid';
 import dayjs from 'dayjs';
 import { useParams } from 'react-router-dom';

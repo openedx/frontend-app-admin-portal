@@ -5,7 +5,7 @@ import { axe } from 'jest-axe';
 import TableComponent from './index';
 import { accessibilitySettings } from '../../../tests/accessibility-settings';
 
-jest.mock('@edx/frontend-enterprise-utils', () => ({
+jest.mock('@2uinc/frontend-enterprise-utils', () => ({
   sendEnterpriseTrackEvent: jest.fn(),
 }));
 jest.mock('../../utils', () => ({

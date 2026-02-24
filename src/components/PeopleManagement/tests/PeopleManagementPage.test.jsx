@@ -8,7 +8,7 @@ import thunk from 'redux-thunk';
 import configureMockStore from 'redux-mock-store';
 import { Provider } from 'react-redux';
 import { IntlProvider } from '@edx/frontend-platform/i18n';
-import { sendEnterpriseTrackEvent } from '@edx/frontend-enterprise-utils';
+import { sendEnterpriseTrackEvent } from '@2uinc/frontend-enterprise-utils';
 import userEvent from '@testing-library/user-event';
 
 import { axe } from 'jest-axe';
@@ -39,8 +39,8 @@ const subsEnterpriseSubsidiesContextValue = {
   isLoading: false,
 };
 
-jest.mock('@edx/frontend-enterprise-utils', () => {
-  const originalModule = jest.requireActual('@edx/frontend-enterprise-utils');
+jest.mock('@2uinc/frontend-enterprise-utils', () => {
+  const originalModule = jest.requireActual('@2uinc/frontend-enterprise-utils');
   return ({
     ...originalModule,
     sendEnterpriseTrackEvent: jest.fn(),

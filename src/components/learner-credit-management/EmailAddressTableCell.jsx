@@ -5,7 +5,7 @@ import {
   Stack, OverlayTrigger, IconButton, Icon, Popover,
 } from '@openedx/paragon';
 import { InfoOutline } from '@openedx/paragon/icons';
-import { sendEnterpriseTrackEvent } from '@edx/frontend-enterprise-utils';
+import { sendEnterpriseTrackEvent } from '@2uinc/frontend-enterprise-utils';
 
 /**
  * Conditionally renders either the email address, when available, or a "Email hidden" message,

@@ -6,7 +6,7 @@ import configureMockStore from 'redux-mock-store';
 import { IntlProvider } from '@edx/frontend-platform/i18n';
 import thunk from 'redux-thunk';
 import { camelCaseObject } from '@edx/frontend-platform';
-import { renderWithRouter } from '@edx/frontend-enterprise-utils';
+import { renderWithRouter } from '@2uinc/frontend-enterprise-utils';
 
 import userEvent from '@testing-library/user-event';
 import { axe } from 'jest-axe';

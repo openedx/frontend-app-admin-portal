@@ -9,7 +9,7 @@ import { useNavigate, useParams } from 'react-router-dom';
 import { logError } from '@edx/frontend-platform/logging';
 import { connect } from 'react-redux';
 
-import { sendEnterpriseTrackEvent } from '@edx/frontend-enterprise-utils';
+import { sendEnterpriseTrackEvent } from '@2uinc/frontend-enterprise-utils';
 import EnterpriseCatalogApiService from '../../data/services/EnterpriseCatalogApiService';
 import { ROUTE_NAMES } from '../EnterpriseApp/data/constants';
 import { EnterpriseAppContext } from '../EnterpriseApp/EnterpriseAppContextProvider';

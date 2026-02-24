@@ -1,5 +1,5 @@
 import { connect } from 'react-redux';
-import { sendEnterpriseTrackEvent } from '@edx/frontend-enterprise-utils';
+import { sendEnterpriseTrackEvent } from '@2uinc/frontend-enterprise-utils';
 import { Chip } from '@openedx/paragon';
 import PropTypes from 'prop-types';
 import WaitingForLearner from './request-status-chips/WaitingForLearner';

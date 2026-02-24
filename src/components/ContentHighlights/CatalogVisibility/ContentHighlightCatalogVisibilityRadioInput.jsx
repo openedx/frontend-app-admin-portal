@@ -5,7 +5,7 @@ import { FormattedMessage, useIntl } from '@edx/frontend-platform/i18n';
 import { useState, useContext, useEffect } from 'react';
 import { ActionRowSpacer } from '@openedx/paragon/dist/ActionRow';
 import { logError } from '@edx/frontend-platform/logging';
-import { sendEnterpriseTrackEvent } from '@edx/frontend-enterprise-utils';
+import { sendEnterpriseTrackEvent } from '@2uinc/frontend-enterprise-utils';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { LEARNER_PORTAL_CATALOG_VISIBILITY } from '../data/constants';
 import { EnterpriseAppContext } from '../../EnterpriseApp/EnterpriseAppContextProvider';

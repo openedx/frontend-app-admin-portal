@@ -14,7 +14,7 @@ jest.mock('react-router', () => ({
   useParams: jest.fn(),
 }));
 
-jest.mock('@edx/frontend-enterprise-utils', () => ({
+jest.mock('@2uinc/frontend-enterprise-utils', () => ({
   sendEnterpriseTrackEvent: jest.fn(),
 }));
 

@@ -8,7 +8,7 @@ import { screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import '@testing-library/jest-dom/extend-expect';
 import { IntlProvider } from '@edx/frontend-platform/i18n';
-import { renderWithRouter } from '@edx/frontend-enterprise-utils';
+import { renderWithRouter } from '@2uinc/frontend-enterprise-utils';
 
 import { axe } from 'jest-axe';
 import BudgetDetailPage from '../../BudgetDetailPage';
@@ -33,8 +33,8 @@ import LmsApiService from '../../../../data/services/LmsApiService';
 import EnterpriseAccessApiService from '../../../../data/services/EnterpriseAccessApiService';
 import { accessibilitySettings } from '../../../../../tests/accessibility-settings';
 
-jest.mock('@edx/frontend-enterprise-utils', () => ({
-  ...jest.requireActual('@edx/frontend-enterprise-utils'),
+jest.mock('@2uinc/frontend-enterprise-utils', () => ({
+  ...jest.requireActual('@2uinc/frontend-enterprise-utils'),
   sendEnterpriseTrackEvent: jest.fn(),
 }));
 

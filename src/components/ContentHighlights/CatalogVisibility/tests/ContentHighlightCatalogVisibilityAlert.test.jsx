@@ -1,6 +1,6 @@
 /* eslint-disable react/prop-types */
 import { screen } from '@testing-library/dom';
-import { renderWithRouter, sendEnterpriseTrackEvent } from '@edx/frontend-enterprise-utils';
+import { renderWithRouter, sendEnterpriseTrackEvent } from '@2uinc/frontend-enterprise-utils';
 import React, { useState } from 'react';
 import thunk from 'redux-thunk';
 import { IntlProvider } from '@edx/frontend-platform/i18n';
@@ -75,8 +75,8 @@ const ContentHighlightCatalogVisibilityAlertWrapper = ({
   );
 };
 
-jest.mock('@edx/frontend-enterprise-utils', () => {
-  const originalModule = jest.requireActual('@edx/frontend-enterprise-utils');
+jest.mock('@2uinc/frontend-enterprise-utils', () => {
+  const originalModule = jest.requireActual('@2uinc/frontend-enterprise-utils');
   return ({
     ...originalModule,
     sendEnterpriseTrackEvent: jest.fn(),
