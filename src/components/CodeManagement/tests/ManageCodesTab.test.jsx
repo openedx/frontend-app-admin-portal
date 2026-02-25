@@ -101,6 +101,46 @@ const sampleCouponData = {
 };
 
 describe('ManageCodesTabWrapper', () => {
+  describe('search functionality', () => {
+    it('clears search query and removes page parameter when search bar clear button is clicked', async () => {
+      const store = mockStore({
+        ...initialState,
+        coupons: {
+          ...initialState.coupons,
+          data: {
+            count: 1,
+            results: [sampleCouponData],
+          },
+        },
+      });
+      const user = userEvent.setup();
+
+      const { rerender } = render(<ManageCodesTabWrapper
+        store={store}
+        location={{
+          pathname: '/test',
+          search: '?page=2',
+        }}
+      />);
+
+      const searchInput = screen.getByPlaceholderText('Search by email or code...');
+      await user.type(searchInput, 'test search');
+
+      const clearButton = await screen.findByRole('button', { name: /clear/i });
+      await user.click(clearButton);
+
+      expect(searchInput.value).toBe('');
+
+      rerender(<ManageCodesTabWrapper
+        store={store}
+        location={{
+          pathname: '/test',
+          search: '',
+        }}
+      />);
+    });
+  });
+
   describe('renders', () => {
     it('renders empty results correctly', () => {
       const { container } = render(<ManageCodesTabWrapper />);
