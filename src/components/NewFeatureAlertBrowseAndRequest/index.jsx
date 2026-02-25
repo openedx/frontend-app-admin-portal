@@ -3,7 +3,7 @@ import { Alert, Button } from '@openedx/paragon';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
-import { injectIntl, intlShape } from '@edx/frontend-platform/i18n';
+import { useIntl } from '@edx/frontend-platform/i18n';
 
 import {
   BROWSE_AND_REQUEST_ALERT_COOKIE_PREFIX,
@@ -18,7 +18,11 @@ import { ACCESS_TAB } from '../settings/data/constants';
  */
 export const generateBrowseAndRequestAlertCookieName = (enterpriseId) => `${BROWSE_AND_REQUEST_ALERT_COOKIE_PREFIX}-${enterpriseId}`;
 
-const NewFeatureAlertBrowseAndRequest = ({ enterpriseId, enterpriseSlug, intl }) => {
+const NewFeatureAlertBrowseAndRequest = ({
+  enterpriseId,
+  enterpriseSlug,
+}) => {
+  const intl = useIntl();
   const browseAndRequestAlertCookieName = generateBrowseAndRequestAlertCookieName(enterpriseId);
   const hideAlert = global.localStorage.getItem(browseAndRequestAlertCookieName);
 
@@ -68,7 +72,6 @@ const NewFeatureAlertBrowseAndRequest = ({ enterpriseId, enterpriseSlug, intl })
 NewFeatureAlertBrowseAndRequest.propTypes = {
   enterpriseId: PropTypes.string.isRequired,
   enterpriseSlug: PropTypes.string.isRequired,
-  intl: intlShape.isRequired,
 };
 
 const mapStateToProps = state => ({
@@ -76,4 +79,4 @@ const mapStateToProps = state => ({
   enterpriseSlug: state.portalConfiguration.enterpriseSlug,
 });
 
-export default connect(mapStateToProps)(injectIntl(NewFeatureAlertBrowseAndRequest));
+export default connect(mapStateToProps)(NewFeatureAlertBrowseAndRequest);
