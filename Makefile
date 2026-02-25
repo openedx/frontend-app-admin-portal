@@ -58,7 +58,7 @@ pull_translations:
 	rm -rf src/i18n/messages
 	mkdir src/i18n/messages
 	cd src/i18n/messages \
-	  && atlas $(ATLAS_OPTIONS) pull \
+	  && atlas pull $(ATLAS_OPTIONS) \
 	           translations/frontend-platform/src/i18n/messages:frontend-platform \
 	           translations/paragon/src/i18n/messages:paragon \
 	           translations/frontend-app-admin-portal/src/i18n/messages:frontend-app-admin-portal
