@@ -148,6 +148,86 @@ describe('SubscriptionDetails', () => {
       expect(screen.getByText('email addresses were successfully', { exact: false })).toBeInTheDocument();
     });
   });
+  describe('manage subscription button', () => {
+    test.each([
+      {
+        label: 'self-service trial subscription',
+        planType: 'self-service-trial',
+        daysUntilExpiration: 240,
+        allocatedLicenses: 0,
+        expectManageSubscriptionButton: true,
+        expectInviteLearnersButton: false,
+      },
+      {
+        label: 'self-service paid subscription',
+        planType: 'self-service-paid',
+        daysUntilExpiration: 240,
+        allocatedLicenses: 0,
+        expectManageSubscriptionButton: true,
+        expectInviteLearnersButton: false,
+      },
+      {
+        label: 'regular subscription plan',
+        planType: 'Subscription',
+        daysUntilExpiration: 240,
+        allocatedLicenses: 1,
+        expectManageSubscriptionButton: false,
+        expectInviteLearnersButton: true,
+      },
+      {
+        label: 'self-service plan with allocated licenses',
+        planType: 'self-service-trial',
+        daysUntilExpiration: 240,
+        allocatedLicenses: 1,
+        expectManageSubscriptionButton: true,
+        expectInviteLearnersButton: true,
+      },
+      {
+        label: 'expired self-service plan',
+        planType: 'self-service-paid',
+        daysUntilExpiration: -1,
+        allocatedLicenses: 0,
+        expectManageSubscriptionButton: true,
+        expectInviteLearnersButton: false,
+      },
+    ])('should render correctly for $label', ({
+      planType,
+      daysUntilExpiration,
+      allocatedLicenses,
+      expectManageSubscriptionButton,
+      expectInviteLearnersButton,
+    }) => {
+      render(
+        <IntlProvider locale="en">
+          <SubscriptionManagementContext
+            detailState={{
+              ...SUBSCRIPTION_PLAN_ASSIGNED_USER_STATE,
+              planType,
+              daysUntilExpiration,
+              licenses: {
+                ...SUBSCRIPTION_PLAN_ASSIGNED_USER_STATE.licenses,
+                allocated: allocatedLicenses,
+              },
+            }}
+          >
+            <SubscriptionDetails {...defaultProps} />
+          </SubscriptionManagementContext>
+        </IntlProvider>,
+      );
+
+      if (expectManageSubscriptionButton) {
+        expect(screen.getByTestId('manage-subscription-button')).toBeInTheDocument();
+      } else {
+        expect(screen.queryByTestId('manage-subscription-button')).not.toBeInTheDocument();
+      }
+
+      if (expectInviteLearnersButton) {
+        expect(screen.getByText(INVITE_LEARNERS_BUTTON_TEXT)).toBeInTheDocument();
+      } else {
+        expect(screen.queryByText(INVITE_LEARNERS_BUTTON_TEXT)).not.toBeInTheDocument();
+      }
+    });
+  });
 
   describe('purchase date', () => {
     it('should not show purchase date if there are no prior renewals', () => {

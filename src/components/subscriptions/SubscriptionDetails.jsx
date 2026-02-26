@@ -13,8 +13,9 @@ import { SubscriptionDetailContext } from './SubscriptionDetailContextProvider';
 import InviteLearnersButton from './buttons/InviteLearnersButton';
 import { SubscriptionContext } from './SubscriptionData';
 import SubscriptionExpirationBanner from './expiration/SubscriptionExpirationBanner';
-import { MANAGE_LEARNERS_TAB } from './data/constants';
+import { MANAGE_LEARNERS_TAB, SELF_SERVICE_TRIAL, SELF_SERVICE_PAID } from './data/constants';
 import { ADMINISTER_SUBSCRIPTIONS_TARGETS } from '../ProductTours/AdminOnboardingTours/constants';
+import ManageSubscriptionButton from './ManageSubscriptionButton';
 
 const SubscriptionDetails = ({
   enterpriseSlug,
@@ -28,6 +29,7 @@ const SubscriptionDetails = ({
   } = useContext(SubscriptionDetailContext);
   const [showToast, setShowToast] = useState(false);
   const [toastMessage, setToastMessage] = useState('');
+  const isSelfServiceSub = [SELF_SERVICE_PAID, SELF_SERVICE_TRIAL].includes(subscription.planType);
 
   const hasLicensesAllocatedOrRevoked = subscription.licenses?.allocated > 0 || subscription.licenses?.revoked > 0;
   const shouldShowInviteLearnersButton = (
@@ -57,8 +59,11 @@ const SubscriptionDetails = ({
         <Col className="mb-3 mb-lg-0">
           <div className="d-flex justify-content-between mb-3">
             <h2>{subscription.title}</h2>
-            {shouldShowInviteLearnersButton && (
-              <div className="text-md-right" id="invite-learners-button">
+            <div className="text-md-right" id="invite-learners-button">
+              {isSelfServiceSub && (
+                <ManageSubscriptionButton className="mr-2" />
+              )}
+              {shouldShowInviteLearnersButton && (
                 <InviteLearnersButton
                   onSuccess={({ numAlreadyAssociated, numSuccessfulAssignments }) => {
                     forceRefresh();
@@ -75,8 +80,8 @@ const SubscriptionDetails = ({
                   }}
                   disabled={subscription.isLockedForRenewalProcessing}
                 />
-              </div>
-            )}
+              )}
+            </div>
           </div>
           <p>
             {intl.formatMessage({
