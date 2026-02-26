@@ -22,6 +22,7 @@ export const SUBSCRIPTION_PLAN_ZERO_STATE = {
   uuid: 'test-subscription-uuid',
   daysUntilExpiration: 240,
   agreementNetDaysUntilExpiration: 240,
+  planType: 'Subscription',
   licenses: {
     total: 10,
     allocated: 0,
@@ -41,6 +42,7 @@ export const SUBSCRIPTION_PLAN_ZERO_STATE = {
 export const SUBSCRIPTION_PLAN_ASSIGNED_USER_STATE = {
   daysUntilExpiration: 240,
   agreementNetDaysUntilExpiration: 240,
+  planType: 'Subscription',
   licenses: {
     total: 10,
     allocated: 1,
@@ -74,6 +76,7 @@ const testSubscriptionPlanGenerator = (state) => {
     showExpirationNotifications,
     agreementNetDaysUntilExpiration,
     isLockedForRenewalProcessing,
+    planType = 'Subscription',
   } = state;
 
   return ({
@@ -81,6 +84,7 @@ const testSubscriptionPlanGenerator = (state) => {
     uuid: TEST_SUBSCRIPTION_PLAN_UUID,
     startDate: '2020-12-08',
     expirationDate: '2025-12-08',
+    planType,
     enterpriseCustomerUuid: TEST_ENTERPRISE_CUSTOMER_UUID,
     enterpriseCatalogUuid: TEST_ENTERPRISE_CUSTOMER_CATALOG_UUID,
     isActive: true,

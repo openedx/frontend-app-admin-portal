@@ -143,7 +143,7 @@ const SubscriptionExpirationBanner = ({ isSubscriptionPlanDetails }) => {
 
   const actions = [];
   if (!isSubscriptionPlanDetails || daysUntilContractExpiration > SUBSCRIPTION_DAYS_REMAINING_SEVERE) {
-    actions.push(<ContactCustomerSupportButton variant="primary" onClick={() => emitAlertActionEvent()} />);
+    actions.push(<ContactCustomerSupportButton variant="outline-primary" onClick={() => emitAlertActionEvent()} />);
   }
 
   const dismissBanner = () => {
