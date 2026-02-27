@@ -26,9 +26,7 @@ const useEnterpriseAdminsTableData = ({ enterpriseId }) => {
         if (args?.sortBy.length > 0) {
           const sortByValue = args.sortBy[0].id;
           options.sort_by = sortByValue === 'name' ? 'name' : snakeCase(sortByValue);
-          if (!args.sortBy[0].desc) {
-            options.is_reversed = !args.sortBy[0].desc;
-          }
+          options.is_reversed = !args.sortBy[0].desc;
         }
         options.page = args.pageIndex + 1;
         options.page_size = pageSize;

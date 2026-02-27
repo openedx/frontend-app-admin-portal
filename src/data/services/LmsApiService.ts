@@ -657,7 +657,7 @@ class LmsApiService {
       const queryParams = new URLSearchParams(options);
       url = `${LmsApiService.enterpriseAdminMembersUrl}${enterpriseUUID}/admins?${queryParams.toString()}`;
     }
-    return LmsApiService.apiClient().get(url, options);
+    return LmsApiService.apiClient().get(url);
   }
 }
 

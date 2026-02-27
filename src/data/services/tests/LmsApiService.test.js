@@ -278,7 +278,6 @@ describe('LmsApiService', () => {
     const expectedQuery = new URLSearchParams(options).toString();
     expect(axios.get).toBeCalledWith(
       `${lmsBaseUrl}/enterprise/api/v1/${enterpriseUUID}/admins?${expectedQuery}`,
-      options,
     );
 
     expect(response).toEqual(mockResponse);

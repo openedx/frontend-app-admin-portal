@@ -43,7 +43,7 @@ describe('useEnterpriseAdminsTableData', () => {
       results: [
         {
           id: 1,
-          fullName: 'Admin User',
+          name: 'Admin User',
           email: 'admin@edx.com',
           invitedDate: 'Jan 01, 2024',
           joinedDate: 'Jan 02, 2024',
@@ -71,7 +71,7 @@ describe('useEnterpriseAdminsTableData', () => {
     });
 
     expect(result.current.enterpriseAdminsTableData.results).toHaveLength(1);
-    expect(result.current.enterpriseAdminsTableData.results[0].fullName)
+    expect(result.current.enterpriseAdminsTableData.results[0].name)
       .toBe('Admin User');
     expect(result.current.enterpriseAdminsTableData.options.page_size).toBe(10);
   });
@@ -157,6 +157,7 @@ describe('useEnterpriseAdminsTableData', () => {
       enterpriseId,
       expect.objectContaining({
         sort_by: 'name',
+        is_reversed: false,
         page_size: 10,
       }),
     );
