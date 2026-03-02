@@ -7,7 +7,11 @@ import LmsApiService from '../../../data/services/LmsApiService';
 
 jest.mock('lodash-es', () => ({
   ...jest.requireActual('lodash-es'),
-  debounce: (fn) => fn,
+  debounce: (fn) => {
+    const debouncedFn = fn;
+    debouncedFn.cancel = jest.fn();
+    return debouncedFn;
+  },
 }));
 
 jest.mock('../../../data/services/LmsApiService');
@@ -34,6 +38,16 @@ describe('useEnterpriseAdminsTableData', () => {
       pageCount: 0,
       results: [],
     });
+  });
+
+  it('cancels debounced function on unmount', () => {
+    const { result, unmount } = renderHook(() => useEnterpriseAdminsTableData({ enterpriseId }));
+
+    const cancelSpy = jest.spyOn(result.current.fetchEnterpriseAdminsTableData, 'cancel');
+
+    unmount();
+
+    expect(cancelSpy).toHaveBeenCalled();
   });
 
   it('fetches enterprise admins data successfully (no filters, no sort)', async () => {
@@ -153,14 +167,17 @@ describe('useEnterpriseAdminsTableData', () => {
       });
     });
 
-    expect(LmsApiService.fetchEnterpriseAdminMembers).toHaveBeenCalledWith(
-      enterpriseId,
+    const callArgs = LmsApiService.fetchEnterpriseAdminMembers.mock.calls[0][1];
+
+    expect(callArgs).toEqual(
       expect.objectContaining({
         sort_by: 'name',
-        is_reversed: false,
         page_size: 10,
       }),
     );
+
+    // Verify is_reversed is NOT present in the options
+    expect(callArgs).not.toHaveProperty('is_reversed');
   });
 
   it('falls back to derived pageCount when numPages is missing', async () => {

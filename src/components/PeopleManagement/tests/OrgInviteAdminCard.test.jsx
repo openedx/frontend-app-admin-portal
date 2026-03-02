@@ -21,14 +21,15 @@ jest.mock('../../../config', () => ({
   },
 }));
 
-jest.mock('../AdminActionsMenu', () => function AdminActionsMenuMock({ onRemove, onCopy }) {
+jest.mock('../AdminActionsMenu', () => function AdminActionsMenuMock({ adminId, onRemove, onCopy }) {
   return (
-    <div data-testid="admin-actions-menu">
+    <div data-testid="admin-actions-menu" data-admin-id={adminId}>
       <button type="button" onClick={onRemove}>Remove</button>
       <button type="button" onClick={onCopy}>Copy</button>
     </div>
   );
 });
+
 jest.mock('../../settings/SettingsAccessTab/LinkCopiedToast', () => function LinkCopiedToastMock({ show, onClose }) {
   if (!show) { return null; }
   return (
@@ -91,6 +92,35 @@ describe('OrgInviteAdminCard', () => {
   it('renders admin actions menu', () => {
     renderWithIntl(<OrgInviteAdminCard {...props} />);
     expect(screen.getByTestId('admin-actions-menu')).toBeInTheDocument();
+  });
+
+  it('passes adminId to AdminActionsMenu', () => {
+    renderWithIntl(<OrgInviteAdminCard {...props} />);
+
+    const actionsMenu = screen.getByTestId('admin-actions-menu');
+    expect(actionsMenu).toHaveAttribute('data-admin-id', '1');
+  });
+
+  it('passes different adminId for different admins', () => {
+    const differentAdmin = {
+      ...mockOriginal,
+      id: 456,
+      name: 'Jane Smith',
+    };
+
+    const { rerender } = renderWithIntl(<OrgInviteAdminCard {...props} />);
+
+    let actionsMenu = screen.getByTestId('admin-actions-menu');
+    expect(actionsMenu).toHaveAttribute('data-admin-id', '1');
+
+    rerender(
+      <IntlProvider locale="en">
+        <OrgInviteAdminCard {...props} original={differentAdmin} />
+      </IntlProvider>,
+    );
+
+    actionsMenu = screen.getByTestId('admin-actions-menu');
+    expect(actionsMenu).toHaveAttribute('data-admin-id', '456');
   });
 
   it('calls onRemoveAdmin when Remove is clicked', () => {

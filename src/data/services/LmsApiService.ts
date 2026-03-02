@@ -659,6 +659,11 @@ class LmsApiService {
     }
     return LmsApiService.apiClient().get(url);
   }
+
+  static removeEnterpriseAdmin(enterpriseUUID: string, adminPk: number, data?: any): Promise<AxiosResponse> {
+    const url = `${LmsApiService.enterpriseCustomerUrl}${enterpriseUUID}/admins/${adminPk}`;
+    return LmsApiService.apiClient().delete(url, { data });
+  }
 }
 
 export default LmsApiService;

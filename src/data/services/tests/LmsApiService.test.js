@@ -17,6 +17,7 @@ axiosMock.onAny().reply(200);
 axios.patch = jest.fn();
 axios.post = jest.fn();
 axios.get = jest.fn();
+axios.delete = jest.fn();
 
 describe('LmsApiService', () => {
   beforeEach(() => {
@@ -233,7 +234,7 @@ describe('LmsApiService', () => {
     );
     expect(response).toEqual(mockPayload);
   });
-  test('fetchEnterpriseAdminMembers calls the LMS to fetch enterprise admin members', () => {
+  test('fetchEnterpriseAdminMembers calls the LMS to fetch enterprise admin members', async () => {
     const enterpriseUUID = 'test-enterprise-id';
 
     const mockResponse = {
@@ -263,7 +264,7 @@ describe('LmsApiService', () => {
       },
     };
 
-    axios.get.mockReturnValue(mockResponse);
+    axios.get.mockResolvedValue(mockResponse);
 
     const options = {
       page: 1,
@@ -273,7 +274,7 @@ describe('LmsApiService', () => {
       user_query: 'Admin User',
     };
 
-    const response = LmsApiService.fetchEnterpriseAdminMembers(enterpriseUUID, options);
+    const response = await LmsApiService.fetchEnterpriseAdminMembers(enterpriseUUID, options);
 
     const expectedQuery = new URLSearchParams(options).toString();
     expect(axios.get).toBeCalledWith(
@@ -281,5 +282,17 @@ describe('LmsApiService', () => {
     );
 
     expect(response).toEqual(mockResponse);
+  });
+  test('removeEnterpriseAdmin calls the LMS to delete an enterprise admin', () => {
+    const enterpriseUUID = 'test-enterprise-id';
+    const adminPk = 123;
+    const roleData = { role: 'Admin' };
+
+    LmsApiService.removeEnterpriseAdmin(enterpriseUUID, adminPk, roleData);
+
+    expect(axios.delete).toBeCalledWith(
+      `${lmsBaseUrl}/enterprise/api/v1/enterprise-customer/${enterpriseUUID}/admins/${adminPk}`,
+      { data: roleData },
+    );
   });
 });

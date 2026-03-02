@@ -1,24 +1,58 @@
-import React from 'react';
-import { CardView, DataTable } from '@openedx/paragon';
+import React, { useState, useCallback } from 'react';
+import { CardView, DataTable, Toast } from '@openedx/paragon';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import { FormattedMessage } from '@edx/frontend-platform/i18n';
+import { FormattedMessage, useIntl } from '@edx/frontend-platform/i18n';
+import { logError } from '@edx/frontend-platform/logging';
 
 import TableTextFilter from '../learner-credit-management/TableTextFilter';
 import CustomDataTableEmptyState from '../learner-credit-management/CustomDataTableEmptyState';
 import OrgInviteAdminCard from './OrgInviteAdminCard';
 import useEnterpriseAdminsTableData from './data/hooks/useEnterpriseAdminsTableData';
+import LmsApiService from '../../data/services/LmsApiService';
 
 const FilterStatus = (rest) => (
   <DataTable.FilterStatus showFilteredFields={false} {...rest} />
 );
 const InviteAdminsTable = ({ enterpriseId }) => {
+  const intl = useIntl();
   const {
     isLoading: isTableLoading,
     enterpriseAdminsTableData,
     fetchEnterpriseAdminsTableData,
     // fetchAllEnterpriseAdminsData,
   } = useEnterpriseAdminsTableData({ enterpriseId });
+
+  const [isRemovingAdmin, setIsRemovingAdmin] = useState(false);
+  const [showToast, setShowToast] = useState(false);
+
+  const handleRemoveAdmin = useCallback(async (admin) => {
+    try {
+      setIsRemovingAdmin(true);
+      await LmsApiService.removeEnterpriseAdmin(enterpriseId, admin.id, { role: admin.status });
+
+      setShowToast(true);
+
+      // Refresh the table data after successful removal
+      fetchEnterpriseAdminsTableData({
+        pageIndex: 0,
+        pageSize: 10,
+        filters: [],
+        sortBy: [{ id: 'name', desc: true }],
+      });
+    } catch (error) {
+      logError(error);
+    } finally {
+      setIsRemovingAdmin(false);
+    }
+  }, [enterpriseId, fetchEnterpriseAdminsTableData]);
+
+  const CardComponentWithProps = useCallback((props) => (
+    <OrgInviteAdminCard
+      {...props}
+      onRemoveAdmin={handleRemoveAdmin}
+    />
+  ), [handleRemoveAdmin]);
 
   const tableColumns = [
     { Header: 'admin details', accessor: 'name' },
@@ -50,7 +84,7 @@ const InviteAdminsTable = ({ enterpriseId }) => {
         manualPagination
         isFilterable
         manualFilters
-        isLoading={isTableLoading}
+        isLoading={isTableLoading || isRemovingAdmin}
         defaultColumnValues={{ Filter: TableTextFilter }}
         FilterStatusComponent={FilterStatus}
         numBreakoutFilters={2}
@@ -71,11 +105,22 @@ const InviteAdminsTable = ({ enterpriseId }) => {
         <DataTable.TableControlBar />
         <CardView
           className="d-block"
-          CardComponent={OrgInviteAdminCard}
+          CardComponent={CardComponentWithProps}
           columnSizes={{ xs: 12 }}
         />
         <DataTable.TableFooter />
       </DataTable>
+      {/* ================= Toast ================= */}
+      <Toast
+        show={showToast}
+        onClose={() => setShowToast(false)}
+      >
+        {intl.formatMessage({
+          id: 'adminPortal.peopleManagement.inviteAdmin.removeSuccess',
+          defaultMessage: 'Admin removed',
+          description: 'Success message when admin is removed',
+        })}
+      </Toast>
     </>
   );
 };

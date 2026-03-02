@@ -1,4 +1,6 @@
-import { useCallback, useMemo, useState } from 'react';
+import {
+  useCallback, useMemo, useState, useEffect,
+} from 'react';
 import { debounce, snakeCase } from 'lodash-es';
 import { camelCaseObject } from '@edx/frontend-platform/utils';
 import { logError } from '@edx/frontend-platform/logging';
@@ -26,7 +28,9 @@ const useEnterpriseAdminsTableData = ({ enterpriseId }) => {
         if (args?.sortBy.length > 0) {
           const sortByValue = args.sortBy[0].id;
           options.sort_by = sortByValue === 'name' ? 'name' : snakeCase(sortByValue);
-          options.is_reversed = !args.sortBy[0].desc;
+          if (!args.sortBy[0].desc) {
+            options.is_reversed = true;
+          }
         }
         options.page = args.pageIndex + 1;
         options.page_size = pageSize;
@@ -44,9 +48,11 @@ const useEnterpriseAdminsTableData = ({ enterpriseId }) => {
         setIsLoading(false);
       }
     };
-    if (args.filters.length && args.filters[0].value.length > 2) {
+
+    const nameFilter = args.filters.find((filter) => filter.id === 'name');
+    if (nameFilter && nameFilter.value.length > 2) {
       fetch();
-    } else if (!args.filters.length) {
+    } else if (!nameFilter) {
       fetch();
     }
   }, [enterpriseId]);
@@ -55,6 +61,10 @@ const useEnterpriseAdminsTableData = ({ enterpriseId }) => {
     () => debounce(fetchEnterpriseAdminsData, 300),
     [fetchEnterpriseAdminsData],
   );
+
+  useEffect(() => () => {
+    debouncedFetchEnterpriseAdminsData.cancel();
+  }, [debouncedFetchEnterpriseAdminsData]);
 
   return {
     isLoading,

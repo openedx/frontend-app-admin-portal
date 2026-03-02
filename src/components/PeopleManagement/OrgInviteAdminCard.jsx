@@ -90,6 +90,7 @@ const OrgInviteAdminCard = ({
             </Col>
             <div>
               <AdminActionsMenu
+                adminId={original.id}
                 onRemove={() => onRemoveAdmin(original)}
                 onCopy={handleCopyInviteLink}
               />
@@ -106,7 +107,7 @@ OrgInviteAdminCard.propTypes = {
   original: PropTypes.shape({
     id: PropTypes.number.isRequired,
     email: PropTypes.string.isRequired,
-    name: PropTypes.string.isRequired,
+    name: PropTypes.string,
     joinedDate: PropTypes.string,
     invitedDate: PropTypes.string,
     status: PropTypes.string.isRequired,
