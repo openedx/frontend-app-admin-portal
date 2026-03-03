@@ -185,6 +185,15 @@ declare global {
     enrollments: number
   };
 
+  type EnterpriseAdminMember = {
+    id: number,
+    email: string,
+    name: string | null,
+    invited_date: string | null,
+    joined_date: string | null,
+    status: string,
+  };
+
   export type LearnerProfileType = {
     subscriptions: LearnerProfileSubscriptionType[],
     group_memberships: LearnerProfileGroupsType[],

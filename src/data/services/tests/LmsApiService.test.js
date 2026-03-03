@@ -17,6 +17,7 @@ axiosMock.onAny().reply(200);
 axios.patch = jest.fn();
 axios.post = jest.fn();
 axios.get = jest.fn();
+axios.delete = jest.fn();
 
 describe('LmsApiService', () => {
   beforeEach(() => {
@@ -232,5 +233,66 @@ describe('LmsApiService', () => {
       { flow_uuid: 'test-flow-uuid' },
     );
     expect(response).toEqual(mockPayload);
+  });
+  test('fetchEnterpriseAdminMembers calls the LMS to fetch enterprise admin members', async () => {
+    const enterpriseUUID = 'test-enterprise-id';
+
+    const mockResponse = {
+      data: {
+        count: 2,
+        num_pages: 1,
+        next: null,
+        previous: null,
+        results: [
+          {
+            id: 1,
+            name: null,
+            email: 'test@test.com',
+            invited_date: 'Jan 01, 2025',
+            joined_date: null,
+            status: 'Pending',
+          },
+          {
+            id: 13,
+            name: 'edx',
+            email: 'edx@example.com',
+            invited_date: null,
+            joined_date: 'Jan 01, 2026',
+            status: 'Admin',
+          },
+        ],
+      },
+    };
+
+    axios.get.mockResolvedValue(mockResponse);
+
+    const options = {
+      page: 1,
+      page_size: 10,
+      sort_by: 'name',
+      is_reversed: true,
+      user_query: 'Admin User',
+    };
+
+    const response = await LmsApiService.fetchEnterpriseAdminMembers(enterpriseUUID, options);
+
+    const expectedQuery = new URLSearchParams(options).toString();
+    expect(axios.get).toBeCalledWith(
+      `${lmsBaseUrl}/enterprise/api/v1/${enterpriseUUID}/admins?${expectedQuery}`,
+    );
+
+    expect(response).toEqual(mockResponse);
+  });
+  test('removeEnterpriseAdmin calls the LMS to delete an enterprise admin', () => {
+    const enterpriseUUID = 'test-enterprise-id';
+    const adminPk = 123;
+    const roleData = { role: 'Admin' };
+
+    LmsApiService.removeEnterpriseAdmin(enterpriseUUID, adminPk, roleData);
+
+    expect(axios.delete).toBeCalledWith(
+      `${lmsBaseUrl}/enterprise/api/v1/enterprise-customer/${enterpriseUUID}/admins/${adminPk}`,
+      { data: roleData },
+    );
   });
 });
