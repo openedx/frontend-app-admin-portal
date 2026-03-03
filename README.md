@@ -28,6 +28,18 @@ $ npm start # or "npm run start:with-theme" if you want edX branding
 
 The application is now running and can be accessed in a web browser at http://localhost:1991/
 
+#### Environment Variables
+
+##### Stripe Configuration (Optional)
+
+If you want to enable native billing management features, you'll need to set the `STRIPE_PUBLISHABLE_KEY` environment variable. This key is safe for frontend use and allows the application to securely capture payment methods using Stripe Elements.
+
+Add to your `.env.development` file:
+```
+STRIPE_PUBLISHABLE_KEY='pk_test_...'  # Your Stripe publishable key (test mode for development)
+```
+
+The publishable key can be obtained from your Stripe dashboard. For development, use test mode keys (prefix `pk_test_`).
 
 #### Themes
 

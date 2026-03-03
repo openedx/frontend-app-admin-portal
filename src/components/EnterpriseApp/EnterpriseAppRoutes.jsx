@@ -22,6 +22,8 @@ import LearnerCreditManagementRoutes from '../learner-credit-management';
 import PeopleManagementPage from '../PeopleManagement';
 import GroupDetailPage from '../PeopleManagement/GroupDetailPage/GroupDetailPage';
 import LearnerDetailPage from '../PeopleManagement/LearnerDetailPage/LearnerDetailPage';
+import { isBillingEnabled } from '../billing/data/utils';
+import BillingPage from '../billing/BillingPage';
 
 const EnterpriseAppRoutes = ({
   email,
@@ -33,8 +35,11 @@ const EnterpriseAppRoutes = ({
   enableAnalyticsPage,
   enableContentHighlightsPage,
 }) => {
-  const { canManageLearnerCredit } = useContext(EnterpriseSubsidiesContext);
+  const { canManageLearnerCredit, hasBillingSubscription } = useContext(EnterpriseSubsidiesContext);
   const { enterpriseAppPage } = useParams();
+
+  // Determine if billing features should be accessible
+  const canAccessBilling = isBillingEnabled(hasBillingSubscription);
 
   return (
     <Routes>
@@ -79,6 +84,14 @@ const EnterpriseAppRoutes = ({
           key="subscription-management"
           path="/*"
           element={<SubscriptionManagementPage />}
+        />
+      )}
+
+      {canAccessBilling && enterpriseAppPage === ROUTE_NAMES.billing && (
+        <Route
+          key="billing"
+          path="/*"
+          element={<BillingPage enterpriseId={enterpriseId} />}
         />
       )}
 

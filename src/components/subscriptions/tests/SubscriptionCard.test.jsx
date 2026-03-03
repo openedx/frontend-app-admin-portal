@@ -16,7 +16,6 @@ import SubscriptionCard from '../SubscriptionCard';
 import {
   CANCELED, ENDED, FREE_TRIAL_BADGE, SELF_SERVICE_TRIAL,
 } from '../data/constants';
-import EnterpriseAccessApiService from '../../../data/services/EnterpriseAccessApiService';
 import { useStripeSubscriptionPlanInfo } from '../data/hooks';
 
 const defaultSubscription = {
@@ -110,10 +109,6 @@ jest.mock('../data/hooks', () => ({
   }),
 }));
 
-jest.mock('../../../data/services/EnterpriseAccessApiService', () => ({
-  fetchStripeBillingPortalSession: jest.fn(),
-}));
-
 const mockStore = configureMockStore([thunk]);
 const getMockStore = store => mockStore(store);
 const initialStoreState = {
@@ -181,11 +176,6 @@ describe('SubscriptionCard', () => {
 
   it('displays trial subscription with additional subtitle and button', () => {
     useStripeSubscriptionPlanInfo.mockReturnValue(mockSubPlanInfoActive);
-    EnterpriseAccessApiService.fetchStripeBillingPortalSession.mockReturnValue({
-      data: {
-        url: 'https://fake-stripe-url.com',
-      },
-    });
     renderWithRouter(
       <SubscriptionCardWrapper {...trialProps} />,
     );
@@ -195,11 +185,10 @@ describe('SubscriptionCard', () => {
     // Future invoice cost
     expect(screen.getByText('2000 USD'));
 
-    const spy = jest.spyOn(EnterpriseAccessApiService, 'fetchStripeBillingPortalSession');
-    const hyperlink = screen.getByText('Manage subscription');
-    expect(hyperlink).toBeInTheDocument();
-    hyperlink.click();
-    expect(spy).toHaveBeenCalledWith('enterpriseUUID');
+    const billingLink = screen.getByText('Manage subscription');
+    expect(billingLink).toBeInTheDocument();
+    // Verify it's a link to the billing page (now using native billing management instead of Stripe portal)
+    expect(billingLink).toHaveAttribute('href', '/enterpriseUUID/admin/billing');
   });
 
   it('does not render trial subtitle for an expired trial ', () => {

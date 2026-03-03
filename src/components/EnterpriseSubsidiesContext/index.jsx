@@ -1,6 +1,11 @@
 import { createContext, useMemo } from 'react';
 import { SUBSIDY_TYPES } from '../../data/constants/subsidyTypes';
-import { useCoupons, useCustomerAgreement, useEnterpriseBudgets } from './data/hooks';
+import {
+  useBillingSubscriptionAvailable,
+  useCoupons,
+  useCustomerAgreement,
+  useEnterpriseBudgets,
+} from './data/hooks';
 
 export const EnterpriseSubsidiesContext = createContext();
 
@@ -31,6 +36,11 @@ export const useEnterpriseSubsidiesContext = ({
     isLoading: isLoadingCoupons,
   } = useCoupons();
 
+  const {
+    hasBillingSubscription,
+    isLoading: isLoadingBillingSubscription,
+  } = useBillingSubscriptionAvailable({ enterpriseId });
+
   const enterpriseSubsidyTypes = useMemo(() => {
     const subsidyTypes = [];
 
@@ -48,19 +58,21 @@ export const useEnterpriseSubsidiesContext = ({
     return subsidyTypes;
   }, [budgets.length, coupons.length, customerAgreement]);
 
-  const isLoading = isLoadingBudgets || isLoadingCustomerAgreement || isLoadingCoupons;
+  const isLoading = isLoadingBudgets || isLoadingCustomerAgreement || isLoadingCoupons || isLoadingBillingSubscription;
 
   const context = useMemo(() => ({
     customerAgreement,
     coupons,
     canManageLearnerCredit,
     enterpriseSubsidyTypes,
+    hasBillingSubscription,
     isLoading,
   }), [
     customerAgreement,
     coupons,
     canManageLearnerCredit,
     enterpriseSubsidyTypes,
+    hasBillingSubscription,
     isLoading,
   ]);
 

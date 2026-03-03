@@ -13,6 +13,7 @@ import { BUDGET_TYPES } from '../../EnterpriseApp/data/constants';
 import EnterpriseAccessApiService from '../../../data/services/EnterpriseAccessApiService';
 import { learnerCreditManagementQueryKeys, isBudgetRetiredOrExpired, getBudgetStatus } from '../../learner-credit-management/data';
 import { isAssignableSubsidyAccessPolicyType } from '../../../utils';
+import { billingQueryKeys } from '../../billing/data/constants';
 
 dayjs.extend(isBetween);
 
@@ -213,6 +214,40 @@ export const useCoupons = (options) => {
 
   return {
     coupons,
+    isLoading,
+  };
+};
+
+/**
+ * Hook to check if billing subscription is available from the billing-management API.
+ * Returns true only if the API returns a valid subscription (not null/404).
+ * Gracefully handles errors by returning false (hide billing tab on errors).
+ *
+ * Uses React Query to enable caching and deduplication with the useSubscription hook
+ * in billing/data/hooks.ts, avoiding duplicate API calls for the same subscription data.
+ */
+export const useBillingSubscriptionAvailable = ({ enterpriseId }) => {
+  const { data, isLoading, isError } = useQuery({
+    queryKey: billingQueryKeys.subscription(enterpriseId),
+    queryFn: async () => {
+      const response = await EnterpriseAccessApiService.getSubscription(enterpriseId);
+      // Return the same shape as useSubscription for cache compatibility
+      return response.data.subscription ?? response.data;
+    },
+    // Transform the full subscription response to just a boolean for this hook
+    select: (subscriptionData) => !!subscriptionData,
+    // Gracefully handle errors - log but don't throw
+    retry: false,
+    onError: (error) => {
+      logError(error);
+    },
+  });
+
+  // Return false if there's an error (404 or other) or if data is falsy
+  const hasBillingSubscription = isError ? false : (data ?? false);
+
+  return {
+    hasBillingSubscription,
     isLoading,
   };
 };

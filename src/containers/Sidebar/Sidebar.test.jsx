@@ -516,4 +516,68 @@ describe('<Sidebar />', () => {
       expect(screen.getByRole('link', { name: 'Highlights has unread notifications' })).toBeInTheDocument();
     });
   });
+
+  describe('billing link visibility', () => {
+    beforeEach(() => {
+      // Reset feature flag before each test
+      features.ENABLE_NATIVE_BILLING = false;
+    });
+
+    it('shows billing link when hasBillingSubscription=true and feature flag is ON', () => {
+      features.ENABLE_NATIVE_BILLING = true;
+      const contextValue = {
+        ...initialEnterpriseSubsidiesContextValue,
+        hasBillingSubscription: true,
+      };
+      render(<SidebarWrapper enterpriseSubsidiesContextValue={contextValue} />);
+
+      const billingLink = screen.getByRole('link', { name: /Billing/i });
+      expect(billingLink).toBeInTheDocument();
+      expect(billingLink).toHaveAttribute('href', '/test-enterprise-slug/admin/billing');
+    });
+
+    it('hides billing link when hasBillingSubscription=false', () => {
+      features.ENABLE_NATIVE_BILLING = true;
+      const contextValue = {
+        ...initialEnterpriseSubsidiesContextValue,
+        hasBillingSubscription: false,
+      };
+      render(<SidebarWrapper enterpriseSubsidiesContextValue={contextValue} />);
+
+      expect(screen.queryByRole('link', { name: /Billing/i })).not.toBeInTheDocument();
+    });
+
+    it('hides billing link when ENABLE_NATIVE_BILLING feature flag is OFF', () => {
+      features.ENABLE_NATIVE_BILLING = false;
+      const contextValue = {
+        ...initialEnterpriseSubsidiesContextValue,
+        hasBillingSubscription: true,
+      };
+      render(<SidebarWrapper enterpriseSubsidiesContextValue={contextValue} />);
+
+      expect(screen.queryByRole('link', { name: /Billing/i })).not.toBeInTheDocument();
+    });
+
+    it('hides billing link when both feature flag is OFF and hasBillingSubscription=false', () => {
+      features.ENABLE_NATIVE_BILLING = false;
+      const contextValue = {
+        ...initialEnterpriseSubsidiesContextValue,
+        hasBillingSubscription: false,
+      };
+      render(<SidebarWrapper enterpriseSubsidiesContextValue={contextValue} />);
+
+      expect(screen.queryByRole('link', { name: /Billing/i })).not.toBeInTheDocument();
+    });
+
+    it('hides billing link when hasBillingSubscription is undefined', () => {
+      features.ENABLE_NATIVE_BILLING = true;
+      const contextValue = {
+        ...initialEnterpriseSubsidiesContextValue,
+        hasBillingSubscription: undefined,
+      };
+      render(<SidebarWrapper enterpriseSubsidiesContextValue={contextValue} />);
+
+      expect(screen.queryByRole('link', { name: /Billing/i })).not.toBeInTheDocument();
+    });
+  });
 });

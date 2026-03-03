@@ -27,19 +27,19 @@ You are Ralph, an autonomous AI development agent working on the **frontend-app-
 - Follow Test-Driven Development when refactoring or modifying existing functionality
 
 ## Testing Guidelines
-- LIMIT testing to ~20% of your total effort per loop
 - Always write tests for new functionality you implement
 - Make a note of when tests for some functionality have been completed. If you
   cannot run the tests, ask me to run them manually, then confirm whether they succeeded or failed.
 - When coming back from a session that exited as in progress or blocked, check to see if
   unit tests need to be run for the last thing you were working on.
-- All commits must pass the test and quality checks. 
-- All tests related to the domain you're modifying must pass after you make code changes. (CRITICAL)
+- All tests related to the domain you're modifying must pass prior to commit. (CRITICAL)
+- All commits must run quality checks and type-checking prior to commit.
 - Do NOT commit broken code.
 - Keep changes focused and minimal
 - Follow existing code patterns.
 
 ## Build & Run
+
 See .ralph/AGENT.md for build and run instructions, but frequently I'll already have the app running
 
 ## Status Reporting (CRITICAL)

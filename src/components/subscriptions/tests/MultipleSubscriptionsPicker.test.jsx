@@ -9,7 +9,6 @@ import { IntlProvider } from '@edx/frontend-platform/i18n';
 import { renderWithRouter } from '../../test/testUtils';
 import { DEFAULT_LEAD_TEXT, SELF_SERVICE_PAID } from '../data/constants';
 import MultipleSubscriptionsPicker from '../MultipleSubscriptionPicker';
-import EnterpriseAccessApiService from '../../../data/services/EnterpriseAccessApiService';
 
 const firstCatalogUuid = 'catalogID1';
 const firstEnterpriseUuid = 'ided';
@@ -64,10 +63,6 @@ jest.mock('@edx/frontend-platform/i18n', () => ({
   getLocale: () => 'en',
 }));
 
-jest.mock('../../../data/services/EnterpriseAccessApiService', () => ({
-  fetchStripeBillingPortalSession: jest.fn(),
-}));
-
 jest.mock('../data/hooks', () => ({
   ...jest.requireActual('../data/hooks'),
   useStripeSubscriptionPlanInfo: jest.fn().mockReturnValue({
@@ -80,6 +75,14 @@ jest.mock('../data/hooks', () => ({
     stripeUrl: 'https://docs.stripe.com/',
     loadingSession: false,
   }),
+}));
+
+jest.mock('../../../config', () => ({
+  ...jest.requireActual('../../../config'),
+  features: {
+    ...jest.requireActual('../../../config').features,
+    ENABLE_NATIVE_BILLING: true,
+  },
 }));
 
 const mockStore = configureMockStore([thunk]);
@@ -119,18 +122,12 @@ describe('MultipleSubscriptionsPicker', () => {
     renderWithRouter(<MultipleSubscriptionsWrapper {...defaultProps} />);
     expect(screen.queryByText('Manage subscription')).not.toBeInTheDocument();
   });
-  it('displays Manage subscription button to Stripe portal', () => {
-    EnterpriseAccessApiService.fetchStripeBillingPortalSession.mockReturnValue({
-      data: {
-        url: 'https://fake-stripe-url.com',
-      },
-    });
-    const spy = jest.spyOn(EnterpriseAccessApiService, 'fetchStripeBillingPortalSession');
+  it('displays Manage subscription button that links to billing page', () => {
     renderWithRouter(<MultipleSubscriptionsWrapper {...subsProps} />);
-    const stripeButton = screen.getByText('Manage subscription');
-    expect(stripeButton).toBeInTheDocument();
-    stripeButton.click();
-    expect(spy).toHaveBeenCalledWith('enterpriseUUID');
+    const billingButton = screen.getByTestId('manage-subscription-button');
+    expect(billingButton).toBeInTheDocument();
+    // Verify it's a link to the billing page (now using native billing management instead of Stripe portal)
+    expect(billingButton).toHaveAttribute('href', '/enterpriseUUID/admin/billing');
   });
   it('displays a subscription card for each subscription', () => {
     renderWithRouter(<MultipleSubscriptionsWrapper {...defaultProps} />);

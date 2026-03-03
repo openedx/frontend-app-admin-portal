@@ -15,6 +15,9 @@ jest.mock('../../containers/AdminPageV2', () => function AdminPageV2Mock() {
 jest.mock('../AdvanceAnalyticsV2.0/AnalyticsPage', () => function RevisedAnalyticsV2PageMock() {
   return <div>RevisedAnalyticsV2Page Mock Component</div>;
 });
+jest.mock('../billing/BillingPage', () => function BillingPageMock() {
+  return <div data-testid="billing-page">BillingPage Mock Component</div>;
+});
 
 let mockEnterpriseAppPage = 'analytics';
 
@@ -27,6 +30,7 @@ jest.mock('react-router-dom', () => ({
 
 const mockEnterpriseSubsidiesContextValue = {
   canManageLearnerCredit: true,
+  hasBillingSubscription: false,
 };
 
 const renderWithProviders = (props) => render(
@@ -74,5 +78,109 @@ describe('EnterpriseAppRoutes', () => {
     features.ANALYTICS_SUPPORTED = true;
     renderWithProviders(defaultProps);
     expect(screen.getByText('RevisedAnalyticsV2Page Mock Component')).toBeInTheDocument();
+  });
+
+  describe('billing route access', () => {
+    beforeEach(() => {
+      mockEnterpriseAppPage = 'billing';
+      // Reset feature flag before each test
+      features.ENABLE_NATIVE_BILLING = false;
+    });
+
+    it('renders BillingPage when hasBillingSubscription=true and feature flag is ON', () => {
+      features.ENABLE_NATIVE_BILLING = true;
+      const contextValue = {
+        ...mockEnterpriseSubsidiesContextValue,
+        hasBillingSubscription: true,
+      };
+
+      render(
+        <IntlProvider locale="en">
+          <EnterpriseSubsidiesContext.Provider value={contextValue}>
+            <EnterpriseAppRoutes {...defaultProps} />
+          </EnterpriseSubsidiesContext.Provider>
+        </IntlProvider>,
+      );
+
+      expect(screen.getByTestId('billing-page')).toBeInTheDocument();
+      expect(screen.getByText('BillingPage Mock Component')).toBeInTheDocument();
+    });
+
+    it('does not render BillingPage when hasBillingSubscription=false', () => {
+      features.ENABLE_NATIVE_BILLING = true;
+      const contextValue = {
+        ...mockEnterpriseSubsidiesContextValue,
+        hasBillingSubscription: false,
+      };
+
+      render(
+        <IntlProvider locale="en">
+          <EnterpriseSubsidiesContext.Provider value={contextValue}>
+            <EnterpriseAppRoutes {...defaultProps} />
+          </EnterpriseSubsidiesContext.Provider>
+        </IntlProvider>,
+      );
+
+      expect(screen.queryByTestId('billing-page')).not.toBeInTheDocument();
+    });
+
+    it('does not render BillingPage when ENABLE_NATIVE_BILLING feature flag is OFF', () => {
+      features.ENABLE_NATIVE_BILLING = false;
+      const contextValue = {
+        ...mockEnterpriseSubsidiesContextValue,
+        hasBillingSubscription: true,
+      };
+
+      render(
+        <IntlProvider locale="en">
+          <EnterpriseSubsidiesContext.Provider value={contextValue}>
+            <EnterpriseAppRoutes {...defaultProps} />
+          </EnterpriseSubsidiesContext.Provider>
+        </IntlProvider>,
+      );
+
+      expect(screen.queryByTestId('billing-page')).not.toBeInTheDocument();
+    });
+
+    it('does not render BillingPage when both conditions are false', () => {
+      features.ENABLE_NATIVE_BILLING = false;
+      const contextValue = {
+        ...mockEnterpriseSubsidiesContextValue,
+        hasBillingSubscription: false,
+      };
+
+      render(
+        <IntlProvider locale="en">
+          <EnterpriseSubsidiesContext.Provider value={contextValue}>
+            <EnterpriseAppRoutes {...defaultProps} />
+          </EnterpriseSubsidiesContext.Provider>
+        </IntlProvider>,
+      );
+
+      expect(screen.queryByTestId('billing-page')).not.toBeInTheDocument();
+    });
+
+    it('passes correct enterpriseId to BillingPage', () => {
+      features.ENABLE_NATIVE_BILLING = true;
+      const testEnterpriseId = 'test-enterprise-123';
+      const contextValue = {
+        ...mockEnterpriseSubsidiesContextValue,
+        hasBillingSubscription: true,
+      };
+
+      render(
+        <IntlProvider locale="en">
+          <EnterpriseSubsidiesContext.Provider value={contextValue}>
+            <EnterpriseAppRoutes
+              {...defaultProps}
+              enterpriseId={testEnterpriseId}
+            />
+          </EnterpriseSubsidiesContext.Provider>
+        </IntlProvider>,
+      );
+
+      // BillingPage should be rendered (checking that it exists confirms it received the enterpriseId)
+      expect(screen.getByTestId('billing-page')).toBeInTheDocument();
+    });
   });
 });

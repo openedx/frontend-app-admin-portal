@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import dayjs from 'dayjs';
 import { Link } from 'react-router-dom';
 import {
-  Badge, Button, Card, Col, Hyperlink, Row, Stack,
+  Badge, Button, Card, Col, Row, Stack,
 } from '@openedx/paragon';
 import { FormattedMessage, getLocale } from '@edx/frontend-platform/i18n';
 
@@ -16,7 +16,8 @@ import { useStripeSubscriptionPlanInfo } from './data/hooks';
 import { SubscriptionContext } from './SubscriptionData';
 import { ADMINISTER_SUBSCRIPTIONS_TARGETS } from '../ProductTours/AdminOnboardingTours/constants';
 import { makePlural } from '../../utils';
-import { getSubscriptionStatus, openStripeBillingPortal } from './data/utils';
+import { getSubscriptionStatus } from './data/utils';
+import { ROUTE_NAMES } from '../EnterpriseApp/data/constants';
 
 const SubscriptionCard = ({
   enterpriseUuid,
@@ -107,18 +108,12 @@ const SubscriptionCard = ({
                     boldDate: <span className="font-weight-bold">{formattedExpirationDate}</span>,
                     subscriptionUpcomingPrice: <span className="font-weight-bold">{subscriptionUpcomingPrice}</span>,
                     stripeLink: (
-                      <Hyperlink
+                      <Link
                         className="ml-2"
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        destination="#"
-                        onClick={e => {
-                          e.preventDefault();
-                          openStripeBillingPortal(enterpriseUuid);
-                        }}
+                        to={`/${enterpriseUuid}/admin/${ROUTE_NAMES.billing}`}
                       >
                         Manage subscription
-                      </Hyperlink>),
+                      </Link>),
                   }}
                 />
               </span>

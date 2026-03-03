@@ -47,6 +47,7 @@ const configuration = {
     FLOW_ALLOCATE_BUDGETS_UUID: process.env.FLOW_ALLOCATE_BUDGETS_UUID,
     FLOW_SUBSCRIPTIONS_UUID: process.env.FLOW_SUBSCRIPTIONS_UUID,
   },
+  STRIPE_PUBLISHABLE_KEY: process.env.STRIPE_PUBLISHABLE_KEY,
 };
 
 const features = {
@@ -69,6 +70,7 @@ const features = {
   FEATURE_HIGHLIGHTS_ARCHIVE_MESSAGING: process.env.FEATURE_HIGHLIGHTS_ARCHIVE_MESSAGING || hasFeatureFlagEnabled('FEATURE_HIGHLIGHTS_ARCHIVE_MESSAGING'),
   ADMIN_V1: process.env.FEATURE_ADMIN_V1 || hasFeatureFlagEnabled('FEATURE_ADMIN_V1'),
   ENABLE_DRAG_AND_DROP: process.env.ENABLE_DRAG_AND_DROP || hasFeatureFlagEnabled('ENABLE_DRAG_AND_DROP'),
+  ENABLE_NATIVE_BILLING: process.env.FEATURE_ENABLE_NATIVE_BILLING === 'true' || hasFeatureFlagEnabled('ENABLE_NATIVE_BILLING'),
 };
 
 export { configuration, features };

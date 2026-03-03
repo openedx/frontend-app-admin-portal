@@ -4,6 +4,7 @@ export const ROUTE_NAMES = {
   analytics: 'analytics',
   analytics_v1: 'analytics-v1',
   appearance: 'appearance',
+  billing: 'billing',
   bulkEnrollment: 'enrollment',
   bulkEnrollmentResults: 'bulk-enrollment-results',
   codeManagement: 'coupons',
