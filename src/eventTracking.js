@@ -23,17 +23,18 @@ const ANALYTICS_V2_PREFIX = `${PROJECT_NAME}.analytics_v2`;
 
 // people-management
 const PEOPLE_MANAGEMENT_EVENTS = {
-  PAGE_VISIT: `${GROUPS_PEOPLE_MANAGEMENT_PREFIX}.page.visit`,
+  ADD_LEARNER_ERROR_NOT_IN_ORG: `${GROUPS_PEOPLE_MANAGEMENT_PREFIX}.error.learner_not_in_org`,
   CREATE_GROUP_BUTTON_CLICK: `${GROUPS_PEOPLE_MANAGEMENT_PREFIX}.page.create_group.clicked`,
   CREATE_GROUP_MODAL_BUTTON_SUBMIT: `${GROUPS_PEOPLE_MANAGEMENT_PREFIX}.create_modal.create.clicked`,
-  VIEW_GROUP_PROGRESS_BUTTON: `${GROUPS_PEOPLE_MANAGEMENT_PREFIX}.group_detail.group_progress.clicked`,
+  DOWNLOAD_ALL_ADMINS: `${GROUPS_PEOPLE_MANAGEMENT_PREFIX}.page.download_all_admins.clicked`,
   DOWNLOAD_ALL_ORG_MEMBERS: `${GROUPS_PEOPLE_MANAGEMENT_PREFIX}.page.download_all.clicked`,
   DOWNLOAD_GROUP_MEMBERS: `${GROUPS_PEOPLE_MANAGEMENT_PREFIX}.group_detail.download_icon.clicked`,
-  VIEW_GROUP_BUTTON: `${GROUPS_PEOPLE_MANAGEMENT_PREFIX}.page.view_group.clicked`,
-  GROUP_CREATE_WITH_UPLOAD_CSV: `${GROUPS_PEOPLE_MANAGEMENT_PREFIX}.create_group_modal.csv_upload`,
-  GROUP_CREATE_WITH_LIST_SELECTION: `${GROUPS_PEOPLE_MANAGEMENT_PREFIX}.create_group_modal.list_selection`,
   GROUP_CREATE_WITH_CSV_AND_LIST: `${GROUPS_PEOPLE_MANAGEMENT_PREFIX}.create_group_modal.csv_upload_and_list_selection`,
-  ADD_LEARNER_ERROR_NOT_IN_ORG: `${GROUPS_PEOPLE_MANAGEMENT_PREFIX}.error.learner_not_in_org`,
+  GROUP_CREATE_WITH_LIST_SELECTION: `${GROUPS_PEOPLE_MANAGEMENT_PREFIX}.create_group_modal.list_selection`,
+  GROUP_CREATE_WITH_UPLOAD_CSV: `${GROUPS_PEOPLE_MANAGEMENT_PREFIX}.create_group_modal.csv_upload`,
+  PAGE_VISIT: `${GROUPS_PEOPLE_MANAGEMENT_PREFIX}.page.visit`,
+  VIEW_GROUP_BUTTON: `${GROUPS_PEOPLE_MANAGEMENT_PREFIX}.page.view_group.clicked`,
+  VIEW_GROUP_PROGRESS_BUTTON: `${GROUPS_PEOPLE_MANAGEMENT_PREFIX}.group_detail.group_progress.clicked`,
 };
 // learner-progress-report
 const LEARNER_PROGRESS_REPORT_EVENTS = {

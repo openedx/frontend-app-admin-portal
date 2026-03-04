@@ -12,7 +12,9 @@ const useEnterpriseAdminsTableData = ({ enterpriseId }) => {
     itemCount: 0,
     pageCount: 0,
     results: [],
+    options: {},
   });
+
   const fetchEnterpriseAdminsData = useCallback((args) => {
     const fetch = async () => {
       try {
@@ -24,6 +26,9 @@ const useEnterpriseAdminsTableData = ({ enterpriseId }) => {
           if (id === 'name') {
             options.user_query = value;
           }
+          if (id === 'email') {
+            options.email = value;
+          }
         });
         if (args?.sortBy.length > 0) {
           const sortByValue = args.sortBy[0].id;
@@ -34,6 +39,7 @@ const useEnterpriseAdminsTableData = ({ enterpriseId }) => {
         }
         options.page = args.pageIndex + 1;
         options.page_size = pageSize;
+
         const response = await LmsApiService.fetchEnterpriseAdminMembers(enterpriseId, options);
         const data = camelCaseObject(response.data);
         setEnterpriseAdminsTableData({
@@ -57,6 +63,17 @@ const useEnterpriseAdminsTableData = ({ enterpriseId }) => {
     }
   }, [enterpriseId]);
 
+  const fetchAllEnterpriseAdminsData = useCallback(async () => {
+    const options = {
+      ...enterpriseAdminsTableData.options,
+      page: 1,
+      page_size: enterpriseAdminsTableData.itemCount,
+    };
+
+    const response = await LmsApiService.fetchEnterpriseAdminMembers(enterpriseId, options);
+    return camelCaseObject(response.data);
+  }, [enterpriseId, enterpriseAdminsTableData]);
+
   const debouncedFetchEnterpriseAdminsData = useMemo(
     () => debounce(fetchEnterpriseAdminsData, 300),
     [fetchEnterpriseAdminsData],
@@ -70,6 +87,7 @@ const useEnterpriseAdminsTableData = ({ enterpriseId }) => {
     isLoading,
     enterpriseAdminsTableData,
     fetchEnterpriseAdminsTableData: debouncedFetchEnterpriseAdminsData,
+    fetchAllEnterpriseAdminsData,
   };
 };
 

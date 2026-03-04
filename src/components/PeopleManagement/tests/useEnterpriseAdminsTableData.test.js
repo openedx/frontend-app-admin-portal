@@ -37,6 +37,7 @@ describe('useEnterpriseAdminsTableData', () => {
       itemCount: 0,
       pageCount: 0,
       results: [],
+      options: {},
     });
   });
 
@@ -225,5 +226,118 @@ describe('useEnterpriseAdminsTableData', () => {
     });
 
     expect(logError).toHaveBeenCalled();
+  });
+  describe('fetchAllEnterpriseAdminsData', () => {
+    it('fetches all admins with no filters', async () => {
+      LmsApiService.fetchEnterpriseAdminMembers.mockResolvedValueOnce({
+        data: { count: 2, numPages: 1, results: [] },
+      });
+
+      const { result } = renderHook(() => useEnterpriseAdminsTableData({ enterpriseId }));
+
+      await act(async () => {
+        await result.current.fetchAllEnterpriseAdminsData();
+      });
+
+      expect(LmsApiService.fetchEnterpriseAdminMembers).toHaveBeenCalledWith(
+        enterpriseId,
+        expect.objectContaining({ page: 1 }),
+      );
+    });
+
+    it('applies active name filter when fetching all admins', async () => {
+      LmsApiService.fetchEnterpriseAdminMembers.mockResolvedValue({
+        data: { count: 1, numPages: 1, results: [] },
+      });
+
+      const { result } = renderHook(() => useEnterpriseAdminsTableData({ enterpriseId }));
+
+      // First set the filters via fetchEnterpriseAdminsTableData
+      await act(async () => {
+        result.current.fetchEnterpriseAdminsTableData({
+          filters: [{ id: 'name', value: 'Admin' }],
+          sortBy: [],
+          pageIndex: 0,
+        });
+      });
+
+      LmsApiService.fetchEnterpriseAdminMembers.mockClear();
+
+      await act(async () => {
+        await result.current.fetchAllEnterpriseAdminsData();
+      });
+
+      expect(LmsApiService.fetchEnterpriseAdminMembers).toHaveBeenCalledWith(
+        enterpriseId,
+        expect.objectContaining({ user_query: 'Admin' }),
+      );
+    });
+
+    it('applies active email filter when fetching all admins', async () => {
+      LmsApiService.fetchEnterpriseAdminMembers.mockResolvedValue({
+        data: { count: 1, numPages: 1, results: [] },
+      });
+
+      const { result } = renderHook(() => useEnterpriseAdminsTableData({ enterpriseId }));
+
+      await act(async () => {
+        result.current.fetchEnterpriseAdminsTableData({
+          filters: [{ id: 'email', value: 'admin@edx.com' }],
+          sortBy: [],
+          pageIndex: 0,
+        });
+      });
+
+      LmsApiService.fetchEnterpriseAdminMembers.mockClear();
+
+      await act(async () => {
+        await result.current.fetchAllEnterpriseAdminsData();
+      });
+
+      expect(LmsApiService.fetchEnterpriseAdminMembers).toHaveBeenCalledWith(
+        enterpriseId,
+        expect.objectContaining({ email: 'admin@edx.com' }),
+      );
+    });
+
+    it('applies active sort with is_reversed when fetching all admins', async () => {
+      LmsApiService.fetchEnterpriseAdminMembers.mockResolvedValue({
+        data: { count: 1, numPages: 1, results: [] },
+      });
+
+      const { result } = renderHook(() => useEnterpriseAdminsTableData({ enterpriseId }));
+
+      await act(async () => {
+        result.current.fetchEnterpriseAdminsTableData({
+          filters: [],
+          sortBy: [{ id: 'name', desc: false }],
+          pageIndex: 0,
+        });
+      });
+
+      LmsApiService.fetchEnterpriseAdminMembers.mockClear();
+
+      await act(async () => {
+        await result.current.fetchAllEnterpriseAdminsData();
+      });
+
+      expect(LmsApiService.fetchEnterpriseAdminMembers).toHaveBeenCalledWith(
+        enterpriseId,
+        expect.objectContaining({ sort_by: 'name', is_reversed: true }),
+      );
+    });
+
+    it('propagates error when API call fails', async () => {
+      const mockError = new Error('API failed');
+      LmsApiService.fetchEnterpriseAdminMembers.mockRejectedValueOnce(mockError);
+
+      const { result } = renderHook(() => useEnterpriseAdminsTableData({ enterpriseId }));
+
+      await expect(
+        act(async () => {
+          await result.current.fetchAllEnterpriseAdminsData();
+        }),
+      ).rejects.toThrow('API failed');
+    });
   });
 });

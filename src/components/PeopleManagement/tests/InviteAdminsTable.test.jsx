@@ -112,6 +112,7 @@ describe('InviteAdminsTable', () => {
       pageCount: 0,
     },
     fetchEnterpriseAdminsTableData: mockFetchEnterpriseAdminsTableData,
+    fetchAllEnterpriseAdminsData: jest.fn(),
   };
 
   beforeEach(() => {

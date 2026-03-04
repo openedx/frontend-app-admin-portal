@@ -10,6 +10,7 @@ import CustomDataTableEmptyState from '../learner-credit-management/CustomDataTa
 import OrgInviteAdminCard from './OrgInviteAdminCard';
 import useEnterpriseAdminsTableData from './data/hooks/useEnterpriseAdminsTableData';
 import LmsApiService from '../../data/services/LmsApiService';
+import DownloadAdminsCsvIconButton from './DownloadAdminsCsvIconButton';
 
 const FilterStatus = (rest) => (
   <DataTable.FilterStatus showFilteredFields={false} {...rest} />
@@ -20,7 +21,7 @@ const InviteAdminsTable = ({ enterpriseId }) => {
     isLoading: isTableLoading,
     enterpriseAdminsTableData,
     fetchEnterpriseAdminsTableData,
-    // fetchAllEnterpriseAdminsData,
+    fetchAllEnterpriseAdminsData,
   } = useEnterpriseAdminsTableData({ enterpriseId });
 
   const [isRemovingAdmin, setIsRemovingAdmin] = useState(false);
@@ -61,20 +62,28 @@ const InviteAdminsTable = ({ enterpriseId }) => {
   return (
     <>
       {/* ================= Header ================= */}
-      <h3 className="mt-3">
-        <FormattedMessage
-          id="adminPortal.peopleManagement.inviteAdmin.title"
-          defaultMessage="Your organization's admins"
-          description="Title for people management invite admin data table."
+      <div className="d-flex justify-content-between align-items-start mt-3 mb-2">
+        <div>
+          <h3>
+            <FormattedMessage
+              id="adminPortal.peopleManagement.inviteAdmin.title"
+              defaultMessage="Your organization's admins"
+              description="Title for people management invite admin data table."
+            />
+          </h3>
+          <p>
+            <FormattedMessage
+              id="adminPortal.peopleManagement.inviteAdmin.subtitle"
+              defaultMessage="View all admins of your organization."
+              description="Subtitle for people management admins data table."
+            />
+          </p>
+        </div>
+        <DownloadAdminsCsvIconButton
+          fetchData={fetchAllEnterpriseAdminsData}
+          dataCount={enterpriseAdminsTableData.itemCount}
         />
-      </h3>
-      <p className="mb-2">
-        <FormattedMessage
-          id="adminPortal.peopleManagement.inviteAdmin.subtitle"
-          defaultMessage="View all admins of your organization."
-          description="Subtitle for people management admins data table."
-        />
-      </p>
+      </div>
 
       {/* ================= Table ================= */}
       <DataTable
