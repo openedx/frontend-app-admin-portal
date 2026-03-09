@@ -43,6 +43,8 @@ const CreateGroupModal = ({
   const [groupName, setGroupName] = useState('');
   const [canCreateGroup, setCanCreateGroup] = useState(false);
   const [isSystemErrorModalOpen, openSystemErrorModal, closeSystemErrorModal] = useToggle(false);
+  const [errorMessage, setErrorMessage] = useState('');
+  const [isDuplicateNameError, setIsDuplicateNameError] = useState(false);
 
   const handleCloseCreateGroupModal = () => {
     closeModal();
@@ -51,6 +53,8 @@ const CreateGroupModal = ({
   const queryClient = useQueryClient();
   const handleCreateGroup = async () => {
     setCreateButtonState('pending');
+    setErrorMessage('');
+    setIsDuplicateNameError(false);
     const options = {
       enterpriseUUID,
       groupName,
@@ -79,8 +83,21 @@ const CreateGroupModal = ({
           EVENT_NAMES.PEOPLE_MANAGEMENT.GROUP_CREATE_WITH_UPLOAD_CSV,
         );
       }
-    } catch (err) {
+    } catch (err: any) {
       logError(err);
+      const hasDuplicateNameError = err?.response?.data?.non_field_errors?.some(
+        (msg: string) => msg.includes('A group with this name already exists'),
+      );
+      setIsDuplicateNameError(hasDuplicateNameError);
+      if (hasDuplicateNameError) {
+        setErrorMessage(
+          intl.formatMessage({
+            id: 'peopleManagement.createGroup.duplicateNameError.message',
+            defaultMessage: 'A group with this name already exists. Please enter a unique name to create a new group.',
+            description: 'Error message when a group with the same name already exists for the enterprise',
+          }),
+        );
+      }
       setCreateButtonState('error');
       openSystemErrorModal();
       sendEnterpriseTrackEvent(
@@ -91,6 +108,7 @@ const CreateGroupModal = ({
           message: err,
         },
       );
+      return;
     }
 
     try {
@@ -168,7 +186,8 @@ const CreateGroupModal = ({
         isErrorModalOpen={isSystemErrorModalOpen}
         closeErrorModal={closeSystemErrorModal}
         closeAssignmentModal={handleCloseCreateGroupModal}
-        retry={handleCreateGroup}
+        retry={() => { closeSystemErrorModal(); if (isDuplicateNameError) { setCreateButtonState('default'); } else { handleCreateGroup(); } }}
+        message={errorMessage}
       />
     </>
   );

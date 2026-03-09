@@ -1,6 +1,6 @@
 import React from 'react';
 import {
-  fireEvent, render, screen, waitFor,
+  fireEvent, render, screen, waitFor, within,
 } from '@testing-library/react';
 import { Provider } from 'react-redux';
 import thunk from 'redux-thunk';
@@ -429,6 +429,66 @@ describe('<CreateGroupModal />', () => {
       );
     });
   });
+  it('displays duplicate group name error message in error modal', async () => {
+    const user = userEvent.setup();
+    const duplicateError = {
+      response: {
+        status: 400,
+        data: {
+          non_field_errors: [
+            'A group with this name already exists. Please enter a unique name to create a new group.',
+          ],
+        },
+      },
+    };
+    LmsApiService.createEnterpriseGroup.mockRejectedValueOnce(duplicateError);
+
+    render(<CreateGroupModalWrapper />);
+    const fakeFile = new File(['tomhaverford@pawnee.org'], 'emails.csv', { type: 'text/csv' });
+    const dropzone = await screen.findByTestId('csv-upload-input');
+
+    fireEvent.drop(dropzone, {
+      dataTransfer: {
+        files: [fakeFile],
+        types: ['Files'],
+      },
+    });
+    await waitFor(() => {
+      expect(screen.getByText('Summary (1)')).toBeInTheDocument();
+    }, { timeout: EMAIL_ADDRESSES_INPUT_VALUE_DEBOUNCE_DELAY + 1000 });
+
+    const groupNameInput = screen.getByTestId('group-name');
+    await user.type(groupNameInput, 'test group name');
+
+    const createButton = screen.getByRole('button', { name: 'Create' });
+    await user.click(createButton);
+
+    await waitFor(() => {
+      expect(screen.getByText('Something went wrong')).toBeInTheDocument();
+      expect(screen.getByText(
+        'A group with this name already exists. Please enter a unique name to create a new group.',
+      )).toBeInTheDocument();
+    });
+
+    // Generic message should NOT be shown for duplicate name errors
+    expect(screen.queryByText(
+      'We\'re sorry. Something went wrong behind the scenes. Please try again, or reach out to customer support for help.',
+    )).not.toBeInTheDocument();
+
+    // Clicking "Try again" closes the error modal and returns to the group creation form
+    const errorModal = screen.getByRole('dialog', { name: 'Something went wrong' });
+    const tryAgainButton = within(errorModal).getByText('Try again');
+    await user.click(tryAgainButton);
+    await waitFor(() => {
+      expect(screen.queryByText('Something went wrong')).not.toBeInTheDocument();
+      expect(screen.getByText('Create a custom group')).toBeInTheDocument();
+    });
+
+    // Form values should be preserved after closing the duplicate-name error modal
+    const groupNameInputAfterError = screen.getByTestId('group-name');
+    expect(groupNameInputAfterError.value).not.toBe('');
+    expect(screen.getByText('Summary (1)')).toBeInTheDocument();
+  });
   it('displays system error modal', async () => {
     const user = userEvent.setup();
     const mockCreateGroup = jest.spyOn(LmsApiService, 'createEnterpriseGroup');
@@ -465,6 +525,18 @@ describe('<CreateGroupModal />', () => {
         'We\'re sorry. Something went wrong behind the scenes. Please try again, or reach out to customer support for help.',
       )).toBeInTheDocument();
     });
+  });
+  it('displays system error modal when invite step fails', async () => {
+    LmsApiService.createEnterpriseGroup.mockResolvedValueOnce({ data: { uuid: 'test-uuid' } });
+    LmsApiService.inviteEnterpriseLearnersToGroup.mockRejectedValueOnce(new Error('Invite failed'));
+    const user = userEvent.setup();
+    render(<CreateGroupModalWrapper />);
+    const dropzone = await screen.findByTestId('csv-upload-input');
+    fireEvent.drop(dropzone, { dataTransfer: { files: [new File(['test@test.com'], 'emails.csv', { type: 'text/csv' })], types: ['Files'] } });
+    await waitFor(() => { expect(screen.getByText('Summary (1)')).toBeInTheDocument(); }, { timeout: EMAIL_ADDRESSES_INPUT_VALUE_DEBOUNCE_DELAY + 1000 });
+    await user.type(screen.getByTestId('group-name'), 'test group');
+    await user.click(screen.getByRole('button', { name: 'Create' }));
+    await waitFor(() => { expect(screen.getByText('Something went wrong')).toBeInTheDocument(); });
   });
   it('does not show duplicate error when members are bulk added multiple times', async () => {
     const user = userEvent.setup();
