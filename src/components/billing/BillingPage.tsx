@@ -35,7 +35,7 @@ interface BillingPageProps {
  * - Transaction history
  * - Subscription lifecycle controls
  */
-const BillingPage: React.FC<BillingPageProps> = ({ enterpriseId }) => {
+const BillingPage = ({ enterpriseId }: BillingPageProps) => {
   const [isAddPaymentMethodModalOpen, setIsAddPaymentMethodModalOpen] = useState(false);
   const [isAddBillingAddressModalOpen, setIsAddBillingAddressModalOpen] = useState(false);
   const [deleteModalState, setDeleteModalState] = useState<{

@@ -21,14 +21,14 @@ interface DeletePaymentMethodModalProps {
  * Displays a warning message and requires user confirmation before deleting.
  * Shows backend error messages if deletion fails due to business rules (409 conflict).
  */
-const DeletePaymentMethodModal: React.FC<DeletePaymentMethodModalProps> = ({
+const DeletePaymentMethodModal = ({
   isOpen,
   onClose,
   enterpriseUuid,
   paymentMethodId,
   paymentMethodType,
   lastFour,
-}) => {
+}: DeletePaymentMethodModalProps) => {
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const deletePaymentMethod = useDeletePaymentMethod();
 

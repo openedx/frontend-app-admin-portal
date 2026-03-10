@@ -1,6 +1,9 @@
+import { useMemo } from 'react';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
+import { useIntl } from '@edx/frontend-platform/i18n';
 import EnterpriseAccessApiService from '../../../data/services/EnterpriseAccessApiService';
 import { billingQueryKeys } from './constants';
+import { SUPPORTED_COUNTRY_CODES, Country } from '../constants';
 
 /**
  * Transform billing address API response from snake_case to camelCase
@@ -286,4 +289,34 @@ export const useReinstateSubscription = () => {
       });
     },
   });
+};
+
+/**
+ * Hook to get localized country options for billing forms.
+ *
+ * Uses the Intl.DisplayNames API to provide country names in the user's locale.
+ * Countries are sorted alphabetically by their localized name.
+ *
+ * @returns {Country[]} Array of country options with value (ISO code) and label (localized name)
+ *
+ * @example
+ * const countryOptions = useCountryOptions();
+ * // In en-US: [{ value: 'AU', label: 'Australia' }, ...]
+ * // In es-ES: [{ value: 'AU', label: 'Australia' }, ...]
+ */
+export const useCountryOptions = (): Country[] => {
+  const intl = useIntl();
+
+  return useMemo(() => {
+    const displayNames = new Intl.DisplayNames([intl.locale], {
+      type: 'region',
+    });
+
+    return SUPPORTED_COUNTRY_CODES
+      .map((code) => ({
+        value: code,
+        label: displayNames.of(code) || code,
+      }))
+      .sort((a, b) => a.label.localeCompare(b.label, intl.locale));
+  }, [intl.locale]);
 };

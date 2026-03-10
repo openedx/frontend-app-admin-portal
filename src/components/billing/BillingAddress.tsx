@@ -24,7 +24,7 @@ interface BillingAddressProps {
  * - Empty state when no address exists
  * - Read-only address display with edit button when address exists
  */
-const BillingAddress: React.FC<BillingAddressProps> = ({ enterpriseUuid }) => {
+const BillingAddress = ({ enterpriseUuid }: BillingAddressProps) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const { data: billingAddress, isLoading } = useBillingAddress(enterpriseUuid);
 

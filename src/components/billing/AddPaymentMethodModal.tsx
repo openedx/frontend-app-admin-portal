@@ -10,8 +10,7 @@ import {
 import { CardElement, useElements, useStripe } from '@stripe/react-stripe-js';
 import { FormattedMessage, useIntl } from '@edx/frontend-platform/i18n';
 
-import { useAddPaymentMethod } from './data/hooks';
-import { SUPPORTED_COUNTRIES } from './constants';
+import { useAddPaymentMethod, useCountryOptions } from './data/hooks';
 
 interface AddPaymentMethodModalProps {
   isOpen: boolean;
@@ -30,15 +29,16 @@ interface BillingDetails {
   country: string;
 }
 
-const AddPaymentMethodModal: React.FC<AddPaymentMethodModalProps> = ({
+const AddPaymentMethodModal = ({
   isOpen,
   onClose,
   enterpriseUuid,
-}) => {
+}: AddPaymentMethodModalProps) => {
   const intl = useIntl();
   const stripe = useStripe();
   const elements = useElements();
   const addPaymentMethodMutation = useAddPaymentMethod();
+  const countryOptions = useCountryOptions();
 
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -390,9 +390,9 @@ const AddPaymentMethodModal: React.FC<AddPaymentMethodModalProps> = ({
                 value={billingDetails.country}
                 onChange={handleInputChange('country')}
               >
-                {SUPPORTED_COUNTRIES.map(country => (
-                  <option key={country.code} value={country.code}>
-                    {country.name}
+                {countryOptions.map(country => (
+                  <option key={country.value} value={country.value}>
+                    {country.label}
                   </option>
                 ))}
               </Form.Control>

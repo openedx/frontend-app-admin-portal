@@ -3,39 +3,67 @@
  */
 
 export interface Country {
-  code: string;
-  name: string;
+  value: string;
+  label: string;
 }
 
 /**
- * List of supported countries for billing and payment methods.
- * Uses 2-letter ISO country codes.
+ * List of supported ISO 3166-1 alpha-2 country codes for billing and payment methods.
+ *
+ * This list includes all Stripe-supported countries as of 2024, excluding embargoed nations.
+ * Source: https://stripe.com/global
+ *
+ * Country names are localized at runtime using the useCountryOptions hook,
+ * which leverages the Intl.DisplayNames API to provide names in the user's locale.
  *
  * This list is used by both BillingAddressModal and AddPaymentMethodModal
  * to ensure consistency between billing addresses and payment methods.
+ *
+ * Embargoed countries explicitly excluded: RU, IR, KP, SY, CU, BY
  */
-export const SUPPORTED_COUNTRIES: Country[] = [
-  { code: 'US', name: 'United States' },
-  { code: 'CA', name: 'Canada' },
-  { code: 'GB', name: 'United Kingdom' },
-  { code: 'AU', name: 'Australia' },
-  { code: 'AT', name: 'Austria' },
-  { code: 'BE', name: 'Belgium' },
-  { code: 'BR', name: 'Brazil' },
-  { code: 'DK', name: 'Denmark' },
-  { code: 'FI', name: 'Finland' },
-  { code: 'FR', name: 'France' },
-  { code: 'DE', name: 'Germany' },
-  { code: 'IN', name: 'India' },
-  { code: 'IE', name: 'Ireland' },
-  { code: 'IT', name: 'Italy' },
-  { code: 'JP', name: 'Japan' },
-  { code: 'MX', name: 'Mexico' },
-  { code: 'NL', name: 'Netherlands' },
-  { code: 'NZ', name: 'New Zealand' },
-  { code: 'NO', name: 'Norway' },
-  { code: 'SG', name: 'Singapore' },
-  { code: 'ES', name: 'Spain' },
-  { code: 'SE', name: 'Sweden' },
-  { code: 'CH', name: 'Switzerland' },
+export const SUPPORTED_COUNTRY_CODES: string[] = [
+  'AE', // United Arab Emirates
+  'AT', // Austria
+  'AU', // Australia
+  'BE', // Belgium
+  'BG', // Bulgaria
+  'BR', // Brazil
+  'CA', // Canada
+  'CH', // Switzerland
+  'CY', // Cyprus
+  'CZ', // Czech Republic
+  'DE', // Germany
+  'DK', // Denmark
+  'EE', // Estonia
+  'ES', // Spain
+  'FI', // Finland
+  'FR', // France
+  'GB', // United Kingdom
+  'GI', // Gibraltar
+  'GR', // Greece
+  'HK', // Hong Kong
+  'HR', // Croatia
+  'HU', // Hungary
+  'IE', // Ireland
+  'IT', // Italy
+  'JP', // Japan
+  'LI', // Liechtenstein
+  'LT', // Lithuania
+  'LU', // Luxembourg
+  'LV', // Latvia
+  'MT', // Malta
+  'MX', // Mexico
+  'MY', // Malaysia
+  'NL', // Netherlands
+  'NO', // Norway
+  'NZ', // New Zealand
+  'PL', // Poland
+  'PT', // Portugal
+  'RO', // Romania
+  'SE', // Sweden
+  'SG', // Singapore
+  'SI', // Slovenia
+  'SK', // Slovakia
+  'TH', // Thailand
+  'US', // United States
 ];

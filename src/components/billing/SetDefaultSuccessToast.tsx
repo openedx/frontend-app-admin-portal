@@ -7,7 +7,7 @@ interface SetDefaultSuccessToastProps {
   onClose: () => void;
 }
 
-const SetDefaultSuccessToast: React.FC<SetDefaultSuccessToastProps> = ({ show, onClose }) => {
+const SetDefaultSuccessToast = ({ show, onClose }: SetDefaultSuccessToastProps) => {
   const intl = useIntl();
   const message = intl.formatMessage({
     id: 'admin.portal.billing.setDefault.success',

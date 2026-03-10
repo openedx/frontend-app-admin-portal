@@ -9,9 +9,8 @@ import {
 } from '@openedx/paragon';
 import { FormattedMessage, useIntl } from '@edx/frontend-platform/i18n';
 
-import { useUpdateBillingAddress } from './data/hooks';
+import { useUpdateBillingAddress, useCountryOptions } from './data/hooks';
 import UpdateAddressSuccessToast from './UpdateAddressSuccessToast';
-import { SUPPORTED_COUNTRIES } from './constants';
 
 interface BillingAddressModalProps {
   isOpen: boolean;
@@ -29,14 +28,15 @@ interface BillingAddressModalProps {
  * - Street address (line 1 and 2)
  * - City, State, Postal Code, Country
  */
-const BillingAddressModal: React.FC<BillingAddressModalProps> = ({
+const BillingAddressModal = ({
   isOpen,
   onClose,
   enterpriseUuid,
   existingAddress,
-}) => {
+}: BillingAddressModalProps) => {
   const intl = useIntl();
   const updateBillingAddress = useUpdateBillingAddress();
+  const countryOptions = useCountryOptions();
   const [showSuccessToast, setShowSuccessToast] = useState(false);
   const [apiError, setApiError] = useState<string | null>(null);
   const [touched, setTouched] = useState<Record<string, boolean>>({});
@@ -375,9 +375,9 @@ const BillingAddressModal: React.FC<BillingAddressModalProps> = ({
                       description: 'Placeholder for country dropdown',
                     })}
                   </option>
-                  {SUPPORTED_COUNTRIES.map(country => (
-                    <option key={country.code} value={country.code}>
-                      {country.name}
+                  {countryOptions.map(country => (
+                    <option key={country.value} value={country.value}>
+                      {country.label}
                     </option>
                   ))}
                 </Form.Control>

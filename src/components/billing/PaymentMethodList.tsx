@@ -34,13 +34,13 @@ interface PaymentMethod {
   status: 'verified' | 'pending';
 }
 
-const PaymentMethodList: React.FC<PaymentMethodListProps> = ({
+const PaymentMethodList = ({
   enterpriseUuid,
   onAddPaymentMethod,
   onSetDefault,
   onDelete,
   isSettingDefault = false,
-}) => {
+}: PaymentMethodListProps) => {
   const {
     data: paymentMethods,
     isLoading,

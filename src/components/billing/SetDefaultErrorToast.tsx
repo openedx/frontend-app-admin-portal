@@ -7,7 +7,7 @@ interface SetDefaultErrorToastProps {
   onClose: () => void;
 }
 
-const SetDefaultErrorToast: React.FC<SetDefaultErrorToastProps> = ({ show, onClose }) => {
+const SetDefaultErrorToast = ({ show, onClose }: SetDefaultErrorToastProps) => {
   const intl = useIntl();
   const message = intl.formatMessage({
     id: 'admin.portal.billing.setDefault.error',

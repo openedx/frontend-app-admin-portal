@@ -7,7 +7,7 @@ interface UpdateAddressSuccessToastProps {
   onClose: () => void;
 }
 
-const UpdateAddressSuccessToast: React.FC<UpdateAddressSuccessToastProps> = ({ show, onClose }) => {
+const UpdateAddressSuccessToast = ({ show, onClose }: UpdateAddressSuccessToastProps) => {
   const intl = useIntl();
   const message = intl.formatMessage({
     id: 'admin.portal.billing.billingAddress.success',
