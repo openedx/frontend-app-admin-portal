@@ -1,4 +1,5 @@
 /* eslint-disable import/prefer-default-export */
+export const ADMIN_ROLES_SURVEY_DISMISSED_COOKIE_NAME = 'admin-roles-survey-dismissed';
 
 export const ROUTE_NAMES = {
   analytics: 'analytics',

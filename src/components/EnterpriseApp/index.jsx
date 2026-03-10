@@ -15,6 +15,7 @@ import ProductTours from '../ProductTours/ProductTours';
 import { SCHOLAR_THEME } from '../settings/data/constants';
 import NotFoundPage from '../NotFoundPage';
 import EnterpriseAppContent from './EnterpriseAppContent';
+import AdminRolesSurveyBanner from '../AdminRolesSurveyBanner';
 import { withLocation, withParams } from '../../hoc';
 
 class EnterpriseApp extends React.Component {
@@ -150,6 +151,7 @@ class EnterpriseApp extends React.Component {
                     paddingLeft: matchesMediaQ ? sidebarWidth : defaultContentPadding,
                   }}
                 >
+                  <AdminRolesSurveyBanner />
                   <EnterpriseAppContent
                     email={email}
                     enterpriseId={enterpriseId}
