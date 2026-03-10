@@ -20,7 +20,7 @@ const OrgInviteAdminCard = ({
   } = original;
   const [isCopyLinkToastOpen, setIsCopyLinkToastOpen] = useState(false);
   const joinedOrg = joinedDate || invitedDate;
-  const lmsBaseUrl = `${configuration.LMS_BASE_URL}`;
+  const lmsBaseUrl = `${configuration.BASE_URL}`;
   const inviteLink = `${lmsBaseUrl}/${enterpriseSlug}/admin/register`;
   const hasClipboard = !!navigator.clipboard;
 

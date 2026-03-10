@@ -17,7 +17,7 @@ jest.mock('react-router', () => ({
 
 jest.mock('../../../config', () => ({
   configuration: {
-    LMS_BASE_URL: 'http://localhost:18000',
+    BASE_URL: 'http://localhost:18000',
   },
 }));
 
