@@ -1,4 +1,5 @@
 // Tour Targets
+const BILLING = 'billing-link';
 const CONTENT_HIGHLIGHTS = 'highlights-link';
 const LEARNER_CREDIT = 'learner-credit-link';
 const PEOPLE_MANAGEMENT = 'people-management-link';
@@ -6,6 +7,7 @@ const SETTINGS_SIDEBAR = 'settings-sidebar-link';
 const ANALYTICS_SIDEBAR = 'analytics-sidebar';
 
 export const TOUR_TARGETS = {
+  BILLING,
   CONTENT_HIGHLIGHTS,
   LEARNER_CREDIT,
   PEOPLE_MANAGEMENT,

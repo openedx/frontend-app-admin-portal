@@ -51,6 +51,8 @@ export type ApproveBnrSubsidyRequestResponse = AxiosResponse<ApproveBnrSubsidyRe
 class EnterpriseAccessApiService {
   static baseUrl = `${configuration.ENTERPRISE_ACCESS_BASE_URL}/api/v1`;
 
+  static billingBaseUrl = `${configuration.ENTERPRISE_ACCESS_BASE_URL}/api/v1/billing-management`;
+
   static apiClient = getAuthenticatedHttpClient;
 
   /**
@@ -524,6 +526,183 @@ class EnterpriseAccessApiService {
 
     const url = `${EnterpriseAccessApiService.baseUrl}/customer-billing/create-enterprise-admin-portal-session/?${params.toString()}`;
     return EnterpriseAccessApiService.apiClient().get(url);
+  }
+
+  // ========== Billing Management Methods ==========
+
+  /**
+   * Retrieves the billing address for an enterprise customer.
+   * @param {string} enterpriseUuid - The UUID of the enterprise customer
+   * @returns {Promise<AxiosResponse>} - A promise that resolves to the billing address data
+   */
+  static async getBillingAddress(enterpriseUuid: string): Promise<AxiosResponse> {
+    const params = new URLSearchParams({
+      enterprise_customer_uuid: enterpriseUuid,
+    });
+    const url = `${EnterpriseAccessApiService.billingBaseUrl}/address/?${params.toString()}`;
+    const response = await EnterpriseAccessApiService.apiClient().get(url);
+    return camelCaseObject(response);
+  }
+
+  /**
+   * Updates the billing address for an enterprise customer.
+   * @param {string} enterpriseUuid - The UUID of the enterprise customer
+   * @param {Object} addressData - The billing address data to update
+   * @returns {Promise<AxiosResponse>} - A promise that resolves to the updated billing address data
+   */
+  static async updateBillingAddress(
+    enterpriseUuid: string,
+    addressData: Record<string, any>,
+  ): Promise<AxiosResponse> {
+    const params = new URLSearchParams({
+      enterprise_customer_uuid: enterpriseUuid,
+    });
+    const url = `${EnterpriseAccessApiService.billingBaseUrl}/address/?${params.toString()}`;
+    const response = await EnterpriseAccessApiService.apiClient().post(
+      url,
+      snakeCaseObject(addressData),
+    );
+    return camelCaseObject(response);
+  }
+
+  /**
+   * Retrieves all payment methods for an enterprise customer.
+   * @param {string} enterpriseUuid - The UUID of the enterprise customer
+   * @returns {Promise<AxiosResponse>} - A promise that resolves to the payment methods data
+   */
+  static async getPaymentMethods(enterpriseUuid: string): Promise<AxiosResponse> {
+    const params = new URLSearchParams({
+      enterprise_customer_uuid: enterpriseUuid,
+    });
+    const url = `${EnterpriseAccessApiService.billingBaseUrl}/payment-methods/?${params.toString()}`;
+    const response = await EnterpriseAccessApiService.apiClient().get(url);
+    return camelCaseObject(response);
+  }
+
+  /**
+   * Attaches a Stripe payment method to an enterprise customer.
+   * @param {string} enterpriseUuid - The UUID of the enterprise customer
+   * @param {string} paymentMethodId - The Stripe payment method ID to attach
+   * @param {boolean} setAsDefault - Whether to set this payment method as default (optional)
+   * @returns {Promise<AxiosResponse>} - A promise that resolves to the attached payment method data
+   */
+  static async addPaymentMethod(
+    enterpriseUuid: string,
+    paymentMethodId: string,
+    setAsDefault?: boolean,
+  ): Promise<AxiosResponse> {
+    const params = new URLSearchParams({
+      enterprise_customer_uuid: enterpriseUuid,
+    });
+    const url = `${EnterpriseAccessApiService.billingBaseUrl}/payment-methods/?${params.toString()}`;
+    const body = {
+      payment_method_id: paymentMethodId,
+      ...(setAsDefault !== undefined && { set_as_default: setAsDefault }),
+    };
+    const response = await EnterpriseAccessApiService.apiClient().post(url, body);
+    return camelCaseObject(response);
+  }
+
+  /**
+   * Sets a payment method as the default for an enterprise customer.
+   * @param {string} enterpriseUuid - The UUID of the enterprise customer
+   * @param {string} paymentMethodId - The ID of the payment method to set as default
+   * @returns {Promise<AxiosResponse>} - A promise that resolves to the updated payment method data
+   */
+  static async setDefaultPaymentMethod(
+    enterpriseUuid: string,
+    paymentMethodId: string,
+  ): Promise<AxiosResponse> {
+    const params = new URLSearchParams({
+      enterprise_customer_uuid: enterpriseUuid,
+    });
+    const url = `${EnterpriseAccessApiService.billingBaseUrl}/payment-methods/${paymentMethodId}/set-default/?${params.toString()}`;
+    const response = await EnterpriseAccessApiService.apiClient().post(url, {});
+    return camelCaseObject(response);
+  }
+
+  /**
+   * Deletes a payment method for an enterprise customer.
+   * @param {string} enterpriseUuid - The UUID of the enterprise customer
+   * @param {string} paymentMethodId - The ID of the payment method to delete
+   * @returns {Promise<AxiosResponse>} - A promise that resolves to the deletion confirmation
+   */
+  static async deletePaymentMethod(
+    enterpriseUuid: string,
+    paymentMethodId: string,
+  ): Promise<AxiosResponse> {
+    const params = new URLSearchParams({
+      enterprise_customer_uuid: enterpriseUuid,
+    });
+    const url = `${EnterpriseAccessApiService.billingBaseUrl}/payment-methods/${paymentMethodId}/?${params.toString()}`;
+    const response = await EnterpriseAccessApiService.apiClient().delete(url);
+    return camelCaseObject(response);
+  }
+
+  /**
+   * Retrieves paginated transaction history for an enterprise customer.
+   * @param {string} enterpriseUuid - The UUID of the enterprise customer
+   * @param {number} limit - The maximum number of transactions to return
+   * @param {string} pageToken - The pagination token for fetching the next page (optional)
+   * @returns {Promise<AxiosResponse>} - A promise that resolves to the transactions data
+   */
+  static async getTransactions(
+    enterpriseUuid: string,
+    limit: number,
+    pageToken?: string,
+  ): Promise<AxiosResponse> {
+    const params = new URLSearchParams({
+      enterprise_customer_uuid: enterpriseUuid,
+      limit: limit.toString(),
+    });
+    if (pageToken) {
+      params.set('page_token', pageToken);
+    }
+    const url = `${EnterpriseAccessApiService.billingBaseUrl}/transactions/?${params.toString()}`;
+    const response = await EnterpriseAccessApiService.apiClient().get(url);
+    return camelCaseObject(response);
+  }
+
+  /**
+   * Retrieves subscription details for an enterprise customer.
+   * @param {string} enterpriseUuid - The UUID of the enterprise customer
+   * @returns {Promise<AxiosResponse>} - A promise that resolves to the subscription data
+   */
+  static async getSubscription(enterpriseUuid: string): Promise<AxiosResponse> {
+    const params = new URLSearchParams({
+      enterprise_customer_uuid: enterpriseUuid,
+    });
+    const url = `${EnterpriseAccessApiService.billingBaseUrl}/subscription/?${params.toString()}`;
+    const response = await EnterpriseAccessApiService.apiClient().get(url);
+    return camelCaseObject(response);
+  }
+
+  /**
+   * Cancels a subscription for an enterprise customer at the end of the current period.
+   * @param {string} enterpriseUuid - The UUID of the enterprise customer
+   * @returns {Promise<AxiosResponse>} - A promise that resolves to the cancellation confirmation
+   */
+  static async cancelSubscription(enterpriseUuid: string): Promise<AxiosResponse> {
+    const params = new URLSearchParams({
+      enterprise_customer_uuid: enterpriseUuid,
+    });
+    const url = `${EnterpriseAccessApiService.billingBaseUrl}/subscription/cancel/?${params.toString()}`;
+    const response = await EnterpriseAccessApiService.apiClient().post(url, {});
+    return camelCaseObject(response);
+  }
+
+  /**
+   * Reinstates a canceled subscription for an enterprise customer.
+   * @param {string} enterpriseUuid - The UUID of the enterprise customer
+   * @returns {Promise<AxiosResponse>} - A promise that resolves to the reinstatement confirmation
+   */
+  static async reinstateSubscription(enterpriseUuid: string): Promise<AxiosResponse> {
+    const params = new URLSearchParams({
+      enterprise_customer_uuid: enterpriseUuid,
+    });
+    const url = `${EnterpriseAccessApiService.billingBaseUrl}/subscription/reinstate/?${params.toString()}`;
+    const response = await EnterpriseAccessApiService.apiClient().post(url, {});
+    return camelCaseObject(response);
   }
 }
 

@@ -1,9 +1,11 @@
 /* eslint-disable import/prefer-default-export */
+export const ADMIN_ROLES_SURVEY_DISMISSED_COOKIE_NAME = 'admin-roles-survey-dismissed';
 
 export const ROUTE_NAMES = {
   analytics: 'analytics',
   analytics_v1: 'analytics-v1',
   appearance: 'appearance',
+  billing: 'billing',
   bulkEnrollment: 'enrollment',
   bulkEnrollmentResults: 'bulk-enrollment-results',
   codeManagement: 'coupons',

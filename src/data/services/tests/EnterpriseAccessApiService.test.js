@@ -469,4 +469,187 @@ describe('EnterpriseAccessApiService', () => {
       `${enterpriseAccessBaseUrl}/api/v1/stripe-event-summary/get-stripe-subscription-plan-info/?${expectedParams.toString()}`,
     );
   });
+
+  // ========== Billing Management Tests ==========
+
+  describe('Billing Management Methods', () => {
+    const mockPaymentMethodId = 'pm_test_123';
+    const mockAddressData = {
+      billingEmail: 'billing@example.com',
+      organizationName: 'Test Org',
+      line1: '123 Main St',
+      city: 'San Francisco',
+      state: 'CA',
+      postalCode: '94105',
+      country: 'US',
+    };
+
+    test('getBillingAddress calls GET /address/ with enterprise_customer_uuid param', async () => {
+      await EnterpriseAccessApiService.getBillingAddress(mockEnterpriseUUID);
+
+      const expectedParams = new URLSearchParams({
+        enterprise_customer_uuid: mockEnterpriseUUID,
+      });
+
+      expect(axios.get).toBeCalledWith(
+        `${enterpriseAccessBaseUrl}/api/v1/billing-management/address/?${expectedParams.toString()}`,
+      );
+    });
+
+    test('updateBillingAddress calls POST /address/ with snake_case body and enterprise_customer_uuid param', async () => {
+      await EnterpriseAccessApiService.updateBillingAddress(mockEnterpriseUUID, mockAddressData);
+
+      const expectedParams = new URLSearchParams({
+        enterprise_customer_uuid: mockEnterpriseUUID,
+      });
+
+      expect(axios.post).toBeCalledWith(
+        `${enterpriseAccessBaseUrl}/api/v1/billing-management/address/?${expectedParams.toString()}`,
+        {
+          billing_email: 'billing@example.com',
+          organization_name: 'Test Org',
+          line_1: '123 Main St',
+          city: 'San Francisco',
+          state: 'CA',
+          postal_code: '94105',
+          country: 'US',
+        },
+      );
+    });
+
+    test('getPaymentMethods calls GET /payment-methods/ with enterprise_customer_uuid param', async () => {
+      await EnterpriseAccessApiService.getPaymentMethods(mockEnterpriseUUID);
+
+      const expectedParams = new URLSearchParams({
+        enterprise_customer_uuid: mockEnterpriseUUID,
+      });
+
+      expect(axios.get).toBeCalledWith(
+        `${enterpriseAccessBaseUrl}/api/v1/billing-management/payment-methods/?${expectedParams.toString()}`,
+      );
+    });
+
+    test('addPaymentMethod calls POST /payment-methods/ with payment_method_id and enterprise_customer_uuid param', async () => {
+      await EnterpriseAccessApiService.addPaymentMethod(mockEnterpriseUUID, mockPaymentMethodId);
+
+      const expectedParams = new URLSearchParams({
+        enterprise_customer_uuid: mockEnterpriseUUID,
+      });
+
+      expect(axios.post).toBeCalledWith(
+        `${enterpriseAccessBaseUrl}/api/v1/billing-management/payment-methods/?${expectedParams.toString()}`,
+        {
+          payment_method_id: mockPaymentMethodId,
+        },
+      );
+    });
+
+    test('addPaymentMethod includes set_as_default when provided', async () => {
+      await EnterpriseAccessApiService.addPaymentMethod(mockEnterpriseUUID, mockPaymentMethodId, true);
+
+      const expectedParams = new URLSearchParams({
+        enterprise_customer_uuid: mockEnterpriseUUID,
+      });
+
+      expect(axios.post).toBeCalledWith(
+        `${enterpriseAccessBaseUrl}/api/v1/billing-management/payment-methods/?${expectedParams.toString()}`,
+        {
+          payment_method_id: mockPaymentMethodId,
+          set_as_default: true,
+        },
+      );
+    });
+
+    test('setDefaultPaymentMethod calls POST /payment-methods/{id}/set-default/ with enterprise_customer_uuid param', async () => {
+      await EnterpriseAccessApiService.setDefaultPaymentMethod(mockEnterpriseUUID, mockPaymentMethodId);
+
+      const expectedParams = new URLSearchParams({
+        enterprise_customer_uuid: mockEnterpriseUUID,
+      });
+
+      expect(axios.post).toBeCalledWith(
+        `${enterpriseAccessBaseUrl}/api/v1/billing-management/payment-methods/${mockPaymentMethodId}/set-default/?${expectedParams.toString()}`,
+        {},
+      );
+    });
+
+    test('deletePaymentMethod calls DELETE /payment-methods/{id}/ with enterprise_customer_uuid param', async () => {
+      axios.delete = jest.fn();
+      await EnterpriseAccessApiService.deletePaymentMethod(mockEnterpriseUUID, mockPaymentMethodId);
+
+      const expectedParams = new URLSearchParams({
+        enterprise_customer_uuid: mockEnterpriseUUID,
+      });
+
+      expect(axios.delete).toBeCalledWith(
+        `${enterpriseAccessBaseUrl}/api/v1/billing-management/payment-methods/${mockPaymentMethodId}/?${expectedParams.toString()}`,
+      );
+    });
+
+    test('getTransactions calls GET /transactions/ with limit and enterprise_customer_uuid params', async () => {
+      await EnterpriseAccessApiService.getTransactions(mockEnterpriseUUID, 10);
+
+      const expectedParams = new URLSearchParams({
+        enterprise_customer_uuid: mockEnterpriseUUID,
+        limit: '10',
+      });
+
+      expect(axios.get).toBeCalledWith(
+        `${enterpriseAccessBaseUrl}/api/v1/billing-management/transactions/?${expectedParams.toString()}`,
+      );
+    });
+
+    test('getTransactions includes page_token when provided', async () => {
+      const mockPageToken = 'test-page-token';
+      await EnterpriseAccessApiService.getTransactions(mockEnterpriseUUID, 10, mockPageToken);
+
+      const expectedParams = new URLSearchParams({
+        enterprise_customer_uuid: mockEnterpriseUUID,
+        limit: '10',
+        page_token: mockPageToken,
+      });
+
+      expect(axios.get).toBeCalledWith(
+        `${enterpriseAccessBaseUrl}/api/v1/billing-management/transactions/?${expectedParams.toString()}`,
+      );
+    });
+
+    test('getSubscription calls GET /subscription/ with enterprise_customer_uuid param', async () => {
+      await EnterpriseAccessApiService.getSubscription(mockEnterpriseUUID);
+
+      const expectedParams = new URLSearchParams({
+        enterprise_customer_uuid: mockEnterpriseUUID,
+      });
+
+      expect(axios.get).toBeCalledWith(
+        `${enterpriseAccessBaseUrl}/api/v1/billing-management/subscription/?${expectedParams.toString()}`,
+      );
+    });
+
+    test('cancelSubscription calls POST /subscription/cancel/ with enterprise_customer_uuid param', async () => {
+      await EnterpriseAccessApiService.cancelSubscription(mockEnterpriseUUID);
+
+      const expectedParams = new URLSearchParams({
+        enterprise_customer_uuid: mockEnterpriseUUID,
+      });
+
+      expect(axios.post).toBeCalledWith(
+        `${enterpriseAccessBaseUrl}/api/v1/billing-management/subscription/cancel/?${expectedParams.toString()}`,
+        {},
+      );
+    });
+
+    test('reinstateSubscription calls POST /subscription/reinstate/ with enterprise_customer_uuid param', async () => {
+      await EnterpriseAccessApiService.reinstateSubscription(mockEnterpriseUUID);
+
+      const expectedParams = new URLSearchParams({
+        enterprise_customer_uuid: mockEnterpriseUUID,
+      });
+
+      expect(axios.post).toBeCalledWith(
+        `${enterpriseAccessBaseUrl}/api/v1/billing-management/subscription/reinstate/?${expectedParams.toString()}`,
+        {},
+      );
+    });
+  });
 });

@@ -4,9 +4,9 @@ import React, {
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import { Icon } from '@openedx/paragon';
-import { useIntl } from '@edx/frontend-platform/i18n';
+import { FormattedMessage, useIntl } from '@edx/frontend-platform/i18n';
 import {
-  BookOpen, CreditCard, Description, InsertChartOutlined, MoneyOutline,
+  BookOpen, CreditCard, Description, InsertChartOutlined, MonetizationOn, MoneyOutline,
   Person, Settings, Support, Tag, TrendingUp,
 } from '@openedx/paragon/icons';
 import { getAuthenticatedUser } from '@edx/frontend-platform/auth';
@@ -29,6 +29,7 @@ import { EnterpriseSubsidiesContext } from '../EnterpriseSubsidiesContext';
 import { EnterpriseAppContext } from '../EnterpriseApp/EnterpriseAppContextProvider';
 import LmsApiService from '../../data/services/LmsApiService';
 import { GROUP_TYPE_BUDGET } from '../PeopleManagement/constants';
+import { isBillingEnabled } from '../billing/data/utils';
 
 const Sidebar = ({
   baseUrl,
@@ -50,12 +51,17 @@ const Sidebar = ({
   const sidebarWidthRef = useRef();
   const { enterpriseCuration: { enterpriseCuration, isNewArchivedContent } } = useContext(EnterpriseAppContext);
   const { subsidyRequestsCounts } = useContext(SubsidyRequestsContext);
-  const { canManageLearnerCredit } = useContext(EnterpriseSubsidiesContext);
+  const { canManageLearnerCredit, hasBillingSubscription } = useContext(EnterpriseSubsidiesContext);
   const { FEATURE_CONTENT_HIGHLIGHTS } = getConfig();
-  const isEdxStaff = getAuthenticatedUser().administrator;
+  const authenticatedUser = getAuthenticatedUser();
+  const isEdxStaff = authenticatedUser.administrator;
   const [hasBudgetGroup, setHasBudgetGroup] = useState(false);
   const hideHighlightsForGroups = hasBudgetGroup && !isEdxStaff;
   const intl = useIntl();
+
+  // Determine if billing features should be accessible
+  // Note: All users of the enterprise admin portal are already authenticated as enterprise admins
+  const canAccessBilling = isBillingEnabled(hasBillingSubscription);
 
   const getSidebarWidth = useCallback(() => {
     if (sidebarRef && sidebarRef.current) {
@@ -145,6 +151,16 @@ const Sidebar = ({
       hidden: !enableSubscriptionManagementScreen,
       notification: !!subsidyRequestsCounts.subscriptionLicenses,
       id: ADMINISTER_SUBSCRIPTIONS_TARGETS.SIDEBAR,
+    },
+    {
+      title: <FormattedMessage
+        id="admin.portal.billing.nav.label"
+        defaultMessage="Billing"
+      />,
+      to: `${baseUrl}/admin/${ROUTE_NAMES.billing}`,
+      icon: <Icon src={MonetizationOn} />,
+      hidden: !canAccessBilling,
+      id: TOUR_TARGETS.BILLING,
     },
     {
       title: 'Learner Credit Management',

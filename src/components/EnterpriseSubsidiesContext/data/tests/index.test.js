@@ -5,6 +5,7 @@ import * as hooks from '../hooks';
 import { SUBSIDY_TYPES } from '../../../../data/constants/subsidyTypes';
 
 jest.mock('../hooks');
+jest.mock('../../../../data/services/EnterpriseAccessApiService');
 
 const TEST_ENTERPRISE_UUID = 'test-enterprise-uuid';
 
@@ -68,8 +69,86 @@ describe('useEnterpriseSubsidiesContext', () => {
     hooks.useCoupons.mockReturnValue({
       coupons,
     });
+    hooks.useBillingSubscriptionAvailable.mockReturnValue({
+      hasBillingSubscription: false,
+      isLoading: false,
+    });
 
     const { result } = renderHook(() => useEnterpriseSubsidiesContext(basicProps));
     expect(result.current.enterpriseSubsidyTypes).toEqual(expectedEnterpriseSubsidyTypes);
+  });
+
+  describe('hasBillingSubscription propagation', () => {
+    beforeEach(() => {
+      // Setup default mocks for other hooks
+      hooks.useEnterpriseBudgets.mockReturnValue({
+        data: {
+          budgets: [],
+          canManageLearnerCredit: false,
+        },
+        isLoading: false,
+      });
+      hooks.useCustomerAgreement.mockReturnValue({
+        customerAgreement: { subscriptions: [] },
+        isLoading: false,
+      });
+      hooks.useCoupons.mockReturnValue({
+        coupons: [],
+        isLoading: false,
+      });
+    });
+
+    it('returns hasBillingSubscription=true when hook returns true', () => {
+      hooks.useBillingSubscriptionAvailable.mockReturnValue({
+        hasBillingSubscription: true,
+        isLoading: false,
+      });
+
+      const { result } = renderHook(() => useEnterpriseSubsidiesContext(basicProps));
+      expect(result.current.hasBillingSubscription).toBe(true);
+    });
+
+    it('returns hasBillingSubscription=false when hook returns false', () => {
+      hooks.useBillingSubscriptionAvailable.mockReturnValue({
+        hasBillingSubscription: false,
+        isLoading: false,
+      });
+
+      const { result } = renderHook(() => useEnterpriseSubsidiesContext(basicProps));
+      expect(result.current.hasBillingSubscription).toBe(false);
+    });
+
+    it('includes billing subscription loading state in overall isLoading', () => {
+      hooks.useBillingSubscriptionAvailable.mockReturnValue({
+        hasBillingSubscription: false,
+        isLoading: true,
+      });
+
+      const { result } = renderHook(() => useEnterpriseSubsidiesContext(basicProps));
+      expect(result.current.isLoading).toBe(true);
+    });
+
+    it('isLoading is false when billing subscription is done loading', () => {
+      hooks.useBillingSubscriptionAvailable.mockReturnValue({
+        hasBillingSubscription: true,
+        isLoading: false,
+      });
+
+      const { result } = renderHook(() => useEnterpriseSubsidiesContext(basicProps));
+      expect(result.current.isLoading).toBe(false);
+    });
+
+    it('passes enterpriseId to useBillingSubscriptionAvailable hook', () => {
+      hooks.useBillingSubscriptionAvailable.mockReturnValue({
+        hasBillingSubscription: false,
+        isLoading: false,
+      });
+
+      renderHook(() => useEnterpriseSubsidiesContext(basicProps));
+
+      expect(hooks.useBillingSubscriptionAvailable).toHaveBeenCalledWith({
+        enterpriseId: TEST_ENTERPRISE_UUID,
+      });
+    });
   });
 });
