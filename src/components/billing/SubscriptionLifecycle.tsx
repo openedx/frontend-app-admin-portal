@@ -14,7 +14,6 @@ import SubscriptionErrorToast from './SubscriptionErrorToast';
 /**
  * SubscriptionLifecycle - Component for managing subscription cancellation and reinstatement
  *
- * Only renders for Teams and Essentials plan types.
  * Allows admins to cancel subscriptions (effective at period end) or reinstate cancelled subscriptions.
  */
 const SubscriptionLifecycle = ({
@@ -38,9 +37,8 @@ const SubscriptionLifecycle = ({
   const cancelSubscription = useCancelSubscription();
   const reinstateSubscription = useReinstateSubscription();
 
-  // Only render for Teams or Essentials plans
-  const allowedPlans = ['Teams', 'Essentials', 'Other'];
-  if (!subscription || !allowedPlans.includes(subscription.planType)) {
+  // Only render if subscription exists
+  if (!subscription) {
     return null;
   }
 
@@ -115,7 +113,6 @@ const SubscriptionLifecycle = ({
   };
 
   const {
-    planType,
     yearlyAmount,
     currency,
     licenseCount,
@@ -132,7 +129,7 @@ const SubscriptionLifecycle = ({
         <h2 className="mb-3">
           <FormattedMessage
             id="admin.portal.billing.subscription.heading"
-            defaultMessage="Subscription"
+            defaultMessage="Subscriptions"
             description="Heading for subscription lifecycle section"
           />
         </h2>
@@ -153,7 +150,13 @@ const SubscriptionLifecycle = ({
 
         <Card>
           <Card.Header
-            title={planType}
+            title={
+              intl.formatMessage({
+                id: 'admin.portal.billing.subscription.title',
+                defaultMessage: 'Details',
+                description: 'Title for subscription card',
+              })
+            }
             subtitle={(
               <div>
                 <FormattedMessage

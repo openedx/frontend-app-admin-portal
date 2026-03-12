@@ -16,7 +16,9 @@ import {
   useDeletePaymentMethod,
   useCancelSubscription,
   useReinstateSubscription,
+  useCountryOptions,
 } from '../hooks';
+import { getSupportedCountryCodes } from '../../constants';
 import EnterpriseAccessApiService from '../../../../data/services/EnterpriseAccessApiService';
 import { queryClient } from '../../../test/testUtils';
 
@@ -323,7 +325,6 @@ describe('Billing Query Hooks', () => {
   describe('useSubscription', () => {
     it('should fetch subscription successfully', async () => {
       const mockSubscription = {
-        planType: 'Teams',
         status: 'active',
         cancelAtPeriodEnd: false,
         currentPeriodEnd: '2024-12-31',
@@ -551,6 +552,156 @@ describe('Billing Mutation Hooks', () => {
         expect(result.current.isSuccess).toBe(true);
         expect(result.current.data).toEqual(mockResponse);
       });
+    });
+  });
+});
+
+describe('Country Code Utilities', () => {
+  describe('getSupportedCountryCodes', () => {
+    it('should return an array of ISO 3166-1 alpha-2 country codes', () => {
+      const countryCodes = getSupportedCountryCodes();
+
+      expect(Array.isArray(countryCodes)).toBe(true);
+      expect(countryCodes.length).toBeGreaterThan(0);
+
+      // All codes should be 2-letter uppercase strings
+      countryCodes.forEach((code) => {
+        expect(code).toMatch(/^[A-Z]{2}$/);
+      });
+    });
+
+    it('should include common countries', () => {
+      const countryCodes = getSupportedCountryCodes();
+
+      // Test for some common countries
+      expect(countryCodes).toContain('US'); // United States
+      expect(countryCodes).toContain('GB'); // United Kingdom
+      expect(countryCodes).toContain('CA'); // Canada
+      expect(countryCodes).toContain('DE'); // Germany
+      expect(countryCodes).toContain('FR'); // France
+      expect(countryCodes).toContain('JP'); // Japan
+      expect(countryCodes).toContain('AU'); // Australia
+    });
+
+    it('should exclude embargoed countries', () => {
+      const countryCodes = getSupportedCountryCodes();
+
+      // These countries should be filtered out
+      expect(countryCodes).not.toContain('BY'); // Belarus
+      expect(countryCodes).not.toContain('CU'); // Cuba
+      expect(countryCodes).not.toContain('IR'); // Iran
+      expect(countryCodes).not.toContain('KP'); // North Korea
+      expect(countryCodes).not.toContain('RU'); // Russia
+      expect(countryCodes).not.toContain('SY'); // Syria
+    });
+  });
+
+  describe('useCountryOptions', () => {
+    const wrapper = ({ children }) => (
+      <IntlProvider locale="en">
+        {children}
+      </IntlProvider>
+    );
+
+    it('should return array of country options with value and label', () => {
+      const { result } = renderHook(() => useCountryOptions(), { wrapper });
+
+      expect(Array.isArray(result.current)).toBe(true);
+      expect(result.current.length).toBeGreaterThan(0);
+
+      // Each option should have value (code) and label (localized name)
+      result.current.forEach((option) => {
+        expect(option).toHaveProperty('value');
+        expect(option).toHaveProperty('label');
+        expect(typeof option.value).toBe('string');
+        expect(typeof option.label).toBe('string');
+        expect(option.value).toMatch(/^[A-Z]{2}$/);
+      });
+    });
+
+    it('should return localized country names in English', () => {
+      const { result } = renderHook(() => useCountryOptions(), { wrapper });
+
+      const usOption = result.current.find(option => option.value === 'US');
+      const gbOption = result.current.find(option => option.value === 'GB');
+      const deOption = result.current.find(option => option.value === 'DE');
+
+      expect(usOption?.label).toBe('United States');
+      expect(gbOption?.label).toBe('United Kingdom');
+      expect(deOption?.label).toBe('Germany');
+    });
+
+    it('should sort countries alphabetically by localized name', () => {
+      const { result } = renderHook(() => useCountryOptions(), { wrapper });
+
+      // Check that the list is sorted
+      const labels = result.current.map(option => option.label);
+      const sortedLabels = [...labels].sort((a, b) => a.localeCompare(b, 'en'));
+
+      expect(labels).toEqual(sortedLabels);
+    });
+
+    it('should not include embargoed countries in options', () => {
+      const { result } = renderHook(() => useCountryOptions(), { wrapper });
+
+      const values = result.current.map(option => option.value);
+
+      expect(values).not.toContain('BY'); // Belarus
+      expect(values).not.toContain('CU'); // Cuba
+      expect(values).not.toContain('IR'); // Iran
+      expect(values).not.toContain('KP'); // North Korea
+      expect(values).not.toContain('RU'); // Russia
+      expect(values).not.toContain('SY'); // Syria
+    });
+
+    it('should return localized country names in Spanish', () => {
+      const spanishWrapper = ({ children }) => (
+        <IntlProvider locale="es">
+          {children}
+        </IntlProvider>
+      );
+
+      const { result } = renderHook(() => useCountryOptions(), { wrapper: spanishWrapper });
+
+      const usOption = result.current.find(option => option.value === 'US');
+      const gbOption = result.current.find(option => option.value === 'GB');
+      const deOption = result.current.find(option => option.value === 'DE');
+
+      expect(usOption?.label).toBe('Estados Unidos');
+      expect(gbOption?.label).toBe('Reino Unido');
+      expect(deOption?.label).toBe('Alemania');
+    });
+
+    it('should memoize results based on locale', () => {
+      const enWrapper = ({ children }) => (
+        <IntlProvider locale="en">
+          {children}
+        </IntlProvider>
+      );
+
+      const esWrapper = ({ children }) => (
+        <IntlProvider locale="es">
+          {children}
+        </IntlProvider>
+      );
+
+      // Render with English locale
+      const { result: enResult } = renderHook(() => useCountryOptions(), { wrapper: enWrapper });
+      const enLabels = enResult.current.map(option => option.label);
+
+      // Render with Spanish locale
+      const { result: esResult } = renderHook(() => useCountryOptions(), { wrapper: esWrapper });
+      const esLabels = esResult.current.map(option => option.label);
+
+      // Labels should be different (localized)
+      expect(enLabels).not.toEqual(esLabels);
+
+      // Both should be sorted in their respective locales
+      const sortedEnLabels = [...enLabels].sort((a, b) => a.localeCompare(b, 'en'));
+      const sortedEsLabels = [...esLabels].sort((a, b) => a.localeCompare(b, 'es'));
+
+      expect(enLabels).toEqual(sortedEnLabels);
+      expect(esLabels).toEqual(sortedEsLabels);
     });
   });
 });

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import {
   ActionRow,
   Alert,
@@ -39,6 +39,7 @@ const AddPaymentMethodModal = ({
   const elements = useElements();
   const addPaymentMethodMutation = useAddPaymentMethod();
   const countryOptions = useCountryOptions();
+  const errorAlertRef = useRef<HTMLDivElement>(null);
 
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -53,6 +54,13 @@ const AddPaymentMethodModal = ({
     postalCode: '',
     country: 'US',
   });
+
+  // Scroll to error alert when error occurs
+  useEffect(() => {
+    if (error && errorAlertRef.current) {
+      errorAlertRef.current.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    }
+  }, [error]);
 
   const handleInputChange = (field: keyof BillingDetails) => (
     e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>,
@@ -206,9 +214,11 @@ const AddPaymentMethodModal = ({
         <Form onSubmit={handleSubmit}>
           <Stack gap={3}>
             {error && (
-            <Alert variant="danger" dismissible onClose={() => setError(null)}>
-              {error}
-            </Alert>
+            <div ref={errorAlertRef}>
+              <Alert variant="danger" dismissible onClose={() => setError(null)}>
+                {error}
+              </Alert>
+            </div>
             )}
 
             {/* Billing Email */}
