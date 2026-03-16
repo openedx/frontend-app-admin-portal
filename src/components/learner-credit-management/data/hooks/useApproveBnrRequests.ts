@@ -19,7 +19,8 @@ interface UseApproveBnrRequestsReturn {
 
 const useApproveBnrRequests = (
   enterpriseId: string,
-  subsidyRequestUuids: string[],
+  requestUuids: string[] = [],
+  isEntireTableSelected: boolean = false,
 ): UseApproveBnrRequestsReturn => {
   const [isOpen, open, close] = useToggle(false);
   const [approveButtonState, setApproveButtonState] = useState<ApproveButtonState>('default');
@@ -32,15 +33,23 @@ const useApproveBnrRequests = (
     }
     setApproveButtonState('pending');
     try {
-      const response = await EnterpriseAccessApiService.approveBnrSubsidyRequest({
-        enterpriseId,
-        subsidyAccessPolicyId,
-        subsidyRequestUUIDs: subsidyRequestUuids,
-      });
-      // Check for partial failures in the response
-      const failedRequests = response.data?.failed;
-      if (failedRequests && failedRequests.length > 0) {
-        throw new Error(`${failedRequests.length} request(s) failed to approve`);
+      if (isEntireTableSelected) {
+        const response = await EnterpriseAccessApiService.approveAllBnrSubsidyRequests({
+          enterpriseId,
+          subsidyAccessPolicyId,
+        });
+        // Check for partial failures in the response
+        const failedRequests = response.data?.failed;
+        if (failedRequests && failedRequests.length > 0) {
+          const errorMessage = response.data?.error_message || `${failedRequests.length} request(s) failed to approve`;
+          throw new Error(errorMessage);
+        }
+      } else {
+        await EnterpriseAccessApiService.approveBnrSubsidyRequest({
+          enterpriseId,
+          subsidyAccessPolicyId,
+          subsidyRequestUUIDs: requestUuids,
+        });
       }
       setApproveButtonState('complete');
       queryClient.invalidateQueries({
@@ -53,7 +62,7 @@ const useApproveBnrRequests = (
       setApproveButtonState('error');
       throw err;
     }
-  }, [enterpriseId, subsidyAccessPolicyId, subsidyRequestUuids, queryClient]);
+  }, [enterpriseId, subsidyAccessPolicyId, requestUuids, isEntireTableSelected, queryClient]);
 
   return {
     approveButtonState,

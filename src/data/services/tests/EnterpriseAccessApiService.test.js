@@ -272,8 +272,8 @@ describe('EnterpriseAccessApiService', () => {
     );
   });
 
-  test('approveBnrSubsidyRequest calls enterprise-access to approve BNR subsidy request', () => {
-    const mockBnrSubsidyRequestUUIDs = ['test-bnr-subsidy-request-uuid'];
+  test('approveBnrSubsidyRequest calls enterprise-access to approve BNR subsidy requests', () => {
+    const mockBnrSubsidyRequestUUIDs = ['test-bnr-subsidy-request-uuid-1', 'test-bnr-subsidy-request-uuid-2'];
 
     EnterpriseAccessApiService.approveBnrSubsidyRequest({
       enterpriseId: mockEnterpriseUUID,
@@ -281,8 +281,32 @@ describe('EnterpriseAccessApiService', () => {
       subsidyAccessPolicyId: mockSubsidyAccessPolicyUUID,
     });
 
-    expect(axios.post).toBeCalledWith(`${enterpriseAccessBaseUrl}/api/v1/learner-credit-requests/bulk-approve/`, {
-      subsidy_request_uuids: mockBnrSubsidyRequestUUIDs,
+    expect(axios.post).toBeCalledWith(`${enterpriseAccessBaseUrl}/api/v1/learner-credit-requests/approve/`, {
+      learner_credit_request_uuids: mockBnrSubsidyRequestUUIDs,
+      enterprise_customer_uuid: mockEnterpriseUUID,
+      policy_uuid: mockSubsidyAccessPolicyUUID,
+    });
+  });
+
+  test('approveAllBnrSubsidyRequests calls enterprise-access to approve all BNR subsidy requests', () => {
+    EnterpriseAccessApiService.approveAllBnrSubsidyRequests({
+      enterpriseId: mockEnterpriseUUID,
+      subsidyAccessPolicyId: mockSubsidyAccessPolicyUUID,
+    });
+
+    expect(axios.post).toBeCalledWith(`${enterpriseAccessBaseUrl}/api/v1/learner-credit-requests/approve-all/`, {
+      enterprise_customer_uuid: mockEnterpriseUUID,
+      policy_uuid: mockSubsidyAccessPolicyUUID,
+    });
+  });
+
+  test('declineAllBnrSubsidyRequests calls enterprise-access to decline all BNR subsidy requests', () => {
+    EnterpriseAccessApiService.declineAllBnrSubsidyRequests({
+      enterpriseId: mockEnterpriseUUID,
+      subsidyAccessPolicyId: mockSubsidyAccessPolicyUUID,
+    });
+
+    expect(axios.post).toBeCalledWith(`${enterpriseAccessBaseUrl}/api/v1/learner-credit-requests/decline-all/`, {
       enterprise_customer_uuid: mockEnterpriseUUID,
       policy_uuid: mockSubsidyAccessPolicyUUID,
     });

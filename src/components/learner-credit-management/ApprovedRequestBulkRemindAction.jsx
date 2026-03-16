@@ -52,7 +52,6 @@ const ApprovedRequestBulkRemindAction = ({
   } = useBulkRemindApprovedRequests({
     subsidyRequestUuids: requestUuids,
     enterpriseId,
-    policyUuid: subsidyAccessPolicyId,
     remindAll: isEntireTableSelected,
     tableFilters: dataTableState.filters,
   });

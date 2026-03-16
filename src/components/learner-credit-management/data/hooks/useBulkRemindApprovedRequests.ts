@@ -24,8 +24,6 @@ export interface UseBulkRemindApprovedRequestsParams {
   subsidyRequestUuids: string[];
   /** The enterprise customer UUID */
   enterpriseId: string;
-  /** The subsidy access policy UUID */
-  policyUuid: string;
   /** If true, remind all requests matching filters instead of specific UUIDs */
   remindAll?: boolean;
   /** Table filters to apply when remindAll is true */
@@ -67,7 +65,6 @@ export interface UseBulkRemindApprovedRequestsReturn {
  * const { remindApprovedRequests, isOpen, open, close } = useBulkRemindApprovedRequests({
  *   subsidyRequestUuids: ['uuid-1', 'uuid-2'],
  *   enterpriseId: 'enterprise-uuid',
- *   policyUuid: 'policy-uuid',
  * });
  *
  * @example
@@ -75,7 +72,6 @@ export interface UseBulkRemindApprovedRequestsReturn {
  * const { remindApprovedRequests } = useBulkRemindApprovedRequests({
  *   subsidyRequestUuids: [],
  *   enterpriseId: 'enterprise-uuid',
- *   policyUuid: 'policy-uuid',
  *   remindAll: true,
  *   tableFilters: [{ id: 'learnerRequestState', value: 'waiting' }],
  * });
@@ -83,7 +79,6 @@ export interface UseBulkRemindApprovedRequestsReturn {
 const useBulkRemindApprovedRequests = ({
   subsidyRequestUuids,
   enterpriseId,
-  policyUuid,
   remindAll = false,
   tableFilters = [],
   onSuccess,
@@ -95,6 +90,9 @@ const useBulkRemindApprovedRequests = ({
   const { subsidyAccessPolicyId } = useBudgetId();
 
   const remindApprovedRequests = useCallback(async () => {
+    if (!subsidyAccessPolicyId) {
+      throw new Error('subsidyAccessPolicyId is required to remind BNR requests');
+    }
     setRemindButtonState('pending');
     try {
       if (remindAll) {
@@ -102,7 +100,7 @@ const useBulkRemindApprovedRequests = ({
         applyFiltersToOptions(tableFilters, options);
         await EnterpriseAccessApiService.remindAllApprovedBnrSubsidyRequests({
           enterpriseId,
-          policyUuid,
+          subsidyAccessPolicyId,
           options,
         });
       } else {
@@ -131,11 +129,10 @@ const useBulkRemindApprovedRequests = ({
   }, [
     subsidyRequestUuids,
     enterpriseId,
-    policyUuid,
+    subsidyAccessPolicyId,
     remindAll,
     tableFilters,
     queryClient,
-    subsidyAccessPolicyId,
     onSuccess,
     onFailure,
   ]);

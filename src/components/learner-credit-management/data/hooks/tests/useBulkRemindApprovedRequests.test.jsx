@@ -14,12 +14,10 @@ jest.mock('@edx/frontend-platform/logging');
 const mockSubsidyAccessPolicyId = 'test-policy-id';
 const mockSubsidyRequestUUIDs = ['test-request-uuid-1', 'test-request-uuid-2'];
 const mockEnterpriseId = 'test-enterprise-id';
-const mockPolicyUuid = 'test-policy-uuid';
 
 const defaultParams = {
   subsidyRequestUuids: mockSubsidyRequestUUIDs,
   enterpriseId: mockEnterpriseId,
-  policyUuid: mockPolicyUuid,
 };
 
 let mockQueryClient;
@@ -110,7 +108,7 @@ describe('useBulkRemindApprovedRequests', () => {
 
       expect(EnterpriseAccessApiService.remindAllApprovedBnrSubsidyRequests).toHaveBeenCalledWith({
         enterpriseId: mockEnterpriseId,
-        policyUuid: mockPolicyUuid,
+        subsidyAccessPolicyId: mockSubsidyAccessPolicyId,
         options: expect.any(Object),
       });
       expect(EnterpriseAccessApiService.remindApprovedBnrSubsidyRequests).not.toHaveBeenCalled();

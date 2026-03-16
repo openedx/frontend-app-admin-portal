@@ -31,7 +31,7 @@ export interface RemindAllApprovedRequestsOptions {
 
 export interface RemindAllApprovedBnrSubsidyRequestsParams {
   enterpriseId: string;
-  policyUuid: string;
+  subsidyAccessPolicyId: string;
   options?: RemindAllApprovedRequestsOptions;
 }
 
@@ -41,12 +41,37 @@ type ApproveBnrSubsidyRequestParams = {
   subsidyRequestUUIDs: string[];
 };
 
-type ApproveBnrSubsidyRequestResponseData = {
-  approved?: string[];
-  failed?: string[];
+type ApproveAllBnrSubsidyRequestsParams = {
+  enterpriseId: string;
+  subsidyAccessPolicyId: string;
 };
 
-export type ApproveBnrSubsidyRequestResponse = AxiosResponse<ApproveBnrSubsidyRequestResponseData>;
+type ApproveAllBnrSubsidyRequestsResponseData = {
+  approved?: string[];
+  failed?: string[];
+  error_message?: string;
+};
+
+export type ApproveAllBnrSubsidyRequestsResponse = AxiosResponse<ApproveAllBnrSubsidyRequestsResponseData>;
+
+type DeclineAllBnrSubsidyRequestsParams = {
+  enterpriseId: string;
+  subsidyAccessPolicyId: string;
+};
+
+type DeclineAllBnrSubsidyRequestsResponseData = {
+  declined?: string[];
+  non_declinable?: string[];
+};
+
+export type DeclineAllBnrSubsidyRequestsResponse = AxiosResponse<DeclineAllBnrSubsidyRequestsResponseData>;
+
+type DeclineBnrSubsidyRequestResponseData = {
+  declined?: string[];
+  non_declinable?: string[];
+};
+
+export type DeclineBnrSubsidyRequestResponse = AxiosResponse<DeclineBnrSubsidyRequestResponseData>;
 
 class EnterpriseAccessApiService {
   static baseUrl = `${configuration.ENTERPRISE_ACCESS_BASE_URL}/api/v1`;
@@ -379,7 +404,7 @@ class EnterpriseAccessApiService {
     subsidyRequestUUID,
     sendNotification,
     declineReason,
-  }) {
+  }): Promise<DeclineBnrSubsidyRequestResponse> {
     const options = {
       subsidy_request_uuid: subsidyRequestUUID,
       enterprise_customer_uuid: enterpriseId,
@@ -392,26 +417,66 @@ class EnterpriseAccessApiService {
   }
 
   /**
-   * Approves a BNR (Browse and Request) subsidy request for an enterprise.
+   * Approves BNR (Browse and Request) subsidy requests for an enterprise.
    *
-   * @param params - The parameters for approving the subsidy request
+   * @param params - The parameters for approving the subsidy requests
    * @param params.enterpriseId - The UUID of the enterprise customer
    * @param params.subsidyAccessPolicyId - The UUID of the subsidy policy
-   * @param params.subsidyRequestUuids - The list of UUIDs of the subsidy requests to approve
+   * @param params.subsidyRequestUUIDs - The UUIDs of the subsidy requests to approve
    * @returns A promise that resolves to the API response for the approve operation
    */
   static approveBnrSubsidyRequest({
     enterpriseId,
     subsidyAccessPolicyId,
     subsidyRequestUUIDs,
-  }: ApproveBnrSubsidyRequestParams): Promise<ApproveBnrSubsidyRequestResponse> {
+  }: ApproveBnrSubsidyRequestParams) {
     const options = {
-      subsidy_request_uuids: subsidyRequestUUIDs,
+      learner_credit_request_uuids: subsidyRequestUUIDs,
       enterprise_customer_uuid: enterpriseId,
       policy_uuid: subsidyAccessPolicyId,
     };
 
-    const url = `${EnterpriseAccessApiService.baseUrl}/learner-credit-requests/bulk-approve/`;
+    const url = `${EnterpriseAccessApiService.baseUrl}/learner-credit-requests/approve/`;
+    return EnterpriseAccessApiService.apiClient().post(url, options);
+  }
+
+  /**
+   * Approves all approvable BNR subsidy requests for an enterprise policy.
+   *
+   * @param params.enterpriseId - The UUID of the enterprise customer
+   * @param params.subsidyAccessPolicyId - The UUID of the subsidy policy
+   * @returns A promise that resolves with {approved, failed, error_message}
+   */
+  static approveAllBnrSubsidyRequests({
+    enterpriseId,
+    subsidyAccessPolicyId,
+  }: ApproveAllBnrSubsidyRequestsParams): Promise<ApproveAllBnrSubsidyRequestsResponse> {
+    const options = {
+      enterprise_customer_uuid: enterpriseId,
+      policy_uuid: subsidyAccessPolicyId,
+    };
+
+    const url = `${EnterpriseAccessApiService.baseUrl}/learner-credit-requests/approve-all/`;
+    return EnterpriseAccessApiService.apiClient().post(url, options);
+  }
+
+  /**
+   * Declines all declinable BNR subsidy requests for an enterprise policy.
+   *
+   * @param params.enterpriseId - The UUID of the enterprise customer
+   * @param params.subsidyAccessPolicyId - The UUID of the subsidy policy
+   * @returns A promise that resolves with {declined, non_declinable}
+   */
+  static declineAllBnrSubsidyRequests({
+    enterpriseId,
+    subsidyAccessPolicyId,
+  }: DeclineAllBnrSubsidyRequestsParams): Promise<DeclineAllBnrSubsidyRequestsResponse> {
+    const options = {
+      enterprise_customer_uuid: enterpriseId,
+      policy_uuid: subsidyAccessPolicyId,
+    };
+
+    const url = `${EnterpriseAccessApiService.baseUrl}/learner-credit-requests/decline-all/`;
     return EnterpriseAccessApiService.apiClient().post(url, options);
   }
 
@@ -462,19 +527,19 @@ class EnterpriseAccessApiService {
    *
    * @param params - The parameters for reminding all approved subsidy requests
    * @param params.enterpriseId - The UUID of the enterprise customer
-   * @param params.policyUuid - The UUID of the subsidy access policy
+   * @param params.subsidyAccessPolicyId - The UUID of the subsidy access policy
    * @param params.options - Additional options for filtering (e.g., learnerRequestState)
    * @returns A promise that resolves to the API response for the remind-all operation
    */
   static remindAllApprovedBnrSubsidyRequests({
     enterpriseId,
-    policyUuid,
+    subsidyAccessPolicyId,
     options = {},
   }: RemindAllApprovedBnrSubsidyRequestsParams): Promise<AxiosResponse> {
     const { learnerRequestState } = options;
     const body: Record<string, string> = {
       enterprise_customer_uuid: enterpriseId,
-      policy_uuid: policyUuid,
+      policy_uuid: subsidyAccessPolicyId,
     };
     if (learnerRequestState) {
       body.learner_request_state = learnerRequestState;
