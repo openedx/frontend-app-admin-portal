@@ -83,6 +83,33 @@ jest.mock('@openedx/paragon', () => {
   };
 });
 
+jest.mock('../AddAdminModal', () => function AddAdminModal({
+  isOpen, onClose, enterpriseId, onSuccess,
+}) {
+  return isOpen ? (
+    <div data-testid="add-admin-modal">
+      <span>Add Admin Modal - {enterpriseId}</span>
+      <button
+        type="button"
+        data-testid="modal-close-button"
+        onClick={onClose}
+      >
+        Close Modal
+      </button>
+      <button
+        type="button"
+        data-testid="modal-success-button"
+        onClick={() => {
+          onSuccess();
+          onClose();
+        }}
+      >
+        Success
+      </button>
+    </div>
+  ) : null;
+});
+
 /* =======================
    Helpers
 ======================= */
@@ -102,19 +129,19 @@ const renderWithIntl = (ui) => render(
   </IntlProvider>,
 );
 
-describe('InviteAdminsTable', () => {
-  const mockFetchEnterpriseAdminsTableData = jest.fn();
-  const defaultHookReturn = {
-    isLoading: false,
-    enterpriseAdminsTableData: {
-      results: [],
-      itemCount: 0,
-      pageCount: 0,
-    },
-    fetchEnterpriseAdminsTableData: mockFetchEnterpriseAdminsTableData,
-    fetchAllEnterpriseAdminsData: jest.fn(),
-  };
+const mockFetchEnterpriseAdminsTableData = jest.fn();
+const defaultHookReturn = {
+  isLoading: false,
+  enterpriseAdminsTableData: {
+    results: [],
+    itemCount: 0,
+    pageCount: 0,
+  },
+  fetchEnterpriseAdminsTableData: mockFetchEnterpriseAdminsTableData,
+  fetchAllEnterpriseAdminsData: jest.fn(),
+};
 
+describe('InviteAdminsTable', () => {
   beforeEach(() => {
     jest.clearAllMocks();
     useEnterpriseAdminsTableData.mockReturnValue(defaultHookReturn);
@@ -419,6 +446,103 @@ describe('InviteAdminsTable', () => {
     await waitFor(() => {
       const dataTable = screen.getByTestId('data-table');
       expect(dataTable).toHaveAttribute('data-loading', 'false');
+    });
+  });
+});
+
+describe('Add Admin functionality', () => {
+  beforeEach(() => {
+    jest.clearAllMocks();
+    useEnterpriseAdminsTableData.mockReturnValue(defaultHookReturn);
+  });
+  it('renders Add admins button', () => {
+    renderWithIntl(<InviteAdminsTable enterpriseId="test-enterprise" />);
+
+    const addButton = screen.getByRole('button', { name: /add admins/i });
+    expect(addButton).toBeInTheDocument();
+  });
+
+  it('opens AddAdminModal when Add admins button is clicked', async () => {
+    renderWithIntl(<InviteAdminsTable enterpriseId="test-enterprise" />);
+
+    // Modal should not be visible initially
+    expect(screen.queryByTestId('add-admin-modal')).not.toBeInTheDocument();
+
+    // Click Add admins button
+    const addButton = screen.getByRole('button', { name: /add admins/i });
+    await userEvent.click(addButton);
+
+    // Modal should appear
+    await waitFor(() => {
+      expect(screen.getByTestId('add-admin-modal')).toBeInTheDocument();
+      expect(screen.getByText(/Add Admin Modal - test-enterprise/i)).toBeInTheDocument();
+    });
+  });
+
+  it('closes AddAdminModal when close button is clicked', async () => {
+    renderWithIntl(<InviteAdminsTable enterpriseId="test-enterprise" />);
+
+    // Open modal
+    const addButton = screen.getByRole('button', { name: /add admins/i });
+    await userEvent.click(addButton);
+
+    await waitFor(() => {
+      expect(screen.getByTestId('add-admin-modal')).toBeInTheDocument();
+    });
+
+    // Close modal
+    const closeButton = screen.getByTestId('modal-close-button');
+    await userEvent.click(closeButton);
+
+    // Modal should be hidden
+    await waitFor(() => {
+      expect(screen.queryByTestId('add-admin-modal')).not.toBeInTheDocument();
+    });
+  });
+
+  it('refreshes table data after successful admin addition', async () => {
+    renderWithIntl(<InviteAdminsTable enterpriseId="test-enterprise" />);
+
+    // Open modal
+    const addButton = screen.getByRole('button', { name: /add admins/i });
+    await userEvent.click(addButton);
+
+    await waitFor(() => {
+      expect(screen.getByTestId('add-admin-modal')).toBeInTheDocument();
+    });
+
+    // Clear any previous calls
+    mockFetchEnterpriseAdminsTableData.mockClear();
+
+    // Trigger success callback
+    const successButton = screen.getByTestId('modal-success-button');
+    await userEvent.click(successButton);
+
+    // Should refresh table data
+    await waitFor(() => {
+      expect(mockFetchEnterpriseAdminsTableData).toHaveBeenCalledWith({
+        pageIndex: 0,
+        pageSize: 10,
+        filters: [],
+        sortBy: [{ id: 'name', desc: true }],
+      });
+    });
+
+    // Modal should close
+    await waitFor(() => {
+      expect(screen.queryByTestId('add-admin-modal')).not.toBeInTheDocument();
+    });
+  });
+
+  it('passes correct enterpriseId prop to AddAdminModal', async () => {
+    const testEnterpriseId = 'my-enterprise-123';
+    renderWithIntl(<InviteAdminsTable enterpriseId={testEnterpriseId} />);
+
+    const addButton = screen.getByRole('button', { name: /add admins/i });
+    await userEvent.click(addButton);
+
+    await waitFor(() => {
+      expect(screen.getByText(`Add Admin Modal - ${testEnterpriseId}`)).toBeInTheDocument();
     });
   });
 });

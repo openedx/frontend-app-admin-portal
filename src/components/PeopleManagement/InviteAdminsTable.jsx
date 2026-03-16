@@ -1,5 +1,8 @@
 import React, { useState, useCallback } from 'react';
-import { CardView, DataTable, Toast } from '@openedx/paragon';
+import {
+  Button, CardView, DataTable, Toast,
+} from '@openedx/paragon';
+import { Add } from '@openedx/paragon/icons';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { FormattedMessage, useIntl } from '@edx/frontend-platform/i18n';
@@ -11,6 +14,7 @@ import OrgInviteAdminCard from './OrgInviteAdminCard';
 import useEnterpriseAdminsTableData from './data/hooks/useEnterpriseAdminsTableData';
 import LmsApiService from '../../data/services/LmsApiService';
 import DownloadAdminsCsvIconButton from './DownloadAdminsCsvIconButton';
+import AddAdminModal from './AddAdminModal';
 
 const FilterStatus = (rest) => (
   <DataTable.FilterStatus showFilteredFields={false} {...rest} />
@@ -26,6 +30,7 @@ const InviteAdminsTable = ({ enterpriseId }) => {
 
   const [isRemovingAdmin, setIsRemovingAdmin] = useState(false);
   const [showToast, setShowToast] = useState(false);
+  const [isAddAdminModalOpen, setIsAddAdminModalOpen] = useState(false);
 
   const handleRemoveAdmin = useCallback(async (admin) => {
     try {
@@ -48,6 +53,16 @@ const InviteAdminsTable = ({ enterpriseId }) => {
     }
   }, [enterpriseId, fetchEnterpriseAdminsTableData]);
 
+  const handleAddAdminSuccess = useCallback(() => {
+    // Refresh the table data after successful addition
+    fetchEnterpriseAdminsTableData({
+      pageIndex: 0,
+      pageSize: 10,
+      filters: [],
+      sortBy: [{ id: 'name', desc: true }],
+    });
+  }, [fetchEnterpriseAdminsTableData]);
+
   const CardComponentWithProps = useCallback((props) => (
     <OrgInviteAdminCard
       {...props}
@@ -63,6 +78,7 @@ const InviteAdminsTable = ({ enterpriseId }) => {
     <>
       {/* ================= Header ================= */}
       <div className="d-flex justify-content-between align-items-start mt-3 mb-2">
+
         <div>
           <h3>
             <FormattedMessage
@@ -79,10 +95,23 @@ const InviteAdminsTable = ({ enterpriseId }) => {
             />
           </p>
         </div>
-        <DownloadAdminsCsvIconButton
-          fetchData={fetchAllEnterpriseAdminsData}
-          dataCount={enterpriseAdminsTableData.itemCount}
-        />
+        <div className="d-flex align-items-center gap-2">
+          <DownloadAdminsCsvIconButton
+            fetchData={fetchAllEnterpriseAdminsData}
+            dataCount={enterpriseAdminsTableData.itemCount}
+          />
+          <Button
+            variant="primary"
+            iconBefore={Add}
+            onClick={() => setIsAddAdminModalOpen(true)}
+          >
+            <FormattedMessage
+              id="adminPortal.peopleManagement.inviteAdmin.addButton"
+              defaultMessage="Add admins"
+              description="Button text to add new admin"
+            />
+          </Button>
+        </div>
       </div>
 
       {/* ================= Table ================= */}
@@ -119,6 +148,13 @@ const InviteAdminsTable = ({ enterpriseId }) => {
         />
         <DataTable.TableFooter />
       </DataTable>
+      {/* ================= Add Admin Modal ================= */}
+      <AddAdminModal
+        isOpen={isAddAdminModalOpen}
+        onClose={() => setIsAddAdminModalOpen(false)}
+        enterpriseId={enterpriseId}
+        onSuccess={handleAddAdminSuccess}
+      />
       {/* ================= Toast ================= */}
       <Toast
         show={showToast}
