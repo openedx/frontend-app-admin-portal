@@ -1,9 +1,9 @@
 import { useMemo } from 'react';
-import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { useIntl } from '@edx/frontend-platform/i18n';
 import EnterpriseAccessApiService from '../../../data/services/EnterpriseAccessApiService';
 import { billingQueryKeys } from './constants';
-import { getSupportedCountryCodes, Country } from '../constants';
+import { Country, getSupportedCountryCodes } from '../constants';
 
 /**
  * Transform billing address API response from snake_case to camelCase

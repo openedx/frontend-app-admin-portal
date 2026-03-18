@@ -11,7 +11,11 @@ import EcommerceApiService from '../../../data/services/EcommerceApiService';
 import LicenseManagerApiService from '../../../data/services/LicenseManagerAPIService';
 import { BUDGET_TYPES } from '../../EnterpriseApp/data/constants';
 import EnterpriseAccessApiService from '../../../data/services/EnterpriseAccessApiService';
-import { learnerCreditManagementQueryKeys, isBudgetRetiredOrExpired, getBudgetStatus } from '../../learner-credit-management/data';
+import {
+  getBudgetStatus,
+  isBudgetRetiredOrExpired,
+  learnerCreditManagementQueryKeys,
+} from '../../learner-credit-management/data';
 import { isAssignableSubsidyAccessPolicyType } from '../../../utils';
 import { billingQueryKeys } from '../../billing/data/constants';
 
@@ -234,6 +238,7 @@ export const useBillingSubscriptionAvailable = ({ enterpriseId }) => {
       // Return the same shape as useSubscription for cache compatibility
       return response.data.subscription ?? response.data;
     },
+    refetchOnWindowFocus: false,
     // Transform the full subscription response to just a boolean for this hook
     select: (subscriptionData) => !!subscriptionData,
     // Gracefully handle errors - log but don't throw
