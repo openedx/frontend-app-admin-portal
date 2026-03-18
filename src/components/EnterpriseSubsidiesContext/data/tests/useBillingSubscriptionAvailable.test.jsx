@@ -1,6 +1,4 @@
-import React from 'react';
 import { renderHook, waitFor } from '@testing-library/react';
-import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 
 import { useBillingSubscriptionAvailable } from '../hooks';
 import EnterpriseAccessApiService from '../../../../data/services/EnterpriseAccessApiService';
@@ -13,23 +11,9 @@ jest.mock('@edx/frontend-platform/logging', () => ({
 const TEST_ENTERPRISE_UUID = 'test-enterprise-uuid';
 
 describe('useBillingSubscriptionAvailable', () => {
-  let queryClient;
-
   beforeEach(() => {
     jest.clearAllMocks();
-    queryClient = new QueryClient({
-      defaultOptions: {
-        queries: { retry: false },
-        mutations: { retry: false },
-      },
-    });
   });
-
-  const wrapper = ({ children }) => (
-    <QueryClientProvider client={queryClient}>
-      {children}
-    </QueryClientProvider>
-  );
 
   it('returns hasBillingSubscription=true when API returns subscription data', async () => {
     const mockSubscriptionData = {
@@ -46,7 +30,6 @@ describe('useBillingSubscriptionAvailable', () => {
       () => useBillingSubscriptionAvailable({
         enterpriseId: TEST_ENTERPRISE_UUID,
       }),
-      { wrapper },
     );
 
     // Initially loading
@@ -70,7 +53,6 @@ describe('useBillingSubscriptionAvailable', () => {
       () => useBillingSubscriptionAvailable({
         enterpriseId: TEST_ENTERPRISE_UUID,
       }),
-      { wrapper },
     );
 
     await waitFor(() => {
@@ -90,7 +72,6 @@ describe('useBillingSubscriptionAvailable', () => {
       () => useBillingSubscriptionAvailable({
         enterpriseId: TEST_ENTERPRISE_UUID,
       }),
-      { wrapper },
     );
 
     await waitFor(() => {
@@ -110,7 +91,6 @@ describe('useBillingSubscriptionAvailable', () => {
       () => useBillingSubscriptionAvailable({
         enterpriseId: TEST_ENTERPRISE_UUID,
       }),
-      { wrapper },
     );
 
     await waitFor(() => {
@@ -131,7 +111,6 @@ describe('useBillingSubscriptionAvailable', () => {
       () => useBillingSubscriptionAvailable({
         enterpriseId: TEST_ENTERPRISE_UUID,
       }),
-      { wrapper },
     );
 
     // Should start with isLoading=true
@@ -156,7 +135,6 @@ describe('useBillingSubscriptionAvailable', () => {
       () => useBillingSubscriptionAvailable({
         enterpriseId: customEnterpriseId,
       }),
-      { wrapper },
     );
 
     await waitFor(() => {
