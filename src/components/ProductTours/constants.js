@@ -21,6 +21,7 @@ export const LEARNER_CREDIT_COOKIE_NAME = 'dismissed-learner-credit-tour';
 export const LEARNER_DETAIL_PAGE_COOKIE_NAME = 'dismissed-learner-detail-page-tour';
 export const PORTAL_APPEARANCE_TOUR_COOKIE_NAME = 'dismissed-portal-appearance-tour';
 export const ANALYTICS_COOKIE_NAME = 'dismissed-analytics-tour';
+export const ADMINS_TAB_NEW_FEATURE_COOKIE_NAME = 'dismissed-admins-tab-new-feature-tour';
 
 export const COOKIE_NAMES = {
   BROWSE_AND_REQUEST_TOUR_COOKIE_NAME,
@@ -52,6 +53,10 @@ export const PORTAL_APPEARANCE_ON_END_EVENT_NAME = 'edx.ui.enterprise.admin-port
 export const ANALYTICS_ADVANCE_EVENT_NAME = 'edx.ui.enterprise.admin-portal.tours.analytics.advanced';
 export const ANALYTICS_DISMISS_EVENT_NAME = 'edx.ui.enterprise.admin-portal.tours.analytics.dismissed';
 export const ANALYTICS_ON_END_EVENT_NAME = 'edx.ui.enterprise.admin-portal.tours.analytics.navigated-to-page';
+
+export const ADMINS_TAB_NEW_FEATURE_ADVANCE_EVENT_NAME = 'edx.ui.enterprise.admin-portal.people-management.admins-tab-notification.advanced';
+export const ADMINS_TAB_NEW_FEATURE_DISMISS_EVENT_NAME = 'edx.ui.enterprise.admin-portal.people-management.admins-tab-notification.dismissed';
+export const ADMINS_TAB_NEW_FEATURE_ON_END_EVENT_NAME = 'edx.ui.enterprise.admin-portal.people-management.admins-tab-notification.navigated-to-page';
 
 export default {
   TOUR_TARGETS,

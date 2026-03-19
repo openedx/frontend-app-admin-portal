@@ -11,6 +11,7 @@ import learnerDetailPageTour from './learnerDetailPageTour';
 import highlightsTour from './highlightsTour';
 import analyticsTour from './AnalyticsTour';
 import browseAndRequestTour from './browseAndRequestTour';
+import adminsTabNewFeatureTour, { useAdminsTabNewFeatureTour } from './adminsTabNewFeatureTour';
 import { disableAll, filterCheckpoints } from './data/utils';
 import AdminOnboardingTours from './AdminOnboardingTours/AdminOnboardingTours';
 import {
@@ -20,6 +21,7 @@ import {
   LEARNER_DETAIL_PAGE_COOKIE_NAME,
   PORTAL_APPEARANCE_TOUR_COOKIE_NAME,
   ANALYTICS_COOKIE_NAME,
+  ADMINS_TAB_NEW_FEATURE_COOKIE_NAME,
 } from './constants';
 
 import {
@@ -47,6 +49,7 @@ const ProductTours = ({
   enableLearnerPortal,
   enterpriseSlug,
   enterpriseId,
+  enableInviteAdmins,
   onboardingEnabled,
   onboardingTourCompleted,
   onboardingTourDismissed,
@@ -66,6 +69,7 @@ const ProductTours = ({
     [LEARNER_CREDIT_COOKIE_NAME]: useLearnerCreditTour(),
     [LEARNER_DETAIL_PAGE_COOKIE_NAME]: useLearnerDetailPageTour(),
     [PORTAL_APPEARANCE_TOUR_COOKIE_NAME]: usePortalAppearanceTour(enablePortalAppearance),
+    [ADMINS_TAB_NEW_FEATURE_COOKIE_NAME]: useAdminsTabNewFeatureTour(enableInviteAdmins),
   };
   const newFeatureTourCheckpoints = {
     [BROWSE_AND_REQUEST_TOUR_COOKIE_NAME]: browseAndRequestTour({ enterpriseSlug }),
@@ -74,6 +78,7 @@ const ProductTours = ({
     [LEARNER_CREDIT_COOKIE_NAME]: learnerCreditTour({ enterpriseSlug }),
     [LEARNER_DETAIL_PAGE_COOKIE_NAME]: learnerDetailPageTour({ enterpriseSlug }),
     [PORTAL_APPEARANCE_TOUR_COOKIE_NAME]: portalAppearanceTour({ enterpriseSlug }),
+    [ADMINS_TAB_NEW_FEATURE_COOKIE_NAME]: adminsTabNewFeatureTour({ enterpriseId, enterpriseSlug }),
   };
   const checkpointsArray = filterCheckpoints(newFeatureTourCheckpoints, enabledFeatures);
   const tours = [{
@@ -144,6 +149,7 @@ ProductTours.propTypes = {
   enableLearnerPortal: PropTypes.bool.isRequired,
   enterpriseSlug: PropTypes.string.isRequired,
   enterpriseId: PropTypes.string.isRequired,
+  enableInviteAdmins: PropTypes.bool.isRequired,
   onboardingEnabled: PropTypes.bool.isRequired,
   onboardingTourCompleted: PropTypes.bool.isRequired,
   onboardingTourDismissed: PropTypes.bool.isRequired,
@@ -153,6 +159,7 @@ const mapStateToProps = state => ({
   enableLearnerPortal: state.portalConfiguration.enableLearnerPortal,
   enterpriseSlug: state.portalConfiguration.enterpriseSlug,
   enterpriseId: state.portalConfiguration.enterpriseId,
+  enableInviteAdmins: state.portalConfiguration.enterpriseFeatures?.enterpriseInviteAdminsEnabled || false,
   onboardingEnabled: state.portalConfiguration.enterpriseFeatures?.enterpriseAdminOnboardingEnabled || false,
   onboardingTourCompleted: state.enterpriseCustomerAdmin.onboardingTourCompleted,
   onboardingTourDismissed: state.enterpriseCustomerAdmin.onboardingTourDismissed,

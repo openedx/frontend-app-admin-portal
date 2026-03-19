@@ -107,6 +107,10 @@ const PeopleManagementPageWrapper = ({
 };
 
 describe('<PeopleManagementPage >', () => {
+  beforeEach(() => {
+    global.localStorage.clear();
+  });
+
   it('renders the PeopleManagementPage zero state', async () => {
     const user = userEvent.setup();
     useAllFlexEnterpriseGroups.mockReturnValue({ data: { results: {} } });
@@ -304,6 +308,37 @@ describe('<PeopleManagementPage >', () => {
       expect(
         screen.getByText("Your organization's groups"),
       ).toBeInTheDocument();
+    });
+
+    it('shows red dot on Admins tab until clicked and persists hidden state', async () => {
+      const user = userEvent.setup();
+      useAllFlexEnterpriseGroups.mockReturnValue({ data: mockGroupsResponse });
+
+      const storeState = {
+        portalConfiguration: {
+          enterpriseId: enterpriseUUID,
+          enterpriseSlug,
+          enterpriseFeatures: {
+            enterpriseInviteAdminsEnabled: true,
+          },
+        },
+      };
+
+      const { unmount } = render(
+        <PeopleManagementPageWrapper initialState={storeState} />,
+      );
+
+      expect(screen.getByText('has unread notifications')).toBeInTheDocument();
+
+      await user.click(screen.getByRole('tab', { name: /admins/i }));
+      expect(screen.queryByText('has unread notifications')).not.toBeInTheDocument();
+
+      unmount();
+      render(
+        <PeopleManagementPageWrapper initialState={storeState} />,
+      );
+
+      expect(screen.queryByText('has unread notifications')).not.toBeInTheDocument();
     });
   });
 });

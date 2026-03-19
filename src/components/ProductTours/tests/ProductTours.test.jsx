@@ -21,6 +21,7 @@ import {
   PORTAL_APPEARANCE_TOUR_COOKIE_NAME,
   TOUR_TARGETS,
 } from '../constants';
+import adminsTabNewFeatureTour, { generateAdminsTabAlertCookieName } from '../adminsTabNewFeatureTour';
 import { ONBOARDING_WELCOME_MODAL_COOKIE_NAME } from '../AdminOnboardingTours/constants';
 import { ROUTE_NAMES } from '../../EnterpriseApp/data/constants';
 import { ACCESS_TAB } from '../../settings/data/constants';
@@ -32,6 +33,14 @@ import useHydrateAdminOnboardingData from '../AdminOnboardingTours/data/useHydra
 import { queryClient } from '../../test/testUtils';
 
 const mockStore = configureMockStore([thunk]);
+
+jest.mock('@edx/frontend-enterprise-utils', () => {
+  const actualModule = jest.requireActual('@edx/frontend-enterprise-utils');
+  return {
+    ...actualModule,
+    sendEnterpriseTrackEvent: jest.fn(),
+  };
+});
 
 const ENTERPRISE_SLUG = 'sluggy';
 const ENTERPRISE_UUID = 'test-enterprise-uuid';
@@ -50,6 +59,7 @@ const ToursWithContext = ({
   subsidyRequestsEnabled = false,
   canManageLearnerCredit = false,
   enableLearnerPortal = false,
+  enableInviteAdmins = false,
   EnterpriseSubsidiesContextValue = {
     canManageLearnerCredit,
     enterpriseSubsidyTypes: [SUBSIDY_TYPES.coupon],
@@ -68,6 +78,7 @@ const ToursWithContext = ({
       enableLearnerPortal,
       enterpriseFeatures: {
         enterpriseAdminOnboardingEnabled: onboardingEnabled,
+        enterpriseInviteAdminsEnabled: enableInviteAdmins,
       },
     },
     enterpriseCustomerAdmin: {
@@ -178,6 +189,46 @@ describe('<ProductTours/>', () => {
         />,
       );
       expect(screen.queryByText('New Feature')).toBeFalsy();
+    });
+  });
+
+  describe('admins tab new feature tour', () => {
+    beforeEach(() => {
+      global.localStorage.setItem(BROWSE_AND_REQUEST_TOUR_COOKIE_NAME, true);
+      global.localStorage.setItem(LEARNER_CREDIT_COOKIE_NAME, true);
+      global.localStorage.setItem(LEARNER_DETAIL_PAGE_COOKIE_NAME, true);
+      global.localStorage.setItem(PORTAL_APPEARANCE_TOUR_COOKIE_NAME, true);
+    });
+
+    it('is not shown when invite admins feature is disabled', () => {
+      render(<ToursWithContext />);
+      expect(screen.queryByText("We've recently added the ability for you to invite and manage your admins.", { exact: false })).toBeFalsy();
+    });
+
+    it('is shown when invite admins feature is enabled and alert cookie is not set', () => {
+      render(<ToursWithContext enableInviteAdmins />);
+      expect(screen.queryByText("We've recently added the ability for you to invite and manage your admins.", { exact: false })).toBeTruthy();
+    });
+
+    it('is not shown when invite admins alert cookie is set for the user', () => {
+      const alertCookie = generateAdminsTabAlertCookieName();
+      global.localStorage.setItem(alertCookie, true);
+      render(<ToursWithContext enableInviteAdmins />);
+      expect(screen.queryByText("We've recently added the ability for you to invite and manage your admins.", { exact: false })).toBeFalsy();
+    });
+
+    it('sets invite admins alert cookie when closed via X button', () => {
+      const alertCookie = generateAdminsTabAlertCookieName();
+      const tour = adminsTabNewFeatureTour({ enterpriseId: ENTERPRISE_UUID, enterpriseSlug: ENTERPRISE_SLUG });
+      tour.onDismiss();
+      expect(global.localStorage.getItem(alertCookie)).toBe('true');
+    });
+
+    it('sets invite admins alert cookie when dismissed via Dismiss button', () => {
+      const alertCookie = generateAdminsTabAlertCookieName();
+      const tour = adminsTabNewFeatureTour({ enterpriseId: ENTERPRISE_UUID, enterpriseSlug: ENTERPRISE_SLUG });
+      tour.onEnd();
+      expect(global.localStorage.getItem(alertCookie)).toBe('true');
     });
   });
 

@@ -18,6 +18,7 @@ import EVENT_NAMES from '../../eventTracking';
 import GroupInviteErrorToast from './GroupInviteErrorToast';
 import LearnerTabContent from './LearnerTabContent';
 import InviteAdminsTable from './InviteAdminsTable';
+import { useAdminsTabNotificationBubble } from './AdminsTabNotificationBubble';
 
 const PeopleManagementPage = ({ enterpriseId, learnersTabEnabled }) => {
   const intl = useIntl();
@@ -48,6 +49,11 @@ const PeopleManagementPage = ({ enterpriseId, learnersTabEnabled }) => {
   const [isModalOpen, openModal, closeModal] = useToggle(false);
   const [groups, setGroups] = useState();
   const [activeTab, setActiveTab] = useState(learnersTabEnabled ? 'learners' : null);
+
+  const {
+    adminsTabNotificationBubble,
+    onAdminsTabClick,
+  } = useAdminsTabNotificationBubble();
 
   useEffect(() => {
     if (data !== undefined) {
@@ -92,6 +98,13 @@ const PeopleManagementPage = ({ enterpriseId, learnersTabEnabled }) => {
     );
   };
 
+  const handleTabSelect = (key) => {
+    setActiveTab(key);
+    if (key === 'admins') {
+      onAdminsTabClick();
+    }
+  };
+
   return (
     <>
       <Helmet title={PAGE_TITLE} />
@@ -109,7 +122,7 @@ const PeopleManagementPage = ({ enterpriseId, learnersTabEnabled }) => {
         // NOTE:  this Tabs wrapper is intentional as we’ll be adding additional tabs soon.
           <Tabs
             activeKey={activeTab}
-            onSelect={(key) => setActiveTab(key)}
+            onSelect={handleTabSelect}
           >
             <Tab
               eventKey="learners"
@@ -134,10 +147,15 @@ const PeopleManagementPage = ({ enterpriseId, learnersTabEnabled }) => {
             </Tab>
             <Tab
               eventKey="admins"
-              title={intl.formatMessage({
-                id: 'adminPortal.peopleManagement.tabs.admins',
-                defaultMessage: 'Admins',
-              })}
+              title={(
+                <span className="position-relative">
+                  {intl.formatMessage({
+                    id: 'adminPortal.peopleManagement.tabs.admins',
+                    defaultMessage: 'Admins',
+                  })}
+                  {adminsTabNotificationBubble}
+                </span>
+              )}
             >
               <InviteAdminsTable />
             </Tab>
