@@ -158,8 +158,8 @@ const renderActionsCell = (
           <Dropdown.Item onClick={() => handleDownloadPdf(invoicePdf)}>
             <FormattedMessage
               id="admin.portal.billing.transactionHistory.actions.downloadInvoice"
-              defaultMessage="Download Invoice (PDF)"
-              description="Action menu item for downloading invoice PDF"
+              defaultMessage="View Invoice"
+              description="Action menu item for viewing the invoice PDF in a new tab"
             />
           </Dropdown.Item>
         )}
@@ -167,8 +167,8 @@ const renderActionsCell = (
           <Dropdown.Item onClick={() => handleDownloadPdf(receiptUrl)}>
             <FormattedMessage
               id="admin.portal.billing.transactionHistory.actions.downloadReceipt"
-              defaultMessage="Download Receipt (PDF)"
-              description="Action menu item for downloading receipt PDF"
+              defaultMessage="View Receipt"
+              description="Action menu item for viewing the receipt PDF in a new tab"
             />
           </Dropdown.Item>
         )}
@@ -236,15 +236,8 @@ const TransactionHistory = ({
     },
     {
       Header: intl.formatMessage({
-        id: 'admin.portal.billing.transactionHistory.column.description',
-        defaultMessage: 'Description',
-      }),
-      accessor: 'description',
-    },
-    {
-      Header: intl.formatMessage({
         id: 'admin.portal.billing.transactionHistory.column.amount',
-        defaultMessage: 'Amount',
+        defaultMessage: 'Amount Paid',
       }),
       accessor: 'amount',
       Cell: ({

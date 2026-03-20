@@ -1,9 +1,9 @@
 import { useMemo } from 'react';
-import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { useIntl } from '@edx/frontend-platform/i18n';
 import EnterpriseAccessApiService from '../../../data/services/EnterpriseAccessApiService';
 import { billingQueryKeys } from './constants';
-import { SUPPORTED_COUNTRY_CODES, Country } from '../constants';
+import { Country, getSupportedCountryCodes } from '../constants';
 
 /**
  * Transform billing address API response from snake_case to camelCase
@@ -116,7 +116,8 @@ export const useSubscription = (enterpriseUuid: string) => useQuery({
   queryKey: billingQueryKeys.subscription(enterpriseUuid),
   queryFn: async () => {
     const response = await EnterpriseAccessApiService.getSubscription(enterpriseUuid);
-    return response.data.subscription ?? response.data;
+    // API returns subscription data at top level (not nested under 'subscription' key)
+    return response.data;
   },
 });
 
@@ -297,6 +298,9 @@ export const useReinstateSubscription = () => {
  * Uses the Intl.DisplayNames API to provide country names in the user's locale.
  * Countries are sorted alphabetically by their localized name.
  *
+ * Country codes are sourced from the i18n-iso-countries package (via @edx/frontend-platform),
+ * excluding embargoed countries.
+ *
  * @returns {Country[]} Array of country options with value (ISO code) and label (localized name)
  *
  * @example
@@ -312,7 +316,7 @@ export const useCountryOptions = (): Country[] => {
       type: 'region',
     });
 
-    return SUPPORTED_COUNTRY_CODES
+    return getSupportedCountryCodes()
       .map((code) => ({
         value: code,
         label: displayNames.of(code) || code,

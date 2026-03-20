@@ -53,7 +53,7 @@ const BillingAddress = ({ enterpriseUuid }: BillingAddressProps) => {
         <h2 className="mb-3">
           <FormattedMessage
             id="admin.portal.billing.billingAddress.heading"
-            defaultMessage="Billing Address"
+            defaultMessage="Organization Details"
             description="Heading for billing address section"
           />
         </h2>
@@ -72,7 +72,7 @@ const BillingAddress = ({ enterpriseUuid }: BillingAddressProps) => {
         <h2 className="mb-3">
           <FormattedMessage
             id="admin.portal.billing.billingAddress.heading"
-            defaultMessage="Billing Address"
+            defaultMessage="Organization Details"
             description="Heading for billing address section"
           />
         </h2>
@@ -124,7 +124,7 @@ const BillingAddress = ({ enterpriseUuid }: BillingAddressProps) => {
       <h2 className="mb-3">
         <FormattedMessage
           id="admin.portal.billing.billingAddress.heading"
-          defaultMessage="Billing Address"
+          defaultMessage="Organization Details"
           description="Heading for billing address section"
         />
       </h2>

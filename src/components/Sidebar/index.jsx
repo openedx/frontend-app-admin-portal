@@ -6,8 +6,8 @@ import classNames from 'classnames';
 import { Icon } from '@openedx/paragon';
 import { FormattedMessage, useIntl } from '@edx/frontend-platform/i18n';
 import {
-  BookOpen, CreditCard, Description, InsertChartOutlined, MonetizationOn, MoneyOutline,
-  Person, Settings, Support, Tag, TrendingUp,
+  BookOpen, CreditCard, Description, InsertChartOutlined, MoneyOutline,
+  Person, ReceiptLong, Settings, Support, Tag, TrendingUp,
 } from '@openedx/paragon/icons';
 import { getAuthenticatedUser } from '@edx/frontend-platform/auth';
 import { getConfig } from '@edx/frontend-platform/config';
@@ -158,7 +158,7 @@ const Sidebar = ({
         defaultMessage="Billing"
       />,
       to: `${baseUrl}/admin/${ROUTE_NAMES.billing}`,
-      icon: <Icon src={MonetizationOn} />,
+      icon: <Icon src={ReceiptLong} />,
       hidden: !canAccessBilling,
       id: TOUR_TARGETS.BILLING,
     },

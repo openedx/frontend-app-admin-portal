@@ -84,7 +84,6 @@ const defaultHookValues = {
   useSubscription: {
     data: {
       status: 'active',
-      planType: 'Teams',
     },
     isLoading: false,
   },
@@ -258,7 +257,7 @@ describe('BillingPage', () => {
     it('displays alert when subscription status is past_due', () => {
       setupMocks({
         useSubscription: {
-          data: { status: 'past_due', planType: 'Teams' },
+          data: { status: 'past_due' },
           isLoading: false,
         },
       });
@@ -271,7 +270,7 @@ describe('BillingPage', () => {
     it('does not display alert when subscription status is active', () => {
       setupMocks({
         useSubscription: {
-          data: { status: 'active', planType: 'Teams' },
+          data: { status: 'active' },
           isLoading: false,
         },
       });

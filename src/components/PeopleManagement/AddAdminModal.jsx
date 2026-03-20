@@ -32,7 +32,10 @@ const AddAdminModal = ({
   };
 
   useEffect(() => () => {
-    clearCloseTimeout();
+    if (closeTimeoutRef.current) {
+      clearTimeout(closeTimeoutRef.current);
+      closeTimeoutRef.current = null;
+    }
   }, []);
 
   const validateEmail = (email) => {
@@ -174,6 +177,8 @@ const AddAdminModal = ({
       onClose={handleClose}
       hasCloseButton
       size="md"
+      isFullscreenOnMobile
+      isOverflowVisible={false}
     >
       <ModalDialog.Header>
         <ModalDialog.Title>

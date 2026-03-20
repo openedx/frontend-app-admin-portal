@@ -39,7 +39,7 @@ const BillingAddressModal = ({
   const countryOptions = useCountryOptions();
   const [showSuccessToast, setShowSuccessToast] = useState(false);
   const [apiError, setApiError] = useState<string | null>(null);
-  const [touched, setTouched] = useState<Record<string, boolean>>({});
+  const [showValidationErrors, setShowValidationErrors] = useState(false);
 
   // Form state
   const [formData, setFormData] = useState({
@@ -52,38 +52,6 @@ const BillingAddressModal = ({
     postalCode: '',
     country: '',
   });
-
-  // Validation
-  const validateEmail = (email: string) => {
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    return emailRegex.test(email);
-  };
-
-  const getFieldError = (fieldName: string) => {
-    if (!touched[fieldName]) {
-      return null;
-    }
-
-    switch (fieldName) {
-      case 'email':
-        if (!formData.email) {
-          return intl.formatMessage({
-            id: 'admin.portal.billing.billingAddress.modal.email.required',
-            defaultMessage: 'Email is required',
-          });
-        }
-        if (!validateEmail(formData.email)) {
-          return intl.formatMessage({
-            id: 'admin.portal.billing.billingAddress.modal.email.invalid',
-            defaultMessage: 'Please enter a valid email address',
-          });
-        }
-        break;
-      default:
-        break;
-    }
-    return null;
-  };
 
   // Initialize form with existing address data when modal opens
   useEffect(() => {
@@ -98,6 +66,7 @@ const BillingAddressModal = ({
         postalCode: existingAddress.postalCode || existingAddress.postal_code || '',
         country: existingAddress.country || '',
       });
+      setShowValidationErrors(false);
     } else if (isOpen && !existingAddress) {
       // Reset form for new address
       setFormData({
@@ -110,6 +79,7 @@ const BillingAddressModal = ({
         postalCode: '',
         country: 'US', // Default to US
       });
+      setShowValidationErrors(false);
     }
   }, [isOpen, existingAddress]);
 
@@ -121,16 +91,16 @@ const BillingAddressModal = ({
     }));
   };
 
-  const handleBlur = (fieldName: string) => {
-    setTouched(prev => ({
-      ...prev,
-      [fieldName]: true,
-    }));
-  };
-
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setApiError(null);
+
+    const form = e.currentTarget as HTMLFormElement;
+    if (form.checkValidity() === false) {
+      e.stopPropagation();
+      setShowValidationErrors(true);
+      return;
+    }
 
     // Map form fields to API expected fields
     const apiAddressData = {
@@ -159,7 +129,7 @@ const BillingAddressModal = ({
         || error?.response?.data?.error
         || intl.formatMessage({
           id: 'admin.portal.billing.billingAddress.modal.error.generic',
-          defaultMessage: 'Failed to update billing address. Please try again.',
+          defaultMessage: 'Failed to update address. Please try again.',
         });
       setApiError(errorMessage);
     }
@@ -178,7 +148,7 @@ const BillingAddressModal = ({
   const modalTitle = existingAddress
     ? intl.formatMessage({
       id: 'admin.portal.billing.billingAddress.modal.editTitle',
-      defaultMessage: 'Edit Billing Address',
+      defaultMessage: 'Edit Organization Details',
       description: 'Title for edit billing address modal',
     })
     : intl.formatMessage({
@@ -194,7 +164,7 @@ const BillingAddressModal = ({
   return (
     <>
       <ModalDialog
-        title="Billing Address"
+        title={modalTitle}
         isOpen={isOpen}
         onClose={onClose}
         size="lg"
@@ -207,7 +177,7 @@ const BillingAddressModal = ({
           </ModalDialog.Title>
         </ModalDialog.Header>
         <ModalDialog.Body>
-          <Form id="billing-address-form" onSubmit={handleSubmit}>
+          <Form id="billing-address-form" noValidate validated={showValidationErrors} onSubmit={handleSubmit}>
             <Stack gap={3}>
               {/* API Error Alert */}
               {apiError && (
@@ -217,26 +187,20 @@ const BillingAddressModal = ({
               )}
 
               {/* Billing Email */}
-              <Form.Group controlId="billing-address-email" isInvalid={!!getFieldError('email')}>
+              <Form.Group controlId="billing-address-email">
                 <Form.Label>
                   <FormattedMessage
                     id="admin.portal.billing.billingAddress.modal.email.label"
                     defaultMessage="Billing Email"
                     description="Label for billing email field"
                   />
-                  {' *'}
                 </Form.Label>
                 <Form.Control
                   type="email"
                   name="email"
                   value={formData.email}
-                  onChange={handleChange}
-                  onBlur={() => handleBlur('email')}
-                  required
+                  disabled
                 />
-                <Form.Control.Feedback type="invalid">
-                  {getFieldError('email')}
-                </Form.Control.Feedback>
               </Form.Group>
 
               {/* Organization Name */}
@@ -244,10 +208,9 @@ const BillingAddressModal = ({
                 <Form.Label>
                   <FormattedMessage
                     id="admin.portal.billing.billingAddress.modal.organizationName.label"
-                    defaultMessage="Organization name for invoice"
+                    defaultMessage="Name for invoice"
                     description="Label for organization name field"
                   />
-                  {' *'}
                 </Form.Label>
                 <Form.Control
                   type="text"
@@ -256,6 +219,15 @@ const BillingAddressModal = ({
                   onChange={handleChange}
                   required
                 />
+                {showValidationErrors && (
+                  <Form.Control.Feedback type="invalid">
+                    {intl.formatMessage({
+                      id: 'admin.portal.billing.billingAddress.modal.organizationName.invalid',
+                      defaultMessage: 'Please provide a valid organization name.',
+                      description: 'Error message for invalid organization name',
+                    })}
+                  </Form.Control.Feedback>
+                )}
               </Form.Group>
 
               {/* Street Address (Line 1) */}
@@ -266,7 +238,6 @@ const BillingAddressModal = ({
                     defaultMessage="Street address"
                     description="Label for street address line 1 field"
                   />
-                  {' *'}
                 </Form.Label>
                 <Form.Control
                   type="text"
@@ -275,6 +246,15 @@ const BillingAddressModal = ({
                   onChange={handleChange}
                   required
                 />
+                {showValidationErrors && (
+                  <Form.Control.Feedback type="invalid">
+                    {intl.formatMessage({
+                      id: 'admin.portal.billing.billingAddress.modal.line1.invalid',
+                      defaultMessage: 'Please provide a valid street address.',
+                      description: 'Error message for invalid street address',
+                    })}
+                  </Form.Control.Feedback>
+                )}
               </Form.Group>
 
               {/* Address Line 2 (Optional) */}
@@ -302,7 +282,6 @@ const BillingAddressModal = ({
                     defaultMessage="City"
                     description="Label for city field"
                   />
-                  {' *'}
                 </Form.Label>
                 <Form.Control
                   type="text"
@@ -311,6 +290,15 @@ const BillingAddressModal = ({
                   onChange={handleChange}
                   required
                 />
+                {showValidationErrors && (
+                  <Form.Control.Feedback type="invalid">
+                    {intl.formatMessage({
+                      id: 'admin.portal.billing.billingAddress.modal.city.invalid',
+                      defaultMessage: 'Please provide a valid city.',
+                      description: 'Error message for invalid city',
+                    })}
+                  </Form.Control.Feedback>
+                )}
               </Form.Group>
 
               {/* State/Province */}
@@ -321,7 +309,6 @@ const BillingAddressModal = ({
                     defaultMessage="State/Province"
                     description="Label for state/province field"
                   />
-                  {' *'}
                 </Form.Label>
                 <Form.Control
                   type="text"
@@ -330,6 +317,15 @@ const BillingAddressModal = ({
                   onChange={handleChange}
                   required
                 />
+                {showValidationErrors && (
+                  <Form.Control.Feedback type="invalid">
+                    {intl.formatMessage({
+                      id: 'admin.portal.billing.billingAddress.modal.state.invalid',
+                      defaultMessage: 'Please provide a valid state/province.',
+                      description: 'Error message for invalid state/province',
+                    })}
+                  </Form.Control.Feedback>
+                )}
               </Form.Group>
 
               {/* Postal Code */}
@@ -340,7 +336,6 @@ const BillingAddressModal = ({
                     defaultMessage="Postal Code"
                     description="Label for postal code field"
                   />
-                  {' *'}
                 </Form.Label>
                 <Form.Control
                   type="text"
@@ -349,6 +344,15 @@ const BillingAddressModal = ({
                   onChange={handleChange}
                   required
                 />
+                {showValidationErrors && (
+                  <Form.Control.Feedback type="invalid">
+                    {intl.formatMessage({
+                      id: 'admin.portal.billing.billingAddress.modal.postalCode.invalid',
+                      defaultMessage: 'Please provide a valid postal code.',
+                      description: 'Error message for invalid postal code',
+                    })}
+                  </Form.Control.Feedback>
+                )}
               </Form.Group>
 
               {/* Country */}
@@ -359,7 +363,6 @@ const BillingAddressModal = ({
                     defaultMessage="Country"
                     description="Label for country field"
                   />
-                  {' *'}
                 </Form.Label>
                 <Form.Control
                   as="select"
@@ -381,6 +384,15 @@ const BillingAddressModal = ({
                     </option>
                   ))}
                 </Form.Control>
+                {showValidationErrors && (
+                  <Form.Control.Feedback type="invalid">
+                    {intl.formatMessage({
+                      id: 'admin.portal.billing.billingAddress.modal.country.invalid',
+                      defaultMessage: 'Please provide a valid country.',
+                      description: 'Error message for invalid country',
+                    })}
+                  </Form.Control.Feedback>
+                )}
               </Form.Group>
             </Stack>
           </Form>

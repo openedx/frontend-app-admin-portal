@@ -49,9 +49,8 @@ describe('<AddAdminModal />', () => {
   });
 
   afterEach(() => {
-    if (jest.isMockFunction(setTimeout)) {
-      jest.clearAllTimers();
-    }
+    jest.clearAllTimers();
+    jest.useRealTimers();
   });
 
   describe('Modal Rendering', () => {

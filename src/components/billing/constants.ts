@@ -1,3 +1,5 @@
+import countries from 'i18n-iso-countries';
+
 /**
  * Billing-related constants shared across billing components.
  */
@@ -8,10 +10,19 @@ export interface Country {
 }
 
 /**
- * List of supported ISO 3166-1 alpha-2 country codes for billing and payment methods.
+ * List of embargoed countries that should be excluded from billing options.
  *
- * This list includes all Stripe-supported countries as of 2024, excluding embargoed nations.
- * Source: https://stripe.com/global
+ * These countries are excluded due to international sanctions and trade restrictions:
+ * BY (Belarus), CU (Cuba), IR (Iran), KP (North Korea), RU (Russia), SY (Syria)
+ */
+const EMBARGOED_COUNTRY_CODES = new Set(['BY', 'CU', 'IR', 'KP', 'RU', 'SY']);
+
+/**
+ * Get all supported ISO 3166-1 alpha-2 country codes for billing and payment methods.
+ *
+ * This function retrieves all officially assigned ISO 3166-1 alpha-2 codes from the
+ * i18n-iso-countries package (available via @edx/frontend-platform dependency),
+ * excluding embargoed nations.
  *
  * Country names are localized at runtime using the useCountryOptions hook,
  * which leverages the Intl.DisplayNames API to provide names in the user's locale.
@@ -19,51 +30,9 @@ export interface Country {
  * This list is used by both BillingAddressModal and AddPaymentMethodModal
  * to ensure consistency between billing addresses and payment methods.
  *
- * Embargoed countries explicitly excluded: RU, IR, KP, SY, CU, BY
+ * @returns Array of ISO 3166-1 alpha-2 country codes, excluding embargoed countries
  */
-export const SUPPORTED_COUNTRY_CODES: string[] = [
-  'AE', // United Arab Emirates
-  'AT', // Austria
-  'AU', // Australia
-  'BE', // Belgium
-  'BG', // Bulgaria
-  'BR', // Brazil
-  'CA', // Canada
-  'CH', // Switzerland
-  'CY', // Cyprus
-  'CZ', // Czech Republic
-  'DE', // Germany
-  'DK', // Denmark
-  'EE', // Estonia
-  'ES', // Spain
-  'FI', // Finland
-  'FR', // France
-  'GB', // United Kingdom
-  'GI', // Gibraltar
-  'GR', // Greece
-  'HK', // Hong Kong
-  'HR', // Croatia
-  'HU', // Hungary
-  'IE', // Ireland
-  'IT', // Italy
-  'JP', // Japan
-  'LI', // Liechtenstein
-  'LT', // Lithuania
-  'LU', // Luxembourg
-  'LV', // Latvia
-  'MT', // Malta
-  'MX', // Mexico
-  'MY', // Malaysia
-  'NL', // Netherlands
-  'NO', // Norway
-  'NZ', // New Zealand
-  'PL', // Poland
-  'PT', // Portugal
-  'RO', // Romania
-  'SE', // Sweden
-  'SG', // Singapore
-  'SI', // Slovenia
-  'SK', // Slovakia
-  'TH', // Thailand
-  'US', // United States
-];
+export const getSupportedCountryCodes = (): string[] => {
+  const allCountryCodes = Object.keys(countries.getAlpha2Codes());
+  return allCountryCodes.filter(code => !EMBARGOED_COUNTRY_CODES.has(code));
+};
