@@ -295,4 +295,17 @@ describe('LmsApiService', () => {
       { data: roleData },
     );
   });
+  test('inviteEnterpriseAdmin calls the LMS to invite admin users', () => {
+    const enterpriseUUID = 'test-enterprise-id';
+    const formData = {
+      emails: ['admin1@example.com', 'admin2@example.com', 'admin3@example.com'],
+    };
+
+    LmsApiService.inviteEnterpriseAdmin(enterpriseUUID, formData);
+
+    expect(axios.post).toBeCalledWith(
+      `${lmsBaseUrl}/enterprise/api/v1/enterprise-customer-admin/${enterpriseUUID}/admin_invites/`,
+      formData,
+    );
+  });
 });

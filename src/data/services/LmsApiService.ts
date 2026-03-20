@@ -22,6 +22,11 @@ export type EnterpriseGroupMembershipArgs = {
   enterpriseUuid: string,
 };
 
+export type EnterpriseAdminInvitePayload = {
+  /* Email addresses to invite as enterprise admins */
+  emails: string[];
+};
+
 export type GroupInviteSummary = {
   records_processed: number,
   new_learners: number,
@@ -663,6 +668,11 @@ class LmsApiService {
   static removeEnterpriseAdmin(enterpriseUUID: string, adminPk: number, data?: any): Promise<AxiosResponse> {
     const url = `${LmsApiService.enterpriseCustomerUrl}${enterpriseUUID}/admins/${adminPk}`;
     return LmsApiService.apiClient().delete(url, { data });
+  }
+
+  static inviteEnterpriseAdmin(enterpriseUUID: string, formData: EnterpriseAdminInvitePayload): Promise<AxiosResponse> {
+    const url = `${LmsApiService.baseUrl}/enterprise/api/v1/enterprise-customer-admin/${enterpriseUUID}/admin_invites/`;
+    return LmsApiService.apiClient().post(url, formData);
   }
 }
 
