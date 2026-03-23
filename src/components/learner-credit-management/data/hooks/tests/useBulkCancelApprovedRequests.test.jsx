@@ -59,7 +59,13 @@ describe('useBulkCancelApprovedRequests', () => {
       subsidyRequestUUIDs: ['req-1', 'req-2'],
     });
     expect(onSuccess).toHaveBeenCalledWith(mockResponse);
-    expect(mutationResult).toEqual({ success: true, response: mockResponse });
+    expect(mutationResult).toEqual({
+      success: true,
+      partialFailure: false,
+      failedUUIDs: [],
+      successfulUUIDs: ['req-1', 'req-2'],
+      response: mockResponse,
+    });
 
     await waitFor(() => {
       expect(result.current.cancelButtonState).toBe('complete');
@@ -126,6 +132,12 @@ describe('useBulkCancelApprovedRequests', () => {
       successfulUUIDs: ['req-1'],
     });
     expect(onSuccess).toHaveBeenCalledWith(mockResponse);
-    expect(mutationResult).toEqual({ success: true, response: mockResponse });
+    expect(mutationResult).toEqual({
+      success: false,
+      partialFailure: true,
+      failedUUIDs: ['req-2'],
+      successfulUUIDs: ['req-1'],
+      response: mockResponse,
+    });
   });
 });

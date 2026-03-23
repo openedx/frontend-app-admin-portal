@@ -28,19 +28,20 @@ const useBulkCancelApprovedRequests = ({
         subsidyRequestUUIDs,
       });
 
+      const failedUUIDs = response?.data?.failed_request_uuids || [];
+      const hasPartialFailure = failedUUIDs.length > 0;
+      const successfulUUIDs = subsidyRequestUUIDs.filter(
+        uuid => !failedUUIDs.includes(uuid),
+      );
+
       setCancelButtonState('complete');
 
       // Check for partial failures in response
-      if (response?.data?.failed_request_uuids && response.data.failed_request_uuids.length > 0) {
-        // Partial failure: some succeeded, some failed
-        if (onPartialFailure) {
-          onPartialFailure({
-            failedUUIDs: response.data.failed_request_uuids,
-            successfulUUIDs: subsidyRequestUUIDs.filter(
-              uuid => !response.data.failed_request_uuids.includes(uuid),
-            ),
-          });
-        }
+      if (hasPartialFailure && onPartialFailure) {
+        onPartialFailure({
+          failedUUIDs,
+          successfulUUIDs,
+        });
       }
 
       if (onSuccess) {
@@ -51,7 +52,13 @@ const useBulkCancelApprovedRequests = ({
         queryKey: learnerCreditManagementQueryKeys.budget(subsidyAccessPolicyId),
       });
 
-      return { success: true, response };
+      return {
+        success: !hasPartialFailure,
+        partialFailure: hasPartialFailure,
+        failedUUIDs,
+        successfulUUIDs,
+        response,
+      };
     } catch (err) {
       logError(err);
       setCancelButtonState('error');

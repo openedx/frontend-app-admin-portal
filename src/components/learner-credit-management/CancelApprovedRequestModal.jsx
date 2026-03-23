@@ -22,10 +22,10 @@ const CancelApprovedRequestModal = ({
 
   const handleOnClick = async () => {
     try {
-      await cancelApprovedRequest();
+      const result = await cancelApprovedRequest();
       trackEvent();
       // Only show toast on successful cancellation
-      if (displayToastForApprovalCancellation) {
+      if (displayToastForApprovalCancellation && result?.success !== false) {
         displayToastForApprovalCancellation(uuidCount);
       }
     } catch (error) {

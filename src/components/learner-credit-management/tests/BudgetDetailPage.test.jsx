@@ -1468,9 +1468,9 @@ describe('<BudgetDetailPage />', () => {
       });
     });
 
-    // Query refetch happens after partial failure response
+    // Full-success toast should not render on partial failure response
     await waitFor(() => {
-      expect(screen.getByText('Approved requests canceled (2)')).toBeInTheDocument();
+      expect(screen.queryByText('Approved requests canceled (2)')).not.toBeInTheDocument();
     });
   }, 30000);
 
