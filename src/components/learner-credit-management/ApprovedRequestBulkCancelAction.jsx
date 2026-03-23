@@ -20,6 +20,7 @@ const isCancelableRow = (row) => (
 const ApprovedRequestBulkCancelAction = ({
   selectedFlatRows,
   enterpriseId,
+  refreshTableData,
 }) => {
   const { subsidyAccessPolicyId } = useBudgetId();
   const { data: subsidyAccessPolicy } = useSubsidyAccessPolicy(subsidyAccessPolicyId);
@@ -46,6 +47,11 @@ const ApprovedRequestBulkCancelAction = ({
   } = useBulkCancelApprovedRequests({
     subsidyRequestUUIDs: requestUuids,
     enterpriseId,
+    onSuccess: () => {
+      if (refreshTableData) {
+        refreshTableData();
+      }
+    },
     onPartialFailure: (partialFailureData) => {
       // Log partial failures for tracking/debugging
       sendEnterpriseTrackEvent(
@@ -129,6 +135,11 @@ const ApprovedRequestBulkCancelAction = ({
 ApprovedRequestBulkCancelAction.propTypes = {
   selectedFlatRows: PropTypes.arrayOf(PropTypes.shape()).isRequired,
   enterpriseId: PropTypes.string.isRequired,
+  refreshTableData: PropTypes.func,
+};
+
+ApprovedRequestBulkCancelAction.defaultProps = {
+  refreshTableData: undefined,
 };
 
 const mapStateToProps = state => ({

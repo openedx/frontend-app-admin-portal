@@ -108,6 +108,7 @@ describe('ApprovedRequestBulkCancelAction', () => {
     const callArgs = useBulkCancelApprovedRequests.mock.calls[0][0];
     expect(callArgs.subsidyRequestUUIDs).toEqual(['request-approved', 'request-reminded']);
     expect(callArgs.enterpriseId).toBe('enterprise-123');
+    expect(callArgs.onSuccess).toBeDefined();
     expect(callArgs.onPartialFailure).toBeDefined();
 
     expect(screen.getByRole('button', { name: /cancel \(2\)/i })).toBeEnabled();
@@ -151,5 +152,29 @@ describe('ApprovedRequestBulkCancelAction', () => {
     const callArgs = useBulkCancelApprovedRequests.mock.calls[0][0];
     expect(callArgs.onPartialFailure).toBeDefined();
     expect(typeof callArgs.onPartialFailure).toBe('function');
+  });
+
+  it('invokes refreshTableData when hook onSuccess callback runs', () => {
+    const refreshTableData = jest.fn();
+    const selectedFlatRows = [{
+      original: {
+        uuid: 'request-approved',
+        requestStatus: 'approved',
+        lastActionStatus: 'requested',
+      },
+    }];
+
+    renderWithIntl(
+      <ApprovedRequestBulkCancelAction
+        selectedFlatRows={selectedFlatRows}
+        enterpriseId="enterprise-123"
+        refreshTableData={refreshTableData}
+      />,
+    );
+
+    const callArgs = useBulkCancelApprovedRequests.mock.calls[0][0];
+    callArgs.onSuccess();
+
+    expect(refreshTableData).toHaveBeenCalledTimes(1);
   });
 });

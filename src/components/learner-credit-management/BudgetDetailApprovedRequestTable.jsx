@@ -42,7 +42,7 @@ const BudgetDetailApprovedRequestTable = ({
     additionalColumns: [],
     bulkActions: !isRetiredOrExpired ? [
       <ApprovedRequestBulkRemindAction learnerRequestStateCounts={tableData.requestStatusCounts} />,
-      <ApprovedRequestBulkCancelAction />,
+      <ApprovedRequestBulkCancelAction refreshTableData={fetchTableData} />,
     ] : [],
   }))();
 
