@@ -12,6 +12,7 @@ const CancelApprovedRequestModal = ({
   cancelApprovedRequest,
   close,
   isOpen,
+  uuidCount,
   trackEvent,
 }) => {
   const {
@@ -25,7 +26,7 @@ const CancelApprovedRequestModal = ({
       trackEvent();
       // Only show toast on successful cancellation
       if (displayToastForApprovalCancellation) {
-        displayToastForApprovalCancellation(1);
+        displayToastForApprovalCancellation(uuidCount);
       }
     } catch (error) {
       // Error is already handled in the hook, just track the event
@@ -80,11 +81,17 @@ const CancelApprovedRequestModal = ({
           <StatefulButton
             iconBefore={cancelButtonState === 'default' ? DoNotDisturbOn : null}
             labels={{
-              default: intl.formatMessage({
-                id: 'lcm.budget.detail.page.approved.requests.cancel.approval.modal.cancel.approval.button',
-                defaultMessage: 'Cancel approval',
-                description: 'Button text for canceling approval',
-              }),
+              default: uuidCount > 1
+                ? intl.formatMessage({
+                  id: 'lcm.budget.detail.page.approved.requests.cancel.approval.modal.cancel.multiple.approvals.button',
+                  defaultMessage: 'Cancel approvals ({uuidCount})',
+                  description: 'Button text for canceling approvals in bulk',
+                }, { uuidCount })
+                : intl.formatMessage({
+                  id: 'lcm.budget.detail.page.approved.requests.cancel.approval.modal.cancel.approval.button',
+                  defaultMessage: 'Cancel approval',
+                  description: 'Button text for canceling approval',
+                }),
               pending: intl.formatMessage({
                 id: 'lcm.budget.detail.page.approved.requests.cancel.approval.modal.canceling.state',
                 defaultMessage: 'Canceling...',
@@ -116,7 +123,12 @@ CancelApprovedRequestModal.propTypes = {
   cancelApprovedRequest: PropTypes.func.isRequired,
   close: PropTypes.func.isRequired,
   isOpen: PropTypes.bool.isRequired,
+  uuidCount: PropTypes.number,
   trackEvent: PropTypes.func.isRequired,
+};
+
+CancelApprovedRequestModal.defaultProps = {
+  uuidCount: 1,
 };
 
 export default CancelApprovedRequestModal;
