@@ -1,10 +1,9 @@
 import React from 'react';
 import {
-  fireEvent, render, screen,
+  render, screen,
 } from '@testing-library/react';
 import '@testing-library/jest-dom';
 import { IntlProvider } from '@edx/frontend-platform/i18n';
-import { sendEnterpriseTrackEvent } from '@edx/frontend-enterprise-utils';
 
 import ApprovedRequestBulkCancelAction from '../ApprovedRequestBulkCancelAction';
 import useBulkCancelApprovedRequests from '../data/hooks/useBulkCancelApprovedRequests';
@@ -106,10 +105,10 @@ describe('ApprovedRequestBulkCancelAction', () => {
       selectedFlatRows[1],
     ]);
 
-      const callArgs = useBulkCancelApprovedRequests.mock.calls[0][0];
-      expect(callArgs.subsidyRequestUUIDs).toEqual(['request-approved', 'request-reminded']);
-      expect(callArgs.enterpriseId).toBe('enterprise-123');
-      expect(callArgs.onPartialFailure).toBeDefined();
+    const callArgs = useBulkCancelApprovedRequests.mock.calls[0][0];
+    expect(callArgs.subsidyRequestUUIDs).toEqual(['request-approved', 'request-reminded']);
+    expect(callArgs.enterpriseId).toBe('enterprise-123');
+    expect(callArgs.onPartialFailure).toBeDefined();
 
     expect(screen.getByRole('button', { name: /cancel \(2\)/i })).toBeEnabled();
   });
