@@ -26,6 +26,16 @@ jest.mock('../../../../data/services/EnterpriseAccessApiService');
 
 const TEST_ENTERPRISE_UUID = 'test-enterprise-uuid';
 
+// Embargoed countries that should be excluded from country lists
+const EMBARGOED_COUNTRIES = [
+  ['BY', 'Belarus'],
+  ['CU', 'Cuba'],
+  ['IR', 'Iran'],
+  ['KP', 'North Korea'],
+  ['RU', 'Russia'],
+  ['SY', 'Syria'],
+] as const;
+
 // Helper to create mock AxiosResponse
 const createMockAxiosResponse = <T = unknown>(data: T): AxiosResponse<T> => ({
   data,
@@ -409,14 +419,10 @@ describe('Billing Mutation Hooks', () => {
   describe('useAddPaymentMethod', () => {
     it('should add payment method successfully', async () => {
       const mockResponse = { success: true };
-
       const addPaymentMethodSpy = jest.spyOn(EnterpriseAccessApiService, 'addPaymentMethod');
       addPaymentMethodSpy.mockResolvedValue(createMockAxiosResponse(mockResponse));
 
-      const { result } = renderHook(
-        () => useAddPaymentMethod(),
-        { wrapper },
-      );
+      const { result } = renderHook(() => useAddPaymentMethod(), { wrapper });
 
       result.current.mutate({
         enterpriseUuid: TEST_ENTERPRISE_UUID,
@@ -442,14 +448,10 @@ describe('Billing Mutation Hooks', () => {
   describe('useSetDefaultPaymentMethod', () => {
     it('should set default payment method successfully', async () => {
       const mockResponse = { success: true };
-
       const setDefaultPaymentMethodSpy = jest.spyOn(EnterpriseAccessApiService, 'setDefaultPaymentMethod');
       setDefaultPaymentMethodSpy.mockResolvedValue(createMockAxiosResponse(mockResponse));
 
-      const { result } = renderHook(
-        () => useSetDefaultPaymentMethod(),
-        { wrapper },
-      );
+      const { result } = renderHook(() => useSetDefaultPaymentMethod(), { wrapper });
 
       result.current.mutate({
         enterpriseUuid: TEST_ENTERPRISE_UUID,
@@ -473,14 +475,10 @@ describe('Billing Mutation Hooks', () => {
   describe('useDeletePaymentMethod', () => {
     it('should delete payment method successfully', async () => {
       const mockResponse = { success: true };
-
       const deletePaymentMethodSpy = jest.spyOn(EnterpriseAccessApiService, 'deletePaymentMethod');
       deletePaymentMethodSpy.mockResolvedValue(createMockAxiosResponse(mockResponse));
 
-      const { result } = renderHook(
-        () => useDeletePaymentMethod(),
-        { wrapper },
-      );
+      const { result } = renderHook(() => useDeletePaymentMethod(), { wrapper });
 
       result.current.mutate({
         enterpriseUuid: TEST_ENTERPRISE_UUID,
@@ -504,18 +502,11 @@ describe('Billing Mutation Hooks', () => {
   describe('useCancelSubscription', () => {
     it('should cancel subscription successfully', async () => {
       const mockResponse = { cancelAtPeriodEnd: true };
-
       const cancelSubscriptionSpy = jest.spyOn(EnterpriseAccessApiService, 'cancelSubscription');
       cancelSubscriptionSpy.mockResolvedValue(createMockAxiosResponse(mockResponse));
 
-      const { result } = renderHook(
-        () => useCancelSubscription(),
-        { wrapper },
-      );
-
-      result.current.mutate({
-        enterpriseUuid: TEST_ENTERPRISE_UUID,
-      });
+      const { result } = renderHook(() => useCancelSubscription(), { wrapper });
+      result.current.mutate({ enterpriseUuid: TEST_ENTERPRISE_UUID });
 
       await waitFor(() => {
         expect(cancelSubscriptionSpy).toHaveBeenCalledWith(TEST_ENTERPRISE_UUID);
@@ -526,23 +517,80 @@ describe('Billing Mutation Hooks', () => {
         expect(result.current.data).toEqual(mockResponse);
       });
     });
+
+    it('should optimistically update cancelAtPeriodEnd to true', async () => {
+      const testQueryClient = queryClient();
+      const subscriptionQueryKey = ['billing', 'customer', TEST_ENTERPRISE_UUID, 'subscription'];
+      testQueryClient.setQueryData(subscriptionQueryKey, {
+        status: 'active',
+        cancelAtPeriodEnd: false,
+        currentPeriodEnd: 1735689600,
+      });
+
+      const cancelSubscriptionSpy = jest.spyOn(EnterpriseAccessApiService, 'cancelSubscription');
+      cancelSubscriptionSpy.mockImplementation(
+        () => new Promise((resolve) => {
+          setTimeout(() => resolve(createMockAxiosResponse({ cancelAtPeriodEnd: true })), 100);
+        }),
+      );
+
+      const testWrapper = ({ children }) => (
+        <QueryClientProvider client={testQueryClient}>
+          <IntlProvider locale="en">
+            {children}
+          </IntlProvider>
+        </QueryClientProvider>
+      );
+
+      const { result } = renderHook(() => useCancelSubscription(), { wrapper: testWrapper });
+      result.current.mutate({ enterpriseUuid: TEST_ENTERPRISE_UUID });
+
+      await waitFor(() => {
+        const cachedData = testQueryClient.getQueryData(subscriptionQueryKey) as any;
+        expect(cachedData?.cancelAtPeriodEnd).toBe(true);
+      });
+    });
+
+    it('should rollback optimistic update on error', async () => {
+      const testQueryClient = queryClient();
+      const subscriptionQueryKey = ['billing', 'customer', TEST_ENTERPRISE_UUID, 'subscription'];
+      testQueryClient.setQueryData(subscriptionQueryKey, {
+        status: 'active',
+        cancelAtPeriodEnd: false,
+        currentPeriodEnd: 1735689600,
+      });
+
+      const cancelSubscriptionSpy = jest.spyOn(EnterpriseAccessApiService, 'cancelSubscription');
+      cancelSubscriptionSpy.mockRejectedValue(new Error('API Error'));
+
+      const testWrapper = ({ children }) => (
+        <QueryClientProvider client={testQueryClient}>
+          <IntlProvider locale="en">
+            {children}
+          </IntlProvider>
+        </QueryClientProvider>
+      );
+
+      const { result } = renderHook(() => useCancelSubscription(), { wrapper: testWrapper });
+      result.current.mutate({ enterpriseUuid: TEST_ENTERPRISE_UUID });
+
+      await waitFor(() => {
+        expect(result.current.isError).toBe(true);
+      });
+
+      const cachedData = testQueryClient.getQueryData(subscriptionQueryKey) as any;
+      expect(cachedData?.cancelAtPeriodEnd).toBe(false);
+    });
   });
 
   describe('useReinstateSubscription', () => {
     it('should reinstate subscription successfully', async () => {
       const mockResponse = { cancelAtPeriodEnd: false };
-
       const reinstateSubscriptionSpy = jest.spyOn(EnterpriseAccessApiService, 'reinstateSubscription');
       reinstateSubscriptionSpy.mockResolvedValue(createMockAxiosResponse(mockResponse));
 
-      const { result } = renderHook(
-        () => useReinstateSubscription(),
-        { wrapper },
-      );
-
-      result.current.mutate({
-        enterpriseUuid: TEST_ENTERPRISE_UUID,
-      });
+      const { result } = renderHook(() => useReinstateSubscription(), { wrapper });
+      result.current.mutate({ enterpriseUuid: TEST_ENTERPRISE_UUID });
 
       await waitFor(() => {
         expect(reinstateSubscriptionSpy).toHaveBeenCalledWith(TEST_ENTERPRISE_UUID);
@@ -552,6 +600,70 @@ describe('Billing Mutation Hooks', () => {
         expect(result.current.isSuccess).toBe(true);
         expect(result.current.data).toEqual(mockResponse);
       });
+    });
+
+    it('should optimistically update cancelAtPeriodEnd to false', async () => {
+      const testQueryClient = queryClient();
+      const subscriptionQueryKey = ['billing', 'customer', TEST_ENTERPRISE_UUID, 'subscription'];
+      testQueryClient.setQueryData(subscriptionQueryKey, {
+        status: 'active',
+        cancelAtPeriodEnd: true,
+        currentPeriodEnd: 1735689600,
+      });
+
+      const reinstateSubscriptionSpy = jest.spyOn(EnterpriseAccessApiService, 'reinstateSubscription');
+      reinstateSubscriptionSpy.mockImplementation(
+        () => new Promise((resolve) => {
+          setTimeout(() => resolve(createMockAxiosResponse({ cancelAtPeriodEnd: false })), 100);
+        }),
+      );
+
+      const testWrapper = ({ children }) => (
+        <QueryClientProvider client={testQueryClient}>
+          <IntlProvider locale="en">
+            {children}
+          </IntlProvider>
+        </QueryClientProvider>
+      );
+
+      const { result } = renderHook(() => useReinstateSubscription(), { wrapper: testWrapper });
+      result.current.mutate({ enterpriseUuid: TEST_ENTERPRISE_UUID });
+
+      await waitFor(() => {
+        const cachedData = testQueryClient.getQueryData(subscriptionQueryKey) as any;
+        expect(cachedData?.cancelAtPeriodEnd).toBe(false);
+      });
+    });
+
+    it('should rollback optimistic update on error', async () => {
+      const testQueryClient = queryClient();
+      const subscriptionQueryKey = ['billing', 'customer', TEST_ENTERPRISE_UUID, 'subscription'];
+      testQueryClient.setQueryData(subscriptionQueryKey, {
+        status: 'active',
+        cancelAtPeriodEnd: true,
+        currentPeriodEnd: 1735689600,
+      });
+
+      const reinstateSubscriptionSpy = jest.spyOn(EnterpriseAccessApiService, 'reinstateSubscription');
+      reinstateSubscriptionSpy.mockRejectedValue(new Error('API Error'));
+
+      const testWrapper = ({ children }) => (
+        <QueryClientProvider client={testQueryClient}>
+          <IntlProvider locale="en">
+            {children}
+          </IntlProvider>
+        </QueryClientProvider>
+      );
+
+      const { result } = renderHook(() => useReinstateSubscription(), { wrapper: testWrapper });
+      result.current.mutate({ enterpriseUuid: TEST_ENTERPRISE_UUID });
+
+      await waitFor(() => {
+        expect(result.current.isError).toBe(true);
+      });
+
+      const cachedData = testQueryClient.getQueryData(subscriptionQueryKey) as any;
+      expect(cachedData?.cancelAtPeriodEnd).toBe(true);
     });
   });
 });
@@ -570,29 +682,22 @@ describe('Country Code Utilities', () => {
       });
     });
 
-    it('should include common countries', () => {
+    it.each([
+      ['US', 'United States'],
+      ['GB', 'United Kingdom'],
+      ['CA', 'Canada'],
+      ['DE', 'Germany'],
+      ['FR', 'France'],
+      ['JP', 'Japan'],
+      ['AU', 'Australia'],
+    ])('should include common country %s (%s)', (code) => {
       const countryCodes = getSupportedCountryCodes();
-
-      // Test for some common countries
-      expect(countryCodes).toContain('US'); // United States
-      expect(countryCodes).toContain('GB'); // United Kingdom
-      expect(countryCodes).toContain('CA'); // Canada
-      expect(countryCodes).toContain('DE'); // Germany
-      expect(countryCodes).toContain('FR'); // France
-      expect(countryCodes).toContain('JP'); // Japan
-      expect(countryCodes).toContain('AU'); // Australia
+      expect(countryCodes).toContain(code);
     });
 
-    it('should exclude embargoed countries', () => {
+    it.each(EMBARGOED_COUNTRIES)('should exclude embargoed country %s (%s)', (code) => {
       const countryCodes = getSupportedCountryCodes();
-
-      // These countries should be filtered out
-      expect(countryCodes).not.toContain('BY'); // Belarus
-      expect(countryCodes).not.toContain('CU'); // Cuba
-      expect(countryCodes).not.toContain('IR'); // Iran
-      expect(countryCodes).not.toContain('KP'); // North Korea
-      expect(countryCodes).not.toContain('RU'); // Russia
-      expect(countryCodes).not.toContain('SY'); // Syria
+      expect(countryCodes).not.toContain(code);
     });
   });
 
@@ -619,89 +724,43 @@ describe('Country Code Utilities', () => {
       });
     });
 
-    it('should return localized country names in English', () => {
+    it.each(EMBARGOED_COUNTRIES)('should not include embargoed country %s (%s) in options', (code) => {
       const { result } = renderHook(() => useCountryOptions(), { wrapper });
-
-      const usOption = result.current.find(option => option.value === 'US');
-      const gbOption = result.current.find(option => option.value === 'GB');
-      const deOption = result.current.find(option => option.value === 'DE');
-
-      expect(usOption?.label).toBe('United States');
-      expect(gbOption?.label).toBe('United Kingdom');
-      expect(deOption?.label).toBe('Germany');
-    });
-
-    it('should sort countries alphabetically by localized name', () => {
-      const { result } = renderHook(() => useCountryOptions(), { wrapper });
-
-      // Check that the list is sorted
-      const labels = result.current.map(option => option.label);
-      const sortedLabels = [...labels].sort((a, b) => a.localeCompare(b, 'en'));
-
-      expect(labels).toEqual(sortedLabels);
-    });
-
-    it('should not include embargoed countries in options', () => {
-      const { result } = renderHook(() => useCountryOptions(), { wrapper });
-
       const values = result.current.map(option => option.value);
-
-      expect(values).not.toContain('BY'); // Belarus
-      expect(values).not.toContain('CU'); // Cuba
-      expect(values).not.toContain('IR'); // Iran
-      expect(values).not.toContain('KP'); // North Korea
-      expect(values).not.toContain('RU'); // Russia
-      expect(values).not.toContain('SY'); // Syria
+      expect(values).not.toContain(code);
     });
 
-    it('should return localized country names in Spanish', () => {
-      const spanishWrapper = ({ children }) => (
-        <IntlProvider locale="es">
+    describe.each([
+      {
+        locale: 'en',
+        expectedLabels: { US: 'United States', GB: 'United Kingdom', DE: 'Germany' },
+      },
+      {
+        locale: 'es',
+        expectedLabels: { US: 'Estados Unidos', GB: 'Reino Unido', DE: 'Alemania' },
+      },
+    ])('with $locale locale', ({ locale, expectedLabels }) => {
+      const localeWrapper = ({ children }) => (
+        <IntlProvider locale={locale}>
           {children}
         </IntlProvider>
       );
 
-      const { result } = renderHook(() => useCountryOptions(), { wrapper: spanishWrapper });
+      it('should return correctly localized country names', () => {
+        const { result } = renderHook(() => useCountryOptions(), { wrapper: localeWrapper });
 
-      const usOption = result.current.find(option => option.value === 'US');
-      const gbOption = result.current.find(option => option.value === 'GB');
-      const deOption = result.current.find(option => option.value === 'DE');
+        Object.entries(expectedLabels).forEach(([code, label]) => {
+          const option = result.current.find(opt => opt.value === code);
+          expect(option?.label).toBe(label);
+        });
+      });
 
-      expect(usOption?.label).toBe('Estados Unidos');
-      expect(gbOption?.label).toBe('Reino Unido');
-      expect(deOption?.label).toBe('Alemania');
-    });
-
-    it('should memoize results based on locale', () => {
-      const enWrapper = ({ children }) => (
-        <IntlProvider locale="en">
-          {children}
-        </IntlProvider>
-      );
-
-      const esWrapper = ({ children }) => (
-        <IntlProvider locale="es">
-          {children}
-        </IntlProvider>
-      );
-
-      // Render with English locale
-      const { result: enResult } = renderHook(() => useCountryOptions(), { wrapper: enWrapper });
-      const enLabels = enResult.current.map(option => option.label);
-
-      // Render with Spanish locale
-      const { result: esResult } = renderHook(() => useCountryOptions(), { wrapper: esWrapper });
-      const esLabels = esResult.current.map(option => option.label);
-
-      // Labels should be different (localized)
-      expect(enLabels).not.toEqual(esLabels);
-
-      // Both should be sorted in their respective locales
-      const sortedEnLabels = [...enLabels].sort((a, b) => a.localeCompare(b, 'en'));
-      const sortedEsLabels = [...esLabels].sort((a, b) => a.localeCompare(b, 'es'));
-
-      expect(enLabels).toEqual(sortedEnLabels);
-      expect(esLabels).toEqual(sortedEsLabels);
+      it('should sort countries alphabetically by localized name', () => {
+        const { result } = renderHook(() => useCountryOptions(), { wrapper: localeWrapper });
+        const labels = result.current.map(option => option.label);
+        const sortedLabels = [...labels].sort((a, b) => a.localeCompare(b, locale));
+        expect(labels).toEqual(sortedLabels);
+      });
     });
   });
 });

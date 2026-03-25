@@ -148,7 +148,7 @@ const BillingPage = ({ enterpriseId }: BillingPageProps) => {
         </Helmet>
         <Hero title="Billing" />
         <main role="main">
-          <Container size="xl" className="py-5">
+          <Container size="xl" className="billing py-5">
             <Stack gap={4}>
               {/* Billing Address Section Skeleton */}
               <div>
@@ -197,7 +197,7 @@ const BillingPage = ({ enterpriseId }: BillingPageProps) => {
         </Helmet>
         <Hero title="Billing" />
         <main role="main">
-          <Container size="xl" className="py-5">
+          <Container size="xl" className="billing py-5">
             <Card className="text-center">
               <Card.Section className="py-5">
                 <Icon src={AccountBalance} className="text-primary-500 mb-3" style={{ fontSize: '3rem' }} />
@@ -246,7 +246,7 @@ const BillingPage = ({ enterpriseId }: BillingPageProps) => {
       </Helmet>
       <Hero title="Billing" />
       <main role="main">
-        <Container size="xl" className="py-5">
+        <Container size="xl" className="billing py-5">
           <Stack gap={4}>
             {/* Past-Due Alert - Renders first, above all content */}
             {isPastDue && (

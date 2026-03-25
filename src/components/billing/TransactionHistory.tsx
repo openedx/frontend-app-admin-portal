@@ -15,6 +15,7 @@ import {
 import { FormattedMessage, useIntl } from '@edx/frontend-platform/i18n';
 
 import { useTransactions } from './data/hooks';
+import './TransactionHistory.scss';
 
 /**
  * Transaction interface matching API response structure
@@ -141,7 +142,7 @@ const renderActionsCell = (
   }
 
   return (
-    <Dropdown drop="top">
+    <Dropdown>
       <Dropdown.Toggle
         id={`transaction-actions-${transaction.id}`}
         as={IconButton}
@@ -153,7 +154,10 @@ const renderActionsCell = (
           defaultMessage: 'Actions menu',
         })}
       />
-      <Dropdown.Menu>
+      <Dropdown.Menu
+        className="transaction-actions-dropdown-menu"
+        popperConfig={{ strategy: 'fixed' }}
+      >
         {invoicePdf && (
           <Dropdown.Item onClick={() => handleDownloadPdf(invoicePdf)}>
             <FormattedMessage

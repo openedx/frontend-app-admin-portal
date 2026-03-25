@@ -250,7 +250,7 @@ export const useDeletePaymentMethod = () => {
 
 /**
  * Mutation hook to cancel subscription.
- * Invalidates the subscription query on success.
+ * Uses optimistic updates to immediately reflect the cancelled state in the UI.
  *
  * @returns {UseMutationResult} Mutation result
  */
@@ -262,17 +262,48 @@ export const useCancelSubscription = () => {
       const response = await EnterpriseAccessApiService.cancelSubscription(enterpriseUuid);
       return response.data;
     },
-    onSuccess: (_, variables) => {
-      queryClient.invalidateQueries({
-        queryKey: billingQueryKeys.subscription(variables.enterpriseUuid),
+    onMutate: async ({ enterpriseUuid }) => {
+      // Cancel any outgoing refetches to prevent overwriting optimistic update
+      await queryClient.cancelQueries({
+        queryKey: billingQueryKeys.subscription(enterpriseUuid),
       });
+
+      // Snapshot the previous value
+      const previousSubscription = queryClient.getQueryData(
+        billingQueryKeys.subscription(enterpriseUuid),
+      );
+
+      // Optimistically update to the new value
+      queryClient.setQueryData(
+        billingQueryKeys.subscription(enterpriseUuid),
+        (old: any) => (old ? { ...old, cancelAtPeriodEnd: true } : old),
+      );
+
+      // Return context with the snapshot for rollback
+      return { previousSubscription };
+    },
+    onSuccess: (_, variables) => {
+      // Ensure the cache reflects the cancelled state after successful mutation
+      queryClient.setQueryData(
+        billingQueryKeys.subscription(variables.enterpriseUuid),
+        (old: any) => (old ? { ...old, cancelAtPeriodEnd: true } : old),
+      );
+    },
+    onError: (_, variables, context) => {
+      // Rollback to previous value on error
+      if (context?.previousSubscription) {
+        queryClient.setQueryData(
+          billingQueryKeys.subscription(variables.enterpriseUuid),
+          context.previousSubscription,
+        );
+      }
     },
   });
 };
 
 /**
  * Mutation hook to reinstate subscription.
- * Invalidates the subscription query on success.
+ * Uses optimistic updates to immediately reflect the reinstated state in the UI.
  *
  * @returns {UseMutationResult} Mutation result
  */
@@ -284,10 +315,41 @@ export const useReinstateSubscription = () => {
       const response = await EnterpriseAccessApiService.reinstateSubscription(enterpriseUuid);
       return response.data;
     },
-    onSuccess: (_, variables) => {
-      queryClient.invalidateQueries({
-        queryKey: billingQueryKeys.subscription(variables.enterpriseUuid),
+    onMutate: async ({ enterpriseUuid }) => {
+      // Cancel any outgoing refetches to prevent overwriting optimistic update
+      await queryClient.cancelQueries({
+        queryKey: billingQueryKeys.subscription(enterpriseUuid),
       });
+
+      // Snapshot the previous value
+      const previousSubscription = queryClient.getQueryData(
+        billingQueryKeys.subscription(enterpriseUuid),
+      );
+
+      // Optimistically update to the new value
+      queryClient.setQueryData(
+        billingQueryKeys.subscription(enterpriseUuid),
+        (old: any) => (old ? { ...old, cancelAtPeriodEnd: false } : old),
+      );
+
+      // Return context with the snapshot for rollback
+      return { previousSubscription };
+    },
+    onSuccess: (_, variables) => {
+      // Ensure the cache reflects the reinstated state after successful mutation
+      queryClient.setQueryData(
+        billingQueryKeys.subscription(variables.enterpriseUuid),
+        (old: any) => (old ? { ...old, cancelAtPeriodEnd: false } : old),
+      );
+    },
+    onError: (_, variables, context) => {
+      // Rollback to previous value on error
+      if (context?.previousSubscription) {
+        queryClient.setQueryData(
+          billingQueryKeys.subscription(variables.enterpriseUuid),
+          context.previousSubscription,
+        );
+      }
     },
   });
 };

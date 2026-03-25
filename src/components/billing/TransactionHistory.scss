@@ -1,0 +1,11 @@
+// Billing feature wrapper
+.billing {
+  // Billing-only override for action dropdowns inside tables
+  //
+  // Using popperConfig={{ strategy: 'fixed' }} prevents clipping from parent overflow.
+  // Safari may still mis-handle stacking contexts, so translateZ(0) ensures z-index works.
+  .transaction-actions-dropdown-menu {
+    transform: translateZ(0);
+    z-index: 1050;
+  }
+}
