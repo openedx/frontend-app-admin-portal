@@ -184,26 +184,12 @@ const useBnrSubsidyRequests = ({
       const data = camelCaseObject(response.data);
       const transformedResults = transformApiDataToTableData(data.results || []);
 
-      const learnerRequestStateCounts = Object.entries(
-        transformedResults.reduce((counts, request) => {
-          const { learnerRequestState } = request;
-          if (learnerRequestState) {
-            // eslint-disable-next-line no-param-reassign
-            counts[learnerRequestState] = (counts[learnerRequestState] || 0) + 1;
-          }
-          return counts;
-        }, {}),
-      ).map(([learnerRequestState, count]) => ({
-        learnerRequestState,
-        count,
-      }));
-
       setBnrRequests({
         itemCount: data.count || 0,
         pageCount: data.numPages || Math.ceil((data.count || 0) / (options.page_size || 10)),
         results: transformedResults || [],
         currentPage: options.page,
-        learnerRequestStateCounts,
+        learnerRequestStateCounts: data.learnerRequestStateCounts || [],
       });
       setIsLoading(false);
 

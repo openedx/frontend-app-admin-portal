@@ -556,12 +556,18 @@ describe('useBnrSubsidyRequests', () => {
     });
   });
 
-  describe('learner request state counts (PR #1643)', () => {
-    it('should calculate learner request state counts correctly', async () => {
-      const mockApiResponseWithLearnerStates = {
+  describe('learner request state counts', () => {
+    it('should use backend-provided learnerRequestStateCounts from API response', async () => {
+      const backendStateCounts = [
+        { learnerRequestState: 'waiting', count: 25 },
+        { learnerRequestState: 'requested', count: 15 },
+        { learnerRequestState: 'failed', count: 3 },
+      ];
+      const mockApiResponseWithStateCounts = {
         data: {
-          count: 3,
-          numPages: 1,
+          count: 43,
+          numPages: 5,
+          learnerRequestStateCounts: backendStateCounts,
           results: [
             {
               uuid: 'request-1',
@@ -571,19 +577,48 @@ describe('useBnrSubsidyRequests', () => {
               learnerRequestState: 'waiting',
               latestAction: { status: 'reminded', created: '2023-10-27T10:00:00Z' },
             },
+          ],
+        },
+      };
+
+      EnterpriseAccessApiService.fetchBnrSubsidyRequests.mockResolvedValue(mockApiResponseWithStateCounts);
+
+      const { result } = renderHook(() => useBnrSubsidyRequests({
+        enterpriseId: mockEnterpriseId,
+        isEnabled: true,
+      }));
+
+      await act(async () => {
+        await result.current.fetchBnrRequests({
+          pageIndex: 0,
+          pageSize: 10,
+          filters: [],
+          sortBy: [],
+        });
+      });
+
+      // Should use backend-provided counts (across all pages), not compute from current page results
+      expect(result.current.bnrRequests.learnerRequestStateCounts).toEqual(backendStateCounts);
+    });
+
+    it('should default to empty array when backend does not provide learnerRequestStateCounts', async () => {
+      const mockApiResponseWithoutCounts = {
+        data: {
+          count: 2,
+          numPages: 1,
+          results: [
             {
-              uuid: 'request-2',
-              email: 'learner2@example.com',
-              courseTitle: 'Test Course 2',
-              created: '2023-10-26T15:30:00Z',
-              learnerRequestState: 'accepted',
-              latestAction: { status: 'accepted', created: '2023-10-27T12:00:00Z' },
+              uuid: 'request-1',
+              email: 'learner1@example.com',
+              courseTitle: 'Test Course 1',
+              created: '2023-10-27T10:00:00Z',
+              latestAction: { status: 'reminded', created: '2023-10-27T10:00:00Z' },
             },
           ],
         },
       };
 
-      EnterpriseAccessApiService.fetchBnrSubsidyRequests.mockResolvedValue(mockApiResponseWithLearnerStates);
+      EnterpriseAccessApiService.fetchBnrSubsidyRequests.mockResolvedValue(mockApiResponseWithoutCounts);
 
       const { result } = renderHook(() => useBnrSubsidyRequests({
         enterpriseId: mockEnterpriseId,
@@ -599,10 +634,7 @@ describe('useBnrSubsidyRequests', () => {
         });
       });
 
-      expect(result.current.bnrRequests.learnerRequestStateCounts).toEqual([
-        { learnerRequestState: 'waiting', count: 1 },
-        { learnerRequestState: 'accepted', count: 1 },
-      ]);
+      expect(result.current.bnrRequests.learnerRequestStateCounts).toEqual([]);
     });
   });
 
