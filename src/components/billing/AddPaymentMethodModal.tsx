@@ -8,9 +8,11 @@ import {
   Stack,
 } from '@openedx/paragon';
 import { CardElement, useElements, useStripe } from '@stripe/react-stripe-js';
+import type { StripeCardElementChangeEvent } from '@stripe/stripe-js';
 import { FormattedMessage, useIntl } from '@edx/frontend-platform/i18n';
 
 import { useAddPaymentMethod, useCountryOptions } from './data/hooks';
+import { isEmail } from '../../utils';
 
 interface AddPaymentMethodModalProps {
   isOpen: boolean;
@@ -40,9 +42,14 @@ const AddPaymentMethodModal = ({
   const addPaymentMethodMutation = useAddPaymentMethod();
   const countryOptions = useCountryOptions();
   const errorAlertRef = useRef<HTMLDivElement>(null);
+  const formRef = useRef<HTMLFormElement>(null);
 
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [showValidationErrors, setShowValidationErrors] = useState(false);
+  const [emailTouched, setEmailTouched] = useState(false);
+  const [isCardComplete, setIsCardComplete] = useState(false);
+  const [isCardTouched, setIsCardTouched] = useState(false);
 
   const [billingDetails, setBillingDetails] = useState<BillingDetails>({
     email: '',
@@ -71,9 +78,28 @@ const AddPaymentMethodModal = ({
     }));
   };
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  const handleCardChange = (event: StripeCardElementChangeEvent) => {
+    setIsCardComplete(event.complete);
+    setIsCardTouched(true);
+  };
+
+  const handleSubmit = async (e: React.FormEvent | React.MouseEvent) => {
     e.preventDefault();
     setError(null);
+
+    // Check for email validity specifically
+    const isEmailValid = isEmail(billingDetails.email);
+
+    // Check overall form validity (HTML5 validation)
+    const isFormValid = formRef.current?.checkValidity() ?? false;
+
+    if (!isFormValid || !isEmailValid || !isCardComplete) {
+      e.stopPropagation();
+      setShowValidationErrors(true);
+      setEmailTouched(true);
+      setIsCardTouched(true);
+      return;
+    }
 
     if (!stripe || !elements) {
       setError(
@@ -115,7 +141,18 @@ const AddPaymentMethodModal = ({
 
       if (stripeError) {
         // Handle Stripe-specific errors
-        if (stripeError.type === 'validation_error' || stripeError.type === 'card_error') {
+        const errorMessage = stripeError.message?.toLowerCase() || '';
+        const isEmailError = errorMessage.includes('email') || stripeError.param === 'billing_details[email]';
+
+        if (isEmailError) {
+          setError(
+            intl.formatMessage({
+              id: 'admin.portal.billing.addPaymentMethod.error.invalidEmail',
+              defaultMessage: 'Please enter a valid email address.',
+              description: 'Error message for invalid email address',
+            }),
+          );
+        } else if (stripeError.type === 'validation_error' || stripeError.type === 'card_error') {
           setError(
             intl.formatMessage({
               id: 'admin.portal.billing.addPaymentMethod.error.invalidCard',
@@ -189,6 +226,10 @@ const AddPaymentMethodModal = ({
         country: 'US',
       });
       setError(null);
+      setShowValidationErrors(false);
+      setEmailTouched(false);
+      setIsCardComplete(false);
+      setIsCardTouched(false);
     }
   };
 
@@ -211,7 +252,7 @@ const AddPaymentMethodModal = ({
         </ModalDialog.Title>
       </ModalDialog.Header>
       <ModalDialog.Body>
-        <Form onSubmit={handleSubmit}>
+        <Form ref={formRef} noValidate onSubmit={handleSubmit}>
           <Stack gap={3}>
             {error && (
             <div ref={errorAlertRef}>
@@ -237,7 +278,26 @@ const AddPaymentMethodModal = ({
                 required
                 value={billingDetails.email}
                 onChange={handleInputChange('email')}
+                onBlur={() => setEmailTouched(true)}
+                isInvalid={(emailTouched || showValidationErrors) && !isEmail(billingDetails.email)}
               />
+              {(emailTouched || showValidationErrors) && !isEmail(billingDetails.email) && (
+                <Form.Control.Feedback type="invalid">
+                  {!billingDetails.email ? (
+                    <FormattedMessage
+                      id="admin.portal.billing.addPaymentMethod.field.email.required"
+                      defaultMessage="Please enter an email address."
+                      description="Error message displayed when email address is not entered"
+                    />
+                  ) : (
+                    <FormattedMessage
+                      id="admin.portal.billing.addPaymentMethod.field.email.invalid"
+                      defaultMessage="Please enter a valid email address."
+                      description="Error message displayed when email address format is invalid"
+                    />
+                  )}
+                </Form.Control.Feedback>
+              )}
             </Form.Group>
 
             {/* Organization Name */}
@@ -256,7 +316,17 @@ const AddPaymentMethodModal = ({
                 required
                 value={billingDetails.organizationName}
                 onChange={handleInputChange('organizationName')}
+                isInvalid={showValidationErrors && !billingDetails.organizationName}
               />
+              {showValidationErrors && !billingDetails.organizationName && (
+                <Form.Control.Feedback type="invalid">
+                  <FormattedMessage
+                    id="admin.portal.billing.addPaymentMethod.field.organizationName.required"
+                    defaultMessage="Please enter an organization name."
+                    description="Error message displayed when organization name is not entered"
+                  />
+                </Form.Control.Feedback>
+              )}
             </Form.Group>
 
             {/* Card Element */}
@@ -270,8 +340,13 @@ const AddPaymentMethodModal = ({
                 {' '}
                 <span className="text-danger">*</span>
               </Form.Label>
-              <div className="border rounded p-3 bg-light-100">
+              <div
+                className={`border rounded p-3 bg-light-100${
+                  (isCardTouched || showValidationErrors) && !isCardComplete ? ' border-danger' : ''
+                }`}
+              >
                 <CardElement
+                  onChange={handleCardChange}
                   options={{
                     style: {
                       base: {
@@ -288,6 +363,15 @@ const AddPaymentMethodModal = ({
                   }}
                 />
               </div>
+              {(isCardTouched || showValidationErrors) && !isCardComplete && (
+                <div className="invalid-feedback d-block">
+                  <FormattedMessage
+                    id="admin.portal.billing.addPaymentMethod.field.cardDetails.required"
+                    defaultMessage="Please enter complete card details."
+                    description="Error message displayed when card details are incomplete"
+                  />
+                </div>
+              )}
             </Form.Group>
 
             {/* Street Address */}
@@ -306,7 +390,17 @@ const AddPaymentMethodModal = ({
                 required
                 value={billingDetails.addressLine1}
                 onChange={handleInputChange('addressLine1')}
+                isInvalid={showValidationErrors && !billingDetails.addressLine1}
               />
+              {showValidationErrors && !billingDetails.addressLine1 && (
+                <Form.Control.Feedback type="invalid">
+                  <FormattedMessage
+                    id="admin.portal.billing.addPaymentMethod.field.addressLine1.required"
+                    defaultMessage="Please enter a street address."
+                    description="Error message displayed when street address is not entered"
+                  />
+                </Form.Control.Feedback>
+              )}
             </Form.Group>
 
             {/* Address Line 2 */}
@@ -341,7 +435,17 @@ const AddPaymentMethodModal = ({
                 required
                 value={billingDetails.city}
                 onChange={handleInputChange('city')}
+                isInvalid={showValidationErrors && !billingDetails.city}
               />
+              {showValidationErrors && !billingDetails.city && (
+                <Form.Control.Feedback type="invalid">
+                  <FormattedMessage
+                    id="admin.portal.billing.addPaymentMethod.field.city.required"
+                    defaultMessage="Please enter a city."
+                    description="Error message displayed when city is not entered"
+                  />
+                </Form.Control.Feedback>
+              )}
             </Form.Group>
 
             {/* State/Province and Postal Code - side by side */}
@@ -361,7 +465,17 @@ const AddPaymentMethodModal = ({
                   required
                   value={billingDetails.state}
                   onChange={handleInputChange('state')}
+                  isInvalid={showValidationErrors && !billingDetails.state}
                 />
+                {showValidationErrors && !billingDetails.state && (
+                  <Form.Control.Feedback type="invalid">
+                    <FormattedMessage
+                      id="admin.portal.billing.addPaymentMethod.field.state.required"
+                      defaultMessage="Please enter a state/province."
+                      description="Error message displayed when state/province is not entered"
+                    />
+                  </Form.Control.Feedback>
+                )}
               </Form.Group>
 
               <Form.Group controlId="card-postal-code" className="flex-grow-1">
@@ -379,7 +493,17 @@ const AddPaymentMethodModal = ({
                   required
                   value={billingDetails.postalCode}
                   onChange={handleInputChange('postalCode')}
+                  isInvalid={showValidationErrors && !billingDetails.postalCode}
                 />
+                {showValidationErrors && !billingDetails.postalCode && (
+                  <Form.Control.Feedback type="invalid">
+                    <FormattedMessage
+                      id="admin.portal.billing.addPaymentMethod.field.postalCode.required"
+                      defaultMessage="Please enter a postal code."
+                      description="Error message displayed when postal code is not entered"
+                    />
+                  </Form.Control.Feedback>
+                )}
               </Form.Group>
             </Stack>
 
@@ -399,6 +523,7 @@ const AddPaymentMethodModal = ({
                 required
                 value={billingDetails.country}
                 onChange={handleInputChange('country')}
+                isInvalid={showValidationErrors && !billingDetails.country}
               >
                 {countryOptions.map(country => (
                   <option key={country.value} value={country.value}>
@@ -406,6 +531,15 @@ const AddPaymentMethodModal = ({
                   </option>
                 ))}
               </Form.Control>
+              {showValidationErrors && !billingDetails.country && (
+                <Form.Control.Feedback type="invalid">
+                  <FormattedMessage
+                    id="admin.portal.billing.addPaymentMethod.field.country.required"
+                    defaultMessage="Please select a country."
+                    description="Error message displayed when country is not selected"
+                  />
+                </Form.Control.Feedback>
+              )}
             </Form.Group>
           </Stack>
         </Form>

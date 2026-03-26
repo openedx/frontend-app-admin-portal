@@ -3,7 +3,7 @@ import { saveAs } from 'file-saver';
 import {
   camelCase, fromPairs, isArray, isNumber, isString, mergeWith, snakeCase, without,
 } from 'lodash-es';
-import isEmail from 'validator/lib/isEmail';
+import isEmailValidator from 'validator/lib/isEmail';
 import isEmpty from 'validator/lib/isEmpty';
 import isNumeric from 'validator/lib/isNumeric';
 
@@ -200,6 +200,22 @@ const isTriggerKey = ({ triggerKeys, action, key }) => (
 
 // Validation functions
 const isRequired = (value = '') => (isEmpty(value) ? 'This field is required.' : undefined);
+
+/**
+ * Safe wrapper around validator's isEmail that handles null/undefined/non-string inputs.
+ * Returns false for any falsy or non-string value, ensuring backward compatibility
+ * with call sites that may pass undefined values (e.g., optional-chained values).
+ *
+ * @param {*} value - The value to check
+ * @returns {boolean} - True if value is a valid email, false otherwise
+ */
+const isEmail = (value) => {
+  if (typeof value !== 'string' || value.length === 0) {
+    return false;
+  }
+  return isEmailValidator(value);
+};
+
 const isValidEmail = (value = '') => (!isEmail(value) ? 'Must be a valid email address.' : undefined);
 const isNotValidNumberString = (value = '') => (!isEmpty(value) && !isNumeric(value, { no_symbols: true }) ? 'Must be a valid number.' : undefined);
 const maxLength = max => value => (value && value.length > max ? 'Must be 512 characters or less' : undefined);
@@ -765,6 +781,7 @@ export {
   isNull,
   isTriggerKey,
   isRequired,
+  isEmail,
   isValidEmail,
   isValidNumber,
   modifyObjectKeys,
