@@ -20,12 +20,24 @@ const CancelApprovedRequestModal = ({
   } = useContext(BudgetDetailPageContext);
   const intl = useIntl();
 
+  const cancelButtonLabel = uuidCount > 1
+    ? intl.formatMessage({
+      id: 'lcm.budget.detail.page.approved.requests.cancel.approval.modal.cancel.multiple.approvals.button',
+      defaultMessage: 'Cancel approvals ({uuidCount})',
+      description: 'Button text for canceling approvals in bulk',
+    }, { uuidCount })
+    : intl.formatMessage({
+      id: 'lcm.budget.detail.page.approved.requests.cancel.approval.modal.cancel.approval.button',
+      defaultMessage: 'Cancel approval',
+      description: 'Button text for canceling approval',
+    });
+
   const handleOnClick = async () => {
     try {
       const result = await cancelApprovedRequest();
       trackEvent();
       // Only show toast on successful cancellation
-      if (displayToastForApprovalCancellation && result?.success !== false) {
+      if (displayToastForApprovalCancellation && result && result.success !== false) {
         displayToastForApprovalCancellation(uuidCount);
       }
     } catch (error) {
@@ -81,17 +93,7 @@ const CancelApprovedRequestModal = ({
           <StatefulButton
             iconBefore={cancelButtonState === 'default' ? DoNotDisturbOn : null}
             labels={{
-              default: uuidCount > 1
-                ? intl.formatMessage({
-                  id: 'lcm.budget.detail.page.approved.requests.cancel.approval.modal.cancel.multiple.approvals.button',
-                  defaultMessage: 'Cancel approvals ({uuidCount})',
-                  description: 'Button text for canceling approvals in bulk',
-                }, { uuidCount })
-                : intl.formatMessage({
-                  id: 'lcm.budget.detail.page.approved.requests.cancel.approval.modal.cancel.approval.button',
-                  defaultMessage: 'Cancel approval',
-                  description: 'Button text for canceling approval',
-                }),
+              default: cancelButtonLabel,
               pending: intl.formatMessage({
                 id: 'lcm.budget.detail.page.approved.requests.cancel.approval.modal.canceling.state',
                 defaultMessage: 'Canceling...',

@@ -35,7 +35,7 @@ describe('useBulkCancelApprovedRequests', () => {
   });
 
   it('cancels approved requests successfully and invalidates budget query', async () => {
-    const mockResponse = { status: 200 };
+    const mockResponse = { status: 200, data: { failed_request_uuids: [] } };
     const onSuccess = jest.fn();
     EnterpriseAccessApiService.cancelApprovedBnrSubsidyRequests.mockResolvedValueOnce(mockResponse);
 

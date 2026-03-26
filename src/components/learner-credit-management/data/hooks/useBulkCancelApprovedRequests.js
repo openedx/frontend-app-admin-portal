@@ -28,7 +28,11 @@ const useBulkCancelApprovedRequests = ({
         subsidyRequestUUIDs,
       });
 
-      const failedUUIDs = response?.data?.failed_request_uuids || [];
+      if (!response || !response.data) {
+        throw new Error('Invalid response from cancelApprovedBnrSubsidyRequests');
+      }
+
+      const failedUUIDs = response.data.failed_request_uuids || [];
       const hasPartialFailure = failedUUIDs.length > 0;
       const successfulUUIDs = subsidyRequestUUIDs.filter(
         uuid => !failedUUIDs.includes(uuid),
@@ -37,7 +41,7 @@ const useBulkCancelApprovedRequests = ({
       setCancelButtonState('complete');
 
       // Check for partial failures in response
-      if (hasPartialFailure && onPartialFailure) {
+      if (hasPartialFailure && !!onPartialFailure) {
         onPartialFailure({
           failedUUIDs,
           successfulUUIDs,

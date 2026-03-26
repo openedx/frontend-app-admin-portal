@@ -1295,7 +1295,10 @@ describe('<BudgetDetailPage />', () => {
 
   it('cancels approved learner credit requests in bulk', async () => {
     const user = userEvent.setup();
-    EnterpriseAccessApiService.cancelApprovedBnrSubsidyRequests.mockResolvedValueOnce({ status: 200 });
+    EnterpriseAccessApiService.cancelApprovedBnrSubsidyRequests.mockResolvedValueOnce({
+      status: 200,
+      data: { failed_request_uuids: [] },
+    });
     const NUMBER_OF_APPROVE_REQUEST_TO_GENERATE = 2;
     useParams.mockReturnValue({
       enterpriseSlug: 'test-enterprise-slug',
