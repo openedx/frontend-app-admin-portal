@@ -502,6 +502,27 @@ class EnterpriseAccessApiService {
   }
 
   /**
+   * Cancels multiple approved BNR (Browse and Request) subsidy requests for an enterprise.
+   *
+   * @param params - The parameters for canceling approved subsidy requests in bulk
+   * @param params.enterpriseId - The UUID of the enterprise customer
+   * @param params.subsidyRequestUUIDs - The UUIDs of approved subsidy requests to cancel
+   * @returns A promise that resolves to the API response for the cancel operation
+   */
+  static cancelApprovedBnrSubsidyRequests({
+    enterpriseId,
+    subsidyRequestUUIDs,
+  }) {
+    const options = {
+      request_uuids: subsidyRequestUUIDs,
+      enterprise_customer_uuid: enterpriseId,
+    };
+
+    const url = `${EnterpriseAccessApiService.baseUrl}/learner-credit-requests/cancel/`;
+    return EnterpriseAccessApiService.apiClient().post(url, options);
+  }
+
+  /**
    * Send reminder for approved BNR (Browse and Request) subsidy requests for an enterprise.
    *
    * @param params - The parameters for reminding the approved subsidy requests

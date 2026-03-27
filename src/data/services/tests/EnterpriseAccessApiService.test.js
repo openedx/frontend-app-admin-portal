@@ -356,6 +356,20 @@ describe('EnterpriseAccessApiService', () => {
     });
   });
 
+  test('cancelApprovedBnrSubsidyRequests calls enterprise-access to cancel BNR subsidy requests in bulk', () => {
+    const mockBnrSubsidyRequestUUIDs = ['test-bnr-subsidy-request-uuid-1', 'test-bnr-subsidy-request-uuid-2'];
+
+    EnterpriseAccessApiService.cancelApprovedBnrSubsidyRequests({
+      enterpriseId: mockEnterpriseUUID,
+      subsidyRequestUUIDs: mockBnrSubsidyRequestUUIDs,
+    });
+
+    expect(axios.post).toBeCalledWith(`${enterpriseAccessBaseUrl}/api/v1/learner-credit-requests/cancel/`, {
+      request_uuids: mockBnrSubsidyRequestUUIDs,
+      enterprise_customer_uuid: mockEnterpriseUUID,
+    });
+  });
+
   test('fetchBnrSubsidyRequestsOverview calls enterprise-access with enterpriseId and policyId only', () => {
     EnterpriseAccessApiService.fetchBnrSubsidyRequestsOverview(mockEnterpriseUUID, mockPolicyId);
 

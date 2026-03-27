@@ -1293,6 +1293,190 @@ describe('<BudgetDetailPage />', () => {
     expect(sendEnterpriseTrackEvent).toHaveBeenCalledTimes(2);
   }, 30000);
 
+  it('cancels approved learner credit requests in bulk', async () => {
+    const user = userEvent.setup();
+    EnterpriseAccessApiService.cancelApprovedBnrSubsidyRequests.mockResolvedValueOnce({
+      status: 200,
+      data: { failed_request_uuids: [] },
+    });
+    const NUMBER_OF_APPROVE_REQUEST_TO_GENERATE = 2;
+    useParams.mockReturnValue({
+      enterpriseSlug: 'test-enterprise-slug',
+      enterpriseAppPage: 'test-enterprise-page',
+      budgetId: mockSubsidyAccessPolicyUUID,
+      activeTabKey: 'activity',
+    });
+    useSubsidyAccessPolicy.mockReturnValue({
+      isInitialLoading: false,
+      data: mockPerLearnerSpendLimitSubsidyAccessPolicyWithBnrEnabled,
+    });
+    useEnterpriseGroupLearners.mockReturnValue({
+      data: {
+        count: 0,
+        currentPage: 1,
+        next: null,
+        numPages: 1,
+        results: [],
+      },
+    });
+    useBudgetDetailActivityOverview.mockReturnValue({
+      isLoading: false,
+      data: {
+        approvedBnrRequests: { count: NUMBER_OF_APPROVE_REQUEST_TO_GENERATE },
+        contentAssignments: undefined,
+        spentTransactions: { count: 0 },
+      },
+    });
+    const mockFetchLearnerCreditRequests = jest.fn();
+    useBnrSubsidyRequests.mockReturnValue({
+      isLoading: false,
+      bnrRequests: {
+        itemCount: NUMBER_OF_APPROVE_REQUEST_TO_GENERATE,
+        results: [
+          mockApprovedRequest,
+          {
+            ...createMockApprovedRequest(),
+            uuid: 'test-approved-request-uuid-2',
+          },
+        ],
+        pageCount: 1,
+      },
+      fetchBnrRequests: mockFetchLearnerCreditRequests,
+    });
+    useBudgetRedemptions.mockReturnValue({
+      isLoading: false,
+      budgetRedemptions: mockEmptyBudgetRedemptions,
+      fetchBudgetRedemptions: jest.fn(),
+    });
+    useEnterpriseRemovedGroupMembers.mockReturnValue({
+      isRemovedMembersLoading: false,
+      removedGroupMembersCount: 0,
+    });
+    renderWithRouter(<BudgetDetailPageWrapper />);
+
+    await waitFor(() => {
+      expect(screen.getByText('Pending')).toBeInTheDocument();
+    });
+
+    const selectAllVisibleRows = screen.getByTitle('Toggle All Current Page Rows Selected');
+    await user.click(selectAllVisibleRows);
+
+    const cancelBulkActionButton = screen.getByText('Cancel (2)');
+    expect(cancelBulkActionButton).toBeInTheDocument();
+    await user.click(cancelBulkActionButton);
+
+    const modalDialog = screen.getByRole('dialog');
+    expect(modalDialog).toBeInTheDocument();
+
+    const cancelDialogButton = getButtonElement('Cancel approvals (2)');
+    await user.click(cancelDialogButton);
+
+    await waitFor(() => {
+      expect(EnterpriseAccessApiService.cancelApprovedBnrSubsidyRequests).toHaveBeenCalledWith({
+        enterpriseId: enterpriseUUID,
+        subsidyRequestUUIDs: ['test-approved-request-uuid', 'test-approved-request-uuid-2'],
+      });
+    });
+
+    await waitFor(() => {
+      expect(screen.getByText('Approved requests canceled (2)')).toBeInTheDocument();
+    });
+  }, 30000);
+
+  it('handles partial failures when canceling approved learner credit requests in bulk', async () => {
+    const user = userEvent.setup();
+    // Simulate partial failure: 2 requested, 1 fails
+    EnterpriseAccessApiService.cancelApprovedBnrSubsidyRequests.mockResolvedValueOnce({
+      status: 200,
+      data: {
+        failed_request_uuids: ['test-approved-request-uuid-2'],
+      },
+    });
+    const NUMBER_OF_APPROVE_REQUEST_TO_GENERATE = 2;
+    useParams.mockReturnValue({
+      enterpriseSlug: 'test-enterprise-slug',
+      enterpriseAppPage: 'test-enterprise-page',
+      budgetId: mockSubsidyAccessPolicyUUID,
+      activeTabKey: 'activity',
+    });
+    useSubsidyAccessPolicy.mockReturnValue({
+      isInitialLoading: false,
+      data: mockPerLearnerSpendLimitSubsidyAccessPolicyWithBnrEnabled,
+    });
+    useEnterpriseGroupLearners.mockReturnValue({
+      data: {
+        count: 0,
+        currentPage: 1,
+        next: null,
+        numPages: 1,
+        results: [],
+      },
+    });
+    useBudgetDetailActivityOverview.mockReturnValue({
+      isLoading: false,
+      data: {
+        approvedBnrRequests: { count: NUMBER_OF_APPROVE_REQUEST_TO_GENERATE },
+        contentAssignments: undefined,
+        spentTransactions: { count: 0 },
+      },
+    });
+    const mockFetchLearnerCreditRequests = jest.fn();
+    useBnrSubsidyRequests.mockReturnValue({
+      isLoading: false,
+      bnrRequests: {
+        itemCount: NUMBER_OF_APPROVE_REQUEST_TO_GENERATE,
+        results: [
+          mockApprovedRequest,
+          {
+            ...createMockApprovedRequest(),
+            uuid: 'test-approved-request-uuid-2',
+          },
+        ],
+        pageCount: 1,
+      },
+      fetchBnrRequests: mockFetchLearnerCreditRequests,
+    });
+    useBudgetRedemptions.mockReturnValue({
+      isLoading: false,
+      budgetRedemptions: mockEmptyBudgetRedemptions,
+      fetchBudgetRedemptions: jest.fn(),
+    });
+    useEnterpriseRemovedGroupMembers.mockReturnValue({
+      isRemovedMembersLoading: false,
+      removedGroupMembersCount: 0,
+    });
+    renderWithRouter(<BudgetDetailPageWrapper />);
+
+    await waitFor(() => {
+      expect(screen.getByText('Pending')).toBeInTheDocument();
+    });
+
+    const selectAllVisibleRows = screen.getByTitle('Toggle All Current Page Rows Selected');
+    await user.click(selectAllVisibleRows);
+
+    const cancelBulkActionButton = screen.getByText('Cancel (2)');
+    expect(cancelBulkActionButton).toBeInTheDocument();
+    await user.click(cancelBulkActionButton);
+
+    const modalDialog = screen.getByRole('dialog');
+    expect(modalDialog).toBeInTheDocument();
+
+    const cancelDialogButton = getButtonElement('Cancel approvals (2)');
+    await user.click(cancelDialogButton);
+
+    await waitFor(() => {
+      expect(EnterpriseAccessApiService.cancelApprovedBnrSubsidyRequests).toHaveBeenCalledWith({
+        enterpriseId: enterpriseUUID,
+        subsidyRequestUUIDs: ['test-approved-request-uuid', 'test-approved-request-uuid-2'],
+      });
+    });
+
+    // Full-success toast should not render on partial failure response
+    await waitFor(() => {
+      expect(screen.queryByText('Approved requests canceled (2)')).not.toBeInTheDocument();
+    });
+  }, 30000);
+
   it('reminds an approved learner credit request', async () => {
     const user = userEvent.setup();
     EnterpriseAccessApiService.remindApprovedBnrSubsidyRequests.mockResolvedValueOnce({ status: 200 });
