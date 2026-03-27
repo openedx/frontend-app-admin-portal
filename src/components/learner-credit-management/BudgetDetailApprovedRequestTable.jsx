@@ -11,6 +11,7 @@ import RequestRecentActionTableCell from './RequestRecentActionTableCell';
 import ApprovedRequestActionsTableCell from './ApprovedRequestActionsTableCell';
 import ApprovedRequestsTableRefreshAction from './ApprovedRequestsTableRefreshAction';
 import ApprovedRequestBulkRemindAction from './ApprovedRequestBulkRemindAction';
+import ApprovedRequestBulkCancelAction from './ApprovedRequestBulkCancelAction';
 import { DEFAULT_PAGE, PAGE_SIZE } from './data';
 import { transformLearnerRequestStateCounts } from './data/utils';
 
@@ -41,6 +42,7 @@ const BudgetDetailApprovedRequestTable = ({
     additionalColumns: [],
     bulkActions: !isRetiredOrExpired ? [
       <ApprovedRequestBulkRemindAction learnerRequestStateCounts={tableData.requestStatusCounts} />,
+      <ApprovedRequestBulkCancelAction refreshTableData={fetchTableData} />,
     ] : [],
   }))();
 
