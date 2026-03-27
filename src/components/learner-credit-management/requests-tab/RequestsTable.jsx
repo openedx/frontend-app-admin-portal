@@ -119,7 +119,10 @@ const RequestsTable = ({
         ),
       }]}
       bulkActions={[
-        <RequestsTableApproveAction onRefresh={onRefresh} />,
+        <RequestsTableApproveAction
+          onRefresh={onRefresh}
+          requestStatusCounts={tableData?.requestStatusCounts || []}
+        />,
       ]}
       tableActions={[
         <RequestsTableRefreshAction onRefresh={onRefresh} />,
