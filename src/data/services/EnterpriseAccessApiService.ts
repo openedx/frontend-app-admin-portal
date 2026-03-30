@@ -35,6 +35,16 @@ export interface RemindAllApprovedBnrSubsidyRequestsParams {
   options?: RemindAllApprovedRequestsOptions;
 }
 
+export interface CancelAllApprovedBnrSubsidyRequestsOptions {
+  learnerRequestState?: string;
+}
+
+export interface CancelAllApprovedBnrSubsidyRequestsParams {
+  enterpriseId: string;
+  subsidyAccessPolicyId: string;
+  options?: CancelAllApprovedBnrSubsidyRequestsOptions;
+}
+
 type ApproveBnrSubsidyRequestParams = {
   enterpriseId: string;
   subsidyAccessPolicyId: string;
@@ -514,12 +524,38 @@ class EnterpriseAccessApiService {
     subsidyRequestUUIDs,
   }) {
     const options = {
-      request_uuids: subsidyRequestUUIDs,
+      learner_credit_request_uuids: subsidyRequestUUIDs,
       enterprise_customer_uuid: enterpriseId,
     };
 
-    const url = `${EnterpriseAccessApiService.baseUrl}/learner-credit-requests/cancel/`;
+    const url = `${EnterpriseAccessApiService.baseUrl}/learner-credit-requests/bulk-cancel/`;
     return EnterpriseAccessApiService.apiClient().post(url, options);
+  }
+
+  /**
+   * Cancels ALL approved BNR (Browse and Request) subsidy requests for an enterprise policy.
+   *
+   * @param params - The parameters for canceling all approved subsidy requests
+   * @param params.enterpriseId - The UUID of the enterprise customer
+   * @param params.subsidyAccessPolicyId - The UUID of the subsidy access policy
+   * @param params.options - Additional options for filtering (e.g., learnerRequestState)
+   * @returns A promise that resolves to the API response for the cancel-all operation
+   */
+  static cancelAllApprovedBnrSubsidyRequests({
+    enterpriseId,
+    subsidyAccessPolicyId,
+    options = {},
+  }: CancelAllApprovedBnrSubsidyRequestsParams): Promise<AxiosResponse> {
+    const { learnerRequestState } = options;
+    const body: Record<string, string> = {
+      enterprise_customer_uuid: enterpriseId,
+      policy_uuid: subsidyAccessPolicyId,
+    };
+    if (learnerRequestState) {
+      body.learner_request_state = learnerRequestState;
+    }
+    const url = `${EnterpriseAccessApiService.baseUrl}/learner-credit-requests/cancel-all/`;
+    return EnterpriseAccessApiService.apiClient().post(url, body);
   }
 
   /**

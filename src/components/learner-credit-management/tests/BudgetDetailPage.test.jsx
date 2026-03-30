@@ -1295,9 +1295,9 @@ describe('<BudgetDetailPage />', () => {
 
   it('cancels approved learner credit requests in bulk', async () => {
     const user = userEvent.setup();
-    EnterpriseAccessApiService.cancelApprovedBnrSubsidyRequests.mockResolvedValueOnce({
+    EnterpriseAccessApiService.cancelAllApprovedBnrSubsidyRequests.mockResolvedValueOnce({
       status: 200,
-      data: { failed_request_uuids: [] },
+      data: {},
     });
     const NUMBER_OF_APPROVE_REQUEST_TO_GENERATE = 2;
     useParams.mockReturnValue({
@@ -1340,6 +1340,9 @@ describe('<BudgetDetailPage />', () => {
           },
         ],
         pageCount: 1,
+        learnerRequestStateCounts: [
+          { learnerRequestState: 'waiting', count: NUMBER_OF_APPROVE_REQUEST_TO_GENERATE },
+        ],
       },
       fetchBnrRequests: mockFetchLearnerCreditRequests,
     });
@@ -1372,9 +1375,10 @@ describe('<BudgetDetailPage />', () => {
     await user.click(cancelDialogButton);
 
     await waitFor(() => {
-      expect(EnterpriseAccessApiService.cancelApprovedBnrSubsidyRequests).toHaveBeenCalledWith({
+      expect(EnterpriseAccessApiService.cancelAllApprovedBnrSubsidyRequests).toHaveBeenCalledWith({
         enterpriseId: enterpriseUUID,
-        subsidyRequestUUIDs: ['test-approved-request-uuid', 'test-approved-request-uuid-2'],
+        subsidyAccessPolicyId: mockSubsidyAccessPolicyUUID,
+        options: {},
       });
     });
 
@@ -1385,13 +1389,15 @@ describe('<BudgetDetailPage />', () => {
 
   it('handles partial failures when canceling approved learner credit requests in bulk', async () => {
     const user = userEvent.setup();
-    // Simulate partial failure: 2 requested, 1 fails
-    EnterpriseAccessApiService.cancelApprovedBnrSubsidyRequests.mockResolvedValueOnce({
-      status: 200,
+    // Simulate partial failure: cancel-all returns 422 with non_cancelable UUIDs
+    const mockError = new Error('Partial failure');
+    mockError.response = {
+      status: 422,
       data: {
-        failed_request_uuids: ['test-approved-request-uuid-2'],
+        non_cancelable: ['test-approved-request-uuid-2'],
       },
-    });
+    };
+    EnterpriseAccessApiService.cancelAllApprovedBnrSubsidyRequests.mockRejectedValueOnce(mockError);
     const NUMBER_OF_APPROVE_REQUEST_TO_GENERATE = 2;
     useParams.mockReturnValue({
       enterpriseSlug: 'test-enterprise-slug',
@@ -1433,6 +1439,9 @@ describe('<BudgetDetailPage />', () => {
           },
         ],
         pageCount: 1,
+        learnerRequestStateCounts: [
+          { learnerRequestState: 'waiting', count: NUMBER_OF_APPROVE_REQUEST_TO_GENERATE },
+        ],
       },
       fetchBnrRequests: mockFetchLearnerCreditRequests,
     });
@@ -1465,15 +1474,17 @@ describe('<BudgetDetailPage />', () => {
     await user.click(cancelDialogButton);
 
     await waitFor(() => {
-      expect(EnterpriseAccessApiService.cancelApprovedBnrSubsidyRequests).toHaveBeenCalledWith({
+      expect(EnterpriseAccessApiService.cancelAllApprovedBnrSubsidyRequests).toHaveBeenCalledWith({
         enterpriseId: enterpriseUUID,
-        subsidyRequestUUIDs: ['test-approved-request-uuid', 'test-approved-request-uuid-2'],
+        subsidyAccessPolicyId: mockSubsidyAccessPolicyUUID,
+        options: {},
       });
     });
 
-    // Full-success toast should not render on partial failure response
+    // Error is handled internally by the hook (logged + error state set).
+    // The StatefulButton reflects the error state via cancelButtonState.
     await waitFor(() => {
-      expect(screen.queryByText('Approved requests canceled (2)')).not.toBeInTheDocument();
+      expect(screen.getByText('Try again')).toBeInTheDocument();
     });
   }, 30000);
 

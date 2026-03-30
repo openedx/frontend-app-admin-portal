@@ -95,34 +95,6 @@ describe('CancelApprovedRequestModal', () => {
     expect(mockDisplayToastForApprovalCancellation).not.toHaveBeenCalled();
   });
 
-  it('tracks event and does not show toast on partial failure result', async () => {
-    const cancelApprovedRequest = jest.fn().mockResolvedValue({
-      success: false,
-      partialFailure: true,
-      failedUUIDs: ['req-2'],
-      successfulUUIDs: ['req-1'],
-    });
-    const trackEvent = jest.fn();
-
-    renderWithProviders(
-      <CancelApprovedRequestModal
-        {...defaultProps}
-        cancelApprovedRequest={cancelApprovedRequest}
-        trackEvent={trackEvent}
-        uuidCount={2}
-      />,
-    );
-
-    fireEvent.click(screen.getByRole('button', { name: /cancel approvals \(2\)/i }));
-
-    await waitFor(() => {
-      expect(cancelApprovedRequest).toHaveBeenCalledTimes(1);
-    });
-
-    expect(trackEvent).toHaveBeenCalledTimes(1);
-    expect(mockDisplayToastForApprovalCancellation).not.toHaveBeenCalled();
-  });
-
   it('shows pending button label when cancelButtonState is pending', () => {
     renderWithProviders(
       <CancelApprovedRequestModal

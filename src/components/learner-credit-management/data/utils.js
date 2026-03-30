@@ -913,3 +913,29 @@ export const calculateTotalToRemindApprovedRequests = ({
   }
   return requestUuids.length;
 };
+
+/**
+ * Calculates the total number of requests to cancel based on selection state.
+ * @param {Object} params
+ * @param {string[]} params.requestUuids - Array of selected request UUIDs.
+ * @param {boolean} params.isEntireTableSelected - Whether the entire table is selected.
+ * @param {Array<{learnerRequestState: string, count: number}>} params.learnerRequestStateCounts
+ *   State counts from overview API.
+ * @returns {number} Total count of requests to cancel.
+ */
+export const calculateTotalToCancelApprovedRequests = ({
+  requestUuids,
+  isEntireTableSelected,
+  learnerRequestStateCounts,
+}) => {
+  if (isEntireTableSelected) {
+    const waitingCount = learnerRequestStateCounts?.find(
+      (item) => item.learnerRequestState === 'waiting',
+    )?.count || 0;
+    const remindedCount = learnerRequestStateCounts?.find(
+      (item) => item.learnerRequestState === 'reminded',
+    )?.count || 0;
+    return waitingCount + remindedCount;
+  }
+  return requestUuids.length;
+};

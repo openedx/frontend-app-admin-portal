@@ -1,6 +1,7 @@
 import { createIntl } from '@edx/frontend-platform/i18n';
 import dayjs from 'dayjs';
 import {
+  calculateTotalToCancelApprovedRequests,
   calculateTotalToRemindApprovedRequests,
   getAssignableCourseRuns,
   getBudgetStatus,
@@ -895,6 +896,80 @@ describe('calculateTotalToRemindApprovedRequests', () => {
 
   it('should handle null learnerRequestStateCounts', () => {
     const result = calculateTotalToRemindApprovedRequests({
+      requestUuids: ['uuid-1', 'uuid-2'],
+      isEntireTableSelected: true,
+      learnerRequestStateCounts: null,
+    });
+
+    expect(result).toBe(0);
+  });
+});
+
+describe('calculateTotalToCancelApprovedRequests', () => {
+  const learnerRequestStateCounts = [
+    { learnerRequestState: 'waiting', count: 25 },
+    { learnerRequestState: 'reminded', count: 10 },
+    { learnerRequestState: 'failed', count: 3 },
+  ];
+
+  it('should return sum of waiting and reminded counts when entire table is selected', () => {
+    const result = calculateTotalToCancelApprovedRequests({
+      requestUuids: ['uuid-1', 'uuid-2'],
+      isEntireTableSelected: true,
+      learnerRequestStateCounts,
+    });
+
+    expect(result).toBe(35);
+  });
+
+  it('should return number of selected UUIDs when table is not entirely selected', () => {
+    const result = calculateTotalToCancelApprovedRequests({
+      requestUuids: ['uuid-1', 'uuid-2', 'uuid-3'],
+      isEntireTableSelected: false,
+      learnerRequestStateCounts,
+    });
+
+    expect(result).toBe(3);
+  });
+
+  it('should return 0 when entire table is selected but no waiting or reminded states exist', () => {
+    const result = calculateTotalToCancelApprovedRequests({
+      requestUuids: ['uuid-1'],
+      isEntireTableSelected: true,
+      learnerRequestStateCounts: [
+        { learnerRequestState: 'failed', count: 5 },
+      ],
+    });
+
+    expect(result).toBe(0);
+  });
+
+  it('should handle only waiting state present', () => {
+    const result = calculateTotalToCancelApprovedRequests({
+      requestUuids: ['uuid-1'],
+      isEntireTableSelected: true,
+      learnerRequestStateCounts: [
+        { learnerRequestState: 'waiting', count: 15 },
+      ],
+    });
+
+    expect(result).toBe(15);
+  });
+
+  it('should handle only reminded state present', () => {
+    const result = calculateTotalToCancelApprovedRequests({
+      requestUuids: ['uuid-1'],
+      isEntireTableSelected: true,
+      learnerRequestStateCounts: [
+        { learnerRequestState: 'reminded', count: 7 },
+      ],
+    });
+
+    expect(result).toBe(7);
+  });
+
+  it('should handle null learnerRequestStateCounts', () => {
+    const result = calculateTotalToCancelApprovedRequests({
       requestUuids: ['uuid-1', 'uuid-2'],
       isEntireTableSelected: true,
       learnerRequestStateCounts: null,
