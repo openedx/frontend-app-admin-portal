@@ -6,14 +6,14 @@ import { useToggle } from '@openedx/paragon';
 import EnterpriseAccessApiService from '../../../../data/services/EnterpriseAccessApiService';
 import { learnerCreditManagementQueryKeys } from '../constants';
 import useBudgetId from './useBudgetId';
+import { applyFiltersToOptions } from './useBnrSubsidyRequests';
 
-const useBulkCancelApprovedRequests = ({
+const useBulkCancelApprovedRequests = (
   subsidyRequestUUIDs,
   enterpriseId,
-  onSuccess,
-  onFailure,
-  onPartialFailure,
-}) => {
+  cancelAll,
+  tableFilters,
+) => {
   const [isOpen, open, close] = useToggle(false);
   const [cancelButtonState, setCancelButtonState] = useState('default');
   const queryClient = useQueryClient();
@@ -21,59 +21,30 @@ const useBulkCancelApprovedRequests = ({
 
   const cancelApprovedRequests = useCallback(async () => {
     setCancelButtonState('pending');
-
     try {
-      const response = await EnterpriseAccessApiService.cancelApprovedBnrSubsidyRequests({
-        enterpriseId,
-        subsidyRequestUUIDs,
-      });
-
-      if (!response || !response.data) {
-        throw new Error('Invalid response from cancelApprovedBnrSubsidyRequests');
-      }
-
-      const failedUUIDs = response.data.failed_request_uuids || [];
-      const hasPartialFailure = failedUUIDs.length > 0;
-      const successfulUUIDs = subsidyRequestUUIDs.filter(
-        uuid => !failedUUIDs.includes(uuid),
-      );
-
-      setCancelButtonState('complete');
-
-      // Check for partial failures in response
-      if (hasPartialFailure && !!onPartialFailure) {
-        onPartialFailure({
-          failedUUIDs,
-          successfulUUIDs,
+      if (cancelAll) {
+        const options = {};
+        applyFiltersToOptions(tableFilters, options);
+        await EnterpriseAccessApiService.cancelAllApprovedBnrSubsidyRequests({
+          enterpriseId,
+          subsidyAccessPolicyId,
+          options,
+        });
+      } else {
+        await EnterpriseAccessApiService.cancelApprovedBnrSubsidyRequests({
+          enterpriseId,
+          subsidyRequestUUIDs,
         });
       }
-
-      if (onSuccess) {
-        onSuccess(response);
-      }
-
+      setCancelButtonState('complete');
       queryClient.invalidateQueries({
         queryKey: learnerCreditManagementQueryKeys.budget(subsidyAccessPolicyId),
       });
-
-      return {
-        success: !hasPartialFailure,
-        partialFailure: hasPartialFailure,
-        failedUUIDs,
-        successfulUUIDs,
-        response,
-      };
     } catch (err) {
       logError(err);
       setCancelButtonState('error');
-
-      if (onFailure) {
-        onFailure(err);
-      }
-
-      throw err;
     }
-  }, [subsidyRequestUUIDs, enterpriseId, queryClient, subsidyAccessPolicyId, onSuccess, onFailure, onPartialFailure]);
+  }, [subsidyRequestUUIDs, enterpriseId, subsidyAccessPolicyId, cancelAll, tableFilters, queryClient]);
 
   return {
     cancelButtonState,

@@ -34,12 +34,10 @@ const CancelApprovedRequestModal = ({
 
   const handleOnClick = async () => {
     try {
-      const result = await cancelApprovedRequest();
+      await cancelApprovedRequest();
       trackEvent();
       // Only show toast on successful cancellation
-      if (displayToastForApprovalCancellation && result && result.success !== false) {
-        displayToastForApprovalCancellation(uuidCount);
-      }
+      displayToastForApprovalCancellation(uuidCount);
     } catch (error) {
       // Error is already handled in the hook, just track the event
       trackEvent();

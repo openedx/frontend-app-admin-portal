@@ -364,9 +364,35 @@ describe('EnterpriseAccessApiService', () => {
       subsidyRequestUUIDs: mockBnrSubsidyRequestUUIDs,
     });
 
-    expect(axios.post).toBeCalledWith(`${enterpriseAccessBaseUrl}/api/v1/learner-credit-requests/cancel/`, {
-      request_uuids: mockBnrSubsidyRequestUUIDs,
+    expect(axios.post).toBeCalledWith(`${enterpriseAccessBaseUrl}/api/v1/learner-credit-requests/bulk-cancel/`, {
+      learner_credit_request_uuids: mockBnrSubsidyRequestUUIDs,
       enterprise_customer_uuid: mockEnterpriseUUID,
+    });
+  });
+
+  test('cancelAllApprovedBnrSubsidyRequests calls enterprise-access cancel-all endpoint without learnerRequestState', () => {
+    EnterpriseAccessApiService.cancelAllApprovedBnrSubsidyRequests({
+      enterpriseId: mockEnterpriseUUID,
+      subsidyAccessPolicyId: mockSubsidyAccessPolicyUUID,
+    });
+
+    expect(axios.post).toBeCalledWith(`${enterpriseAccessBaseUrl}/api/v1/learner-credit-requests/cancel-all/`, {
+      enterprise_customer_uuid: mockEnterpriseUUID,
+      policy_uuid: mockSubsidyAccessPolicyUUID,
+    });
+  });
+
+  test('cancelAllApprovedBnrSubsidyRequests calls enterprise-access cancel-all endpoint with learnerRequestState', () => {
+    EnterpriseAccessApiService.cancelAllApprovedBnrSubsidyRequests({
+      enterpriseId: mockEnterpriseUUID,
+      subsidyAccessPolicyId: mockSubsidyAccessPolicyUUID,
+      options: { learnerRequestState: 'waiting' },
+    });
+
+    expect(axios.post).toBeCalledWith(`${enterpriseAccessBaseUrl}/api/v1/learner-credit-requests/cancel-all/`, {
+      enterprise_customer_uuid: mockEnterpriseUUID,
+      policy_uuid: mockSubsidyAccessPolicyUUID,
+      learner_request_state: 'waiting',
     });
   });
 

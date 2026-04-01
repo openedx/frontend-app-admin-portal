@@ -15,6 +15,9 @@ jest.mock('@edx/frontend-platform/logging', () => ({
 jest.mock('../../../../../data/services/EnterpriseAccessApiService');
 
 jest.mock('../useBudgetId', () => jest.fn(() => ({ subsidyAccessPolicyId: 'policy-uuid' })));
+jest.mock('../useBnrSubsidyRequests', () => ({
+  applyFiltersToOptions: jest.fn(),
+}));
 
 const wrapperFactory = (queryClient) => function Wrapper({ children }) {
   return (
@@ -35,36 +38,27 @@ describe('useBulkCancelApprovedRequests', () => {
   });
 
   it('cancels approved requests successfully and invalidates budget query', async () => {
-    const mockResponse = { status: 200, data: { failed_request_uuids: [] } };
-    const onSuccess = jest.fn();
+    const mockResponse = { status: 200, data: {} };
     EnterpriseAccessApiService.cancelApprovedBnrSubsidyRequests.mockResolvedValueOnce(mockResponse);
 
-    const { result } = renderHook(() => useBulkCancelApprovedRequests({
-      subsidyRequestUUIDs: ['req-1', 'req-2'],
-      enterpriseId: 'enterprise-1',
-      onSuccess,
-    }), {
+    const { result } = renderHook(() => useBulkCancelApprovedRequests(
+      ['req-1', 'req-2'],
+      'enterprise-1',
+      false,
+      [],
+    ), {
       wrapper: wrapperFactory(queryClient),
     });
 
     expect(result.current.cancelButtonState).toBe('default');
 
-    let mutationResult;
     await act(async () => {
-      mutationResult = await result.current.cancelApprovedRequests();
+      await result.current.cancelApprovedRequests();
     });
 
     expect(EnterpriseAccessApiService.cancelApprovedBnrSubsidyRequests).toHaveBeenCalledWith({
       enterpriseId: 'enterprise-1',
       subsidyRequestUUIDs: ['req-1', 'req-2'],
-    });
-    expect(onSuccess).toHaveBeenCalledWith(mockResponse);
-    expect(mutationResult).toEqual({
-      success: true,
-      partialFailure: false,
-      failedUUIDs: [],
-      successfulUUIDs: ['req-1', 'req-2'],
-      response: mockResponse,
     });
 
     await waitFor(() => {
@@ -76,21 +70,21 @@ describe('useBulkCancelApprovedRequests', () => {
     });
   });
 
-  it('handles failed cancellation by logging, setting error state, and calling onFailure', async () => {
+  it('handles failed cancellation by logging and setting error state', async () => {
     const error = new Error('Cancellation failed');
-    const onFailure = jest.fn();
     EnterpriseAccessApiService.cancelApprovedBnrSubsidyRequests.mockRejectedValueOnce(error);
 
-    const { result } = renderHook(() => useBulkCancelApprovedRequests({
-      subsidyRequestUUIDs: ['req-1'],
-      enterpriseId: 'enterprise-1',
-      onFailure,
-    }), {
+    const { result } = renderHook(() => useBulkCancelApprovedRequests(
+      ['req-1'],
+      'enterprise-1',
+      false,
+      [],
+    ), {
       wrapper: wrapperFactory(queryClient),
     });
 
     await act(async () => {
-      await expect(result.current.cancelApprovedRequests()).rejects.toThrow('Cancellation failed');
+      await result.current.cancelApprovedRequests();
     });
 
     await waitFor(() => {
@@ -98,46 +92,64 @@ describe('useBulkCancelApprovedRequests', () => {
     });
 
     expect(logError).toHaveBeenCalledWith(error);
-    expect(onFailure).toHaveBeenCalledWith(error);
     expect(invalidateQueriesSpy).not.toHaveBeenCalled();
   });
 
-  it('handles partial failures by calling onPartialFailure with failed and successful UUIDs', async () => {
-    const onPartialFailure = jest.fn();
-    const onSuccess = jest.fn();
-    const mockResponse = {
-      status: 200,
-      data: {
-        failed_request_uuids: ['req-2'],
-      },
-    };
-    EnterpriseAccessApiService.cancelApprovedBnrSubsidyRequests.mockResolvedValueOnce(mockResponse);
+  it('calls cancelAllApprovedBnrSubsidyRequests when cancelAll is true', async () => {
+    const mockResponse = { status: 202, data: {} };
+    EnterpriseAccessApiService.cancelAllApprovedBnrSubsidyRequests.mockResolvedValueOnce(mockResponse);
 
-    const { result } = renderHook(() => useBulkCancelApprovedRequests({
-      subsidyRequestUUIDs: ['req-1', 'req-2'],
-      enterpriseId: 'enterprise-1',
-      onPartialFailure,
-      onSuccess,
-    }), {
+    const { result } = renderHook(() => useBulkCancelApprovedRequests(
+      [],
+      'enterprise-1',
+      true,
+      [],
+    ), {
       wrapper: wrapperFactory(queryClient),
     });
 
-    let mutationResult;
     await act(async () => {
-      mutationResult = await result.current.cancelApprovedRequests();
+      await result.current.cancelApprovedRequests();
     });
 
-    expect(onPartialFailure).toHaveBeenCalledWith({
-      failedUUIDs: ['req-2'],
-      successfulUUIDs: ['req-1'],
+    expect(EnterpriseAccessApiService.cancelAllApprovedBnrSubsidyRequests).toHaveBeenCalledWith({
+      enterpriseId: 'enterprise-1',
+      subsidyAccessPolicyId: 'policy-uuid',
+      options: {},
     });
-    expect(onSuccess).toHaveBeenCalledWith(mockResponse);
-    expect(mutationResult).toEqual({
-      success: false,
-      partialFailure: true,
-      failedUUIDs: ['req-2'],
-      successfulUUIDs: ['req-1'],
-      response: mockResponse,
+    expect(EnterpriseAccessApiService.cancelApprovedBnrSubsidyRequests).not.toHaveBeenCalled();
+
+    await waitFor(() => {
+      expect(result.current.cancelButtonState).toBe('complete');
     });
+
+    expect(invalidateQueriesSpy).toHaveBeenCalledWith({
+      queryKey: learnerCreditManagementQueryKeys.budget('policy-uuid'),
+    });
+  });
+
+  it('sets error state when cancelAll fails', async () => {
+    const error = new Error('Cancel all failed');
+    EnterpriseAccessApiService.cancelAllApprovedBnrSubsidyRequests.mockRejectedValueOnce(error);
+
+    const { result } = renderHook(() => useBulkCancelApprovedRequests(
+      [],
+      'enterprise-1',
+      true,
+      [],
+    ), {
+      wrapper: wrapperFactory(queryClient),
+    });
+
+    await act(async () => {
+      await result.current.cancelApprovedRequests();
+    });
+
+    await waitFor(() => {
+      expect(result.current.cancelButtonState).toBe('error');
+    });
+
+    expect(logError).toHaveBeenCalledWith(error);
+    expect(invalidateQueriesSpy).not.toHaveBeenCalled();
   });
 });

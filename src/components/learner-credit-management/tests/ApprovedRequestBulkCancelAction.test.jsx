@@ -22,6 +22,8 @@ jest.mock('../data/hooks/useBulkCancelApprovedRequests');
 jest.mock('../data/utils', () => ({
   ...jest.requireActual('../data/utils'),
   transformSelectedApprovedRequestRows: jest.fn(),
+  calculateTotalToCancelApprovedRequests: jest.fn(({ requestUuids }) => requestUuids.length),
+  getLearnerRequestStateCountsByState: jest.fn(() => ({})),
 }));
 
 jest.mock('../data', () => ({
@@ -53,6 +55,16 @@ const defaultHookReturnValue = {
   close: jest.fn(),
   isOpen: false,
   open: jest.fn(),
+};
+
+const defaultProps = {
+  isEntireTableSelected: false,
+  learnerRequestStateCounts: [],
+  tableInstance: {
+    columns: [],
+    itemCount: 0,
+    state: { filters: [] },
+  },
 };
 
 const renderWithIntl = (ui) => render(<IntlProvider locale="en">{ui}</IntlProvider>);
@@ -95,6 +107,7 @@ describe('ApprovedRequestBulkCancelAction', () => {
 
     renderWithIntl(
       <ApprovedRequestBulkCancelAction
+        {...defaultProps}
         selectedFlatRows={selectedFlatRows}
         enterpriseId="enterprise-123"
       />,
@@ -105,11 +118,12 @@ describe('ApprovedRequestBulkCancelAction', () => {
       selectedFlatRows[1],
     ]);
 
-    const callArgs = useBulkCancelApprovedRequests.mock.calls[0][0];
-    expect(callArgs.subsidyRequestUUIDs).toEqual(['request-approved', 'request-reminded']);
-    expect(callArgs.enterpriseId).toBe('enterprise-123');
-    expect(callArgs.onSuccess).toBeDefined();
-    expect(callArgs.onPartialFailure).toBeDefined();
+    expect(useBulkCancelApprovedRequests).toHaveBeenCalledWith(
+      ['request-approved', 'request-reminded'],
+      'enterprise-123',
+      false,
+      [],
+    );
 
     expect(screen.getByRole('button', { name: /cancel \(2\)/i })).toBeEnabled();
   });
@@ -125,6 +139,7 @@ describe('ApprovedRequestBulkCancelAction', () => {
 
     renderWithIntl(
       <ApprovedRequestBulkCancelAction
+        {...defaultProps}
         selectedFlatRows={selectedFlatRows}
         enterpriseId="enterprise-123"
       />,
@@ -133,7 +148,7 @@ describe('ApprovedRequestBulkCancelAction', () => {
     expect(screen.getByRole('button', { name: /cancel \(0\)/i })).toBeDisabled();
   });
 
-  it('passes onPartialFailure handler to the bulk cancel hook', () => {
+  it('passes isEntireTableSelected as cancelAll to the hook', () => {
     const selectedFlatRows = [{
       original: {
         uuid: 'request-approved',
@@ -144,18 +159,22 @@ describe('ApprovedRequestBulkCancelAction', () => {
 
     renderWithIntl(
       <ApprovedRequestBulkCancelAction
+        {...defaultProps}
+        isEntireTableSelected
         selectedFlatRows={selectedFlatRows}
         enterpriseId="enterprise-123"
       />,
     );
 
-    const callArgs = useBulkCancelApprovedRequests.mock.calls[0][0];
-    expect(callArgs.onPartialFailure).toBeDefined();
-    expect(typeof callArgs.onPartialFailure).toBe('function');
+    expect(useBulkCancelApprovedRequests).toHaveBeenCalledWith(
+      ['request-approved'],
+      'enterprise-123',
+      true,
+      [],
+    );
   });
 
-  it('invokes refreshTableData when hook onSuccess callback runs', () => {
-    const refreshTableData = jest.fn();
+  it('passes table filters to the hook', () => {
     const selectedFlatRows = [{
       original: {
         uuid: 'request-approved',
@@ -163,18 +182,26 @@ describe('ApprovedRequestBulkCancelAction', () => {
         lastActionStatus: 'requested',
       },
     }];
+    const filters = [{ id: 'learnerRequestState', value: ['waiting'] }];
 
     renderWithIntl(
       <ApprovedRequestBulkCancelAction
+        {...defaultProps}
+        tableInstance={{
+          columns: [],
+          itemCount: 0,
+          state: { filters },
+        }}
         selectedFlatRows={selectedFlatRows}
         enterpriseId="enterprise-123"
-        refreshTableData={refreshTableData}
       />,
     );
 
-    const callArgs = useBulkCancelApprovedRequests.mock.calls[0][0];
-    callArgs.onSuccess();
-
-    expect(refreshTableData).toHaveBeenCalledTimes(1);
+    expect(useBulkCancelApprovedRequests).toHaveBeenCalledWith(
+      ['request-approved'],
+      'enterprise-123',
+      false,
+      filters,
+    );
   });
 });

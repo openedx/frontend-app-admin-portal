@@ -8,7 +8,11 @@ import { FormattedMessage } from '@edx/frontend-platform/i18n';
 
 import useBulkCancelApprovedRequests from './data/hooks/useBulkCancelApprovedRequests';
 import CancelApprovedRequestModal from './CancelApprovedRequestModal';
-import { transformSelectedApprovedRequestRows } from './data/utils';
+import {
+  transformSelectedApprovedRequestRows,
+  calculateTotalToCancelApprovedRequests,
+  getLearnerRequestStateCountsByState,
+} from './data/utils';
 import { REQUEST_RECENT_ACTIONS, useBudgetId, useSubsidyAccessPolicy } from './data';
 import EVENT_NAMES from '../../eventTracking';
 
@@ -19,8 +23,10 @@ const isCancelableRow = (row) => (
 
 const ApprovedRequestBulkCancelAction = ({
   selectedFlatRows,
+  isEntireTableSelected,
+  learnerRequestStateCounts,
+  tableInstance,
   enterpriseId,
-  refreshTableData,
 }) => {
   const { subsidyAccessPolicyId } = useBudgetId();
   const { data: subsidyAccessPolicy } = useSubsidyAccessPolicy(subsidyAccessPolicyId);
@@ -36,7 +42,13 @@ const ApprovedRequestBulkCancelAction = ({
     uniqueLearnerRequestState,
   } = transformSelectedApprovedRequestRows(cancelableRows);
 
-  const totalToCancel = requestUuids.length;
+  const { state: dataTableState } = tableInstance;
+
+  const totalToCancel = calculateTotalToCancelApprovedRequests({
+    requestUuids,
+    isEntireTableSelected,
+    learnerRequestStateCounts,
+  });
 
   const {
     cancelButtonState,
@@ -44,27 +56,12 @@ const ApprovedRequestBulkCancelAction = ({
     close,
     isOpen,
     open,
-  } = useBulkCancelApprovedRequests({
-    subsidyRequestUUIDs: requestUuids,
+  } = useBulkCancelApprovedRequests(
+    requestUuids,
     enterpriseId,
-    onSuccess: () => {
-      if (refreshTableData) {
-        refreshTableData();
-      }
-    },
-    onPartialFailure: (partialFailureData) => {
-      // Log partial failures for tracking/debugging
-      sendEnterpriseTrackEvent(
-        enterpriseId,
-        `${EVENT_NAMES.LEARNER_CREDIT_MANAGEMENT.BUDGET_DETAILS_APPROVED_REQUESTS_DATATABLE_CANCEL}.partial_failure`,
-        {
-          failedUUIDs: partialFailureData.failedUUIDs,
-          successfulUUIDs: partialFailureData.successfulUUIDs,
-          totalRequested: requestUuids.length,
-        },
-      );
-    },
-  });
+    isEntireTableSelected,
+    dataTableState.filters,
+  );
 
   const {
     BUDGET_DETAILS_APPROVED_REQUESTS_DATATABLE_OPEN_CANCEL_MODAL,
@@ -73,12 +70,23 @@ const ApprovedRequestBulkCancelAction = ({
   } = EVENT_NAMES.LEARNER_CREDIT_MANAGEMENT;
 
   const trackEvent = (eventName) => {
+    const learnerRequestStateObject = getLearnerRequestStateCountsByState(
+      learnerRequestStateCounts,
+    );
+
+    const selectedRowsMetadata = isEntireTableSelected
+      ? { uniqueLearnerRequestState: learnerRequestStateObject, totalSelectedRows: totalToCancel }
+      : {
+        uniqueLearnerRequestState,
+        totalSelectedRows,
+      };
+
     const trackEventMetadata = {
-      uniqueLearnerRequestState,
-      totalSelectedRows,
+      ...selectedRowsMetadata,
       isSubsidyActive,
       subsidyUuid,
       catalogUuid,
+      isEntireTableSelected,
       requestUuids,
       aggregates,
       isOpen: !isOpen,
@@ -134,12 +142,19 @@ const ApprovedRequestBulkCancelAction = ({
 
 ApprovedRequestBulkCancelAction.propTypes = {
   selectedFlatRows: PropTypes.arrayOf(PropTypes.shape()).isRequired,
+  isEntireTableSelected: PropTypes.bool.isRequired,
+  learnerRequestStateCounts: PropTypes.arrayOf(PropTypes.shape({
+    learnerRequestState: PropTypes.string.isRequired,
+    count: PropTypes.number.isRequired,
+  })).isRequired,
+  tableInstance: PropTypes.shape({
+    columns: PropTypes.arrayOf(PropTypes.shape()).isRequired,
+    itemCount: PropTypes.number.isRequired,
+    state: PropTypes.shape({
+      filters: PropTypes.arrayOf(PropTypes.shape()).isRequired,
+    }).isRequired,
+  }).isRequired,
   enterpriseId: PropTypes.string.isRequired,
-  refreshTableData: PropTypes.func,
-};
-
-ApprovedRequestBulkCancelAction.defaultProps = {
-  refreshTableData: undefined,
 };
 
 const mapStateToProps = state => ({
