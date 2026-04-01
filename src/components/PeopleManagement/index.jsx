@@ -19,6 +19,17 @@ import GroupInviteErrorToast from './GroupInviteErrorToast';
 import LearnerTabContent from './LearnerTabContent';
 import InviteAdminsTable from './InviteAdminsTable';
 import { useAdminsTabNotificationBubble } from './AdminsTabNotificationBubble';
+import {
+  ORGANIZE_LEARNER_TARGETS,
+} from '../ProductTours/AdminOnboardingTours/constants';
+
+let setTabFromTourHandler = null;
+
+export const setPeopleManagementTabFromTour = (tabKey) => {
+  if (typeof setTabFromTourHandler === 'function') {
+    setTabFromTourHandler(tabKey);
+  }
+};
 
 const PeopleManagementPage = ({ enterpriseId, learnersTabEnabled }) => {
   const intl = useIntl();
@@ -76,6 +87,21 @@ const PeopleManagementPage = ({ enterpriseId, learnersTabEnabled }) => {
     }
   }, [openToast]);
 
+  useEffect(() => {
+    setTabFromTourHandler = (tabKey) => {
+      if (tabKey === 'learners' || tabKey === 'admins') {
+        setActiveTab(tabKey);
+        if (tabKey === 'admins') {
+          onAdminsTabClick();
+        }
+      }
+    };
+
+    return () => {
+      setTabFromTourHandler = null;
+    };
+  }, [onAdminsTabClick]);
+
   let groupsCardSection = (<Skeleton height="20vh" />);
   if (!isGroupsLoading) {
     if (groups && groups.length > 0) {
@@ -126,11 +152,15 @@ const PeopleManagementPage = ({ enterpriseId, learnersTabEnabled }) => {
           >
             <Tab
               eventKey="learners"
-              title={intl.formatMessage({
-                id: 'adminPortal.peopleManagement.tabs.learners',
-                defaultMessage: 'Learners',
-                description: 'Learners tab title for people management page.',
-              })}
+              title={(
+                <span id={ORGANIZE_LEARNER_TARGETS.LEARNERS_TAB}>
+                  {intl.formatMessage({
+                    id: 'adminPortal.peopleManagement.tabs.learners',
+                    defaultMessage: 'Learners',
+                    description: 'Learners tab title for people management page.',
+                  })}
+                </span>
+              )}
             >
               <div className="pt-4">
                 <LearnerTabContent
@@ -146,7 +176,9 @@ const PeopleManagementPage = ({ enterpriseId, learnersTabEnabled }) => {
               </div>
             </Tab>
             <Tab
+              id={ORGANIZE_LEARNER_TARGETS.ADMINS_TAB}
               eventKey="admins"
+              tabClassName={ORGANIZE_LEARNER_TARGETS.ADMINS_TAB}
               title={(
                 <span className="position-relative">
                   {intl.formatMessage({

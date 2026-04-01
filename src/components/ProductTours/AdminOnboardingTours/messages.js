@@ -132,6 +132,11 @@ const messages = defineMessages({
     defaultMessage: 'Create learner groups, view all learners in your organization, and access individual learner profiles—all in one place.',
     description: 'Description for the organize learners flow step one',
   },
+  organizeLearnersStepOneWithAdminsBody: {
+    id: 'adminPortal.productTours.adminOnboarding.organizeLearners.withAdmins.body.1',
+    defaultMessage: 'Create learner groups, view all learners in your organization, access individual learner profiles, and manage admins—all in one place.',
+    description: 'Description for the organize learners flow step one when the invite admins feature is enabled',
+  },
   organizeLearnersStepOneNoMembersBody: {
     id: 'adminPortal.productTours.adminOnboarding.organizeLearners.noLearners.body.1',
     defaultMessage: 'Once learners join the organization, you can create learner groups, view all learners in your organization, and access individual learner profiles—all in one place.',
@@ -141,6 +146,11 @@ const messages = defineMessages({
     id: 'adminPortal.productTours.adminOnboarding.organizeLearners.body.2',
     defaultMessage: 'View all learners in your organization. Search by name and access profiles to track progress and view learning access.',
     description: 'Description for the organize learners flow step two',
+  },
+  organizeLearnersAdminsTabBody: {
+    id: 'adminPortal.productTours.adminOnboarding.organizeLearners.body.adminsTab',
+    defaultMessage: 'Manage and view your organization\'s admins.',
+    description: 'Description for the organize learners flow step two for admins tab when the invite admins feature is enabled',
   },
   organizeLearnersStepThreeBody: {
     id: 'adminPortal.productTours.adminOnboarding.organizeLearners.body.3',

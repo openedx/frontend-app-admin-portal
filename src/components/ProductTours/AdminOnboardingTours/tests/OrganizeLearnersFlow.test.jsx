@@ -4,9 +4,13 @@ import { useParams } from 'react-router';
 import { QueryClientProvider } from '@tanstack/react-query';
 
 import OrganizeLearnersFlow from '../flows/OrganizeLearnersFlow';
-import { ORGANIZE_LEARNER_TARGETS } from '../constants';
+import {
+  ADMIN_TOUR_EVENT_NAMES,
+  ORGANIZE_LEARNER_TARGETS,
+} from '../constants';
 import messages from '../messages';
 import useHydrateAdminOnboardingData from '../data/useHydrateAdminOnboardingData';
+import { setPeopleManagementTabFromTour } from '../../../PeopleManagement';
 import { queryClient } from '../../../test/testUtils';
 
 const mockFormatMessage = jest.fn((message) => message.defaultMessage || message.id || 'Mocked message');
@@ -28,6 +32,9 @@ jest.mock('../../../learner-credit-management/data', () => ({
 }));
 
 jest.mock('../data/useHydrateAdminOnboardingData');
+jest.mock('../../../PeopleManagement', () => ({
+  setPeopleManagementTabFromTour: jest.fn(),
+}));
 
 const wrapper = ({ children }) => (
   <QueryClientProvider client={queryClient()}>
@@ -39,6 +46,7 @@ const wrapper = ({ children }) => (
 
 const mockHandleAdvanceTour = jest.fn();
 const mockHandleEndTour = jest.fn();
+const mockHandleBackTour = jest.fn();
 const enterpriseId = 'enterprise-id';
 
 describe('useCreateOrganizeLearnersFlow', () => {
@@ -90,6 +98,50 @@ describe('useCreateOrganizeLearnersFlow', () => {
       placement: 'left',
     });
     expect(flow[4].body.props).toMatchObject(messages.organizeLearnersStepFiveBody);
+  });
+
+  it('adds admins tab as second step when invite admins is enabled', () => {
+    useHydrateAdminOnboardingData.mockReturnValue({ data: { hasEnterpriseMembers: true, hasEnterpriseGroups: true } });
+    const { result } = renderHook(
+      () => OrganizeLearnersFlow({
+        enterpriseId,
+        enableInviteAdmins: true,
+        handleAdvanceTour: mockHandleAdvanceTour,
+        handleEndTour: mockHandleEndTour,
+        handleBackTour: mockHandleBackTour,
+      }),
+      { wrapper },
+    );
+
+    const flow = result.current;
+
+    expect(flow).toHaveLength(7);
+    expect(flow[0]).toMatchObject({
+      body: messages.organizeLearnersStepOneWithAdminsBody.defaultMessage,
+    });
+    expect(flow[1]).toMatchObject({
+      target: `#${ORGANIZE_LEARNER_TARGETS.ADMINS_TAB}`,
+      placement: 'right',
+      body: messages.organizeLearnersAdminsTabBody.defaultMessage,
+    });
+  });
+
+  it('uses updated step one copy when invite admins is enabled with no groups', () => {
+    useHydrateAdminOnboardingData.mockReturnValue({ data: { hasEnterpriseMembers: true, hasEnterpriseGroups: false } });
+    const { result } = renderHook(
+      () => OrganizeLearnersFlow({
+        enterpriseId,
+        enableInviteAdmins: true,
+        handleAdvanceTour: mockHandleAdvanceTour,
+        handleEndTour: mockHandleEndTour,
+        handleBackTour: mockHandleBackTour,
+      }),
+      { wrapper },
+    );
+
+    expect(result.current[0]).toMatchObject({
+      body: messages.organizeLearnersStepOneWithAdminsBody.defaultMessage,
+    });
   });
 
   it('uses correct target selectors for organize learners flow', () => {
@@ -184,5 +236,57 @@ describe('useCreateOrganizeLearnersFlow', () => {
       title: messages.organizeLearnersStepOneTitle.defaultMessage,
       body: messages.organizeLearnersStepOneNoMembersBody.defaultMessage,
     });
+  });
+
+  it('creates terminal admins step when invite admins is enabled with no enterprise learners', () => {
+    useHydrateAdminOnboardingData.mockReturnValue(
+      { data: { hasEnterpriseMembers: false, hasEnterpriseGroups: false } },
+    );
+    const { result } = renderHook(
+      () => OrganizeLearnersFlow({
+        enterpriseId,
+        enableInviteAdmins: true,
+        handleAdvanceTour: mockHandleAdvanceTour,
+        handleEndTour: mockHandleEndTour,
+        handleBackTour: mockHandleBackTour,
+      }),
+      { wrapper },
+    );
+
+    expect(result.current).toHaveLength(2);
+    expect(result.current[1]).toMatchObject({
+      target: `#${ORGANIZE_LEARNER_TARGETS.ADMINS_TAB}`,
+      placement: 'right',
+      body: messages.organizeLearnersAdminsTabBody.defaultMessage,
+    });
+    expect(result.current[1].onEnd).toBeDefined();
+    expect(result.current[1].onAdvance).toBeUndefined();
+  });
+
+  it('switches tabs through the People Management helper for invite-admins flow navigation', () => {
+    useHydrateAdminOnboardingData.mockReturnValue({ data: { hasEnterpriseMembers: true, hasEnterpriseGroups: true } });
+
+    const { result } = renderHook(
+      () => OrganizeLearnersFlow({
+        enterpriseId,
+        enableInviteAdmins: true,
+        handleAdvanceTour: mockHandleAdvanceTour,
+        handleEndTour: mockHandleEndTour,
+        handleBackTour: mockHandleBackTour,
+      }),
+      { wrapper },
+    );
+
+    result.current[1].onAdvance();
+    expect(setPeopleManagementTabFromTour).toHaveBeenCalledWith('learners');
+    expect(mockHandleAdvanceTour).toHaveBeenCalledWith(
+      ADMIN_TOUR_EVENT_NAMES.ORGANIZE_LEARNERS_ADVANCE_EVENT_NAME,
+    );
+
+    result.current[2].onBack();
+    expect(setPeopleManagementTabFromTour).toHaveBeenCalledWith('admins');
+    expect(mockHandleBackTour).toHaveBeenCalledWith(
+      ADMIN_TOUR_EVENT_NAMES.ORGANIZE_LEARNERS_BACK_EVENT_NAME,
+    );
   });
 });

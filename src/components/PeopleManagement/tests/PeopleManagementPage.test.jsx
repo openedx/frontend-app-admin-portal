@@ -13,7 +13,7 @@ import userEvent from '@testing-library/user-event';
 
 import { useAllFlexEnterpriseGroups } from '../../learner-credit-management/data';
 import { EnterpriseSubsidiesContext } from '../../EnterpriseSubsidiesContext';
-import PeopleManagementPage from '..';
+import PeopleManagementPage, { setPeopleManagementTabFromTour } from '..';
 import EVENT_NAMES from '../../../eventTracking';
 
 const mockStore = configureMockStore([thunk]);
@@ -339,6 +339,64 @@ describe('<PeopleManagementPage >', () => {
       );
 
       expect(screen.queryByText('has unread notifications')).not.toBeInTheDocument();
+    });
+
+    it('switches to learners tab when the tour helper requests learners', async () => {
+      useAllFlexEnterpriseGroups.mockReturnValue({ data: mockGroupsResponse });
+
+      const storeState = {
+        portalConfiguration: {
+          enterpriseId: enterpriseUUID,
+          enterpriseSlug,
+          enterpriseFeatures: {
+            enterpriseInviteAdminsEnabled: true,
+          },
+        },
+      };
+
+      render(<PeopleManagementPageWrapper initialState={storeState} />);
+
+      const learnersTab = screen.getByRole('tab', { name: /learners/i });
+      expect(learnersTab).toHaveAttribute('aria-selected', 'true');
+
+      setPeopleManagementTabFromTour('admins');
+
+      await waitFor(() => {
+        expect(screen.getByRole('tab', { name: /admins/i })).toHaveAttribute('aria-selected', 'true');
+      });
+
+      setPeopleManagementTabFromTour('learners');
+
+      await waitFor(() => {
+        const selectedLearnersTab = screen.getByRole('tab', { name: /learners/i });
+        expect(selectedLearnersTab).toHaveAttribute('aria-selected', 'true');
+      });
+    });
+
+    it('switches to admins tab when the tour helper requests admins', async () => {
+      useAllFlexEnterpriseGroups.mockReturnValue({ data: mockGroupsResponse });
+
+      const storeState = {
+        portalConfiguration: {
+          enterpriseId: enterpriseUUID,
+          enterpriseSlug,
+          enterpriseFeatures: {
+            enterpriseInviteAdminsEnabled: true,
+          },
+        },
+      };
+
+      render(<PeopleManagementPageWrapper initialState={storeState} />);
+
+      const learnersTab = screen.getByRole('tab', { name: /learners/i });
+      expect(learnersTab).toHaveAttribute('aria-selected', 'true');
+
+      setPeopleManagementTabFromTour('admins');
+
+      await waitFor(() => {
+        const adminsTab = screen.getByRole('tab', { name: /admins/i });
+        expect(adminsTab).toHaveAttribute('aria-selected', 'true');
+      });
     });
   });
 });

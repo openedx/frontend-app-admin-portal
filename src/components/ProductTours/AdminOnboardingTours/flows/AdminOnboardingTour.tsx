@@ -27,6 +27,7 @@ interface AdminOnboardingTourProps {
   currentStep: number;
   enablePortalLearnerCreditManagementScreen: boolean;
   enterpriseFeatures: {
+    enterpriseInviteAdminsEnabled?: boolean;
   }
   enterpriseId: string;
   enterpriseSlug: string;
@@ -83,7 +84,11 @@ const AdminOnboardingTour = (
     handleAdvanceTour, handleBackTour, handleEndTour,
   });
   const organizeLearnersFlow = OrganizeLearnersFlow({
-    enterpriseId, handleAdvanceTour, handleBackTour, handleEndTour,
+    enterpriseId,
+    enableInviteAdmins: enterpriseFeatures?.enterpriseInviteAdminsEnabled ?? false,
+    handleAdvanceTour,
+    handleBackTour,
+    handleEndTour,
   });
   const allocateLearningBudgetsFlow = useAllocateLearningBudgetsFlow({
     currentStep,

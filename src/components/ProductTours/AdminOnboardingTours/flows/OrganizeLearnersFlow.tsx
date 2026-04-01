@@ -2,22 +2,27 @@ import React from 'react';
 import { useIntl, FormattedMessage } from '@edx/frontend-platform/i18n';
 import { Hyperlink } from '@openedx/paragon';
 
-import { ADMIN_TOUR_EVENT_NAMES, ORGANIZE_LEARNER_TARGETS } from '../constants';
+import {
+  ADMIN_TOUR_EVENT_NAMES,
+  ORGANIZE_LEARNER_TARGETS,
+} from '../constants';
 import messages from '../messages';
 import { configuration } from '../../../../config';
 import { TourStep } from '../../types';
+import { setPeopleManagementTabFromTour } from '../../../PeopleManagement';
 import useHydrateAdminOnboardingData, { HydratedAdminOnboardingData } from '../data/useHydrateAdminOnboardingData';
 import { ENTERPRISE_HELP_GROUPING } from '../../../settings/data/constants';
 
 interface OrganizeLearnersFlowProps {
   enterpriseId: string;
+  enableInviteAdmins: boolean;
   handleAdvanceTour: (advanceEventName: string) => void;
   handleEndTour: (endEventName: string, flowUuid?: string) => void;
   handleBackTour: (backEventName: string) => void;
 }
 
 const OrganizeLearnersFlow = ({
-  enterpriseId, handleAdvanceTour, handleEndTour, handleBackTour,
+  enterpriseId, enableInviteAdmins, handleAdvanceTour, handleEndTour, handleBackTour,
 }: OrganizeLearnersFlowProps): Array<TourStep> => {
   const intl = useIntl();
   const { data: hydrateAdminOnboardingData } = useHydrateAdminOnboardingData(enterpriseId);
@@ -28,6 +33,14 @@ const OrganizeLearnersFlow = ({
     configuration.ADMIN_ONBOARDING_UUIDS.FLOW_ORGANIZE_LEARNERS_UUID,
   );
   const onOrganizeBack = () => handleBackTour(ADMIN_TOUR_EVENT_NAMES.ORGANIZE_LEARNERS_BACK_EVENT_NAME);
+  const onAdminsStepAdvance = () => {
+    setPeopleManagementTabFromTour('learners');
+    onOrganizeAdvance();
+  };
+  const onMembersStepBack = () => {
+    setPeopleManagementTabFromTour('admins');
+    onOrganizeBack();
+  };
 
   const createGroupStepBody = (
     <FormattedMessage
@@ -61,26 +74,44 @@ const OrganizeLearnersFlow = ({
     />
   );
 
+  const adminsTabStep: TourStep = {
+    target: `#${ORGANIZE_LEARNER_TARGETS.ADMINS_TAB}`,
+    placement: 'right',
+    body: intl.formatMessage(messages.organizeLearnersAdminsTabBody),
+    onAdvance: onAdminsStepAdvance,
+    onBack: onOrganizeBack,
+  };
+
   const tourNoMembers: Array<TourStep> = [{
     target: `#${ORGANIZE_LEARNER_TARGETS.PEOPLE_MANAGEMENT_SIDEBAR}`,
     placement: 'right',
     title: intl.formatMessage(messages.organizeLearnersStepOneTitle),
     body: intl.formatMessage(messages.organizeLearnersStepOneNoMembersBody),
+    ...(enableInviteAdmins ? { onAdvance: onOrganizeAdvance } : { onEnd: onOrganizeEnd }),
+  }, ...(enableInviteAdmins ? [{
+    target: adminsTabStep.target,
+    placement: adminsTabStep.placement,
+    body: adminsTabStep.body,
+    onBack: adminsTabStep.onBack,
     onEnd: onOrganizeEnd,
-  }];
+  }] : [])];
 
   const tourNoGroups: Array<TourStep> = [{
     target: `#${ORGANIZE_LEARNER_TARGETS.PEOPLE_MANAGEMENT_SIDEBAR}`,
     placement: 'right',
     title: intl.formatMessage(messages.organizeLearnersStepOneTitle),
-    body: intl.formatMessage(messages.organizeLearnersStepOneBody),
+    body: intl.formatMessage(
+      enableInviteAdmins
+        ? messages.organizeLearnersStepOneWithAdminsBody
+        : messages.organizeLearnersStepOneBody,
+    ),
     onAdvance: onOrganizeAdvance,
-  }, {
+  }, ...(enableInviteAdmins ? [adminsTabStep] : []), {
     target: `#${ORGANIZE_LEARNER_TARGETS.ORG_MEMBER_TABLE}`,
     placement: 'top',
     body: intl.formatMessage(messages.organizeLearnersStepTwoBody),
     onAdvance: onOrganizeAdvance,
-    onBack: onOrganizeBack,
+    onBack: enableInviteAdmins ? onMembersStepBack : onOrganizeBack,
   }, {
     target: `#${ORGANIZE_LEARNER_TARGETS.MEMBER_VIEW_MORE}`,
     placement: 'left',
@@ -105,14 +136,18 @@ const OrganizeLearnersFlow = ({
     target: `#${ORGANIZE_LEARNER_TARGETS.PEOPLE_MANAGEMENT_SIDEBAR}`,
     placement: 'right',
     title: intl.formatMessage(messages.organizeLearnersStepOneTitle),
-    body: intl.formatMessage(messages.organizeLearnersStepOneBody),
+    body: intl.formatMessage(
+      enableInviteAdmins
+        ? messages.organizeLearnersStepOneWithAdminsBody
+        : messages.organizeLearnersStepOneBody,
+    ),
     onAdvance: onOrganizeAdvance,
-  }, {
+  }, ...(enableInviteAdmins ? [adminsTabStep] : []), {
     target: `#${ORGANIZE_LEARNER_TARGETS.ORG_MEMBER_TABLE}`,
     placement: 'top',
     body: intl.formatMessage(messages.organizeLearnersStepTwoBody),
     onAdvance: onOrganizeAdvance,
-    onBack: onOrganizeBack,
+    onBack: enableInviteAdmins ? onMembersStepBack : onOrganizeBack,
   }, {
     target: `#${ORGANIZE_LEARNER_TARGETS.MEMBER_VIEW_MORE}`,
     placement: 'left',

@@ -13,6 +13,8 @@ export const TRACK_LEARNER_PROGRESS_TARGETS = {
 // Organize learners - People Management flow
 export const ORGANIZE_LEARNER_TARGETS = {
   PEOPLE_MANAGEMENT_SIDEBAR: 'people-management-link',
+  LEARNERS_TAB: 'people-management-learners-tab',
+  ADMINS_TAB: 'people-management-admins-tab',
   ORG_MEMBER_TABLE: 'org-member-table',
   MEMBER_VIEW_MORE: 'member-view-more',
   ORG_GROUPS: 'org-groups',
