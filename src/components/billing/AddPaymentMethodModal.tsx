@@ -348,6 +348,7 @@ const AddPaymentMethodModal = ({
                 <CardElement
                   onChange={handleCardChange}
                   options={{
+                    disableLink: true,
                     style: {
                       base: {
                         fontSize: '16px',

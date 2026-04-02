@@ -20,15 +20,19 @@ const mockElements = {
   getElement: jest.fn(),
 };
 
-// Store the CardElement onChange handler for testing
+// Store the CardElement onChange handler and options for testing
 let cardElementOnChange: ((event: { complete: boolean }) => void) | null = null;
+let cardElementOptions: Record<string, unknown> | null = null;
 
 jest.mock('@stripe/react-stripe-js', () => ({
   useStripe: () => mockStripe,
   useElements: () => mockElements,
-  CardElement: ({ onChange }: { onChange?: (event: { complete: boolean }) => void }) => {
-    // Capture the onChange handler for testing
+  CardElement: (
+    { onChange, options }: { onChange?: (event: { complete: boolean }) => void; options?: Record<string, unknown> },
+  ) => {
+    // Capture the onChange handler and options for testing
     cardElementOnChange = onChange || null;
+    cardElementOptions = options || null;
     return <div data-testid="card-element">Card Element</div>;
   },
 }));
@@ -81,6 +85,19 @@ describe('AddPaymentMethodModal', () => {
   beforeEach(() => {
     jest.clearAllMocks();
     cardElementOnChange = null;
+    cardElementOptions = null;
+  });
+
+  describe('CardElement configuration', () => {
+    it('renders CardElement with disableLink option set to true', () => {
+      renderModal();
+
+      expect(cardElementOptions).toEqual(
+        expect.objectContaining({
+          disableLink: true,
+        }),
+      );
+    });
   });
 
   describe('email validation', () => {
