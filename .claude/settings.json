@@ -1,0 +1,17 @@
+{
+  "permissions": {
+    "allow": []
+  },
+  "extraKnownMarketplaces": {
+    "edx-enterprise-team-marketplace": {
+      "source": {
+        "source": "github",
+        "repo": "edx/ai-devtools-internal"
+      }
+    }
+  },
+  "enabledPlugins": {
+    "typescript-lsp@claude-plugins-official": true,
+    "edx-enterprise-frontend-plugin@edx-enterprise-team-marketplace": true
+  }
+}

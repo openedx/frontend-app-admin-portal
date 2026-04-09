@@ -20,7 +20,7 @@ src/i18n/transifex_input.json
 src/i18n/messages
 
 # claude code personalization
-.claude/
+.claude/settings.local.json
 package-lock.json
 package.json
 
