@@ -5,12 +5,14 @@ import {
   cleanup,
 } from '@testing-library/react';
 
+import { axe } from 'jest-axe';
 import LicenseManagementUserBadge from '../LicenseManagementUserBadge';
 import {
   ASSIGNED,
   ACTIVATED,
   REVOKED,
 } from '../../../data/constants';
+import { accessibilitySettings } from '../../../../../../tests/accessibility-settings';
 
 const variants = [
   { userStatus: ACTIVATED, label: 'Active' },
@@ -19,6 +21,12 @@ const variants = [
 ];
 
 describe('<LicenseManagementUserBadge />', () => {
+  it('has no accessibility violations', async () => {
+    const { container } = render(<LicenseManagementUserBadge userStatus="activated" />);
+    const results = await axe(container, accessibilitySettings);
+    expect(results).toHaveNoViolations();
+  });
+
   afterEach(() => {
     cleanup();
   });

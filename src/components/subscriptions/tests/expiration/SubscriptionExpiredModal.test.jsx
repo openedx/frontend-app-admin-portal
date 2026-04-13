@@ -6,11 +6,13 @@ import {
 import '@testing-library/jest-dom/extend-expect';
 
 import { IntlProvider } from '@edx/frontend-platform/i18n';
+import { axe } from 'jest-axe';
 import SubscriptionExpiredModal from '../../expiration/SubscriptionExpiredModal';
 import {
   SUBSCRIPTION_PLAN_ZERO_STATE,
   SubscriptionManagementContext,
 } from '../TestUtilities';
+import { accessibilitySettings } from '../../../../../tests/accessibility-settings';
 
 const ExpiredModalWithContext = ({
   detailState,
@@ -41,6 +43,12 @@ const detailStateCopy = (daysUntilExpiration) => ({
 });
 
 describe('<SubscriptionExpiredModal />', () => {
+  it('has no accessibility violations', async () => {
+    const { container } = render(<ExpiredModalWithContext detailState={detailStateCopy(0)} />);
+    const results = await axe(container, accessibilitySettings);
+    expect(results).toHaveNoViolations();
+  });
+
   test('make sure component renders', () => {
     render(<ExpiredModalWithContext detailState={detailStateCopy(0)} />);
     expect(screen.queryByRole('dialog')).toBeTruthy();

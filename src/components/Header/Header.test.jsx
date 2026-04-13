@@ -5,8 +5,10 @@ import { Provider } from 'react-redux';
 import { render, screen } from '@testing-library/react';
 import '@testing-library/jest-dom';
 
+import { axe } from 'jest-axe';
 import Header, { Logo } from './index';
 import { configuration } from '../../config';
+import { accessibilitySettings } from '../../../tests/accessibility-settings';
 
 const HeaderWrapper = props => (
   <MemoryRouter>
@@ -28,6 +30,12 @@ HeaderWrapper.propTypes = {
 };
 
 describe('<Logo />', () => {
+  it('has no accessibility violations', async () => {
+    const { container } = render(<Logo />);
+    const results = await axe(container, accessibilitySettings);
+    expect(results).toHaveNoViolations();
+  });
+
   it('renders enterprise logo correctly', async () => {
     const props = {
       enterpriseLogo: 'https://test.url/image/1.png',

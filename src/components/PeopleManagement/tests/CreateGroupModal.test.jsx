@@ -10,6 +10,7 @@ import '@testing-library/jest-dom/extend-expect';
 import { sendEnterpriseTrackEvent } from '@edx/frontend-enterprise-utils';
 import { QueryClientProvider, useQueryClient } from '@tanstack/react-query';
 import { IntlProvider } from '@edx/frontend-platform/i18n';
+import { axe } from 'jest-axe';
 import { queryClient } from '../../test/testUtils';
 import LmsApiService from '../../../data/services/LmsApiService';
 import { EMAIL_ADDRESSES_INPUT_VALUE_DEBOUNCE_DELAY } from '../../learner-credit-management/cards/data';
@@ -19,6 +20,7 @@ import { useEnterpriseMembersTableData } from '../data/hooks';
 import EVENT_NAMES from '../../../eventTracking';
 import ValidatedEmailsContextProvider from '../data/ValidatedEmailsContextProvider';
 import { ERROR_LEARNER_NOT_IN_ORG } from '../constants';
+import { accessibilitySettings } from '../../../../tests/accessibility-settings';
 
 jest.mock('../data/hooks', () => ({
   ...jest.requireActual('../data/hooks'),
@@ -134,6 +136,12 @@ describe('<CreateGroupModal />', () => {
     useEnterpriseLearners.mockReturnValue({
       allEnterpriseLearners: ['testuser-3@2u.com', 'testuser-2@2u.com', 'testuser-1@2u.com', 'tomhaverford@pawnee.org'],
     });
+  });
+
+  it('has no accessibility violations', async () => {
+    const { container } = render(<CreateGroupModalWrapper />);
+    const results = await axe(container, accessibilitySettings);
+    expect(results).toHaveNoViolations();
   });
   it('Modal renders as expected', async () => {
     render(<CreateGroupModalWrapper />);

@@ -9,10 +9,12 @@ import { Provider } from 'react-redux';
 import { sendEnterpriseTrackEvent } from '@edx/frontend-enterprise-utils';
 
 import { IntlProvider } from '@edx/frontend-platform/i18n';
+import { axe } from 'jest-axe';
 import LicenseManagementTableActionColumn from '../LicenseManagementTableActionColumn';
 import { ACTIVATED, ASSIGNED, REVOKED } from '../../../data/constants';
 import { SUBSCRIPTION_TABLE_EVENTS } from '../../../../../eventTracking';
 import { TEST_ENTERPRISE_CUSTOMER_UUID, TEST_SUBSCRIPTION_PLAN_UUID } from '../../../tests/TestUtilities';
+import { accessibilitySettings } from '../../../../../../tests/accessibility-settings';
 
 jest.mock('@edx/frontend-enterprise-utils', () => {
   const originalModule = jest.requireActual('@edx/frontend-enterprise-utils');
@@ -63,6 +65,12 @@ describe('<LicenseManagementTableActionColumn />', () => {
   afterEach(() => {
     cleanup();
     jest.clearAllMocks();
+  });
+
+  it('has no accessibility violations', async () => {
+    const { container } = render(<LicenseManagementTableActionColumnWithContext {...basicProps} />);
+    const results = await axe(container, accessibilitySettings);
+    expect(results).toHaveNoViolations();
   });
   const testDialogClosed = async (user) => {
     const cancelButton = screen.getByText('Cancel');

@@ -3,7 +3,9 @@ import Plot from 'react-plotly.js';
 import { render, screen } from '@testing-library/react';
 import '@testing-library/jest-dom/extend-expect';
 
+import { axe } from 'jest-axe';
 import BarChart from './BarChart';
+import { accessibilitySettings } from '../../../../tests/accessibility-settings';
 
 jest.mock('react-plotly.js', () => ({
   __esModule: true,
@@ -13,6 +15,23 @@ jest.mock('react-plotly.js', () => ({
 describe('BarChart', () => {
   beforeEach(() => {
     jest.clearAllMocks();
+  });
+
+  it('has no accessibility violations', async () => {
+    const { container } = render(
+      <BarChart
+        data={[{ category: 'A', valueX: 1, valueY: 2 }]}
+        xKey="valueX"
+        yKey="valueY"
+        colorKey="category"
+        colorMap={{ A: 'red' }}
+        hovertemplate="x=%{x}"
+        xAxisTitle="X Axis"
+        yAxisTitle="Y Axis"
+      />,
+    );
+    const results = await axe(container, accessibilitySettings);
+    expect(results).toHaveNoViolations();
   });
 
   const mockData = [

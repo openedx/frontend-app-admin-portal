@@ -8,6 +8,7 @@ import thunk from 'redux-thunk';
 import { renderWithRouter, sendEnterpriseTrackEvent } from '@edx/frontend-enterprise-utils';
 import configureMockStore from 'redux-mock-store';
 import { Provider } from 'react-redux';
+import { axe } from 'jest-axe';
 import { ContentHighlightsContext } from '../../ContentHighlightsContext';
 import {
   BUTTON_TEXT,
@@ -22,6 +23,7 @@ import { configuration } from '../../../../config';
 import ContentHighlightsDashboard from '../../ContentHighlightsDashboard';
 import { EnterpriseAppContext } from '../../../EnterpriseApp/EnterpriseAppContextProvider';
 import ContentHighlightStepper from '../ContentHighlightStepper';
+import { accessibilitySettings } from '../../../../../tests/accessibility-settings';
 
 const mockStore = configureMockStore([thunk]);
 
@@ -111,6 +113,13 @@ jest.mock('react-instantsearch-dom', () => ({
 describe('<ContentHighlightStepper>', () => {
   beforeEach(() => {
     jest.clearAllMocks();
+  });
+
+  // Skipped because this test fails a11y checks; to be addressed in ENT-11719
+  it.skip('has no accessibility violations', async () => {
+    const { container } = renderWithRouter(<ContentHighlightStepperWrapper />);
+    const results = await axe(container, accessibilitySettings);
+    expect(results).toHaveNoViolations();
   });
 
   it('Displays the stepper', async () => {

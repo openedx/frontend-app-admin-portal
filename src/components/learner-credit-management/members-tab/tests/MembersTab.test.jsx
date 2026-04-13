@@ -10,6 +10,7 @@ import '@testing-library/jest-dom/extend-expect';
 import { IntlProvider } from '@edx/frontend-platform/i18n';
 import { renderWithRouter } from '@edx/frontend-enterprise-utils';
 
+import { axe } from 'jest-axe';
 import BudgetDetailPage from '../../BudgetDetailPage';
 import {
   useSubsidyAccessPolicy,
@@ -30,6 +31,7 @@ import {
 import { queryClient } from '../../../test/testUtils';
 import LmsApiService from '../../../../data/services/LmsApiService';
 import EnterpriseAccessApiService from '../../../../data/services/EnterpriseAccessApiService';
+import { accessibilitySettings } from '../../../../../tests/accessibility-settings';
 
 jest.mock('@edx/frontend-enterprise-utils', () => ({
   ...jest.requireActual('@edx/frontend-enterprise-utils'),
@@ -137,6 +139,41 @@ describe('MembersTab', () => {
     useEnterpriseGroup.mockReturnValue({
       data: {}, isLoading: false,
     });
+  });
+
+  // Skipped because this test fails a11y checks; to be addressed in ENT-11719
+  it.skip('has no accessibility violations', async () => {
+    useParams.mockReturnValue({
+      enterpriseSlug: 'test-enterprise-slug',
+      enterpriseAppPage: 'test-enterprise-page',
+      activeTabKey: 'activity',
+      budgetId: 'a52e6548-649f-4576-b73f-c5c2bee25e9c',
+    });
+    useSubsidyAccessPolicy.mockReturnValue({
+      isInitialLoading: false,
+      data: mockAssignableSubsidyAccessPolicy,
+    });
+    useBudgetDetailActivityOverview.mockReturnValue({
+      isLoading: false,
+      data: mockEmptyStateBudgetDetailActivityOverview,
+    });
+    useBudgetRedemptions.mockReturnValue({
+      isLoading: false,
+      budgetRedemptions: mockEmptyBudgetRedemptions,
+      fetchBudgetRedemptions: jest.fn(),
+    });
+    useEnterpriseGroupLearners.mockReturnValue({
+      data: {
+        count: 0,
+        currentPage: 1,
+        next: null,
+        numPages: 1,
+        results: [],
+      },
+    });
+    const { container } = renderWithRouter(<BudgetDetailPageWrapper />);
+    const results = await axe(container, accessibilitySettings);
+    expect(results).toHaveNoViolations();
   });
 
   it('does not render members tab if no members exist', async () => {

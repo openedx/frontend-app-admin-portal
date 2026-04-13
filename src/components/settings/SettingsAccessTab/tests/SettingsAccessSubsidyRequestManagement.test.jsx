@@ -7,8 +7,10 @@ import '@testing-library/jest-dom';
 import userEvent from '@testing-library/user-event';
 import { IntlProvider } from '@edx/frontend-platform/i18n';
 
+import { axe } from 'jest-axe';
 import SettingsAccessSubsidyRequestManagement from '../SettingsAccessSubsidyRequestManagement';
 import { SUPPORTED_SUBSIDY_TYPES } from '../../../../data/constants/subsidyRequests';
+import { accessibilitySettings } from '../../../../../tests/accessibility-settings';
 
 jest.mock('../SettingsAccessTabSection', () => ({
   __esModule: true,
@@ -27,6 +29,12 @@ const SettingsAccessSubsidyRequestManagementWrapper = (props) => (
 );
 
 describe('<SettingsAccessSubsidyRequestManagement />', () => {
+  it('has no accessibility violations', async () => {
+    const { container } = render(<SettingsAccessSubsidyRequestManagementWrapper />);
+    const results = await axe(container, accessibilitySettings);
+    expect(results).toHaveNoViolations();
+  });
+
   const basicProps = {
     subsidyRequestConfiguration: {
       subsidyRequestsEnabled: true,

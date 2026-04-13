@@ -7,8 +7,10 @@ import userEvent from '@testing-library/user-event';
 import '@testing-library/jest-dom';
 import { IntlProvider } from '@edx/frontend-platform/i18n';
 
+import { axe } from 'jest-axe';
 import SettingsAccessSSOManagement from '../SettingsAccessSSOManagement';
 import LmsApiService from '../../../../data/services/LmsApiService';
+import { accessibilitySettings } from '../../../../../tests/accessibility-settings';
 
 jest.mock('../../../../data/services/LmsApiService');
 
@@ -35,6 +37,12 @@ const SettingsAccessSSOManagementWrapper = (props) => (
 );
 
 describe('<SettingsAccessSSOManagement />', () => {
+  it('has no accessibility violations', async () => {
+    const { container } = render(<SettingsAccessSSOManagementWrapper />);
+    const results = await axe(container, accessibilitySettings);
+    expect(results).toHaveNoViolations();
+  });
+
   const basicProps = {
     enterpriseId: 'test-enterprise-uuid',
     enableIntegratedCustomerLearnerPortalSearch: true,

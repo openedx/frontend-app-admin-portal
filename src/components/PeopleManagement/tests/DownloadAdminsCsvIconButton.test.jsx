@@ -12,9 +12,11 @@ import { IntlProvider } from '@edx/frontend-platform/i18n';
 import { logError } from '@edx/frontend-platform/logging';
 import { sendEnterpriseTrackEvent } from '@edx/frontend-enterprise-utils';
 
+import { axe } from 'jest-axe';
 import DownloadAdminsCsvIconButton from '../DownloadAdminsCsvIconButton';
 import { downloadCsv } from '../../../utils';
 import EVENT_NAMES from '../../../eventTracking';
+import { accessibilitySettings } from '../../../../tests/accessibility-settings';
 
 jest.mock('@edx/frontend-enterprise-utils', () => {
   const originalModule = jest.requireActual('@edx/frontend-enterprise-utils');
@@ -92,6 +94,12 @@ describe('DownloadAdminsCsvIconButton', () => {
   beforeEach(() => {
     jest.clearAllMocks();
     DEFAULT_PROPS.fetchData.mockResolvedValue(mockData);
+  });
+
+  it('has no accessibility violations', async () => {
+    const { container } = render(<DownloadAdminsCsvIconButtonWrapper />);
+    const results = await axe(container, accessibilitySettings);
+    expect(results).toHaveNoViolations();
   });
 
   it('renders download csv button correctly', () => {

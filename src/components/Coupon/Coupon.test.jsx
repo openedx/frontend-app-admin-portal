@@ -8,9 +8,11 @@ import thunk from 'redux-thunk';
 import { MemoryRouter } from 'react-router-dom';
 import { IntlProvider } from '@edx/frontend-platform/i18n';
 
+import { axe } from 'jest-axe';
 import { MULTI_USE } from '../../data/constants/coupons';
 
 import Coupon from './index';
+import { accessibilitySettings } from '../../../tests/accessibility-settings';
 
 const enterpriseId = 'test-enterprise';
 const mockStore = configureMockStore([thunk]);
@@ -59,6 +61,13 @@ const CouponWrapper = props => (
 );
 
 describe('<Coupon />', () => {
+  // Skipped because this test fails a11y checks; to be addressed in ENT-11719
+  it.skip('has no accessibility violations', async () => {
+    const { container } = render(<CouponWrapper />);
+    const results = await axe(container, accessibilitySettings);
+    expect(results).toHaveNoViolations();
+  });
+
   describe('renders correctly', () => {
     it('with max uses', () => {
       const coupon = renderer.create((<CouponWrapper />)).toJSON();

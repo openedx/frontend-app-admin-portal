@@ -3,8 +3,10 @@ import { render, screen } from '@testing-library/react';
 import { IntlProvider } from '@edx/frontend-platform/i18n';
 import { BrowserRouter } from 'react-router-dom';
 import { userEvent } from '@testing-library/user-event';
+import { axe } from 'jest-axe';
 import AdminCards from '../AdminCards';
 import '@testing-library/jest-dom';
+import { accessibilitySettings } from '../../../../tests/accessibility-settings';
 
 jest.mock('@openedx/paragon/icons', () => ({
   Award: function Award() { return <span data-testid="icon-award" />; },
@@ -44,6 +46,12 @@ const renderComponent = (props = {}) => render(
 describe('AdminCards', () => {
   beforeEach(() => {
     jest.clearAllMocks();
+  });
+
+  it('has no accessibility violations', async () => {
+    const { container } = renderComponent();
+    const results = await axe(container, accessibilitySettings);
+    expect(results).toHaveNoViolations();
   });
 
   it('renders all four cards correctly', async () => {

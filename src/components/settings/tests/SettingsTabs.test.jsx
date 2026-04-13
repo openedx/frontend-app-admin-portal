@@ -10,11 +10,13 @@ import userEvent from '@testing-library/user-event';
 import configureMockStore from 'redux-mock-store';
 
 import { MemoryRouter, Routes, Route } from 'react-router-dom';
+import { axe } from 'jest-axe';
 import SettingsTabs from '../SettingsTabs';
 import { SCHOLAR_THEME } from '../data/constants';
 
 import { features } from '../../../config';
 import '@testing-library/jest-dom/extend-expect';
+import { accessibilitySettings } from '../../../../tests/accessibility-settings';
 
 const ACCESS_MOCK_CONTENT = 'access';
 const LMS_MOCK_CONTENT = 'lms';
@@ -99,6 +101,13 @@ describe('<SettingsTabs />', () => {
     features.SETTINGS_PAGE_APPEARANCE_TAB = true;
 
     jest.clearAllMocks();
+  });
+
+  // Skipped because this test fails a11y checks; to be addressed in ENT-11719
+  it.skip('has no accessibility violations', async () => {
+    const { container } = render(<SettingsTabsWithRouter />);
+    const results = await axe(container, accessibilitySettings);
+    expect(results).toHaveNoViolations();
   });
 
   test('SSO tab is not rendered if FEATURE_SSO_SETTINGS_TAB = false', () => {

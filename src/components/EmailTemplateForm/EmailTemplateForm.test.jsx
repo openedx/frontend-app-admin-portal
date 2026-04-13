@@ -8,10 +8,12 @@ import configureMockStore from 'redux-mock-store';
 import thunk from 'redux-thunk';
 import '@testing-library/jest-dom/extend-expect';
 import { MemoryRouter } from 'react-router';
+import { axe } from 'jest-axe';
 import EmailTemplateForm, { getTemplateEmailFields } from '.';
 import { MODAL_TYPES } from './constants';
 import { TEMLATE_SOURCE_FIELDS_TEST_ID } from '../TemplateSourceFields';
 import RenderField from '../RenderField';
+import { accessibilitySettings } from '../../../tests/accessibility-settings';
 
 const mockStore = configureMockStore([thunk]);
 
@@ -37,6 +39,12 @@ const EmailTemplateFormWrapper = (props) => (
 );
 
 describe('EmailTemplateForm', () => {
+  it('has no accessibility violations', async () => {
+    const { container } = render(<EmailTemplateFormWrapper />);
+    const results = await axe(container, accessibilitySettings);
+    expect(results).toHaveNoViolations();
+  });
+
   it('renders a form', () => {
     render(<EmailTemplateFormWrapper emailTemplateType={MODAL_TYPES.remind} />);
     expect(screen.getByText('Email Template')).toBeInTheDocument();

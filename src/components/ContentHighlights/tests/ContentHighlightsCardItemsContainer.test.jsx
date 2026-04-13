@@ -9,10 +9,12 @@ import { IntlProvider } from '@edx/frontend-platform/i18n';
 import { renderWithRouter, sendEnterpriseTrackEvent } from '@edx/frontend-enterprise-utils';
 
 import userEvent from '@testing-library/user-event';
+import { axe } from 'jest-axe';
 import { EnterpriseAppContext } from '../../EnterpriseApp/EnterpriseAppContextProvider';
 import ContentHighlightsCardItemsContainer from '../ContentHighlightsCardItemsContainer';
 import { DEFAULT_ERROR_MESSAGE, TEST_COURSE_HIGHLIGHTS_DATA } from '../data/constants';
 import { features } from '../../../config';
+import { accessibilitySettings } from '../../../../tests/accessibility-settings';
 
 const mockStore = configureMockStore([thunk]);
 
@@ -52,6 +54,12 @@ const ContentHighlightsCardItemsContainerWrapper = ({
 );
 
 describe('<ContentHighlightsCardItemsContainer>', () => {
+  it('has no accessibility violations', async () => {
+    const { container } = renderWithRouter(<ContentHighlightsCardItemsContainerWrapper />);
+    const results = await axe(container, accessibilitySettings);
+    expect(results).toHaveNoViolations();
+  });
+
   it('Displays all content data titles', () => {
     renderWithRouter(<ContentHighlightsCardItemsContainerWrapper
       isLoading={false}

@@ -2,6 +2,7 @@ import { render, screen } from '@testing-library/react';
 import '@testing-library/jest-dom';
 import { IntlProvider } from '@edx/frontend-platform/i18n';
 import userEvent from '@testing-library/user-event';
+import { axe } from 'jest-axe';
 import AnalyticsPage from '../AnalyticsPage';
 import {
   useEnterpriseAnalyticsAggregatesData,
@@ -9,6 +10,7 @@ import {
   useEnterpriseAnalyticsData,
 } from '../data/hooks';
 import { useAllFlexEnterpriseGroups } from '../../learner-credit-management/data';
+import { accessibilitySettings } from '../../../../tests/accessibility-settings';
 
 jest.mock('../data/hooks');
 jest.mock('../../learner-credit-management/data');
@@ -60,6 +62,15 @@ describe('AnalyticsPage', () => {
       isFetching: false,
       data: {},
     });
+  });
+
+  // Skipped because this test fails a11y checks; to be addressed in ENT-11719
+  it.skip('has no accessibility violations', async () => {
+    const { container } = render(
+      <IntlProvider locale="en"><AnalyticsPage enterpriseId="test-uuid" /></IntlProvider>,
+    );
+    const results = await axe(container, accessibilitySettings);
+    expect(results).toHaveNoViolations();
   });
 
   const enterpriseId = 'enterprise-123';

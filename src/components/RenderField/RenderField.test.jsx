@@ -1,7 +1,9 @@
 import React from 'react';
 import { screen, render } from '@testing-library/react';
 import '@testing-library/jest-dom/extend-expect';
+import { axe } from 'jest-axe';
 import RenderField from './index';
+import { accessibilitySettings } from '../../../tests/accessibility-settings';
 
 const props = {
   id: 'foo',
@@ -12,6 +14,12 @@ const props = {
 };
 
 describe('<RenderField />', () => {
+  it('has no accessibility violations', async () => {
+    const { container } = render(<RenderField {...props} />);
+    const results = await axe(container, accessibilitySettings);
+    expect(results).toHaveNoViolations();
+  });
+
   it('renders a label', () => {
     render(<RenderField {...props} />);
     expect(screen.getByText(props.label)).toBeInTheDocument();

@@ -8,6 +8,7 @@ import '@testing-library/jest-dom/extend-expect';
 
 import { sendEnterpriseTrackEvent } from '@edx/frontend-enterprise-utils';
 import { IntlProvider } from '@edx/frontend-platform/i18n';
+import { axe } from 'jest-axe';
 import { SUBSCRIPTION_TABLE_EVENTS } from '../../../../../eventTracking';
 
 import { ACTIVATED, ASSIGNED, REVOKED } from '../../../data/constants';
@@ -19,6 +20,7 @@ import {
 } from '../../../tests/TestUtilities';
 
 import RevokeBulkAction from './RevokeBulkAction';
+import { accessibilitySettings } from '../../../../../../tests/accessibility-settings';
 
 jest.mock('@edx/frontend-enterprise-utils', () => {
   const originalModule = jest.requireActual('@edx/frontend-enterprise-utils');
@@ -67,6 +69,12 @@ const testRevokedUser = { original: { status: REVOKED, email } };
 describe('RevokeBulkAction', () => {
   afterEach(() => {
     jest.clearAllMocks();
+  });
+
+  it('has no accessibility violations', async () => {
+    const { container } = render(<RevokeBulkActionWithProvider {...basicProps} />);
+    const results = await axe(container, accessibilitySettings);
+    expect(results).toHaveNoViolations();
   });
 
   it('should render without receiving DataTable props yet', () => {

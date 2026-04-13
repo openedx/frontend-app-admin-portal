@@ -8,7 +8,9 @@ import {
 import userEvent from '@testing-library/user-event';
 import { IntlProvider } from '@edx/frontend-platform/i18n';
 
+import { axe } from 'jest-axe';
 import ActionsTableCell from '../ActionsTableCell';
+import { accessibilitySettings } from '../../../../../tests/accessibility-settings';
 
 jest.mock('@edx/frontend-platform/config', () => ({
   getConfig: () => ({ ENTERPRISE_LEARNER_PORTAL_URL: 'http://localhost:8734' }),
@@ -26,6 +28,14 @@ describe('ActionsTableCell', () => {
   beforeEach(() => {
     cleanup();
     jest.clearAllMocks();
+  });
+
+  it('has no accessibility violations', async () => {
+    const { container } = render(
+      <ActionsTableCellWrapper row={{ original: { isValid: true, uuid: TEST_INVITE_KEY_UUID } }} />,
+    );
+    const results = await axe(container, accessibilitySettings);
+    expect(results).toHaveNoViolations();
   });
 
   test('renders no actions if invite key is invalid', () => {

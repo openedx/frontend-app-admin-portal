@@ -3,8 +3,10 @@ import { IntlProvider } from '@edx/frontend-platform/i18n';
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { saveAs } from 'file-saver';
+import { axe } from 'jest-axe';
 import DownloadCSVButton from '../DownloadCSVButton';
 import '@testing-library/jest-dom/extend-expect';
+import { accessibilitySettings } from '../../../../tests/accessibility-settings';
 
 jest.mock('file-saver', () => ({
   ...jest.requireActual('file-saver'),
@@ -42,6 +44,16 @@ const DEFAULT_PROPS = {
 };
 
 describe('DownloadCSVButton', () => {
+  it('has no accessibility violations', async () => {
+    const { container } = render(
+      <IntlProvider locale="en">
+        <DownloadCSVButton {...DEFAULT_PROPS} />
+      </IntlProvider>,
+    );
+    const results = await axe(container, accessibilitySettings);
+    expect(results).toHaveNoViolations();
+  });
+
   it('renders download csv button correctly', async () => {
     render(
       <IntlProvider locale="en">

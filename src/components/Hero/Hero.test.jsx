@@ -6,7 +6,9 @@ import configureMockStore from 'redux-mock-store';
 import thunk from 'redux-thunk';
 
 import { Provider } from 'react-redux';
+import { axe } from 'jest-axe';
 import Hero from './index';
+import { accessibilitySettings } from '../../../tests/accessibility-settings';
 
 const lightColorStore = {
   portalConfiguration: {
@@ -29,6 +31,16 @@ const title = 'Quokkas Rule';
 const mockStore = configureMockStore([thunk]);
 
 describe('Hero Component', () => {
+  it('has no accessibility violations', async () => {
+    const { container } = render(
+      <Provider store={mockStore(lightColorStore)}>
+        <Hero title={title} />
+      </Provider>,
+    );
+    const results = await axe(container, accessibilitySettings);
+    expect(results).toHaveNoViolations();
+  });
+
   it('renders hero component with appropriate logo', () => {
     render(
       <Provider store={mockStore(lightColorStore)}>

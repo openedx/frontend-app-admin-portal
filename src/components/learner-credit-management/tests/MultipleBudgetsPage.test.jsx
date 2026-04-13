@@ -14,10 +14,12 @@ import userEvent from '@testing-library/user-event';
 
 import { IntlProvider } from '@edx/frontend-platform/i18n';
 
+import { axe } from 'jest-axe';
 import { EnterpriseSubsidiesContext } from '../../EnterpriseSubsidiesContext';
 import MultipleBudgetsPage from '../MultipleBudgetsPage';
 import { queryClient } from '../../test/testUtils';
 import { useEnterpriseBudgets } from '../../EnterpriseSubsidiesContext/data/hooks';
+import { accessibilitySettings } from '../../../../tests/accessibility-settings';
 
 const mockStore = configureMockStore([thunk]);
 const getMockStore = store => mockStore(store);
@@ -129,6 +131,12 @@ const MultipleBudgetsPageWrapper = ({
 describe('<MultipleBudgetsPage />', () => {
   beforeEach(() => {
     jest.clearAllMocks();
+  });
+
+  it('has no accessibility violations', async () => {
+    const { container } = render(<MultipleBudgetsPageWrapper />);
+    const results = await axe(container, accessibilitySettings);
+    expect(results).toHaveNoViolations();
   });
   it('No budgets for your organization', () => {
     useEnterpriseBudgets.mockReturnValueOnce(

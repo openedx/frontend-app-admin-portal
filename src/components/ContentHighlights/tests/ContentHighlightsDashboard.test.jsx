@@ -9,6 +9,7 @@ import configureMockStore from 'redux-mock-store';
 import thunk from 'redux-thunk';
 import { renderWithRouter, sendEnterpriseTrackEvent } from '@edx/frontend-enterprise-utils';
 import algoliasearch from 'algoliasearch/lite';
+import { axe } from 'jest-axe';
 import {
   BUTTON_TEXT, STEPPER_STEP_TEXT,
 } from '../data/constants';
@@ -17,6 +18,7 @@ import { ContentHighlightsContext } from '../ContentHighlightsContext';
 import { EnterpriseAppContext } from '../../EnterpriseApp/EnterpriseAppContextProvider';
 import { configuration } from '../../../config';
 import ContentHighlightStepper from '../HighlightStepper/ContentHighlightStepper';
+import { accessibilitySettings } from '../../../../tests/accessibility-settings';
 
 const mockStore = configureMockStore([thunk]);
 
@@ -90,6 +92,13 @@ jest.mock('@edx/frontend-enterprise-utils', () => {
 });
 
 describe('<ContentHighlightsDashboard>', () => {
+  // Skipped because this test fails a11y checks; to be addressed in ENT-11719
+  it.skip('has no accessibility violations', async () => {
+    const { container } = renderWithRouter(<ContentHighlightsDashboardWrapper />);
+    const results = await axe(container, accessibilitySettings);
+    expect(results).toHaveNoViolations();
+  });
+
   it('Displays ZeroState on empty highlighted content list', () => {
     renderWithRouter(<ContentHighlightsDashboardWrapper />);
     expect(screen.getByText("You haven't created any highlights yet.")).toBeInTheDocument();

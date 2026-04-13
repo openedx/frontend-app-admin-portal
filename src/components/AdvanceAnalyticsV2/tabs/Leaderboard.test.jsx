@@ -10,9 +10,11 @@ import MockAdapter from 'axios-mock-adapter';
 import axios from 'axios';
 import { getAuthenticatedHttpClient } from '@edx/frontend-platform/auth';
 import { BrowserRouter as Router } from 'react-router-dom';
+import { axe } from 'jest-axe';
 import Leaderboard from './Leaderboard';
 import { queryClient } from '../../test/testUtils';
 import EnterpriseDataApiService from '../../../data/services/EnterpriseDataApiService';
+import { accessibilitySettings } from '../../../../tests/accessibility-settings';
 
 jest.spyOn(EnterpriseDataApiService, 'fetchAdminAnalyticsData');
 
@@ -56,6 +58,12 @@ axios.get = jest.fn(() => Promise.resolve({ data: mockLeaderboardData }));
 const TEST_ENTERPRISE_ID = '33ce6562-95e0-4ecf-a2a7-7d407eb96f69';
 
 describe('Leaderboard Component', () => {
+  it('has no accessibility violations', async () => {
+    const { container } = render(<Router><QueryClientProvider client={queryClient()}><IntlProvider locale="en"><Leaderboard enterpriseId="33ce6562-95e0-4ecf-a2a7-7d407eb96f69" startDate="2021-01-01" endDate="2021-12-31" /></IntlProvider></QueryClientProvider></Router>);
+    const results = await axe(container, accessibilitySettings);
+    expect(results).toHaveNoViolations();
+  });
+
   test('renders all sections with correct classes and content', () => {
     const { container } = render(
       <Router>

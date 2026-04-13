@@ -4,8 +4,10 @@ import {
 } from '@testing-library/react';
 import '@testing-library/jest-dom';
 import { IntlProvider } from '@edx/frontend-platform/i18n';
+import { axe } from 'jest-axe';
 import TopCoursesByCompletionTable from './TopCoursesByCompletionTable';
 import * as utils from '../data/utils';
+import { accessibilitySettings } from '../../../../tests/accessibility-settings';
 
 const mockTopCoursesByCompletionData = [
   {
@@ -33,6 +35,23 @@ const aggregatedMock = [
 describe('TopCoursesByCompletionTable Component', () => {
   beforeEach(() => {
     jest.spyOn(utils, 'sumEntitiesByMetric').mockReturnValue(aggregatedMock);
+  });
+
+  it('has no accessibility violations', async () => {
+    const { container } = render(
+      <IntlProvider locale="en">
+        <TopCoursesByCompletionTable
+          isFetching={false}
+          data={mockTopCoursesByCompletionData}
+          startDate="2021-01-01"
+          endDate="2021-12-31"
+          granularity="monthly"
+          calculation="total"
+        />
+      </IntlProvider>,
+    );
+    const results = await axe(container, accessibilitySettings);
+    expect(results).toHaveNoViolations();
   });
 
   test('renders correct title and subtitle', () => {

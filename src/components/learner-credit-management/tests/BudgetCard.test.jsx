@@ -13,11 +13,13 @@ import '@testing-library/jest-dom/extend-expect';
 
 import { IntlProvider } from '@edx/frontend-platform/i18n';
 import { QueryClientProvider } from '@tanstack/react-query';
+import { axe } from 'jest-axe';
 import BudgetCard from '../BudgetCard';
 import { formatPrice, useSubsidySummaryAnalyticsApi, useBudgetRedemptions } from '../data';
 import { BUDGET_STATUSES, BUDGET_TYPES } from '../../EnterpriseApp/data/constants';
 import { EnterpriseSubsidiesContext } from '../../EnterpriseSubsidiesContext';
 import { queryClient } from '../../test/testUtils';
+import { accessibilitySettings } from '../../../../tests/accessibility-settings';
 
 jest.mock('../../EnterpriseSubsidiesContext/data/hooks', () => ({
   ...jest.requireActual('../../EnterpriseSubsidiesContext/data/hooks'),
@@ -85,6 +87,23 @@ const BudgetCardWrapper = ({
 describe('<BudgetCard />', () => {
   beforeEach(() => {
     jest.clearAllMocks();
+  });
+
+  it('has no accessibility violations', async () => {
+    const { container } = render(
+      <BudgetCardWrapper
+        original={{
+          id: mockEnterpriseOfferId,
+          name: mockBudgetDisplayName,
+          start: '3022-01-01',
+          end: '3023-01-01',
+          source: BUDGET_TYPES.ecommerce,
+          aggregates: { total: 5000, spent: 200, available: 4800 },
+        }}
+      />,
+    );
+    const results = await axe(container, accessibilitySettings);
+    expect(results).toHaveNoViolations();
   });
 
   it('displays correctly for a scheduled Enterprise Offers (ecommerce)', () => {

@@ -10,6 +10,7 @@ import '@testing-library/jest-dom';
 
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
+import { axe } from 'jest-axe';
 import CodeAssignmentModal from './index';
 import assignEmailTemplate from '../../components/CodeAssignmentModal/emailTemplate';
 import {
@@ -18,6 +19,7 @@ import {
   SET_EMAIL_TEMPLATE_SOURCE,
 } from '../../data/constants/emailTemplate';
 import '@testing-library/jest-dom/extend-expect';
+import { accessibilitySettings } from '../../../tests/accessibility-settings';
 
 const mockStore = configureMockStore([thunk]);
 const initialState = {
@@ -95,6 +97,12 @@ CodeAssignmentModalWrapper.propTypes = {
 };
 
 describe('CodeAssignmentModalWrapper', () => {
+  it('has no accessibility violations', async () => {
+    const { container } = render(<CodeAssignmentModalWrapper />);
+    const results = await axe(container, accessibilitySettings);
+    expect(results).toHaveNoViolations();
+  });
+
   it('renders individual assignment modal', async () => {
     render(<CodeAssignmentModalWrapper />);
     const fields = await screen.findByText('Add learner');

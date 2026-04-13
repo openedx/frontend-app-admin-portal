@@ -2,7 +2,9 @@
 import '@testing-library/jest-dom';
 import React from 'react';
 import { render, screen } from '@testing-library/react';
+import { axe } from 'jest-axe';
 import TopSkillsByCompletionChart from './TopSkillsByCompletionChart';
+import { accessibilitySettings } from '../../../../tests/accessibility-settings';
 
 jest.mock('@edx/frontend-platform/i18n', () => ({
   useIntl: () => ({
@@ -31,6 +33,21 @@ const renderChart = (props = {}) => {
 };
 
 describe('TopSkillsByCompletionChart', () => {
+  it('has no accessibility violations', async () => {
+    const { container } = render(
+      <TopSkillsByCompletionChart
+        isFetching={false}
+        isError={false}
+        data={[]}
+        startDate="2024-06-01"
+        endDate="2024-06-30"
+        onClick={jest.fn()}
+      />,
+    );
+    const results = await axe(container, accessibilitySettings);
+    expect(results).toHaveNoViolations();
+  });
+
   const mockData = [
     { skillName: 'Critical Thinking', subjectName: 'Psychology', count: 5 },
     { skillName: 'Data Analysis', subjectName: 'Statistics', count: 7 },

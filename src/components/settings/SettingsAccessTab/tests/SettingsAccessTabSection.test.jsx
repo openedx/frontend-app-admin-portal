@@ -6,8 +6,10 @@ import {
 } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 
+import { axe } from 'jest-axe';
 import SettingsAccessTabSection from '../SettingsAccessTabSection';
 import { renderWithI18nProvider } from '../../../test/testUtils';
+import { accessibilitySettings } from '../../../../../tests/accessibility-settings';
 
 const generateProps = ({
   checked,
@@ -22,6 +24,12 @@ const generateProps = ({
 });
 
 describe('<SettingsAccessTabSection />', () => {
+  it('has no accessibility violations', async () => {
+    const { container } = renderWithI18nProvider(<SettingsAccessTabSection />);
+    const results = await axe(container, accessibilitySettings);
+    expect(results).toHaveNoViolations();
+  });
+
   afterEach(() => {
     cleanup();
     jest.clearAllMocks();

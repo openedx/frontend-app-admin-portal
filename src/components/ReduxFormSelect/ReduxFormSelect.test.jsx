@@ -2,7 +2,9 @@ import React from 'react';
 import { screen, render } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import '@testing-library/jest-dom/extend-expect';
+import { axe } from 'jest-axe';
 import ReduxFormSelect from './index';
+import { accessibilitySettings } from '../../../tests/accessibility-settings';
 
 const props = {
   id: 'foo',
@@ -13,6 +15,12 @@ const props = {
 };
 
 describe('<ReduxFormSelect />', () => {
+  it('has no accessibility violations', async () => {
+    const { container } = render(<ReduxFormSelect {...props} />);
+    const results = await axe(container, accessibilitySettings);
+    expect(results).toHaveNoViolations();
+  });
+
   it('renders a label', () => {
     render(<ReduxFormSelect {...props} />);
     expect(screen.getByText(props.label)).toBeInTheDocument();

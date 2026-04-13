@@ -10,10 +10,12 @@ import { Provider } from 'react-redux';
 import { IntlProvider } from '@edx/frontend-platform/i18n';
 import { getAuthenticatedUser } from '@edx/frontend-platform/auth';
 
+import { axe } from 'jest-axe';
 import { renderWithRouter } from '../../../../test/testUtils';
 import SettingsLMSTab from '../..';
 import LmsApiService from '../../../../../data/services/LmsApiService';
 import { getChannelMap } from '../../../../../utils';
+import { accessibilitySettings } from '../../../../../../tests/accessibility-settings';
 
 const mockFetch = jest.fn();
 mockFetch.mockResolvedValue({ data: { refresh_token: 'foobar' } });
@@ -82,6 +84,25 @@ const mockStore = configureMockStore([thunk]);
 window.open = jest.fn();
 
 describe('Test sync history page full flow', () => {
+  it('has no accessibility violations', async () => {
+    const SettingsLMSWrapperA11y = () => (
+      <IntlProvider locale="en">
+        <Provider store={mockStore({ ...initialState })}>
+          <SettingsLMSTab
+            enterpriseId={enterpriseId}
+            enterpriseSlug={enterpriseSlug}
+            enableSamlConfigurationScreen={enableSamlConfigurationScreen}
+            identityProvider={identityProvider}
+            hasSSOConfig
+          />
+        </Provider>
+      </IntlProvider>
+    );
+    const { container } = renderWithRouter(<SettingsLMSWrapperA11y />);
+    const results = await axe(container, accessibilitySettings);
+    expect(results).toHaveNoViolations();
+  });
+
   afterEach(() => {
     cleanup();
     jest.clearAllMocks();

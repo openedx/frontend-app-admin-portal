@@ -9,10 +9,12 @@ import { IntlProvider } from '@edx/frontend-platform/i18n';
 import { renderWithRouter } from '@edx/frontend-enterprise-utils';
 import { QueryClientProvider } from '@tanstack/react-query';
 
+import { axe } from 'jest-axe';
 import { BaseCatalogSearchResults } from '../CatalogSearchResults';
 import { CONTENT_TYPE_COURSE } from '../../data/constants';
 import { queryClient } from '../../../test/testUtils';
 import { BudgetDetailPageContext } from '../../BudgetDetailPageWrapper';
+import { accessibilitySettings } from '../../../../../tests/accessibility-settings';
 
 // Mocking this connected component so as not to have to mock the algolia Api
 const PAGINATE_ME = 'PAGINATE ME :)';
@@ -203,6 +205,12 @@ describe('Main Catalogs view works as expected', () => {
   beforeEach(() => {
     jest.resetModules(); // Most important - it clears the cache
     process.env = { ...OLD_ENV }; // Make a copy
+  });
+
+  it('has no accessibility violations', async () => {
+    const { container } = renderWithRouter(<SearchDataWrapper />);
+    const results = await axe(container, accessibilitySettings);
+    expect(results).toHaveNoViolations();
   });
   afterEach(() => {
     process.env = OLD_ENV; // Restore old environment

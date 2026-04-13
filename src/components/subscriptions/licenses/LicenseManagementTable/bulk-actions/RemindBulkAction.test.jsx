@@ -11,6 +11,7 @@ import '@testing-library/jest-dom/extend-expect';
 
 import { IntlProvider } from '@edx/frontend-platform/i18n';
 import { sendEnterpriseTrackEvent } from '@edx/frontend-enterprise-utils';
+import { axe } from 'jest-axe';
 import { SUBSCRIPTION_TABLE_EVENTS } from '../../../../../eventTracking';
 
 import {
@@ -26,6 +27,7 @@ import {
 } from '../../../tests/TestUtilities';
 
 import RemindBulkAction from './RemindBulkAction';
+import { accessibilitySettings } from '../../../../../../tests/accessibility-settings';
 
 jest.mock('@edx/frontend-enterprise-utils', () => {
   const originalModule = jest.requireActual('@edx/frontend-enterprise-utils');
@@ -73,6 +75,12 @@ const testRevokedUser = { original: { status: REVOKED, email } };
 describe('RemindBulkAction', () => {
   afterEach(() => {
     jest.clearAllMocks();
+  });
+
+  it('has no accessibility violations', async () => {
+    const { container } = render(<RemindBulkActionWithProvider {...basicProps} />);
+    const results = await axe(container, accessibilitySettings);
+    expect(results).toHaveNoViolations();
   });
 
   it('should render without receiving DataTable props yet', () => {

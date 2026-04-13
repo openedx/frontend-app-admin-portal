@@ -9,10 +9,12 @@ import { screen, render, waitFor } from '@testing-library/react';
 import { userEvent } from '@testing-library/user-event';
 import '@testing-library/jest-dom/extend-expect';
 import dayjs from 'dayjs';
+import { axe } from 'jest-axe';
 import EnterpriseDataApiService from '../../../data/services/EnterpriseDataApiService';
 import Admin from '../index';
 import { CSV_CLICK_SEGMENT_EVENT_NAME } from '../../DownloadCsvButton';
 import { useEnterpriseBudgets } from '../../EnterpriseSubsidiesContext/data/hooks';
+import { accessibilitySettings } from '../../../../tests/accessibility-settings';
 
 const dndKitCore = require('@dnd-kit/core');
 const dndKitSortable = require('@dnd-kit/sortable');
@@ -660,6 +662,12 @@ describe('<Admin />', () => {
   describe('scroll to report section when fragment present', () => {
     beforeEach(() => {
       jest.clearAllMocks();
+    });
+
+    it('has no accessibility violations', async () => {
+      const { container } = render(<AdminWrapper />);
+      const results = await axe(container, accessibilitySettings);
+      expect(results).toHaveNoViolations();
     });
 
     it('scrolls when fragment present', async () => {

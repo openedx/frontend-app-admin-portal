@@ -8,12 +8,14 @@ import configureMockStore from 'redux-mock-store';
 import { Provider } from 'react-redux';
 import { camelCaseObject } from '@edx/frontend-platform';
 import userEvent from '@testing-library/user-event';
+import { axe } from 'jest-axe';
 import { useContentHighlightsContext } from '../../data/hooks';
 import ContentHighlightCatalogVisibilityRadioInput from '../ContentHighlightCatalogVisibilityRadioInput';
 import { EnterpriseAppContext } from '../../../EnterpriseApp/EnterpriseAppContextProvider';
 import { ContentHighlightsContext } from '../../ContentHighlightsContext';
 import { TEST_COURSE_HIGHLIGHTS_DATA, LEARNER_PORTAL_CATALOG_VISIBILITY } from '../../data/constants';
 import EnterpriseCatalogApiService from '../../../../data/services/EnterpriseCatalogApiService';
+import { accessibilitySettings } from '../../../../../tests/accessibility-settings';
 
 const mockStore = configureMockStore([thunk]);
 const mockHighlightSetResponse = camelCaseObject(TEST_COURSE_HIGHLIGHTS_DATA);
@@ -86,6 +88,12 @@ jest.mock('react-router-dom', () => ({
 describe('ContentHighlightCatalogVisibilityRadioInput1', () => {
   beforeEach(() => {
     jest.clearAllMocks();
+  });
+
+  it('has no accessibility violations', async () => {
+    const { container } = renderWithRouter(<ContentHighlightCatalogVisibilityRadioInputWrapper />);
+    const results = await axe(container, accessibilitySettings);
+    expect(results).toHaveNoViolations();
   });
   it('renders', () => {
     renderWithRouter(<ContentHighlightCatalogVisibilityRadioInputWrapper />);

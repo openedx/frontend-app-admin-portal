@@ -11,9 +11,11 @@ import configureMockStore from 'redux-mock-store';
 import thunk from 'redux-thunk';
 import { IntlProvider } from '@edx/frontend-platform/i18n';
 
+import { axe } from 'jest-axe';
 import CodeSearchResults from './index';
 
 import EcommerceApiService from '../../data/services/EcommerceApiService';
+import { accessibilitySettings } from '../../../tests/accessibility-settings';
 
 jest.mock('../../data/services/EcommerceApiService');
 
@@ -85,6 +87,12 @@ CodeSearchResultsWrapper.defaultProps = {
 };
 
 describe('<CodeSearchResults />', () => {
+  it('has no accessibility violations', async () => {
+    const { container } = render(<CodeSearchResultsWrapper />);
+    const results = await axe(container, accessibilitySettings);
+    expect(results).toHaveNoViolations();
+  });
+
   beforeAll(() => {
     const mockPromiseResolve = () => Promise.resolve({ data: {} });
     EcommerceApiService.fetchCodeSearchResults.mockImplementation(mockPromiseResolve);

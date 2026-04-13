@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`RequestDateCell renders with "approved" status 1`] = `
+exports[`RequestStatusCell renders with "approved" status 1`] = `
 <span
   className="badge badge-secondary"
 >
@@ -8,7 +8,7 @@ exports[`RequestDateCell renders with "approved" status 1`] = `
 </span>
 `;
 
-exports[`RequestDateCell renders with "declined" status 1`] = `
+exports[`RequestStatusCell renders with "declined" status 1`] = `
 <span
   className="badge badge-light"
 >
@@ -16,7 +16,7 @@ exports[`RequestDateCell renders with "declined" status 1`] = `
 </span>
 `;
 
-exports[`RequestDateCell renders with "requested" status 1`] = `
+exports[`RequestStatusCell renders with "requested" status 1`] = `
 <span
   className="badge badge-primary"
 >

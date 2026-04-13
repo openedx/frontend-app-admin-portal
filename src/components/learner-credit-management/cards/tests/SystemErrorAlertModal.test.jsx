@@ -3,7 +3,9 @@ import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import '@testing-library/jest-dom/extend-expect';
 import { IntlProvider } from '@edx/frontend-platform/i18n';
+import { axe } from 'jest-axe';
 import SystemErrorAlertModal from '../assignment-allocation-status-modals/SystemErrorAlertModal';
+import { accessibilitySettings } from '../../../../../tests/accessibility-settings';
 
 const defaultProps = {
   isErrorModalOpen: true,
@@ -21,6 +23,12 @@ const renderModal = (props = {}) => render(
 describe('<SystemErrorAlertModal />', () => {
   beforeEach(() => {
     jest.clearAllMocks();
+  });
+
+  it('has no accessibility violations', async () => {
+    const { container } = renderModal();
+    const results = await axe(container, accessibilitySettings);
+    expect(results).toHaveNoViolations();
   });
 
   it('renders with default error message', () => {

@@ -7,8 +7,10 @@ import '@testing-library/jest-dom';
 import { MemoryRouter } from 'react-router-dom';
 import { IntlProvider } from '@edx/frontend-platform/i18n';
 import thunk from 'redux-thunk';
+import { axe } from 'jest-axe';
 import AIAnalyticsSummary from '../AIAnalyticsSummary';
 import * as AIAnalyticsSummaryHooks from '../../AIAnalyticsSummary/data/hooks';
+import { accessibilitySettings } from '../../../../tests/accessibility-settings';
 
 const mockedInsights = {
   learner_progress: {
@@ -66,6 +68,12 @@ const AIAnalyticsSummaryWrapper = props => (
 );
 
 describe('<AIAnalyticsSummary />', () => {
+  it('has no accessibility violations', async () => {
+    const { container } = render(<AIAnalyticsSummaryWrapper />);
+    const results = await axe(container, accessibilitySettings);
+    expect(results).toHaveNoViolations();
+  });
+
   it('should render action buttons correctly', async () => {
     render(<AIAnalyticsSummaryWrapper insights={mockedInsights} />);
     const summariseAnalyticsComponent = await screen.findByTestId('summarize-analytics');

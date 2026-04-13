@@ -2,6 +2,7 @@ import React from 'react';
 import { render } from '@testing-library/react';
 import { AppContext } from '@edx/frontend-platform/react';
 import { IntlProvider } from '@edx/frontend-platform/i18n';
+import { axe } from 'jest-axe';
 import {
   generateSubscriptionPlan,
   mockSubscriptionHooks,
@@ -10,6 +11,7 @@ import {
 
 import SubsriptionModal from '../SubscriptionModal';
 import { SubsidyRequestsContext } from '../../subsidy-requests';
+import { accessibilitySettings } from '../../../../tests/accessibility-settings';
 
 const subscriptionPlan = generateSubscriptionPlan({
   licenses: {
@@ -60,6 +62,12 @@ const EmbeddedSubscriptionWrapper = () => (
 );
 
 describe('EmbeddedSubscription', () => {
+  it('has no accessibility violations', async () => {
+    const { container } = render(<EmbeddedSubscriptionWrapper />);
+    const results = await axe(container, accessibilitySettings);
+    expect(results).toHaveNoViolations();
+  });
+
   it('renders without crashing', () => {
     mockSubscriptionHooks(subscriptionPlan);
     render(<EmbeddedSubscriptionWrapper />);

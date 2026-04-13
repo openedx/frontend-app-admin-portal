@@ -4,8 +4,10 @@ import { screen } from '@testing-library/react';
 import '@testing-library/jest-dom/extend-expect';
 import userEvent from '@testing-library/user-event';
 
+import { axe } from 'jest-axe';
 import ActionCell from '../ActionCell';
 import { renderWithRouter } from '../../test/testUtils';
+import { accessibilitySettings } from '../../../../tests/accessibility-settings';
 
 const defaultProps = {
   row: {
@@ -17,6 +19,12 @@ const defaultProps = {
 };
 
 describe('ActionCell', () => {
+  it('has no accessibility violations', async () => {
+    const { container } = renderWithRouter(<ActionCell {...defaultProps} />);
+    const results = await axe(container, accessibilitySettings);
+    expect(results).toHaveNoViolations();
+  });
+
   test('does not render anything when request status is not "requested"', () => {
     const tree = renderer
       .create(<ActionCell {...defaultProps} />)

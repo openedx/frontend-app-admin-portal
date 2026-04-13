@@ -8,8 +8,10 @@ import '@testing-library/jest-dom/extend-expect';
 import { IntlProvider } from '@edx/frontend-platform/i18n';
 import { getAuthenticatedUser } from '@edx/frontend-platform/auth';
 
+import { axe } from 'jest-axe';
 import LmsApiService from '../../../../../data/services/LmsApiService';
 import SyncHistory from '../SyncHistory';
+import { accessibilitySettings } from '../../../../../../tests/accessibility-settings';
 
 const enterpriseCustomerUuid = 'test-enterprise-id';
 
@@ -241,9 +243,21 @@ describe('<ExistingLMSCardDeck />', () => {
       writable: true,
     });
   });
+
   afterEach(() => {
     cleanup();
     jest.clearAllMocks();
+  });
+  it('has no accessibility violations', async () => {
+    const mockFetchSingleConfig = jest.spyOn(LmsApiService, 'fetchSingleBlackboardConfig');
+    mockFetchSingleConfig.mockResolvedValue(configData);
+    const { container } = render(
+      <IntlProvider locale="en">
+        <SyncHistory />
+      </IntlProvider>,
+    );
+    const results = await axe(container, accessibilitySettings);
+    expect(results).toHaveNoViolations();
   });
   it('basic lms config detail screen', async () => {
     const mockFetchSingleConfig = jest.spyOn(LmsApiService, 'fetchSingleBlackboardConfig');

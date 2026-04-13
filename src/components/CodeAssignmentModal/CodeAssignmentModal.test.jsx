@@ -8,6 +8,7 @@ import '@testing-library/jest-dom/extend-expect';
 import configureMockStore from 'redux-mock-store';
 import thunk from 'redux-thunk';
 import { MemoryRouter } from 'react-router-dom';
+import { axe } from 'jest-axe';
 import remindEmailTemplate from './emailTemplate';
 import CodeAssignmentModal, { BaseCodeAssignmentModal } from '.';
 import { getAssignmentModalFields, NOTIFY_LEARNERS_CHECKBOX_TEST_ID } from './constants';
@@ -16,6 +17,7 @@ import { displayCode, displaySelectedCodes } from '../CodeModal/codeModalHelpers
 import {
   EMAIL_TEMPLATE_SOURCE_NEW_EMAIL,
 } from '../../data/constants/emailTemplate';
+import { accessibilitySettings } from '../../../tests/accessibility-settings';
 
 jest.mock('redux-form', () => ({
   ...jest.requireActual('redux-form'),
@@ -139,6 +141,12 @@ const CodeAssignmentModalWrapper = (props) => (
 );
 /* eslint-enable react/prop-types */
 describe('CodeAssignmentModal component', () => {
+  it('has no accessibility violations', async () => {
+    const { container } = render(<CodeAssignmentModalWrapper />);
+    const results = await axe(container, accessibilitySettings);
+    expect(results).toHaveNoViolations();
+  });
+
   it('displays a modal', () => {
     render(<CodeAssignmentModalWrapper />);
     expect(screen.getByText(initialProps.title)).toBeInTheDocument();

@@ -10,6 +10,7 @@ import { breakpoints } from '@openedx/paragon';
 import { getAuthenticatedUser } from '@edx/frontend-platform/auth';
 import { IntlProvider } from '@edx/frontend-platform/i18n';
 import '@testing-library/jest-dom';
+import { axe } from 'jest-axe';
 import { axiosMock } from '../../setupTest';
 
 import EnterpriseApp from './index';
@@ -19,6 +20,7 @@ import { TOGGLE_SIDEBAR_TOGGLE } from '../../data/constants/sidebar';
 import { features } from '../../config';
 import { EnterpriseSubsidiesContext } from '../../components/EnterpriseSubsidiesContext';
 import { EnterpriseAppContext } from '../../components/EnterpriseApp/EnterpriseAppContextProvider';
+import { accessibilitySettings } from '../../../tests/accessibility-settings';
 
 const defaultEnterpriseAppContextValue = {
   enterpriseCuration: {
@@ -177,6 +179,12 @@ describe('<EnterpriseApp />', () => {
       const div = document.createElement('div');
       div.setAttribute('id', 'container');
       document.body.appendChild(div);
+    });
+
+    it('has no accessibility violations', async () => {
+      const { container } = render(<EnterpriseAppWrapper />);
+      const results = await axe(container, accessibilitySettings);
+      expect(results).toHaveNoViolations();
     });
     afterEach(() => {
       const div = document.getElementById('container');

@@ -11,6 +11,7 @@ import { AppContext } from '@edx/frontend-platform/react';
 import { IntlProvider } from '@edx/frontend-platform/i18n';
 import { renderWithRouter, sendEnterpriseTrackEvent } from '@edx/frontend-enterprise-utils';
 import dayjs from 'dayjs';
+import { axe } from 'jest-axe';
 import CourseCard from '../CourseCard';
 import {
   DATETIME_FORMAT,
@@ -30,6 +31,7 @@ import { BudgetDetailPageContext } from '../../BudgetDetailPageWrapper';
 import { EMAIL_ADDRESSES_INPUT_VALUE_DEBOUNCE_DELAY } from '../data';
 import { getGroupMemberEmails } from '../../data/hooks/useEnterpriseFlexGroups';
 import { ENTERPRISE_RESTRICTION_TYPE } from '../../data/constants';
+import { accessibilitySettings } from '../../../../../tests/accessibility-settings';
 
 jest.mock('@edx/frontend-platform', () => ({
   getConfig: jest.fn(() => ({})),
@@ -303,6 +305,12 @@ describe('CourseCard', () => {
 
   afterEach(() => {
     jest.clearAllMocks();
+  });
+
+  it('has no accessibility violations', async () => {
+    const { container } = renderWithRouter(<CourseCardWrapper {...defaultProps} />);
+    const results = await axe(container, accessibilitySettings);
+    expect(results).toHaveNoViolations();
   });
 
   test('course card renders', async () => {

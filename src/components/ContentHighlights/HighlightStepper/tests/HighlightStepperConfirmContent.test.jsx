@@ -7,6 +7,7 @@ import configureMockStore from 'redux-mock-store';
 import thunk from 'redux-thunk';
 import { Provider } from 'react-redux';
 import { IntlProvider } from '@edx/frontend-platform/i18n';
+import { axe } from 'jest-axe';
 import HighlightStepperConfirmContent, { BaseReviewContentSelections, SelectedContent } from '../HighlightStepperConfirmContent';
 import {
   DEFAULT_ERROR_MESSAGE,
@@ -15,6 +16,7 @@ import {
 } from '../../data/constants';
 import { ContentHighlightsContext } from '../../ContentHighlightsContext';
 import { configuration } from '../../../../config';
+import { accessibilitySettings } from '../../../../../tests/accessibility-settings';
 
 const mockStore = configureMockStore([thunk]);
 const enterpriseId = 'test-enterprise-id';
@@ -90,6 +92,12 @@ jest.mock('react-instantsearch-dom', () => ({
 }));
 
 describe('<HighlightStepperConfirmContent />', () => {
+  it('has no accessibility violations', async () => {
+    const { container } = renderWithRouter(<HighlightStepperConfirmContentWrapper />);
+    const results = await axe(container, accessibilitySettings);
+    expect(results).toHaveNoViolations();
+  });
+
   it('renders the content', () => {
     renderWithRouter(
       <HighlightStepperConfirmContentWrapper currentSelectedRowIds={testCourseAggregation}>

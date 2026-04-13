@@ -5,9 +5,11 @@ import { IntlProvider } from '@edx/frontend-platform/i18n';
 import { sendEnterpriseTrackEvent } from '@edx/frontend-enterprise-utils';
 
 import userEvent from '@testing-library/user-event';
+import { axe } from 'jest-axe';
 import AdminSearchForm from '../AdminSearchForm';
 import { updateUrl } from '../../../utils';
 import EVENT_NAMES from '../../../eventTracking';
+import { accessibilitySettings } from '../../../../tests/accessibility-settings';
 
 jest.mock('react-router-dom', () => ({
   ...jest.requireActual('react-router-dom'),
@@ -44,6 +46,12 @@ const AdminSearchFormWrapper = props => (
 describe('<AdminSearchForm />', () => {
   beforeEach(() => {
     jest.clearAllMocks();
+  });
+
+  it('has no accessibility violations', async () => {
+    const { container } = render(<AdminSearchFormWrapper {...DEFAULT_PROPS} />);
+    const results = await axe(container, accessibilitySettings);
+    expect(results).toHaveNoViolations();
   });
 
   it('displays three filters: search bar, group dropdown, and course dropdown', async () => {

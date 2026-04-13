@@ -10,12 +10,14 @@ import {
 import { IntlProvider } from '@edx/frontend-platform/i18n';
 
 import { Provider } from 'react-redux';
+import { axe } from 'jest-axe';
 import { getMockStore, enterpriseId } from '../testutils';
 import { features } from '../../../../config';
 import NewExistingSSOConfigs from '../NewExistingSSOConfigs';
 import { SSOConfigContext, SSO_INITIAL_STATE } from '../SSOConfigContext';
 import LmsApiService from '../../../../data/services/LmsApiService';
 import { queryClient } from '../../../test/testUtils';
+import { accessibilitySettings } from '../../../../../tests/accessibility-settings';
 
 jest.mock('../../utils');
 jest.mock('../../../../data/services/LmsApiService');
@@ -198,6 +200,12 @@ const setupNewExistingSSOConfigs = (configs) => {
 };
 
 describe('New Existing SSO Configs tests', () => {
+  it('has no accessibility violations', async () => {
+    const { container } = setupNewExistingSSOConfigs([]);
+    const results = await axe(container, accessibilitySettings);
+    expect(results).toHaveNoViolations();
+  });
+
   afterEach(() => {
     features.AUTH0_SELF_SERVICE_INTEGRATION = false;
     jest.clearAllMocks();

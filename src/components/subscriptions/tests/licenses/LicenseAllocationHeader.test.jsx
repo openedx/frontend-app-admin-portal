@@ -3,12 +3,14 @@ import { screen, render } from '@testing-library/react';
 import '@testing-library/jest-dom/extend-expect';
 import React from 'react';
 import { IntlProvider } from '@edx/frontend-platform/i18n';
+import { axe } from 'jest-axe';
 import { SubscriptionDetailContext } from '../../SubscriptionDetailContextProvider';
 import { SubsidyRequestsContext } from '../../../subsidy-requests';
 
 import LicenseAllocationHeader from '../../licenses/LicenseAllocationHeader';
 
 import { SUPPORTED_SUBSIDY_TYPES } from '../../../../data/constants/subsidyRequests';
+import { accessibilitySettings } from '../../../../../tests/accessibility-settings';
 
 const BNR_NEW_FEATURE_ALERT_TEXT = 'browse and request new feature alert!';
 jest.mock('../../../NewFeatureAlertBrowseAndRequest', () => ({
@@ -41,6 +43,12 @@ const LicenseAllocationHeaderWrapper = ({
 );
 
 describe('<LicenseAllocationHeader />', () => {
+  it('has no accessibility violations', async () => {
+    const { container } = render(<LicenseAllocationHeaderWrapper />);
+    const results = await axe(container, accessibilitySettings);
+    expect(results).toHaveNoViolations();
+  });
+
   it('should render license allocation', () => {
     render(<LicenseAllocationHeaderWrapper />);
     expect(screen.getByText('3 of 5 licenses allocated'));

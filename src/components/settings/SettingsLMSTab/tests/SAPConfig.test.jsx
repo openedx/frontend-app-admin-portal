@@ -6,11 +6,13 @@ import userEvent from '@testing-library/user-event';
 import '@testing-library/jest-dom/extend-expect';
 import { IntlProvider } from '@edx/frontend-platform/i18n';
 
+import { axe } from 'jest-axe';
 import SAPConfig from '../LMSConfigs/SAP/SAPConfig';
 import { INVALID_LINK, INVALID_NAME } from '../../data/constants';
 import LmsApiService from '../../../../data/services/LmsApiService';
 import FormContextWrapper from '../../../forms/FormContextWrapper';
 import { validationMessages } from '../LMSConfigs/SAP/SAPConfigEnablePage';
+import { accessibilitySettings } from '../../../../../tests/accessibility-settings';
 
 const mockUpdateConfigApi = jest.spyOn(LmsApiService, 'updateSuccessFactorsConfig');
 const mockConfigResponseData = {
@@ -106,6 +108,12 @@ async function clearForm() {
 describe('<SAPConfig />', () => {
   beforeEach(() => {
     jest.clearAllMocks();
+  });
+
+  it('has no accessibility violations', async () => {
+    const { container } = render(testSAPConfigSetup(noConfigs));
+    const results = await axe(container, accessibilitySettings);
+    expect(results).toHaveNoViolations();
   });
 
   test('renders SAP Enable Form', () => {

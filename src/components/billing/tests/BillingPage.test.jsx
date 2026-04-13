@@ -6,8 +6,10 @@ import { IntlProvider } from '@edx/frontend-platform/i18n';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { renderWithRouter } from '@edx/frontend-enterprise-utils';
 
+import { axe } from 'jest-axe';
 import BillingPage from '../BillingPage';
 import * as hooks from '../data/hooks';
+import { accessibilitySettings } from '../../../../tests/accessibility-settings';
 
 // Mock all the hooks
 jest.mock('../data/hooks');
@@ -158,6 +160,12 @@ describe('BillingPage', () => {
   beforeEach(() => {
     jest.clearAllMocks();
     setupMocks();
+  });
+
+  it('has no accessibility violations', async () => {
+    const { container } = renderBillingPage();
+    const results = await axe(container, accessibilitySettings);
+    expect(results).toHaveNoViolations();
   });
 
   describe('Loading State', () => {

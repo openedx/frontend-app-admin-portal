@@ -9,10 +9,12 @@ import { camelCaseObject } from '@edx/frontend-platform';
 import { renderWithRouter } from '@edx/frontend-enterprise-utils';
 
 import userEvent from '@testing-library/user-event';
+import { axe } from 'jest-axe';
 import ContentHighlightCardItem from '../ContentHighlightCardItem';
 import { TEST_COURSE_HIGHLIGHTS_DATA } from '../data/constants';
 import { generateAboutPageUrl } from '../data/utils';
 import { features } from '../../../config';
+import { accessibilitySettings } from '../../../../tests/accessibility-settings';
 
 const mockStore = configureMockStore([thunk]);
 
@@ -33,6 +35,19 @@ const ContentHighlightCardItemContainerWrapper = (props) => (
 );
 
 describe('<ContentHighlightCardItem>', () => {
+  it('has no accessibility violations', async () => {
+    const { container } = renderWithRouter(
+      <ContentHighlightCardItemContainerWrapper
+        isLoading={false}
+        title={testHighlightedContent.title}
+        contentType={testHighlightedContent.contentType.toLowerCase()}
+        partners={testHighlightedContent.authoringOrganizations}
+      />,
+    );
+    const results = await axe(container, accessibilitySettings);
+    expect(results).toHaveNoViolations();
+  });
+
   it('Does not render a hyperlink if href is not specified', () => {
     renderWithRouter(<ContentHighlightCardItemContainerWrapper
       isLoading={false}

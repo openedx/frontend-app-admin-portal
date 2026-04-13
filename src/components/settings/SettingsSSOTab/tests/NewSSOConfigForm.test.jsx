@@ -5,6 +5,7 @@ import { IntlProvider } from '@edx/frontend-platform/i18n';
 import Router from 'react-router';
 
 import { Provider } from 'react-redux';
+import { axe } from 'jest-axe';
 import NewSSOConfigForm from '../NewSSOConfigForm';
 import { SSOConfigContext, SSO_INITIAL_STATE } from '../SSOConfigContext';
 import LmsApiService from '../../../../data/services/LmsApiService';
@@ -16,6 +17,7 @@ import {
 } from '../../data/constants';
 import { features } from '../../../../config';
 import { getButtonElement, renderWithI18nProvider } from '../../../test/testUtils';
+import { accessibilitySettings } from '../../../../../tests/accessibility-settings';
 
 jest.mock('../data/actions');
 jest.mock('../../utils');
@@ -100,6 +102,12 @@ const setupNewSSOStepper = (contextChanges = {}) => {
 };
 
 describe('SAML Config Tab', () => {
+  it('has no accessibility violations', async () => {
+    const { container } = setupNewSSOStepper();
+    const results = await axe(container, accessibilitySettings);
+    expect(results).toHaveNoViolations();
+  });
+
   afterEach(() => {
     features.AUTH0_SELF_SERVICE_INTEGRATION = false;
     jest.clearAllMocks();

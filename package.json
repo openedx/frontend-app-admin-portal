@@ -118,6 +118,8 @@
     "postcss": "8.4.24",
     "react-test-renderer": "^18.3.1",
     "resize-observer-polyfill": "1.5.1",
+    "eslint-plugin-jsx-a11y": "^6.7.1",
+    "jest-axe": "^9.0.0",
     "ts-jest": "^29.0.0"
   }
 }

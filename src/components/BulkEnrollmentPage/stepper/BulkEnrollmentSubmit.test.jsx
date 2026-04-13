@@ -6,6 +6,7 @@ import {
 import userEvent from '@testing-library/user-event';
 import { logError } from '@edx/frontend-platform/logging';
 import { IntlProvider } from '@edx/frontend-platform/i18n';
+import { axe } from 'jest-axe';
 import BulkEnrollmentSubmit, { BulkEnrollmentAlertModal, generateSuccessMessage } from './BulkEnrollmentSubmit';
 import {
   ALERT_MODAL_TITLE_TEXT,
@@ -20,6 +21,7 @@ import { clearSelectionAction } from '../data/actions';
 import { renderWithRouter } from '../../test/testUtils';
 import LicenseManagerApiService from '../../../data/services/LicenseManagerAPIService';
 import { configuration } from '../../../config';
+import { accessibilitySettings } from '../../../../tests/accessibility-settings';
 
 jest.mock('../../../data/services/LicenseManagerAPIService', () => ({
   __esModule: true,
@@ -107,6 +109,12 @@ describe('generateSuccessMessage', () => {
 describe('BulkEnrollmentAlertModal', () => {
   beforeEach(() => {
     defaultAlertProps.toggleClose.mockClear();
+  });
+
+  it('has no accessibility violations', async () => {
+    const { container } = renderWithRouter(<BulkEnrollmentSubmitWrapper {...defaultProps} />);
+    const results = await axe(container, accessibilitySettings);
+    expect(results).toHaveNoViolations();
   });
   afterEach(() => {
     cleanup();

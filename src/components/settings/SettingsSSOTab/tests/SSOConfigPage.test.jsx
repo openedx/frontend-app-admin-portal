@@ -7,8 +7,10 @@ import thunk from 'redux-thunk';
 import { Provider } from 'react-redux';
 
 import { IntlProvider } from '@edx/frontend-platform/i18n';
+import { axe } from 'jest-axe';
 import { renderWithRouter } from '../../../test/testUtils';
 import SettingsSSOTab from '../index';
+import { accessibilitySettings } from '../../../../../tests/accessibility-settings';
 
 const enterpriseId = 'aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee';
 const enterpriseSlug = 'test-slug';
@@ -36,6 +38,12 @@ const SettingsSSOWrapper = () => (
 );
 
 describe('<SettingsSSOTab />', () => {
+  it('has no accessibility violations', async () => {
+    const { container } = renderWithRouter(<SettingsSSOWrapper />);
+    const results = await axe(container, accessibilitySettings);
+    expect(results).toHaveNoViolations();
+  });
+
   it('Renders with no config card present', async () => {
     const user = userEvent.setup();
     renderWithRouter(<SettingsSSOWrapper />);

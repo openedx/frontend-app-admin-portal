@@ -3,11 +3,13 @@ import {
 } from '@testing-library/react';
 import '@testing-library/jest-dom';
 import { IntlProvider } from '@edx/frontend-platform/i18n';
+import { axe } from 'jest-axe';
 import AnalyticsFilters from '../AnalyticsFilters';
 import {
   GRANULARITY, CALCULATION, DATE_RANGE, COURSE_TYPES,
 } from '../data/constants';
 import { get90DayPriorDate } from '../data/utils';
+import { accessibilitySettings } from '../../../../tests/accessibility-settings';
 
 const mockSetGroupUUID = jest.fn();
 const mockSetGranularity = jest.fn();
@@ -78,6 +80,16 @@ jest.mock('../CourseFilterDropdown', () => function renderCourseFilterDropdown({
 describe('AnalyticsFilters Component', () => {
   beforeEach(() => {
     jest.clearAllMocks();
+  });
+
+  it('has no accessibility violations', async () => {
+    const { container } = render(
+      <IntlProvider locale="en">
+        <AnalyticsFilters {...defaultProps} />
+      </IntlProvider>,
+    );
+    const results = await axe(container, accessibilitySettings);
+    expect(results).toHaveNoViolations();
   });
 
   test('renders standard filters when not in progress/outcomes tab', () => {

@@ -2,7 +2,9 @@ import { MemoryRouter } from 'react-router-dom';
 import { IntlProvider } from '@edx/frontend-platform/i18n';
 import { screen, render } from '@testing-library/react';
 import '@testing-library/jest-dom/extend-expect';
+import { axe } from 'jest-axe';
 import DetailsAction from './DetailsAction';
+import { accessibilitySettings } from '../../../../../tests/accessibility-settings';
 
 jest.mock('react-router-dom', () => ({
   ...jest.requireActual('react-router-dom'),
@@ -23,6 +25,12 @@ const DetailsActionWrapper = () => (
 );
 
 describe('<NumberCard /> ', () => {
+  it('has no accessibility violations', async () => {
+    const { container } = render(<DetailsActionWrapper />);
+    const results = await axe(container, accessibilitySettings);
+    expect(results).toHaveNoViolations();
+  });
+
   it('renders correctly', () => {
     render(
       <DetailsActionWrapper />,

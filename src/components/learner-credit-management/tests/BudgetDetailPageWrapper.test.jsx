@@ -10,9 +10,11 @@ import '@testing-library/jest-dom/extend-expect';
 import { QueryClientProvider } from '@tanstack/react-query';
 
 import { renderWithRouter, sendEnterpriseTrackEvent } from '@edx/frontend-enterprise-utils';
+import { axe } from 'jest-axe';
 import BudgetDetailPageWrapper, { BudgetDetailPageContext } from '../BudgetDetailPageWrapper';
 import { getButtonElement, queryClient } from '../../test/testUtils';
 import BudgetDetailPageBreadcrumbs from '../BudgetDetailPageBreadcrumbs';
+import { accessibilitySettings } from '../../../../tests/accessibility-settings';
 
 const mockStore = configureMockStore([thunk]);
 const getMockStore = store => mockStore(store);
@@ -51,6 +53,12 @@ const MockBudgetDetailPageWrapper = ({
 };
 
 describe('<BudgetDetailPageWrapper />', () => {
+  it('has no accessibility violations', async () => {
+    const { container } = renderWithRouter(<MockBudgetDetailPageWrapper />);
+    const results = await axe(container, accessibilitySettings);
+    expect(results).toHaveNoViolations();
+  });
+
   it('should render its children and display hero by default', () => {
     render(<MockBudgetDetailPageWrapper><div>hello world</div></MockBudgetDetailPageWrapper>);
     // Verify children are rendered

@@ -8,7 +8,9 @@ import thunk from 'redux-thunk';
 import { Provider } from 'react-redux';
 import { IntlProvider } from '@edx/frontend-platform/i18n';
 
+import { axe } from 'jest-axe';
 import EnrollmentsTable from './index';
+import { accessibilitySettings } from '../../../tests/accessibility-settings';
 
 const mockStore = configureMockStore([thunk]);
 const enterpriseId = 'test-enterprise';
@@ -43,6 +45,12 @@ const EnrollmentsWrapper = props => (
 );
 
 describe('EnrollmentsTable', () => {
+  it('has no accessibility violations', async () => {
+    const { container } = render(<EnrollmentsWrapper />);
+    const results = await axe(container, accessibilitySettings);
+    expect(results).toHaveNoViolations();
+  });
+
   it('renders empty state correctly', () => {
     const tree = renderer
       .create((

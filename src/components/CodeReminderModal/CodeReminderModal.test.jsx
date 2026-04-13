@@ -8,6 +8,7 @@ import { IntlProvider } from '@edx/frontend-platform/i18n';
 import configureMockStore from 'redux-mock-store';
 import thunk from 'redux-thunk';
 import { MemoryRouter } from 'react-router-dom';
+import { axe } from 'jest-axe';
 import remindEmailTemplate from './emailTemplate';
 import { BaseCodeReminderModal } from '.';
 import { displayCode, displayEmail, displaySelectedCodes } from '../CodeModal/codeModalHelpers';
@@ -15,6 +16,7 @@ import { displayCode, displayEmail, displaySelectedCodes } from '../CodeModal/co
 import {
   EMAIL_TEMPLATE_SOURCE_NEW_EMAIL,
 } from '../../data/constants/emailTemplate';
+import { accessibilitySettings } from '../../../tests/accessibility-settings';
 
 jest.mock('redux-form', () => ({
   ...jest.requireActual('redux-form'),
@@ -136,6 +138,12 @@ const CodeReminderModalWrapper = (props) => (
 );
 /* eslint-enable react/prop-types */
 describe('CodeReminderModal component', () => {
+  it('has no accessibility violations', async () => {
+    const { container } = render(<CodeReminderModalWrapper />);
+    const results = await axe(container, accessibilitySettings);
+    expect(results).toHaveNoViolations();
+  });
+
   it('displays a modal', () => {
     render(<CodeReminderModalWrapper />);
 

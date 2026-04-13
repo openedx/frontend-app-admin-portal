@@ -7,7 +7,9 @@ import { MemoryRouter } from 'react-router-dom';
 import { Groups } from '@openedx/paragon/icons';
 import '@testing-library/jest-dom';
 
+import { axe } from 'jest-axe';
 import NumberCard from './index';
+import { accessibilitySettings } from '../../../tests/accessibility-settings';
 
 const NumberCardWrapper = props => (
   <MemoryRouter>
@@ -23,6 +25,12 @@ const NumberCardWrapper = props => (
 );
 
 describe('<NumberCard />', () => {
+  it('has no accessibility violations', async () => {
+    const { container } = render(<NumberCardWrapper />);
+    const results = await axe(container, accessibilitySettings);
+    expect(results).toHaveNoViolations();
+  });
+
   describe('renders correctly', () => {
     it('without detail actions', () => {
       const tree = renderer

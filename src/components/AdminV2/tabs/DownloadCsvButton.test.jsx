@@ -7,7 +7,9 @@ import {
 import { saveAs } from 'file-saver';
 import '@testing-library/jest-dom/extend-expect';
 import userEvent from '@testing-library/user-event';
+import { axe } from 'jest-axe';
 import DownloadCSVButton from './DownloadCSVButton';
+import { accessibilitySettings } from '../../../../tests/accessibility-settings';
 
 jest.mock('file-saver', () => ({
   ...jest.requireActual('file-saver'),
@@ -49,6 +51,12 @@ const DownloadCSVButtonWrapper = props => (
 );
 
 describe('DownloadCSVButton', () => {
+  it('has no accessibility violations', async () => {
+    const { container } = render(<DownloadCSVButtonWrapper />);
+    const results = await axe(container, accessibilitySettings);
+    expect(results).toHaveNoViolations();
+  });
+
   it('renders download csv button correctly.', async () => {
     const user = userEvent.setup();
     render(<DownloadCSVButtonWrapper {...DEFAULT_PROPS} />);

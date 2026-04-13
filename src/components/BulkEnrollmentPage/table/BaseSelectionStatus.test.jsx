@@ -4,7 +4,9 @@ import '@testing-library/jest-dom/extend-expect';
 import { DataTableContext } from '@openedx/paragon';
 import userEvent from '@testing-library/user-event';
 
+import { axe } from 'jest-axe';
 import BaseSelectionStatus from './BaseSelectionStatus';
+import { accessibilitySettings } from '../../../../tests/accessibility-settings';
 
 const mockToggleAllRowsSelected = jest.fn();
 
@@ -48,6 +50,12 @@ const SelectionStatusWrapper = ({ dataTableInfo, ...props }) => (
 describe('BaseSelectionStatus', () => {
   beforeEach(() => {
     jest.clearAllMocks();
+  });
+
+  it('has no accessibility violations', async () => {
+    const { container } = render(<SelectionStatusWrapper dataTableInfo={defaultDataTableInfo} {...defaultProps} />);
+    const results = await axe(container, accessibilitySettings);
+    expect(results).toHaveNoViolations();
   });
   it('shows selection status when some rows are selected', () => {
     render(<SelectionStatusWrapper

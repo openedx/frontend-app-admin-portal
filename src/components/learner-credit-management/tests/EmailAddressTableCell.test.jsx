@@ -10,7 +10,9 @@ import { Provider } from 'react-redux';
 import { sendEnterpriseTrackEvent } from '@edx/frontend-enterprise-utils';
 import '@testing-library/jest-dom/extend-expect';
 
+import { axe } from 'jest-axe';
 import EmailAddressTableCell from '../EmailAddressTableCell';
+import { accessibilitySettings } from '../../../../tests/accessibility-settings';
 
 jest.mock('@edx/frontend-enterprise-utils', () => ({
   ...jest.requireActual('@edx/frontend-enterprise-utils'),
@@ -41,6 +43,12 @@ const EmailAddressTableCellWrapper = ({
 describe('<EmailAddressTableCell />', () => {
   beforeEach(() => {
     jest.clearAllMocks();
+  });
+
+  it('has no accessibility violations', async () => {
+    const { container } = render(<EmailAddressTableCellWrapper />);
+    const results = await axe(container, accessibilitySettings);
+    expect(results).toHaveNoViolations();
   });
 
   it('with email is present, display it', () => {

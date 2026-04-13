@@ -11,12 +11,14 @@ import {
   breakpoints,
   ResponsiveContext,
 } from '@openedx/paragon';
+import { axe } from 'jest-axe';
 import { renderWithRouter } from '../../test/testUtils';
 import SubscriptionCard from '../SubscriptionCard';
 import {
   CANCELED, ENDED, FREE_TRIAL_BADGE, SELF_SERVICE_TRIAL,
 } from '../data/constants';
 import { useStripeSubscriptionPlanInfo } from '../data/hooks';
+import { accessibilitySettings } from '../../../../tests/accessibility-settings';
 
 const defaultSubscription = {
   uuid: 'ided',
@@ -129,6 +131,13 @@ const SubscriptionCardWrapper = ({ initialState = initialStoreState, ...props })
 };
 
 describe('SubscriptionCard', () => {
+  it('has no accessibility violations', async () => {
+    useStripeSubscriptionPlanInfo.mockReturnValue(mockSubPlanInfoActive);
+    const { container } = renderWithRouter(<SubscriptionCardWrapper {...defaultProps} />);
+    const results = await axe(container, accessibilitySettings);
+    expect(results).toHaveNoViolations();
+  });
+
   it('displays subscription information', () => {
     useStripeSubscriptionPlanInfo.mockReturnValue(mockSubPlanInfoActive);
     renderWithRouter(<SubscriptionCardWrapper {...defaultProps} />);

@@ -10,11 +10,13 @@ import configureMockStore from 'redux-mock-store';
 import thunk from 'redux-thunk';
 import { sendEnterpriseTrackEvent } from '@edx/frontend-enterprise-utils';
 
+import { axe } from 'jest-axe';
 import DeleteHighlightSet from '../DeleteHighlightSet';
 import { ROUTE_NAMES } from '../../EnterpriseApp/data/constants';
 import { EnterpriseAppContext } from '../../EnterpriseApp/EnterpriseAppContextProvider';
 import { enterpriseCurationActions } from '../../EnterpriseApp/data/enterpriseCurationReducer';
 import EnterpriseCatalogApiService from '../../../data/services/EnterpriseCatalogApiService';
+import { accessibilitySettings } from '../../../../tests/accessibility-settings';
 
 jest.mock('../../../data/services/EnterpriseCatalogApiService');
 
@@ -86,6 +88,12 @@ describe('<DeleteHighlightSet />', () => {
 
   beforeEach(() => {
     jest.resetAllMocks();
+  });
+
+  it('has no accessibility violations', async () => {
+    const { container } = render(<DeleteHighlightSetWrapper />);
+    const results = await axe(container, accessibilitySettings);
+    expect(results).toHaveNoViolations();
   });
 
   it('has delete highlight button', () => {

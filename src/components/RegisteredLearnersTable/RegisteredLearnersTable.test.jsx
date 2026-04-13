@@ -6,7 +6,10 @@ import configureMockStore from 'redux-mock-store';
 import thunk from 'redux-thunk';
 import { Provider } from 'react-redux';
 
+import { render } from '@testing-library/react';
+import { axe } from 'jest-axe';
 import RegisteredLearnersTable from '.';
+import { accessibilitySettings } from '../../../tests/accessibility-settings';
 
 const enterpriseId = 'test-enterprise';
 const mockStore = configureMockStore([thunk]);
@@ -41,6 +44,12 @@ const RegisteredLearnersWrapper = props => (
 );
 
 describe('RegisteredLearnersTable', () => {
+  it('has no accessibility violations', async () => {
+    const { container } = render(<RegisteredLearnersWrapper />);
+    const results = await axe(container, accessibilitySettings);
+    expect(results).toHaveNoViolations();
+  });
+
   it('renders empty state correctly', () => {
     const tree = renderer
       .create((

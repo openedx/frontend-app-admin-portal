@@ -7,8 +7,10 @@ import '@testing-library/jest-dom';
 import { IntlProvider } from '@edx/frontend-platform/i18n';
 import userEvent from '@testing-library/user-event';
 
+import { axe } from 'jest-axe';
 import ReportingConfig from './index';
 import LmsApiService from '../../data/services/LmsApiService';
+import { accessibilitySettings } from '../../../tests/accessibility-settings';
 
 const defaultProps = {
   location: {
@@ -173,6 +175,16 @@ jest.mock('../../data/services/EnterpriseCatalogApiService', () => ({
 describe('<ReportingConfig />', () => {
   beforeEach(() => {
     jest.clearAllMocks();
+  });
+
+  it('has no accessibility violations', async () => {
+    const { container } = render(
+      <IntlProvider locale="en">
+        <ReportingConfig {...defaultProps} intl={mockIntl} />
+      </IntlProvider>,
+    );
+    const results = await axe(container, accessibilitySettings);
+    expect(results).toHaveNoViolations();
   });
   it('calls deleteConfig function on button click', async () => {
     const user = userEvent.setup();

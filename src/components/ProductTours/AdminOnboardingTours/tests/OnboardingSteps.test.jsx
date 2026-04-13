@@ -1,7 +1,9 @@
 import { render, screen, fireEvent } from '@testing-library/react';
 import '@testing-library/jest-dom';
 import { TrendingUp } from '@openedx/paragon/icons';
+import { axe } from 'jest-axe';
 import { Step } from '../OnboardingSteps';
+import { accessibilitySettings } from '../../../../../tests/accessibility-settings';
 
 describe('OnboardingSteps', () => {
   const defaultProps = {
@@ -17,6 +19,12 @@ describe('OnboardingSteps', () => {
     const finalProps = { ...defaultProps, ...props };
     return render(<Step {...finalProps} />);
   };
+  // Skipped because this test fails a11y checks; to be addressed in ENT-11719
+  it.skip('has no accessibility violations', async () => {
+    const { container } = renderStep();
+    const results = await axe(container, accessibilitySettings);
+    expect(results).toHaveNoViolations();
+  });
 
   it('renders step with all required props', () => {
     renderStep();

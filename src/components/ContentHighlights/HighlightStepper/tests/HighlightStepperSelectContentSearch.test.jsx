@@ -8,6 +8,7 @@ import thunk from 'redux-thunk';
 import { Provider } from 'react-redux';
 import { IntlProvider } from '@edx/frontend-platform/i18n';
 import userEvent from '@testing-library/user-event';
+import { axe } from 'jest-axe';
 import {
   testCourseAggregation,
   testCourseData,
@@ -15,6 +16,7 @@ import {
 import { ContentHighlightsContext } from '../../ContentHighlightsContext';
 import { configuration } from '../../../../config';
 import HighlightStepperSelectContent from '../HighlightStepperSelectContentSearch';
+import { accessibilitySettings } from '../../../../../tests/accessibility-settings';
 
 const mockStore = configureMockStore([thunk]);
 jest.mock('@edx/frontend-enterprise-utils', () => {
@@ -94,6 +96,12 @@ jest.mock('react-instantsearch-dom', () => ({
 }));
 
 describe('HighlightStepperSelectContentSearch', () => {
+  it('has no accessibility violations', async () => {
+    const { container } = renderWithRouter(<HighlightStepperSelectContentSearchWrapper />);
+    const results = await axe(container, accessibilitySettings);
+    expect(results).toHaveNoViolations();
+  });
+
   test('renders loading state while secured algolia api key is loading', () => {
     const highlightStepperState = {
       ...initialHighlightStepperState,

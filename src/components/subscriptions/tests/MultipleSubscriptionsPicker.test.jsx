@@ -6,9 +6,11 @@ import { screen } from '@testing-library/react';
 import '@testing-library/jest-dom/extend-expect';
 import { IntlProvider } from '@edx/frontend-platform/i18n';
 
+import { axe } from 'jest-axe';
 import { renderWithRouter } from '../../test/testUtils';
 import { DEFAULT_LEAD_TEXT, SELF_SERVICE_PAID } from '../data/constants';
 import MultipleSubscriptionsPicker from '../MultipleSubscriptionPicker';
+import { accessibilitySettings } from '../../../../tests/accessibility-settings';
 
 const firstCatalogUuid = 'catalogID1';
 const firstEnterpriseUuid = 'ided';
@@ -105,6 +107,12 @@ const MultipleSubscriptionsWrapper = ({ ...props }) => {
 };
 
 describe('MultipleSubscriptionsPicker', () => {
+  it('has no accessibility violations', async () => {
+    const { container } = renderWithRouter(<MultipleSubscriptionsWrapper {...defaultProps} />);
+    const results = await axe(container, accessibilitySettings);
+    expect(results).toHaveNoViolations();
+  });
+
   it('displays a title', () => {
     renderWithRouter(<MultipleSubscriptionsWrapper {...defaultProps} />);
     expect(screen.getByText('Plans')).toBeInTheDocument();

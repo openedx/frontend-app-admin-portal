@@ -1,10 +1,12 @@
 import { render, screen } from '@testing-library/react';
 import { QueryClientProvider } from '@tanstack/react-query';
 import { IntlProvider } from '@edx/frontend-platform/i18n';
+import { axe } from 'jest-axe';
 import Skills from './Skills';
 import '@testing-library/jest-dom';
 import { queryClient } from '../../test/testUtils';
 import * as hooks from '../data/hooks';
+import { accessibilitySettings } from '../../../../tests/accessibility-settings';
 
 jest.mock('../data/hooks');
 
@@ -125,6 +127,31 @@ describe('Skills Tab', () => {
       expect(screen.getByText('Mocked ScatterChart')).toBeInTheDocument();
       const elements = screen.getAllByText('Mocked BarChart');
       expect(elements).toHaveLength(2);
+    });
+  });
+
+  describe('has no accessibility violations', () => {
+    test('does not violate accessibility requirements', async () => {
+      hooks.useEnterpriseAnalyticsData.mockReturnValue({
+        isFetching: false,
+        data: mockAnalyticsSkillsData,
+        isError: false,
+        error: null,
+      });
+      const { container } = render(
+        <QueryClientProvider client={queryClient()}>
+          <IntlProvider locale="en">
+            <Skills
+              enterpriseId="33ce6562-95e0-4ecf-a2a7-7d407eb96f69"
+              startDate="2021-01-01"
+              endDate="2021-12-31"
+            />
+          </IntlProvider>,
+        </QueryClientProvider>,
+      );
+
+      const results = await axe(container, accessibilitySettings);
+      expect(results).toHaveNoViolations();
     });
   });
 });

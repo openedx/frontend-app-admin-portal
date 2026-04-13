@@ -4,9 +4,17 @@ import {
   render,
 } from '@testing-library/react';
 
+import { axe } from 'jest-axe';
 import LearnerCreditAggregateCards from '../LearnerCreditAggregateCards';
+import { accessibilitySettings } from '../../../../tests/accessibility-settings';
 
 describe('<LearnerCreditAggregateCards />', () => {
+  it('has no accessibility violations', async () => {
+    const { container } = render(<LearnerCreditAggregateCards />);
+    const results = await axe(container, accessibilitySettings);
+    expect(results).toHaveNoViolations();
+  });
+
   it('renders loading state', () => {
     render(<LearnerCreditAggregateCards isLoading />);
     const expectedSkeletonCount = 3;

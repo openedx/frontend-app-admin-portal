@@ -7,9 +7,11 @@ import { Provider } from 'react-redux';
 import configureMockStore from 'redux-mock-store';
 import thunk from 'redux-thunk';
 import { BrowserRouter as Router } from 'react-router-dom';
+import { axe } from 'jest-axe';
 import AnalyticsV2Page from '../AnalyticsV2Page';
 import { queryClient } from '../../test/testUtils';
 import '@testing-library/jest-dom';
+import { accessibilitySettings } from '../../../../tests/accessibility-settings';
 
 const mockStore = configureMockStore([thunk]);
 const store = mockStore({
@@ -46,6 +48,13 @@ const renderWithProviders = (component) => render(
 );
 
 describe('AnalyticsV2Page', () => {
+  // Skipped because this test fails a11y checks; to be addressed in ENT-11719
+  it.skip('has no accessibility violations', async () => {
+    const { container } = renderWithProviders(<AnalyticsV2Page enterpriseId="test_id" />);
+    const results = await axe(container, accessibilitySettings);
+    expect(results).toHaveNoViolations();
+  }, 30000);
+
   test('verifies the granularity select label, options, and values', () => {
     const { container } = renderWithProviders(<AnalyticsV2Page enterpriseId="test_id" />);
 

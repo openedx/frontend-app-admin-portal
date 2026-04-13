@@ -14,7 +14,7 @@ exports[`<SearchBar /> renders correctly 1`] = `
   >
     <label
       className="m-0"
-      htmlFor="pgn-searchfield-input-1"
+      htmlFor="pgn-searchfield-input-2"
     >
       <span
         className="sr-only"
@@ -25,7 +25,7 @@ exports[`<SearchBar /> renders correctly 1`] = `
     <input
       className="form-control"
       disabled={false}
-      id="pgn-searchfield-input-1"
+      id="pgn-searchfield-input-2"
       name="searchfield-input"
       onBlur={[Function]}
       onChange={[Function]}

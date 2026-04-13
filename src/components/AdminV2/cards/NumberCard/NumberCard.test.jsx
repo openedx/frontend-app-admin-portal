@@ -5,7 +5,9 @@ import { screen, render } from '@testing-library/react';
 import '@testing-library/jest-dom/extend-expect';
 import { IntlProvider } from '@edx/frontend-platform/i18n';
 
+import { axe } from 'jest-axe';
 import NumberCard from './index';
+import { accessibilitySettings } from '../../../../../tests/accessibility-settings';
 
 jest.mock('react-router-dom', () => ({
   ...jest.requireActual('react-router-dom'),
@@ -36,6 +38,12 @@ const NumberCardWrapper = () => (
 );
 
 describe('<NumberCard />', () => {
+  it('has no accessibility violations', async () => {
+    const { container } = render(<NumberCardWrapper />);
+    const results = await axe(container, accessibilitySettings);
+    expect(results).toHaveNoViolations();
+  });
+
   it('without detail actions', () => {
     render(
       <NumberCardWrapper />,

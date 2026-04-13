@@ -2,8 +2,10 @@ import React from 'react';
 import { render, screen } from '@testing-library/react';
 import '@testing-library/jest-dom/extend-expect';
 import userEvent from '@testing-library/user-event';
+import { axe } from 'jest-axe';
 import { ACTIONS, BULK_ACTION, COUPON_FILTER_TYPES } from './constants';
 import CouponBulkActions from './CouponBulkActions';
+import { accessibilitySettings } from '../../../tests/accessibility-settings';
 
 const props = {
   handleBulkAction: jest.fn(),
@@ -18,6 +20,12 @@ const props = {
 describe('CouponBulkActions', () => {
   beforeEach(() => {
     jest.clearAllMocks();
+  });
+
+  it('has no accessibility violations', async () => {
+    const { container } = render(<CouponBulkActions {...props} />);
+    const results = await axe(container, accessibilitySettings);
+    expect(results).toHaveNoViolations();
   });
   it('has disabled select and button when table is loading', () => {
     const modifiedProps = {

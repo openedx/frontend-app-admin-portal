@@ -3,7 +3,10 @@ import renderer from 'react-test-renderer';
 import { MemoryRouter } from 'react-router-dom';
 import { IntlProvider } from '@edx/frontend-platform/i18n';
 
+import { render } from '@testing-library/react';
+import { axe } from 'jest-axe';
 import ErrorPage from './index';
+import { accessibilitySettings } from '../../../tests/accessibility-settings';
 
 const ErrorPageWrapper = (props) => (
   <MemoryRouter>
@@ -14,6 +17,12 @@ const ErrorPageWrapper = (props) => (
 );
 
 describe('<ErrorPage />', () => {
+  it('has no accessibility violations', async () => {
+    const { container } = render(<ErrorPageWrapper status={500} message="Something went wrong" />);
+    const results = await axe(container, accessibilitySettings);
+    expect(results).toHaveNoViolations();
+  });
+
   it('renders correctly', () => {
     const tree = renderer
       .create((

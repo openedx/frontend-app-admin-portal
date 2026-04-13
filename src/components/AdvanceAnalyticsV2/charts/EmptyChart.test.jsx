@@ -4,7 +4,9 @@ import { render, screen } from '@testing-library/react';
 import { IntlProvider } from '@edx/frontend-platform/i18n';
 import '@testing-library/jest-dom/extend-expect';
 
+import { axe } from 'jest-axe';
 import EmptyChart from './EmptyChart';
+import { accessibilitySettings } from '../../../../tests/accessibility-settings';
 
 jest.mock('react-plotly.js', () => ({
   __esModule: true,
@@ -14,6 +16,16 @@ jest.mock('react-plotly.js', () => ({
 describe('EmptyChart', () => {
   beforeEach(() => {
     jest.clearAllMocks();
+  });
+
+  it('has no accessibility violations', async () => {
+    const { container } = render(
+      <IntlProvider locale="en">
+        <EmptyChart />,
+      </IntlProvider>,
+    );
+    const results = await axe(container, accessibilitySettings);
+    expect(results).toHaveNoViolations();
   });
 
   const defaultLayout = {

@@ -6,8 +6,10 @@ import userEvent from '@testing-library/user-event';
 import '@testing-library/jest-dom/extend-expect';
 import { IntlProvider } from '@edx/frontend-platform/i18n';
 import { logError } from '@edx/frontend-platform/logging';
+import { axe } from 'jest-axe';
 import AddAdminModal from '../AddAdminModal';
 import LmsApiService from '../../../data/services/LmsApiService';
+import { accessibilitySettings } from '../../../../tests/accessibility-settings';
 
 jest.mock('../../../data/services/LmsApiService');
 jest.mock('@edx/frontend-platform/logging');
@@ -46,6 +48,12 @@ describe('<AddAdminModal />', () => {
 
   beforeEach(() => {
     jest.clearAllMocks();
+  });
+
+  it('has no accessibility violations', async () => {
+    const { container } = render(<AddAdminModalWrapper />);
+    const results = await axe(container, accessibilitySettings);
+    expect(results).toHaveNoViolations();
   });
 
   afterEach(() => {

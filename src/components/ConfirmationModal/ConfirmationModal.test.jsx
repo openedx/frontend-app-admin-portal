@@ -2,10 +2,18 @@ import { screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import '@testing-library/jest-dom/extend-expect';
 
+import { axe } from 'jest-axe';
 import ConfirmationModal from './index';
 import { renderWithI18nProvider } from '../test/testUtils';
+import { accessibilitySettings } from '../../../tests/accessibility-settings';
 
 describe('<ConfirmationModal />', () => {
+  it('has no accessibility violations', async () => {
+    const { container } = renderWithI18nProvider(<ConfirmationModal />);
+    const results = await axe(container, accessibilitySettings);
+    expect(results).toHaveNoViolations();
+  });
+
   const basicProps = {
     isOpen: true,
     onConfirm: jest.fn(),

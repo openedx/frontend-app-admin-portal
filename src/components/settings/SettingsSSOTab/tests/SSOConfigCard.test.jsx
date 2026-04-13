@@ -3,11 +3,36 @@ import '@testing-library/jest-dom/extend-expect';
 
 import { Provider } from 'react-redux';
 
+import { axe } from 'jest-axe';
 import { SSOConfigContextProvider, SSO_INITIAL_STATE } from '../SSOConfigContext';
 import { getMockStore, initialStore } from '../testutils';
 import SSOConfigConfiguredCard from '../SSOConfigConfiguredCard';
+import { accessibilitySettings } from '../../../../../tests/accessibility-settings';
 
 describe('SSOConfigCard', () => {
+  // Skipped because this test fails a11y checks; to be addressed in ENT-11719
+  it.skip('has no accessibility violations', async () => {
+    const { container } = render(
+      <Provider store={getMockStore({ ...initialStore })}>
+        <SSOConfigContextProvider
+          initialState={{ ...SSO_INITIAL_STATE, providerConfig: { slug: 'slug-provider' } }}
+        >
+          <SSOConfigConfiguredCard
+            config={{
+              name: 'name-config', slug: 'slug', entity_id: 'entityId', id: 1,
+            }}
+            testLink="http://test"
+            setConnectError={jest.fn()}
+            setShowValidatedText={jest.fn()}
+            showValidatedText={false}
+          />
+        </SSOConfigContextProvider>
+      </Provider>,
+    );
+    const results = await axe(container, accessibilitySettings);
+    expect(results).toHaveNoViolations();
+  });
+
   const store = getMockStore({ ...initialStore });
   test('render landing text when config isnt validated', () => {
     const INITIAL_SSO_STATE = {

@@ -7,6 +7,7 @@ import thunk from 'redux-thunk';
 import { Provider } from 'react-redux';
 import { render, screen } from '@testing-library/react';
 import { SubmissionError } from 'redux-form';
+import { axe } from 'jest-axe';
 import EcommerceApiService from '../../data/services/EcommerceApiService';
 import {
   EMAIL_TEMPLATE_FIELD_MAX_LIMIT,
@@ -15,6 +16,7 @@ import {
   EMAIL_TEMPLATE_SOURCE_NEW_EMAIL,
 } from '../../data/constants/emailTemplate';
 import SaveTemplateButton from './index';
+import { accessibilitySettings } from '../../../tests/accessibility-settings';
 
 jest.mock('../../data/services/EcommerceApiService');
 const mockStore = configureMockStore([thunk]);
@@ -73,6 +75,12 @@ const SaveTemplateButtonWrapper = props => (
 describe('<SaveTemplateButton />', () => {
   beforeEach(() => {
     jest.clearAllMocks();
+  });
+
+  it('has no accessibility violations', async () => {
+    const { container } = render(<SaveTemplateButtonWrapper />);
+    const results = await axe(container, accessibilitySettings);
+    expect(results).toHaveNoViolations();
   });
   it('renders correctly in disabled state', () => {
     const tree = renderer

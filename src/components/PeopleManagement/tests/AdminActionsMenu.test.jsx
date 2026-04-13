@@ -4,7 +4,9 @@ import '@testing-library/jest-dom';
 import userEvent from '@testing-library/user-event';
 import { IntlProvider } from '@edx/frontend-platform/i18n';
 
+import { axe } from 'jest-axe';
 import AdminActionsMenu from '../AdminActionsMenu';
+import { accessibilitySettings } from '../../../../tests/accessibility-settings';
 
 const renderWithIntl = (component) => render(
   <IntlProvider locale="en">
@@ -23,6 +25,12 @@ describe('AdminActionsMenu', () => {
 
   beforeEach(() => {
     jest.clearAllMocks();
+  });
+
+  it('has no accessibility violations', async () => {
+    const { container } = renderWithIntl(<AdminActionsMenu {...defaultProps} />);
+    const results = await axe(container, accessibilitySettings);
+    expect(results).toHaveNoViolations();
   });
 
   it('renders the dropdown toggle button', () => {

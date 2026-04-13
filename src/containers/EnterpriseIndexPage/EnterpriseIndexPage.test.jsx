@@ -4,7 +4,9 @@ import thunk from 'redux-thunk';
 import { render } from '@testing-library/react';
 import { IntlProvider } from '@edx/frontend-platform/i18n';
 
+import { axe } from 'jest-axe';
 import EnterpriseIndexPage from './index';
+import { accessibilitySettings } from '../../../tests/accessibility-settings';
 
 const mockStore = configureMockStore([thunk]);
 
@@ -43,6 +45,11 @@ describe('<EnterpriseIndexPage />', () => {
         <EnterpriseIndexPage clearPortalConfiguration={clearPortalConfiguration} store={store} />
       </IntlProvider>
     ));
+  });
+
+  it('has no accessibility violations', async () => {
+    const results = await axe(document.body, accessibilitySettings);
+    expect(results).toHaveNoViolations();
   });
 
   it('clearPortalConfiguration dispatches clearPortalConfiguration action', () => {

@@ -3,7 +3,9 @@ import { render, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { IntlProvider } from '@edx/frontend-platform/i18n';
 
+import { axe } from 'jest-axe';
 import DeclineSubsidyRequestModal from '../DeclineSubsidyRequestModal';
+import { accessibilitySettings } from '../../../../tests/accessibility-settings';
 
 const TEST_ENTERPRISE_UUID = 'test-enterprise-uuid';
 const TEST_COURSE_RUN_ID = 'edx+101';
@@ -22,6 +24,22 @@ describe('<DeclineSubsidyRequestModal />', () => {
     onClose: jest.fn(),
     error: undefined,
   };
+
+  it('has no accessibility violations', async () => {
+    const mockHandleSuccess = jest.fn();
+    const mockDeclineRequestFn = jest.fn();
+    const { container } = render(
+      <IntlProvider locale="en">
+        <DeclineSubsidyRequestModal
+          {...basicProps}
+          onSuccess={mockHandleSuccess}
+          declineRequestFn={mockDeclineRequestFn}
+        />
+      </IntlProvider>,
+    );
+    const results = await axe(container, accessibilitySettings);
+    expect(results).toHaveNoViolations();
+  });
 
   it.each([{
     shouldNotifyLearner: true,

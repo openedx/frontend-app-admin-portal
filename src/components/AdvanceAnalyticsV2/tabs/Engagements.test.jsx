@@ -10,9 +10,11 @@ import MockAdapter from 'axios-mock-adapter';
 import axios from 'axios';
 import { BrowserRouter as Router } from 'react-router-dom';
 import { getAuthenticatedHttpClient } from '@edx/frontend-platform/auth';
+import { axe } from 'jest-axe';
 import Engagements from './Engagements';
 import { queryClient } from '../../test/testUtils';
 import EnterpriseDataApiService from '../../../data/services/EnterpriseDataApiService';
+import { accessibilitySettings } from '../../../../tests/accessibility-settings';
 
 const mockAnalyticsTableData = {
   next: null,
@@ -58,6 +60,12 @@ jest.mock('../charts/BarChart', () => {
 });
 
 describe('Engagements Component', () => {
+  it('has no accessibility violations', async () => {
+    const { container } = render(<Router><QueryClientProvider client={queryClient()}><IntlProvider locale="en"><Engagements enterpriseId="33ce6562-95e0-4ecf-a2a7-7d407eb96f69" startDate="2021-01-01" endDate="2021-12-31" granularity="Daily" calculation="Total" /></IntlProvider></QueryClientProvider></Router>);
+    const results = await axe(container, accessibilitySettings);
+    expect(results).toHaveNoViolations();
+  });
+
   afterEach(() => {
     axiosMock.reset();
   });

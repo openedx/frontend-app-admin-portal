@@ -7,11 +7,13 @@ import thunk from 'redux-thunk';
 import { renderWithRouter } from '@edx/frontend-enterprise-utils';
 import algoliasearch from 'algoliasearch/lite';
 import { IntlProvider } from '@edx/frontend-platform/i18n';
+import { axe } from 'jest-axe';
 import CurrentContentHighlights from '../CurrentContentHighlights';
 import { ContentHighlightsContext } from '../ContentHighlightsContext';
 import { BUTTON_TEXT } from '../data/constants';
 import { EnterpriseAppContext } from '../../EnterpriseApp/EnterpriseAppContextProvider';
 import { configuration } from '../../../config';
+import { accessibilitySettings } from '../../../../tests/accessibility-settings';
 
 const mockStore = configureMockStore([thunk]);
 
@@ -68,6 +70,12 @@ const CurrentContentHighlightsWrapper = ({
 };
 
 describe('<CurrentContentHighlights>', () => {
+  it('has no accessibility violations', async () => {
+    const { container } = renderWithRouter(<CurrentContentHighlightsWrapper />);
+    const results = await axe(container, accessibilitySettings);
+    expect(results).toHaveNoViolations();
+  });
+
   it('Displays the header title', () => {
     renderWithRouter(<CurrentContentHighlightsWrapper />);
     expect(screen.getByText(BUTTON_TEXT.createNewHighlight)).toBeInTheDocument();

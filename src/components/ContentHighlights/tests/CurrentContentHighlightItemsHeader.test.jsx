@@ -3,7 +3,9 @@ import '@testing-library/jest-dom/extend-expect';
 
 import { MemoryRouter, Route, Routes } from 'react-router-dom';
 
+import { axe } from 'jest-axe';
 import CurrentContentHighlightItemsHeader from '../CurrentContentHighlightItemsHeader';
+import { accessibilitySettings } from '../../../../tests/accessibility-settings';
 
 jest.mock('../DeleteHighlightSet', () => ({
   __esModule: true,
@@ -24,6 +26,14 @@ const CurrentContentHighlightItemsHeaderWrapper = (props) => (
 );
 
 describe('<CurrentContentHighlightItemsHeader>', () => {
+  it('has no accessibility violations', async () => {
+    const { container } = render(
+      <CurrentContentHighlightItemsHeaderWrapper isLoading={false} highlightTitle={highlightTitle} />,
+    );
+    const results = await axe(container, accessibilitySettings);
+    expect(results).toHaveNoViolations();
+  });
+
   it('Displays all content data titles', () => {
     render(
       <CurrentContentHighlightItemsHeaderWrapper isLoading={false} highlightTitle={highlightTitle} />,

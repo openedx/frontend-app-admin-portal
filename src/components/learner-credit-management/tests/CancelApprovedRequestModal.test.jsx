@@ -5,8 +5,10 @@ import {
 import '@testing-library/jest-dom';
 import { IntlProvider } from '@edx/frontend-platform/i18n';
 
+import { axe } from 'jest-axe';
 import CancelApprovedRequestModal from '../CancelApprovedRequestModal';
 import { BudgetDetailPageContext } from '../BudgetDetailPageWrapper';
+import { accessibilitySettings } from '../../../../tests/accessibility-settings';
 
 const mockDisplayToastForApprovalCancellation = jest.fn();
 
@@ -35,6 +37,12 @@ const renderWithProviders = (ui, { contextValue = defaultContextValue } = {}) =>
 describe('CancelApprovedRequestModal', () => {
   beforeEach(() => {
     jest.clearAllMocks();
+  });
+
+  it('has no accessibility violations', async () => {
+    const { container } = renderWithProviders(<CancelApprovedRequestModal />);
+    const results = await axe(container, accessibilitySettings);
+    expect(results).toHaveNoViolations();
   });
 
   it('renders singular cancel button text by default', () => {

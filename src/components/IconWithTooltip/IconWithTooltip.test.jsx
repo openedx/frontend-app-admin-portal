@@ -2,7 +2,9 @@ import React from 'react';
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { Info } from '@openedx/paragon/icons';
+import { axe } from 'jest-axe';
 import IconWithTooltip from './index';
+import { accessibilitySettings } from '../../../tests/accessibility-settings';
 
 const defaultAltText = 'infoooo';
 const defaultTooltipText = 'Tooool';
@@ -13,6 +15,12 @@ const DEFAULT_PROPS = {
 };
 
 describe('<IconWithTooltip />', () => {
+  it('has no accessibility violations', async () => {
+    const { container } = render(<IconWithTooltip {...DEFAULT_PROPS} />);
+    const results = await axe(container, accessibilitySettings);
+    expect(results).toHaveNoViolations();
+  });
+
   it('renders the icon passed to it with alt text', () => {
     global.innerWidth = 800;
     global.dispatchEvent(new Event('resize'));

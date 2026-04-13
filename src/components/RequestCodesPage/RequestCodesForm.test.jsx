@@ -8,8 +8,10 @@ import thunk from 'redux-thunk';
 import { MemoryRouter } from 'react-router-dom';
 import '@testing-library/jest-dom/extend-expect';
 import { reduxForm } from 'redux-form';
+import { axe } from 'jest-axe';
 import RequestCodesForm from './RequestCodesForm';
 import messages from './messages';
+import { accessibilitySettings } from '../../../tests/accessibility-settings';
 
 jest.mock('redux-form', () => ({
   ...jest.requireActual('redux-form'),
@@ -81,6 +83,12 @@ const renderComponent = (props = {}, storeOverride = defaultStoreState) => {
 describe('RequestCodesForm', () => {
   beforeEach(() => {
     jest.clearAllMocks();
+  });
+
+  it('has no accessibility violations', async () => {
+    const { container } = renderComponent(defaultProps);
+    const results = await axe(container, accessibilitySettings);
+    expect(results).toHaveNoViolations();
   });
 
   it('renders form fields and values', () => {

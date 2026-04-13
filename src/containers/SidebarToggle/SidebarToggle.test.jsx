@@ -6,11 +6,13 @@ import thunk from 'redux-thunk';
 import { Provider } from 'react-redux';
 import { fireEvent, render, screen } from '@testing-library/react';
 
+import { axe } from 'jest-axe';
 import SidebarToggle from './index';
 import {
   EXPAND_SIDEBAR,
   COLLAPSE_SIDEBAR,
 } from '../../data/constants/sidebar';
+import { accessibilitySettings } from '../../../tests/accessibility-settings';
 
 const mockStore = configureMockStore([thunk]);
 const initialState = {
@@ -39,6 +41,12 @@ SidebarToggleWrapper.propTypes = {
 };
 
 describe('<Sidebar />', () => {
+  it('has no accessibility violations', async () => {
+    const { container } = render(<SidebarToggleWrapper />);
+    const results = await axe(container, accessibilitySettings);
+    expect(results).toHaveNoViolations();
+  });
+
   it('renders correctly with menu icon', async () => {
     render(<SidebarToggleWrapper />);
     const menuIcon = await screen.findByTestId('menu-icon');

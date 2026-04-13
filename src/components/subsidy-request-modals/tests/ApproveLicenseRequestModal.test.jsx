@@ -5,9 +5,11 @@ import {
 } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { IntlProvider } from '@edx/frontend-platform/i18n';
+import { axe } from 'jest-axe';
 import { ApproveLicenseRequestModal } from '../ApproveLicenseRequestModal';
 import EnterpriseAccessApiService from '../../../data/services/EnterpriseAccessApiService';
 import * as hooks from '../data/hooks';
+import { accessibilitySettings } from '../../../../tests/accessibility-settings';
 
 const TEST_ENTERPRISE_UUID = 'test-enterprise-uuid';
 const TEST_REQUEST_UUID = 'test-license-request-uuid';
@@ -61,6 +63,12 @@ describe('<ApproveLicenseRequestModal />', () => {
       isLoading: false,
       error: undefined,
     });
+  });
+
+  it('has no accessibility violations', async () => {
+    const { container } = render(<ApproveLicenseRequestModalWrapper />);
+    const results = await axe(container, accessibilitySettings);
+    expect(results).toHaveNoViolations();
   });
 
   it('should render skeleton if loading', () => {

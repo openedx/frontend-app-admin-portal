@@ -5,9 +5,11 @@ import {
 } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 
+import { axe } from 'jest-axe';
 import LmsApiService from '../../../../data/services/LmsApiService';
 import LinkDeactivationAlertModal from '../LinkDeactivationAlertModal';
 import { renderWithI18nProvider } from '../../../test/testUtils';
+import { accessibilitySettings } from '../../../../../tests/accessibility-settings';
 
 jest.mock('../../../../data/services/LmsApiService', () => ({
   __esModule: true,
@@ -19,6 +21,14 @@ jest.mock('../../../../data/services/LmsApiService', () => ({
 const TEST_INVITE_KEY = 'test-invite-key';
 
 describe('<LinkDeactivationAlertModal/>', () => {
+  it('has no accessibility violations', async () => {
+    const { container } = renderWithI18nProvider(
+      <LinkDeactivationAlertModal isOpen inviteKeyUUID={TEST_INVITE_KEY} onDeactivateLink={jest.fn()} />,
+    );
+    const results = await axe(container, accessibilitySettings);
+    expect(results).toHaveNoViolations();
+  });
+
   afterEach(() => {
     cleanup();
     jest.clearAllMocks();

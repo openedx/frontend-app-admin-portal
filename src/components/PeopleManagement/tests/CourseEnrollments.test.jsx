@@ -4,7 +4,9 @@ import '@testing-library/jest-dom';
 import { Provider } from 'react-redux';
 import configureStore from 'redux-mock-store';
 import { IntlProvider } from '@edx/frontend-platform/i18n';
+import { axe } from 'jest-axe';
 import CourseEnrollments from '../LearnerDetailPage/CourseEnrollments';
+import { accessibilitySettings } from '../../../../tests/accessibility-settings';
 
 jest.mock('../LearnerDetailPage/EnrollmentCard', () => (
   jest.fn(({ enrollment }) => (
@@ -76,6 +78,16 @@ describe('CourseEnrollments', () => {
         enterpriseSlug: 'test-enterprise',
       },
     });
+  });
+
+  it('has no accessibility violations', async () => {
+    const { container } = render(
+      <TestWrapper store={store}>
+        <CourseEnrollments enrollments={{}} isLoading={false} />
+      </TestWrapper>,
+    );
+    const results = await axe(container, accessibilitySettings);
+    expect(results).toHaveNoViolations();
   });
 
   const renderComponent = (props) => render(

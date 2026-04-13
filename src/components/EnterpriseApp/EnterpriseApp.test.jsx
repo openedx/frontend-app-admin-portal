@@ -6,12 +6,14 @@ import '@testing-library/jest-dom/extend-expect';
 import { getAuthenticatedUser } from '@edx/frontend-platform/auth';
 
 import { IntlProvider } from '@edx/frontend-platform/i18n';
+import { axe } from 'jest-axe';
 import EnterpriseApp from './index';
 import { features } from '../../config';
 import { EnterpriseSubsidiesContext } from '../EnterpriseSubsidiesContext';
 import { SCHOLAR_THEME } from '../settings/data/constants';
 import { EnterpriseAppContext } from './EnterpriseAppContextProvider';
 import { renderWithRouter } from '../test/testUtils';
+import { accessibilitySettings } from '../../../tests/accessibility-settings';
 
 features.SETTINGS_PAGE = true;
 
@@ -106,6 +108,12 @@ describe('<EnterpriseApp />', () => {
   it('should show settings page if there is at least one visible tab', () => {
     renderWithRouter(<EnterpriseAppWrapper {...basicProps} />);
     expect(screen.getByText('/admin/settings'));
+  });
+
+  it('has no accessibility violations', async () => {
+    const { container } = renderWithRouter(<EnterpriseAppWrapper {...basicProps} />);
+    const results = await axe(container, accessibilitySettings);
+    expect(results).toHaveNoViolations();
   });
 
   it('should show error page if enterprise name is invalid', () => {

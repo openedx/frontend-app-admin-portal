@@ -2,7 +2,10 @@ import React from 'react';
 import renderer from 'react-test-renderer';
 
 import { IntlProvider } from '@edx/frontend-platform/i18n';
+import { render } from '@testing-library/react';
+import { axe } from 'jest-axe';
 import StatusTableCell from '../StatusTableCell';
+import { accessibilitySettings } from '../../../../../tests/accessibility-settings';
 
 const StatusTableCellWrapper = (props) => (
   <IntlProvider locale="en">
@@ -11,6 +14,12 @@ const StatusTableCellWrapper = (props) => (
 );
 
 describe('StatusTableCell', () => {
+  it('has no accessibility violations', async () => {
+    const { container } = render(<StatusTableCellWrapper row={{ original: { isValid: true } }} />);
+    const results = await axe(container, accessibilitySettings);
+    expect(results).toHaveNoViolations();
+  });
+
   it('renders valid status correctly', () => {
     const props = {
       row: {

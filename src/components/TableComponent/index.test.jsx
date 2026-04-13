@@ -1,7 +1,9 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
 import { MemoryRouter } from 'react-router-dom';
+import { axe } from 'jest-axe';
 import TableComponent from './index';
+import { accessibilitySettings } from '../../../tests/accessibility-settings';
 
 jest.mock('@edx/frontend-enterprise-utils', () => ({
   sendEnterpriseTrackEvent: jest.fn(),
@@ -47,6 +49,17 @@ describe('TableComponent', () => {
     render(<TableComponentWrapper {...defaultProps} />);
 
     expect(screen.getByText('Loading...'));
+  });
+
+  it('has no accessibility violations', async () => {
+    const defaultProps = {
+      ...mockDefaultProps,
+      loading: true,
+      data: undefined,
+    };
+    const { container } = render(<TableComponentWrapper {...defaultProps} />);
+    const results = await axe(container, accessibilitySettings);
+    expect(results).toHaveNoViolations();
   });
 
   it('renders the error message when there is an error', () => {

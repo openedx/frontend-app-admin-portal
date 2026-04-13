@@ -1,8 +1,10 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
 import '@testing-library/jest-dom/extend-expect';
+import { axe } from 'jest-axe';
 import ActionButton from './ActionButton';
 import { ACTIONS, COUPON_FILTERS } from './constants';
+import { accessibilitySettings } from '../../../tests/accessibility-settings';
 
 const fakeCouponData = {
   id: 12,
@@ -29,6 +31,19 @@ const props = {
 };
 
 describe('CouponDetails ActionButton', () => {
+  it('has no accessibility violations', async () => {
+    const modifiedProps = {
+      ...props,
+      couponData: {
+        ...fakeCouponData,
+        available: false,
+      },
+    };
+    const { container } = render(<ActionButton {...modifiedProps} />);
+    const results = await axe(container, accessibilitySettings);
+    expect(results).toHaveNoViolations();
+  });
+
   it('returns null if the coupon is unavailable', () => {
     const modifiedProps = {
       ...props,

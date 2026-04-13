@@ -4,9 +4,11 @@ import {
 } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 
+import { axe } from 'jest-axe';
 import SettingsAccessGenerateLinkButton from '../SettingsAccessGenerateLinkButton';
 import LmsApiService from '../../../../data/services/LmsApiService';
 import { renderWithI18nProvider } from '../../../test/testUtils';
+import { accessibilitySettings } from '../../../../../tests/accessibility-settings';
 
 jest.mock('../../../../data/services/LmsApiService', () => ({
   __esModule: true,
@@ -18,6 +20,12 @@ jest.mock('../../../../data/services/LmsApiService', () => ({
 const ENTERPRISE_ID = 'test-enterprise';
 
 describe('<SettingsAccessGenerateLinkButton />', () => {
+  it('has no accessibility violations', async () => {
+    const { container } = renderWithI18nProvider(<SettingsAccessGenerateLinkButton />);
+    const results = await axe(container, accessibilitySettings);
+    expect(results).toHaveNoViolations();
+  });
+
   const basicProps = {
     enterpriseUUID: ENTERPRISE_ID,
     disabled: false,

@@ -5,10 +5,18 @@ import {
 } from '@testing-library/react';
 import dayjs from 'dayjs';
 
+import { axe } from 'jest-axe';
 import OfferDates from '../OfferDates';
 import { DATE_FORMAT } from '../data/constants';
+import { accessibilitySettings } from '../../../../tests/accessibility-settings';
 
 describe('<OfferDates />', () => {
+  it('has no accessibility violations', async () => {
+    const { container } = render(<OfferDates />);
+    const results = await axe(container, accessibilitySettings);
+    expect(results).toHaveNoViolations();
+  });
+
   it('with no dates provided, nothing is rendered', () => {
     render(<OfferDates />);
     expect(screen.queryByTestId('formatted-dates')).toBeFalsy();

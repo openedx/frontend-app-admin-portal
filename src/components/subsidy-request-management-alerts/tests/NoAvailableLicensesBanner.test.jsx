@@ -5,7 +5,9 @@ import {
 } from '@testing-library/react';
 import { IntlProvider } from '@edx/frontend-platform/i18n';
 import userEvent from '@testing-library/user-event';
+import { axe } from 'jest-axe';
 import NoAvailableLicensesBanner from '../NoAvailableLicensesBanner';
+import { accessibilitySettings } from '../../../../tests/accessibility-settings';
 
 const NoAvailableLicensesBannerWrapper = (props) => (
   <IntlProvider locale="en">
@@ -14,6 +16,12 @@ const NoAvailableLicensesBannerWrapper = (props) => (
 );
 
 describe('<NoAvailableLicensesBanner />', () => {
+  it('has no accessibility violations', async () => {
+    const { container } = render(<NoAvailableLicensesBannerWrapper subscriptions={[]} />);
+    const results = await axe(container, accessibilitySettings);
+    expect(results).toHaveNoViolations();
+  });
+
   it('should render null if there are no subscriptions', () => {
     const { container } = render(
       <NoAvailableLicensesBannerWrapper subscriptions={[]} />,

@@ -7,7 +7,9 @@ import thunk from 'redux-thunk';
 import { render, screen } from '@testing-library/react';
 import { IntlProvider } from '@edx/frontend-platform/i18n';
 
+import { axe } from 'jest-axe';
 import InviteLearnersModal from './index';
+import { accessibilitySettings } from '../../../tests/accessibility-settings';
 
 const mockStore = configureMockStore([thunk]);
 
@@ -48,6 +50,12 @@ InviteLearnersModalWrapper.propTypes = {
 };
 
 describe('UserSubscriptionModalWrapper', () => {
+  it('has no accessibility violations', async () => {
+    const { container } = render(<InviteLearnersModalWrapper />);
+    const results = await axe(container, accessibilitySettings);
+    expect(results).toHaveNoViolations();
+  });
+
   let spy;
 
   afterEach(() => {

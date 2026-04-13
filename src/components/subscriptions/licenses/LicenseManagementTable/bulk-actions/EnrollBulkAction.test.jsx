@@ -10,6 +10,7 @@ import '@testing-library/jest-dom/extend-expect';
 
 import { IntlProvider } from '@edx/frontend-platform/i18n';
 import { sendEnterpriseTrackEvent } from '@edx/frontend-enterprise-utils';
+import { axe } from 'jest-axe';
 import { SUBSCRIPTION_TABLE_EVENTS } from '../../../../../eventTracking';
 
 import {
@@ -25,6 +26,7 @@ import {
 } from '../../../tests/TestUtilities';
 
 import EnrollBulkAction from './EnrollBulkAction';
+import { accessibilitySettings } from '../../../../../../tests/accessibility-settings';
 
 jest.mock('@edx/frontend-enterprise-utils', () => {
   const originalModule = jest.requireActual('@edx/frontend-enterprise-utils');
@@ -75,6 +77,12 @@ const testActivatedUser = { original: { status: ACTIVATED, email } };
 const testRevokedUser = { original: { status: REVOKED, email } };
 
 describe('EnrollBulkAction', () => {
+  it('has no accessibility violations', async () => {
+    const { container } = render(<EnrollBulkActionWithProvider />);
+    const results = await axe(container, accessibilitySettings);
+    expect(results).toHaveNoViolations();
+  });
+
   afterEach(() => {
     jest.clearAllMocks();
   });

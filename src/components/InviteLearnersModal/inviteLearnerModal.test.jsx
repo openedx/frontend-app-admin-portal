@@ -3,7 +3,9 @@ import { render, screen } from '@testing-library/react';
 import '@testing-library/jest-dom';
 import { IntlProvider } from '@edx/frontend-platform/i18n';
 
+import { axe } from 'jest-axe';
 import InviteLearnersModal from './index';
+import { accessibilitySettings } from '../../../tests/accessibility-settings';
 
 jest.mock('redux-form', () => ({
   reduxForm: () => (Component) => {
@@ -78,6 +80,12 @@ const InviteLearnersModalWrapper = (props = {}) => (
 describe('InviteLearnersModal', () => {
   beforeEach(() => {
     jest.clearAllMocks();
+  });
+
+  it('has no accessibility violations', async () => {
+    const { container } = render(<InviteLearnersModalWrapper />);
+    const results = await axe(container, accessibilitySettings);
+    expect(results).toHaveNoViolations();
   });
 
   it('renders without crashing and displays key elements', () => {

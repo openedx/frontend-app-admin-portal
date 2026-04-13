@@ -5,7 +5,9 @@ import {
 import { userEvent } from '@testing-library/user-event';
 import { IntlProvider } from '@edx/frontend-platform/i18n';
 import '@testing-library/jest-dom';
+import { axe } from 'jest-axe';
 import ReportingConfigForm from './ReportingConfigForm';
+import { accessibilitySettings } from '../../../tests/accessibility-settings';
 
 const defaultConfig = {
   enterpriseCustomerId: 'test-customer-uuid',
@@ -129,6 +131,25 @@ const updateConfig = () => { };
 describe('<ReportingConfigForm />', () => {
   beforeEach(() => {
     jest.clearAllMocks();
+  });
+
+  // Skipped because this test fails a11y checks; to be addressed in ENT-11719
+  it.skip('has no accessibility violations', async () => {
+    const { container } = render(
+      <IntlProvider locale="en">
+        <ReportingConfigForm
+          config={defaultConfig}
+          createConfig={createConfig}
+          updateConfig={updateConfig}
+          availableCatalogs={availableCatalogs}
+          reportingConfigTypes={reportingConfigTypes}
+          deleteConfig={jest.fn()}
+          enterpriseCustomerUuid={enterpriseCustomerUuid}
+        />
+      </IntlProvider>,
+    );
+    const results = await axe(container, accessibilitySettings);
+    expect(results).toHaveNoViolations();
   });
   it('properly handles deletion of configs', async () => {
     const user = userEvent.setup();

@@ -2,8 +2,10 @@ import React from 'react';
 import { screen } from '@testing-library/react';
 import '@testing-library/jest-dom/extend-expect';
 
+import { axe } from 'jest-axe';
 import AssignedUtilizationDetails from '../AssignedUtilizationDetails';
 import { renderWithI18nProvider } from '../../../test/testUtils';
+import { accessibilitySettings } from '../../../../../tests/accessibility-settings';
 
 jest.mock('../../data', () => ({
   formatPrice: jest.fn((price) => `$${price.toLocaleString()}`),
@@ -14,6 +16,17 @@ describe('<AssignedUtilizationDetails />', () => {
 
   beforeEach(() => {
     jest.clearAllMocks();
+  });
+
+  it('has no accessibility violations', async () => {
+    const { container } = renderWithI18nProvider(
+      <AssignedUtilizationDetails
+        budgetAggregates={{ amountAllocatedUsd: 5000, amountRedeemedUsd: 2000 }}
+        renderActivityLink={jest.fn()}
+      />,
+    );
+    const results = await axe(container, accessibilitySettings);
+    expect(results).toHaveNoViolations();
   });
 
   const defaultProps = {

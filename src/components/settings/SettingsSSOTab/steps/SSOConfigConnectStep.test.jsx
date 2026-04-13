@@ -2,10 +2,12 @@ import { render, screen } from '@testing-library/react';
 import '@testing-library/jest-dom/extend-expect';
 
 import { Provider } from 'react-redux';
+import { axe } from 'jest-axe';
 import SSOConfigConnectStep from './SSOConfigConnectStep';
 import { SSOConfigContextProvider, SSO_INITIAL_STATE } from '../SSOConfigContext';
 import { getMockStore, initialStore } from '../testutils';
 import LmsApiService from '../../../../data/services/LmsApiService';
+import { accessibilitySettings } from '../../../../../tests/accessibility-settings';
 
 const store = getMockStore({ ...initialStore });
 const TEST_PROVIDER_ID = 'test-provider-id';
@@ -22,6 +24,18 @@ const mockGetProviderConfig = jest.spyOn(LmsApiService, 'getProviderConfig');
 mockGetProviderConfig.mockResolvedValue({ data: { results: [{ id: TEST_PROVIDER_ID }] } });
 
 describe('SSO Config Connect step', () => {
+  it('has no accessibility violations', async () => {
+    const { container } = render(
+      <Provider store={store}>
+        <SSOConfigContextProvider initialState={INITIAL_SSO_STATE}>
+          <SSOConfigConnectStep setConnectError={jest.fn()} />
+        </SSOConfigContextProvider>
+      </Provider>,
+    );
+    const results = await axe(container, accessibilitySettings);
+    expect(results).toHaveNoViolations();
+  });
+
   test('renders page with metadata link', () => {
     render(
       <Provider store={store}>

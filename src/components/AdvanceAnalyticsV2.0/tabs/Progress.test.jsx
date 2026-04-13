@@ -11,12 +11,14 @@ import axios from 'axios';
 import { BrowserRouter as Router } from 'react-router-dom';
 import { getAuthenticatedHttpClient } from '@edx/frontend-platform/auth';
 import userEvent from '@testing-library/user-event';
+import { axe } from 'jest-axe';
 import Progress from './Progress';
 import { queryClient } from '../../test/testUtils';
 import EnterpriseDataApiService from '../../../data/services/EnterpriseDataApiService';
 import * as hooks from '../data/hooks';
 import EVENT_NAMES from '../../../eventTracking';
 import { DATE_RANGE } from '../data/constants';
+import { accessibilitySettings } from '../../../../tests/accessibility-settings';
 
 const mockProgressChartsData = {
   topCoursesByCompletions: [
@@ -62,6 +64,16 @@ jest.mock('../data/hooks', () => ({
 }));
 
 describe('Rendering tests', () => {
+  it('has no accessibility violations', async () => {
+    hooks.useEnterpriseCompletionsData.mockReturnValue({ isFetching: false, isError: false, data: null });
+    hooks.useEnterpriseAnalyticsData.mockReturnValue({ isFetching: false, isError: false, data: null });
+    hooks.useEnterpriseCourses.mockReturnValue({ isFetching: false, isError: false, data: [] });
+    hooks.useEnterpriseBudgets.mockReturnValue({ isFetching: false });
+    const { container } = render(<Router><QueryClientProvider client={queryClient()}><IntlProvider locale="en"><Progress enterpriseId="33ce6562-95e0-4ecf-a2a7-7d407eb96f69" /></IntlProvider></QueryClientProvider></Router>);
+    const results = await axe(container, accessibilitySettings);
+    expect(results).toHaveNoViolations();
+  });
+
   test('renders all sections', async () => {
     hooks.useEnterpriseAnalyticsData.mockReturnValue({
       isFetching: false,

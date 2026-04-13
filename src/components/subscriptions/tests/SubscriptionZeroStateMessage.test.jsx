@@ -6,6 +6,7 @@ import '@testing-library/jest-dom/extend-expect';
 import userEvent from '@testing-library/user-event';
 import React from 'react';
 import { IntlProvider } from '@edx/frontend-platform/i18n';
+import { axe } from 'jest-axe';
 import SubscriptionZeroStateMessage from '../SubscriptionZeroStateMessage';
 import {
   SubscriptionManagementContext,
@@ -17,10 +18,27 @@ import {
 import {
   INVITE_LEARNERS_BUTTON_TEXT,
 } from '../buttons/InviteLearnersButton';
+import { accessibilitySettings } from '../../../../tests/accessibility-settings';
 
 jest.mock('../buttons/InviteLearnersButton');
 
 describe('SubscriptionZeroStateMessage', () => {
+  it('has no accessibility violations', async () => {
+    const { container } = render(
+      <IntlProvider locale="en">
+        <SubscriptionManagementContext detailState={{
+          ...SUBSCRIPTION_PLAN_ZERO_STATE,
+          daysUntilExpiration: 1,
+        }}
+        >
+          <SubscriptionZeroStateMessage />
+        </SubscriptionManagementContext>
+      </IntlProvider>,
+    );
+    const results = await axe(container, accessibilitySettings);
+    expect(results).toHaveNoViolations();
+  });
+
   it('should enable the invite learners button if the subscription is active', () => {
     render(
       <IntlProvider locale="en">

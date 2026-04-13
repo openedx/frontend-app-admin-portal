@@ -2,8 +2,10 @@
 import '@testing-library/jest-dom';
 import React from 'react';
 import { render, screen } from '@testing-library/react';
+import { axe } from 'jest-axe';
 import CompletionsOverTimeChart from './CompletionsOverTimeChart';
 import * as utils from '../data/utils';
+import { accessibilitySettings } from '../../../../tests/accessibility-settings';
 
 jest.mock('@edx/frontend-platform/i18n', () => ({
   useIntl: () => ({
@@ -47,6 +49,23 @@ describe('CompletionsOverTimeChart', () => {
 
   beforeEach(() => {
     jest.spyOn(utils, 'sumEntitiesByMetric').mockReturnValue(aggregatedMock);
+  });
+
+  it('has no accessibility violations', async () => {
+    const { container } = render(
+      <CompletionsOverTimeChart
+        isFetching={false}
+        isError={false}
+        data={[]}
+        startDate="2024-06-01"
+        endDate="2024-06-30"
+        granularity="daily"
+        calculation="sum"
+        onClick={jest.fn()}
+      />,
+    );
+    const results = await axe(container, accessibilitySettings);
+    expect(results).toHaveNoViolations();
   });
 
   afterEach(() => {

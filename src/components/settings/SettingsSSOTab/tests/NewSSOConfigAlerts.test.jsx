@@ -4,9 +4,11 @@ import userEvent from '@testing-library/user-event';
 import { IntlProvider } from '@edx/frontend-platform/i18n';
 import { Provider } from 'react-redux';
 import { render, screen } from '@testing-library/react';
+import { axe } from 'jest-axe';
 import { SSOConfigContext, SSO_INITIAL_STATE } from '../SSOConfigContext';
 import { getMockStore } from '../testutils';
 import NewSSOConfigAlerts, { SSO_SETUP_COMPLETION_COOKIE_NAME } from '../NewSSOConfigAlerts';
+import { accessibilitySettings } from '../../../../../tests/accessibility-settings';
 
 const enterpriseId = 'an-id-1';
 const initialStore = {
@@ -46,6 +48,28 @@ const contextValue = {
 describe('New SSO Config Alerts Tests', () => {
   afterEach(() => {
     jest.resetAllMocks();
+  });
+
+  it('has no accessibility violations', async () => {
+    const { container } = render(
+      <IntlProvider locale="en">
+        <SSOConfigContext.Provider value={contextValue}>
+          <Provider store={store}>
+            <NewSSOConfigAlerts
+              liveConfigs={[]}
+              inProgressConfigs={[]}
+              untestedConfigs={[]}
+              notConfigured={[]}
+              timedOutConfigs={[]}
+              erroredConfigs={[]}
+              closeAlerts={jest.fn()}
+            />
+          </Provider>
+        </SSOConfigContext.Provider>
+      </IntlProvider>,
+    );
+    const results = await axe(container, accessibilitySettings);
+    expect(results).toHaveNoViolations();
   });
   test('displays inProgress alert properly', async () => {
     render(

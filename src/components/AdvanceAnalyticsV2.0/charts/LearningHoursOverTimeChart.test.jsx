@@ -2,8 +2,10 @@
 import '@testing-library/jest-dom';
 import React from 'react';
 import { render, screen } from '@testing-library/react';
+import { axe } from 'jest-axe';
 import LearningHoursOverTimeChart from './LearningHoursOverTimeChart';
 import * as utils from '../data/utils';
+import { accessibilitySettings } from '../../../../tests/accessibility-settings';
 
 jest.mock('@edx/frontend-platform/i18n', () => ({
   useIntl: () => ({
@@ -49,6 +51,20 @@ describe('LearningHoursOverTimeChart', () => {
 
   afterEach(() => {
     jest.resetAllMocks();
+  });
+
+  it('has no accessibility violations', async () => {
+    const { container } = render(
+      <LearningHoursOverTimeChart
+        isFetching={false}
+        isError={false}
+        data={[]}
+        startDate="2024-06-01"
+        endDate="2024-06-30"
+      />,
+    );
+    const results = await axe(container, accessibilitySettings);
+    expect(results).toHaveNoViolations();
   });
 
   it('renders static text', () => {

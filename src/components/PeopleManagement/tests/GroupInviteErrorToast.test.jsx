@@ -4,8 +4,10 @@ import { render, screen } from '@testing-library/react';
 
 import '@testing-library/jest-dom/extend-expect';
 
+import { axe } from 'jest-axe';
 import GroupInviteErrorToast from '../GroupInviteErrorToast';
 import { ERROR_LEARNER_NOT_IN_ORG } from '../constants';
+import { accessibilitySettings } from '../../../../tests/accessibility-settings';
 
 const DEFAULT_PROPS = {
   isOpen: true,
@@ -19,7 +21,13 @@ const GroupInviteErrorToastWrapper = props => (
   </IntlProvider>
 );
 
-describe('DownloadCSVButton', () => {
+describe('GroupInviteErrorToast', () => {
+  it('has no accessibility violations', async () => {
+    const { container } = render(<GroupInviteErrorToastWrapper {...DEFAULT_PROPS} />);
+    const results = await axe(container, accessibilitySettings);
+    expect(results).toHaveNoViolations();
+  });
+
   it('renders unlinked learner errors.', async () => {
     render(<GroupInviteErrorToastWrapper {...DEFAULT_PROPS} />);
     const expectedMsg = 'Looks like some learners aren\'t linked to your organization. '

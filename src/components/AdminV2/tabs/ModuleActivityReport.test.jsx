@@ -3,8 +3,10 @@ import { IntlProvider } from '@edx/frontend-platform/i18n';
 import { render, screen } from '@testing-library/react';
 import '@testing-library/jest-dom/extend-expect';
 
+import { axe } from 'jest-axe';
 import ModuleActivityReport from './ModuleActivityReport';
 import { TEST_ENTERPRISE_CUSTOMER_SLUG } from '../../subscriptions/tests/TestUtilities';
+import { accessibilitySettings } from '../../../../tests/accessibility-settings';
 
 jest.mock('react-router-dom', () => ({
   ...jest.requireActual('react-router-dom'),
@@ -62,6 +64,13 @@ const ModuleActivityReportWrapper = (props) => (
 describe('ModuleActivityReport', () => {
   beforeEach(() => {
     jest.clearAllMocks();
+  });
+
+  it('has no accessibility violations', async () => {
+    mockUseModuleActivityReport.mockReturnValue(mockHookData([], 0, 0));
+    const { container } = render(<ModuleActivityReportWrapper {...DEFAULT_PROPS} />);
+    const results = await axe(container, accessibilitySettings);
+    expect(results).toHaveNoViolations();
   });
 
   it('renders the module activity report correctly when table is empty', () => {

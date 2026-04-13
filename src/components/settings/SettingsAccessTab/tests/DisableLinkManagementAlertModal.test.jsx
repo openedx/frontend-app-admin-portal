@@ -7,8 +7,10 @@ import {
 import userEvent from '@testing-library/user-event';
 import { IntlProvider } from '@edx/frontend-platform/i18n';
 
+import { axe } from 'jest-axe';
 import DisableLinkManagementAlertModal from '../DisableLinkManagementAlertModal';
 import { renderWithI18nProvider } from '../../../test/testUtils';
+import { accessibilitySettings } from '../../../../../tests/accessibility-settings';
 
 const DisableLinkManagementAlertModalWrapper = (props) => (
   <IntlProvider locale="en">
@@ -17,6 +19,12 @@ const DisableLinkManagementAlertModalWrapper = (props) => (
 );
 
 describe('<DisableLinkManagementAlertModal />', () => {
+  it('has no accessibility violations', async () => {
+    const { container } = renderWithI18nProvider(<DisableLinkManagementAlertModalWrapper />);
+    const results = await axe(container, accessibilitySettings);
+    expect(results).toHaveNoViolations();
+  });
+
   afterEach(() => {
     cleanup();
     jest.clearAllMocks();

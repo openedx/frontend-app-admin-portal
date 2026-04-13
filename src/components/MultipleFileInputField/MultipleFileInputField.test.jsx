@@ -2,14 +2,31 @@ import React from 'react';
 import {
   screen, render, fireEvent, waitFor,
 } from '@testing-library/react';
+import { axe } from 'jest-axe';
 import { formatBytes, getSizeInBytes } from './utils';
 import '@testing-library/jest-dom/extend-expect';
 import MultipleFileInputField from './MultipleFileInputField';
 import { MAX_FILES_SIZE, FILE_SIZE_EXCEEDS_ERROR } from './constants';
+import { accessibilitySettings } from '../../../tests/accessibility-settings';
 
 const formatBytesTestData = [[100, '100 Bytes'], [1024, '1 KB'], [1048576, '1 MB'], [1200000, '1.14 MB'], [4550000, '4.34 MB']];
 const getSizeInBytesTestData = [['1KB', 1024], ['1 MB', 1048576], ['100 Bytes', 100], ['276 KB', 282624], ['1.2 MB', 1258291.2]];
 describe('MultipleFileInputField:formatBytes', () => {
+  it('has no accessibility violations', async () => {
+    const { container } = render(
+      <MultipleFileInputField
+        id="foo"
+        input={{ value: [], onChange: jest.fn() }}
+        label="Text me"
+        description="lorem ipsum"
+        meta={{ touched: false, error: undefined }}
+        type="text"
+      />,
+    );
+    const results = await axe(container, accessibilitySettings);
+    expect(results).toHaveNoViolations();
+  });
+
   formatBytesTestData.forEach((value) => {
     it(`tests formatBytes with: ${value[0]}`, () => {
       expect(formatBytes(value[0])).toEqual(value[1]);

@@ -9,11 +9,13 @@ import { camelCaseObject } from '@edx/frontend-platform';
 import { IntlProvider } from '@edx/frontend-platform/i18n';
 import { renderWithRouter } from '@edx/frontend-enterprise-utils';
 
+import { axe } from 'jest-axe';
 import { TEST_COURSE_HIGHLIGHTS_DATA } from '../data/constants';
 import { EnterpriseAppContext } from '../../EnterpriseApp/EnterpriseAppContextProvider';
 import EnterpriseCatalogApiService from '../../../data/services/EnterpriseCatalogApiService';
 import ContentHighlightsCardItemsContainer from '../ContentHighlightsCardItemsContainer';
 import { features } from '../../../config';
+import { accessibilitySettings } from '../../../../tests/accessibility-settings';
 
 const mockStore = configureMockStore([thunk]);
 
@@ -69,6 +71,12 @@ describe('<ContentHighlightsCardItemsContainer />', () => {
   beforeEach(() => {
     features.FEATURE_HIGHLIGHTS_ARCHIVE_MESSAGING = true;
     jest.resetAllMocks();
+  });
+
+  it('has no accessibility violations', async () => {
+    const { container } = renderWithRouter(<ContentHighlightsCardItemsContainerWrapper />);
+    const results = await axe(container, accessibilitySettings);
+    expect(results).toHaveNoViolations();
   });
 
   it('has delete archived courses button', () => {

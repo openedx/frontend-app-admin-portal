@@ -2,8 +2,10 @@ import React from 'react';
 import { render, screen } from '@testing-library/react';
 import '@testing-library/jest-dom/extend-expect';
 import { IntlProvider } from '@edx/frontend-platform/i18n';
+import { axe } from 'jest-axe';
 import RequestFailureModal from '../RequestFailureModal';
 import { REQUEST_RECENT_ACTIONS } from '../../data';
+import { accessibilitySettings } from '../../../../../tests/accessibility-settings';
 
 jest.mock('@edx/frontend-platform/config', () => ({
   ...jest.requireActual('@edx/frontend-platform/config'),
@@ -19,6 +21,12 @@ describe('RequestFailureModal', () => {
     onClose: jest.fn(),
     target: { current: document.createElement('div') },
   };
+
+  it('has no accessibility violations', async () => {
+    const { container } = renderWithIntl(<RequestFailureModal {...baseProps} />);
+    const results = await axe(container, accessibilitySettings);
+    expect(results).toHaveNoViolations();
+  });
 
   it('returns null when isOpen prop is false', () => {
     const { container } = renderWithIntl(<RequestFailureModal {...baseProps} isOpen={false} />);

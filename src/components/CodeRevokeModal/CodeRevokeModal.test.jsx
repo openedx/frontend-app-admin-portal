@@ -9,6 +9,7 @@ import '@testing-library/jest-dom/extend-expect';
 import configureMockStore from 'redux-mock-store';
 import thunk from 'redux-thunk';
 import { MemoryRouter } from 'react-router-dom';
+import { axe } from 'jest-axe';
 import remindEmailTemplate from './emailTemplate';
 import CodeRevokeModal from '.';
 
@@ -17,6 +18,7 @@ import { displayCode, displaySelectedCodes } from '../CodeModal/codeModalHelpers
 import {
   EMAIL_TEMPLATE_SOURCE_NEW_EMAIL,
 } from '../../data/constants/emailTemplate';
+import { accessibilitySettings } from '../../../tests/accessibility-settings';
 
 const sampleCodeData = {
   code: 'test-code-1',
@@ -132,6 +134,12 @@ const CodeRevokeModalWrapper = (props) => (
 /* eslint-enable react/prop-types */
 
 describe('CodeRevokeModal component', () => {
+  it('has no accessibility violations', async () => {
+    const { container } = render(<CodeRevokeModalWrapper />);
+    const results = await axe(container, accessibilitySettings);
+    expect(results).toHaveNoViolations();
+  });
+
   it('displays a modal', () => {
     render(<CodeRevokeModalWrapper />);
     expect(screen.getByText(initialProps.title)).toBeInTheDocument();

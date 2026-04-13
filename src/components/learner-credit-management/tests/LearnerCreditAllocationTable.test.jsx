@@ -7,7 +7,9 @@ import { Provider } from 'react-redux';
 import { IntlProvider } from '@edx/frontend-platform/i18n';
 import configureMockStore from 'redux-mock-store';
 
+import { axe } from 'jest-axe';
 import LearnerCreditAllocationTable from '../LearnerCreditAllocationTable';
+import { accessibilitySettings } from '../../../../tests/accessibility-settings';
 
 jest.mock('@edx/frontend-platform/config', () => ({
   getConfig: () => ({ ENTERPRISE_LEARNER_PORTAL_URL: 'https://enterprise.edx.org' }),
@@ -34,6 +36,18 @@ const LearnerCreditAllocationTableWrapper = ({
 );
 
 describe('<LearnerCreditAllocationTable />', () => {
+  it('has no accessibility violations', async () => {
+    const { container } = render(
+      <LearnerCreditAllocationTableWrapper
+        isLoading={false}
+        tableData={{ results: [], itemCount: 0, pageCount: 0 }}
+        fetchTableData={jest.fn()}
+      />,
+    );
+    const results = await axe(container, accessibilitySettings);
+    expect(results).toHaveNoViolations();
+  });
+
   it('renders with table data', () => {
     const props = {
       isLoading: false,

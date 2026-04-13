@@ -4,6 +4,7 @@ import '@testing-library/jest-dom';
 import { QueryClientProvider } from '@tanstack/react-query';
 import { sendEnterpriseTrackEvent } from '@edx/frontend-enterprise-utils';
 
+import { axe } from 'jest-axe';
 import AdminOnboardingTour from '../flows/AdminOnboardingTour';
 import { ADMIN_TOUR_EVENT_NAMES } from '../constants';
 import useHydrateAdminOnboardingData from '../data/useHydrateAdminOnboardingData';
@@ -11,6 +12,7 @@ import { queryClient } from '../../../test/testUtils';
 import { SubsidyRequestsContext } from '../../../subsidy-requests';
 import { orderBudgets, useBudgetDetailActivityOverview, useSubsidyAccessPolicy } from '../../../learner-credit-management/data';
 import { useCustomerAgreement, useEnterpriseBudgets } from '../../../EnterpriseSubsidiesContext/data/hooks';
+import { accessibilitySettings } from '../../../../../tests/accessibility-settings';
 
 const mockAdminUuid = 'test-admin-uuid';
 
@@ -159,6 +161,18 @@ describe('AdminOnboardingTour', () => {
       { wrapper },
     );
     expect(tourResult.length).toBeGreaterThan(0);
+  });
+
+  it('has no accessibility violations', async () => {
+    const { container } = render(
+      <TestComponent
+        props={defaultProps}
+        onResult={(result) => { tourResult = result; }}
+      />,
+      { wrapper },
+    );
+    const results = await axe(container, accessibilitySettings);
+    expect(results).toHaveNoViolations();
   });
 
   it('includes title and body with FormattedMessage components', () => {

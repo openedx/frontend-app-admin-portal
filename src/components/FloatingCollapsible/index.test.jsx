@@ -5,7 +5,9 @@ import {
 import { Provider } from 'react-redux';
 import configureStore from 'redux-mock-store';
 import { IntlProvider } from '@edx/frontend-platform/i18n';
+import { axe } from 'jest-axe';
 import FloatingCollapsible from './index';
+import { accessibilitySettings } from '../../../tests/accessibility-settings';
 
 // Mock Paragon components
 jest.mock('@openedx/paragon', () => {
@@ -67,6 +69,12 @@ const setup = (props = {}) => {
 };
 
 describe('FloatingCollapsible', () => {
+  it('has no accessibility violations', async () => {
+    const { container } = setup();
+    const results = await axe(container, accessibilitySettings);
+    expect(results).toHaveNoViolations();
+  });
+
   it('renders with the correct title', () => {
     setup();
     expect(screen.queryByText('Test Title')).toBeTruthy();

@@ -1,7 +1,9 @@
 import React from 'react';
 import { render, screen, act } from '@testing-library/react';
 import '@testing-library/jest-dom';
+import { axe } from 'jest-axe';
 import CheckpointOverlay from '../CheckpointOverlay';
+import { accessibilitySettings } from '../../../../tests/accessibility-settings';
 
 describe('CheckpointOverlay', () => {
   const mockIdTarget = 'test-target';
@@ -29,6 +31,12 @@ describe('CheckpointOverlay', () => {
 
   afterEach(() => {
     jest.clearAllMocks();
+  });
+
+  it('has no accessibility violations', async () => {
+    const { container } = render(<CheckpointOverlay target={mockIdTarget} />);
+    const results = await axe(container, accessibilitySettings);
+    expect(results).toHaveNoViolations();
   });
 
   it('renders nothing when target element is not found', () => {

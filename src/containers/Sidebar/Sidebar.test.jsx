@@ -17,6 +17,7 @@ import '@testing-library/jest-dom';
 import { getConfig } from '@edx/frontend-platform/config';
 import { getAuthenticatedUser } from '@edx/frontend-platform/auth';
 
+import { axe } from 'jest-axe';
 import Sidebar from './index';
 import { SubsidyRequestsContext } from '../../components/subsidy-requests';
 import { EnterpriseSubsidiesContext } from '../../components/EnterpriseSubsidiesContext';
@@ -28,6 +29,7 @@ import {
   EXPAND_SIDEBAR,
   COLLAPSE_SIDEBAR,
 } from '../../data/constants/sidebar';
+import { accessibilitySettings } from '../../../tests/accessibility-settings';
 
 features.CODE_MANAGEMENT = true;
 
@@ -122,6 +124,12 @@ describe('<Sidebar />', () => {
     getAuthenticatedUser.mockReturnValue({
       administrator: true,
     });
+  });
+
+  it('has no accessibility violations', async () => {
+    const { container } = render(<SidebarWrapper />);
+    const results = await axe(container, accessibilitySettings);
+    expect(results).toHaveNoViolations();
   });
 
   it('renders correctly', () => {

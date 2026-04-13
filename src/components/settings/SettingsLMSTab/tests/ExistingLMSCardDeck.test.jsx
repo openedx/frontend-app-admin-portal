@@ -7,9 +7,11 @@ import '@testing-library/jest-dom/extend-expect';
 import { IntlProvider } from '@edx/frontend-platform/i18n';
 import { getAuthenticatedUser } from '@edx/frontend-platform/auth';
 
+import { axe } from 'jest-axe';
 import ExistingLMSCardDeck from '../ExistingLMSCardDeck';
 import LmsApiService from '../../../../data/services/LmsApiService';
 import { features } from '../../../../config';
+import { accessibilitySettings } from '../../../../../tests/accessibility-settings';
 
 jest.mock('../../../../data/services/LmsApiService');
 
@@ -136,6 +138,13 @@ describe('<ExistingLMSCardDeck />', () => {
     getAuthenticatedUser.mockReturnValue({
       administrator: true,
     });
+  });
+
+  // Skipped because this test fails a11y checks; to be addressed in ENT-11719
+  it.skip('has no accessibility violations', async () => {
+    const { container } = renderExistingLMSCardDeck(configData);
+    const results = await axe(container, accessibilitySettings);
+    expect(results).toHaveNoViolations();
   });
 
   it('renders active config card', async () => {

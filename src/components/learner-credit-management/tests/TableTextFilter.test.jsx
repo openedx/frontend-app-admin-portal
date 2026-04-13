@@ -5,9 +5,25 @@ import {
   fireEvent,
 } from '@testing-library/react';
 
+import { axe } from 'jest-axe';
 import TableTextFilter from '../TableTextFilter';
+import { accessibilitySettings } from '../../../../tests/accessibility-settings';
 
 describe('<TableTextFilter />', () => {
+  it('has no accessibility violations', async () => {
+    const { container } = render(
+      <TableTextFilter
+        column={{
+          filterValue: 'Demo Course',
+          setFilter: jest.fn(),
+          Header: 'Course title',
+        }}
+      />,
+    );
+    const results = await axe(container, accessibilitySettings);
+    expect(results).toHaveNoViolations();
+  });
+
   it('renders correctly', () => {
     const props = {
       column: {

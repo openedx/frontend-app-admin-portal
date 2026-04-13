@@ -4,11 +4,13 @@ import '@testing-library/jest-dom/extend-expect';
 
 import { mockNavigate } from 'react-router-dom';
 import { IntlProvider } from '@edx/frontend-platform/i18n';
+import { axe } from 'jest-axe';
 import { useSubscriptionFromParams } from '../data/contextHooks';
 import { SubscriptionDetailPage } from '../SubscriptionDetailPage';
 import { SubscriptionManagementContext, SUBSCRIPTION_PLAN_ZERO_STATE } from './TestUtilities';
 import { ROUTE_NAMES } from '../../EnterpriseApp/data/constants';
 import { MANAGE_LEARNERS_TAB } from '../data/constants';
+import { accessibilitySettings } from '../../../../tests/accessibility-settings';
 
 jest.mock('../SubscriptionDetails', () => ({
   __esModule: true,
@@ -73,7 +75,12 @@ describe('<SubscriptionDetailPage />', () => {
   afterEach(() => {
     jest.clearAllMocks();
   });
-
+  it('has no accessibility violations', async () => {
+    useSubscriptionFromParams.mockReturnValue([fakeSubscription, false]);
+    const { container } = render(<SubscriptionDetailPageWrapper {...defaultProps} />);
+    const results = await axe(container, accessibilitySettings);
+    expect(results).toHaveNoViolations();
+  });
   it('renders the subscription detail page children components', () => {
     useSubscriptionFromParams.mockReturnValue([fakeSubscription, false]);
     render(<SubscriptionDetailPageWrapper {...defaultProps} />);

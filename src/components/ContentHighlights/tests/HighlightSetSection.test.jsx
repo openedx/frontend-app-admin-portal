@@ -9,11 +9,13 @@ import { renderWithRouter, sendEnterpriseTrackEvent } from '@edx/frontend-enterp
 import algoliasearch from 'algoliasearch/lite';
 import { camelCaseObject } from '@edx/frontend-platform';
 import userEvent from '@testing-library/user-event';
+import { axe } from 'jest-axe';
 import { ContentHighlightsContext } from '../ContentHighlightsContext';
 import { configuration } from '../../../config';
 import { EnterpriseAppContext } from '../../EnterpriseApp/EnterpriseAppContextProvider';
 import HighlightSetSection from '../HighlightSetSection';
 import { TEST_HIGHLIGHT_SET } from '../data/constants';
+import { accessibilitySettings } from '../../../../tests/accessibility-settings';
 
 const mockStore = configureMockStore([thunk]);
 const testHighlightSet = [camelCaseObject(TEST_HIGHLIGHT_SET)];
@@ -78,6 +80,12 @@ const HighlightSetSectionWrapper = ({
 };
 
 describe('<HighlightSetSection />', () => {
+  it('has no accessibility violations', async () => {
+    const { container } = renderWithRouter(<HighlightSetSectionWrapper />);
+    const results = await axe(container, accessibilitySettings);
+    expect(results).toHaveNoViolations();
+  });
+
   it('renders null if highlight set is empty', () => {
     renderWithRouter(<HighlightSetSectionWrapper />);
 

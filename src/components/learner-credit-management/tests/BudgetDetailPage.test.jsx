@@ -15,6 +15,7 @@ import { act } from 'react-dom/test-utils';
 import { v4 as uuidv4, validate as uuidValidate } from 'uuid';
 import dayjs from 'dayjs';
 
+import { axe } from 'jest-axe';
 import EnterpriseAccessApiService from '../../../data/services/EnterpriseAccessApiService';
 import BudgetDetailPage from '../BudgetDetailPage';
 import {
@@ -54,6 +55,7 @@ import {
 import { getButtonElement, queryClient } from '../../test/testUtils';
 import { useAlgoliaSearch } from '../../algolia-search';
 import useBnrSubsidyRequests from '../data/hooks/useBnrSubsidyRequests';
+import { accessibilitySettings } from '../../../../tests/accessibility-settings';
 
 jest.mock('@edx/frontend-platform/auth', () => ({
   ...jest.requireActual('@edx/frontend-platform/auth'),
@@ -363,6 +365,23 @@ describe('<BudgetDetailPage />', () => {
       budgetRedemptions: mockEmptyBudgetRedemptions,
       fetchBudgetRedemptions: jest.fn(),
     });
+  });
+
+  it('has no accessibility violations', async () => {
+    useParams.mockReturnValue({
+      enterpriseSlug: 'test-enterprise-slug',
+      enterpriseAppPage: 'test-enterprise-page',
+      budgetId: 'a52e6548-649f-4576-b73f-c5c2bee25e9c',
+      activeTabKey: 'activity',
+    });
+    useSubsidyAccessPolicy.mockReturnValue({
+      isInitialLoading: false,
+      isError: true,
+      error: { customAttributes: { httpErrorStatus: 404 } },
+    });
+    const { container } = renderWithRouter(<BudgetDetailPageWrapper />);
+    const results = await axe(container, accessibilitySettings);
+    expect(results).toHaveNoViolations();
   });
 
   it('renders page not found messaging if budget is a subsidy access policy, but the REST API returns a 404', () => {

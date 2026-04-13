@@ -4,8 +4,10 @@ import {
 } from '@testing-library/react';
 import { IntlProvider } from '@edx/frontend-platform/i18n';
 
+import { axe } from 'jest-axe';
 import FeatureAnnouncementBanner from './index';
 import LmsApiService from '../../data/services/LmsApiService';
+import { accessibilitySettings } from '../../../tests/accessibility-settings';
 
 jest.mock('../../data/services/LmsApiService');
 
@@ -28,6 +30,13 @@ const FeatureAnnouncementBannerWrapper = (props) => (
 );
 
 describe('<FeatureAnnouncementBanner />', () => {
+  it('has no accessibility violations', async () => {
+    LmsApiService.fetchEnterpriseBySlug.mockResolvedValue({ data: {} });
+    const { container } = render(<FeatureAnnouncementBannerWrapper enterpriseSlug="test-enterprise" />);
+    const results = await axe(container, accessibilitySettings);
+    expect(results).toHaveNoViolations();
+  });
+
   it('renders correctly', async () => {
     LmsApiService.fetchEnterpriseBySlug.mockImplementation(() => Promise.resolve({
       data: mockEnterpriseCustomer,

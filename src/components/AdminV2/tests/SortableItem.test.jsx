@@ -2,7 +2,9 @@ import React from 'react';
 import { render, screen } from '@testing-library/react';
 import '@testing-library/jest-dom/extend-expect';
 import { useSortable } from '@dnd-kit/sortable';
+import { axe } from 'jest-axe';
 import SortableItem from '../SortableItem';
+import { accessibilitySettings } from '../../../../tests/accessibility-settings';
 
 jest.mock('@dnd-kit/sortable', () => ({
   useSortable: jest.fn(),
@@ -40,6 +42,17 @@ describe('SortableItem', () => {
 
   afterEach(() => {
     jest.clearAllMocks();
+  });
+
+  // Skipped because this test fails a11y checks; to be addressed in ENT-11719
+  it.skip('has no accessibility violations', async () => {
+    const { container } = render(
+      <SortableItem id="test-item" disabled={false}>
+        <div>Test Content</div>
+      </SortableItem>,
+    );
+    const results = await axe(container, accessibilitySettings);
+    expect(results).toHaveNoViolations();
   });
 
   it('renders children correctly', () => {

@@ -9,6 +9,7 @@ import { last } from 'lodash-es';
 import { IntlProvider } from '@edx/frontend-platform/i18n';
 import '@testing-library/jest-dom/extend-expect';
 
+import { axe } from 'jest-axe';
 import CodeReminderModal from './index';
 import EcommerceApiService from '../../data/services/EcommerceApiService';
 import remindEmailTemplate from '../../components/CodeReminderModal/emailTemplate';
@@ -18,6 +19,7 @@ import {
   SET_EMAIL_TEMPLATE_SOURCE,
 } from '../../data/constants/emailTemplate';
 import { configuration } from '../../config';
+import { accessibilitySettings } from '../../../tests/accessibility-settings';
 
 const enterpriseSlug = 'bearsRus';
 const sampleCodeData = {
@@ -148,6 +150,12 @@ CodeReminderModalWrapper.propTypes = {
 };
 
 describe('CodeReminderModalWrapper', () => {
+  it('has no accessibility violations', async () => {
+    const { container } = render(<CodeReminderModalWrapper />);
+    const results = await axe(container, accessibilitySettings);
+    expect(results).toHaveNoViolations();
+  });
+
   let spy;
 
   afterEach(() => {

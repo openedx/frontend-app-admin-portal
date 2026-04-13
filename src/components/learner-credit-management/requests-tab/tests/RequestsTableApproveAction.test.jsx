@@ -8,10 +8,12 @@ import { MemoryRouter } from 'react-router-dom';
 import configureMockStore from 'redux-mock-store';
 import thunk from 'redux-thunk';
 
+import { axe } from 'jest-axe';
 import RequestsTableApproveAction from '../RequestsTableApproveAction';
 import { BudgetDetailPageContext } from '../../BudgetDetailPageWrapper';
 import { queryClient } from '../../../test/testUtils';
 import { LEARNER_CREDIT_REQUEST_STATES } from '../../data';
+import { accessibilitySettings } from '../../../../../tests/accessibility-settings';
 
 jest.mock('react-router-dom', () => ({
   ...jest.requireActual('react-router-dom'),
@@ -79,6 +81,12 @@ const renderWithProviders = (
 describe('RequestsTableApproveAction', () => {
   beforeEach(() => {
     jest.clearAllMocks();
+  });
+
+  it('has no accessibility violations', async () => {
+    const { container } = renderWithProviders();
+    const results = await axe(container, accessibilitySettings);
+    expect(results).toHaveNoViolations();
   });
 
   it('renders approve button with correct count for selected rows', () => {

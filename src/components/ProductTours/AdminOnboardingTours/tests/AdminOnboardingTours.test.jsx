@@ -7,8 +7,10 @@ import { IntlProvider } from '@edx/frontend-platform/i18n';
 import { MemoryRouter as Router } from 'react-router-dom';
 
 import userEvent from '@testing-library/user-event';
+import { axe } from 'jest-axe';
 import AdminOnboardingTours from '../AdminOnboardingTours';
 import { RESET_TARGETS } from '../constants';
+import { accessibilitySettings } from '../../../../../tests/accessibility-settings';
 
 const mockOnAdvance = jest.fn();
 const mockOnEnd = jest.fn();
@@ -103,6 +105,12 @@ describe('AdminOnboardingTours', () => {
       </IntlProvider>,
     );
   };
+
+  it('has no accessibility violations', async () => {
+    const { container } = renderComponent();
+    const results = await axe(container, accessibilitySettings);
+    expect(results).toHaveNoViolations();
+  });
 
   it('renders nothing when isOpen is false', async () => {
     renderComponent({ isOpen: false });

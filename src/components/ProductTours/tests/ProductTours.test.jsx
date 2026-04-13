@@ -12,6 +12,7 @@ import {
 import { mergeConfig } from '@edx/frontend-platform';
 import { IntlProvider } from '@edx/frontend-platform/i18n';
 
+import { axe } from 'jest-axe';
 import { features } from '../../../config';
 import ProductTours from '../ProductTours';
 import {
@@ -31,6 +32,7 @@ import { SUPPORTED_SUBSIDY_TYPES } from '../../../data/constants/subsidyRequests
 import { SUBSIDY_TYPES } from '../../../data/constants/subsidyTypes';
 import useHydrateAdminOnboardingData from '../AdminOnboardingTours/data/useHydrateAdminOnboardingData';
 import { queryClient } from '../../test/testUtils';
+import { accessibilitySettings } from '../../../../tests/accessibility-settings';
 
 const mockStore = configureMockStore([thunk]);
 
@@ -123,6 +125,12 @@ describe('<ProductTours/>', () => {
     useHydrateAdminOnboardingData.mockReturnValue({ data: { hasEnterpriseMembers: true, hasEnterpriseGroups: true } });
     global.localStorage.clear();
     jest.clearAllMocks();
+  });
+
+  it('has no accessibility violations', async () => {
+    const { container } = render(<ToursWithContext />);
+    const results = await axe(container, accessibilitySettings);
+    expect(results).toHaveNoViolations();
   });
 
   afterEach(() => cleanup());

@@ -2,9 +2,11 @@ import React from 'react';
 import { render, screen } from '@testing-library/react';
 import '@testing-library/jest-dom/extend-expect';
 import { IntlProvider } from '@edx/frontend-platform/i18n';
+import { axe } from 'jest-axe';
 import { features } from '../../config';
 import EnterpriseAppRoutes from './EnterpriseAppRoutes';
 import { EnterpriseSubsidiesContext } from '../EnterpriseSubsidiesContext';
+import { accessibilitySettings } from '../../../tests/accessibility-settings';
 
 jest.mock('../AdvanceAnalyticsV2/AnalyticsV2Page', () => function AnalyticsV2PageMock() {
   return <div>AnalyticsV2Page Mock Component</div>;
@@ -85,6 +87,12 @@ describe('EnterpriseAppRoutes', () => {
       mockEnterpriseAppPage = 'billing';
       // Reset feature flag before each test
       features.ENABLE_NATIVE_BILLING = false;
+    });
+
+    it('has no accessibility violations', async () => {
+      const { container } = renderWithProviders();
+      const results = await axe(container, accessibilitySettings);
+      expect(results).toHaveNoViolations();
     });
 
     it('renders BillingPage when hasBillingSubscription=true and feature flag is ON', () => {

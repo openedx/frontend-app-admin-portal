@@ -10,6 +10,7 @@ import '@testing-library/jest-dom/extend-expect';
 import { QueryClientProvider } from '@tanstack/react-query';
 import { IntlProvider } from '@edx/frontend-platform/i18n';
 
+import { axe } from 'jest-axe';
 import { BudgetDetailPageContext } from '../../BudgetDetailPageWrapper';
 import LmsApiService from '../../../../data/services/LmsApiService';
 import {
@@ -25,6 +26,7 @@ import { queryClient } from '../../../test/testUtils';
 
 import InviteMembersModalWrapper from '../InviteMembersModalWrapper';
 import { getGroupMemberEmails } from '../../data/hooks/useEnterpriseFlexGroups';
+import { accessibilitySettings } from '../../../../../tests/accessibility-settings';
 
 jest.mock('@tanstack/react-query', () => ({
   ...jest.requireActual('@tanstack/react-query'),
@@ -146,6 +148,12 @@ describe('<InviteMemberModal />', () => {
     useEnterpriseGroup.mockReturnValue({
       data: {}, isLoading: false,
     });
+  });
+
+  it('has no accessibility violations', async () => {
+    const { container } = render(<InviteModalWrapper />);
+    const results = await axe(container, accessibilitySettings);
+    expect(results).toHaveNoViolations();
   });
 
   it('Modal renders as expected', async () => {

@@ -9,11 +9,13 @@ import '@testing-library/jest-dom';
 import { render, screen } from '@testing-library/react';
 import { IntlProvider } from '@edx/frontend-platform/i18n';
 
+import { axe } from 'jest-axe';
 import ManageCodesTab from '../ManageCodesTab';
 
 import { COUPONS_REQUEST, CLEAR_COUPONS } from '../../../data/constants/coupons';
 import { SubsidyRequestsContext } from '../../subsidy-requests';
 import { SUPPORTED_SUBSIDY_TYPES } from '../../../data/constants/subsidyRequests';
+import { accessibilitySettings } from '../../../../tests/accessibility-settings';
 
 const BNR_NEW_FEATURE_ALERT_TEXT = 'browse and request new feature alert!';
 jest.mock('../../NewFeatureAlertBrowseAndRequest', () => ({
@@ -101,6 +103,12 @@ const sampleCouponData = {
 };
 
 describe('ManageCodesTabWrapper', () => {
+  it('has no accessibility violations', async () => {
+    const { container } = render(<ManageCodesTabWrapper />);
+    const results = await axe(container, accessibilitySettings);
+    expect(results).toHaveNoViolations();
+  });
+
   describe('renders', () => {
     it('renders empty results correctly', () => {
       const { container } = render(<ManageCodesTabWrapper />);

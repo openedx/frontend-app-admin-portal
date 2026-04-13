@@ -11,12 +11,14 @@ import configureMockStore from 'redux-mock-store';
 import { IntlProvider } from '@edx/frontend-platform/i18n';
 import '@testing-library/jest-dom/extend-expect';
 import userEvent from '@testing-library/user-event';
+import { axe } from 'jest-axe';
 import SubscriptionSubsidyRequests from '../SubscriptionSubsidyRequests';
 import { useSubsidyRequests } from '../../SubsidyRequestManagementTable';
 import { SubscriptionContext } from '../SubscriptionData';
 import { SUBSIDY_REQUESTS_TYPES } from '../../SubsidyRequestManagementTable/data/constants';
 import { SUBSIDY_REQUEST_STATUS } from '../../../data/constants/subsidyRequests';
 import { SubsidyRequestsContext } from '../../subsidy-requests';
+import { accessibilitySettings } from '../../../../tests/accessibility-settings';
 
 const mockLicenseRequest = {
   uuid: 'test-license-request-uuid', requestStatus: SUBSIDY_REQUESTS_TYPES.REQUESTED,
@@ -185,6 +187,12 @@ describe('<SubscriptionSubsidyRequests />', () => {
       handleFetchRequests: jest.fn(),
       updateRequestStatus: jest.fn(),
     }));
+  });
+
+  it('has no accessibility violations', async () => {
+    const { container } = render(<SubsidySubsidyRequestsWithRouter />);
+    const results = await axe(container, accessibilitySettings);
+    expect(results).toHaveNoViolations();
   });
 
   afterEach(() => {

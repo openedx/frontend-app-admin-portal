@@ -9,6 +9,7 @@ import { last } from 'lodash-es';
 import '@testing-library/jest-dom';
 import { IntlProvider } from '@edx/frontend-platform/i18n';
 
+import { axe } from 'jest-axe';
 import EcommerceApiService from '../../data/services/EcommerceApiService';
 import CodeRevokeModal from './index';
 import revokeEmailTemplate from '../../components/CodeRevokeModal/emailTemplate';
@@ -18,6 +19,7 @@ import {
   SET_EMAIL_TEMPLATE_SOURCE,
 } from '../../data/constants/emailTemplate';
 import { configuration } from '../../config';
+import { accessibilitySettings } from '../../../tests/accessibility-settings';
 
 const mockStore = configureMockStore([thunk]);
 const enterpriseSlug = 'bearsRus';
@@ -106,6 +108,12 @@ CodeRevokeModalWrapper.propTypes = {
 };
 
 describe('CodeRevokeModalWrapper', () => {
+  it('has no accessibility violations', async () => {
+    const { container } = render(<CodeRevokeModalWrapper />);
+    const results = await axe(container, accessibilitySettings);
+    expect(results).toHaveNoViolations();
+  });
+
   let spy;
 
   afterEach(() => {

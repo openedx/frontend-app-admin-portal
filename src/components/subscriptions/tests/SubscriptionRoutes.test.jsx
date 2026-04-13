@@ -9,7 +9,9 @@ import {
 import configureMockStore from 'redux-mock-store';
 import { MemoryRouter, Route, Routes } from 'react-router-dom';
 
+import { axe } from 'jest-axe';
 import SubscriptionRoutes from '../SubscriptionRoutes';
+import { accessibilitySettings } from '../../../../tests/accessibility-settings';
 
 const SUBSCRIPTION_TABS_MOCK_CONTENT = 'subcription tabs';
 const SUBSCRIPTION_PLAN_ROUTES_MOCK_CONTENT = 'subscription plan routes';
@@ -77,6 +79,12 @@ SubscriptionRoutesWithRouter.defaultProps = {
 };
 
 describe('<SubscriptionRoutes />', () => {
+  it('has no accessibility violations', async () => {
+    const { container } = render(<SubscriptionRoutesWithRouter />);
+    const results = await axe(container, accessibilitySettings);
+    expect(results).toHaveNoViolations();
+  });
+
   it('redirects to default tab', () => {
     const newStore = getMockStore({
       ...initialStore,

@@ -9,6 +9,7 @@ import algoliasearch from 'algoliasearch/lite';
 import userEvent from '@testing-library/user-event';
 import { v4 as uuidv4 } from 'uuid';
 import { IntlProvider } from '@edx/frontend-platform/i18n';
+import { axe } from 'jest-axe';
 import ContentHighlightSetCard from '../ContentHighlightSetCard';
 import { ContentHighlightsContext } from '../ContentHighlightsContext';
 import CurrentContentHighlightHeader from '../CurrentContentHighlightHeader';
@@ -20,6 +21,7 @@ import {
   STEPPER_STEP_TEXT,
   NEW_ARCHIVED_CONTENT_ALERT_DISMISSED_COOKIE_NAME,
 } from '../data/constants';
+import { accessibilitySettings } from '../../../../tests/accessibility-settings';
 
 const mockStore = configureMockStore([thunk]);
 
@@ -146,6 +148,12 @@ const ContentHighlightSetCardWrapper = ({
 };
 
 describe('<ContentHighlightSetCard>', () => {
+  it('has no accessibility violations', async () => {
+    const { container } = renderWithRouter(<ContentHighlightSetCardWrapper />);
+    const results = await axe(container, accessibilitySettings);
+    expect(results).toHaveNoViolations();
+  });
+
   it('Displays the title of the highlight set', () => {
     renderWithRouter(<ContentHighlightSetCardWrapper />);
     expect(screen.getByText('Test Title')).toBeInTheDocument();

@@ -4,12 +4,14 @@ import { BrowserRouter as Router } from 'react-router-dom';
 import { render, screen, fireEvent } from '@testing-library/react';
 import { IntlProvider } from '@edx/frontend-platform/i18n';
 import { QueryClientProvider } from '@tanstack/react-query';
+import { axe } from 'jest-axe';
 import AnalyticsTable from './AnalyticsTable';
 import { useEnterpriseAnalyticsData, usePaginatedData } from '../data/hooks';
 import EnterpriseDataApiService from '../../../data/services/EnterpriseDataApiService';
 import { queryClient } from '../../test/testUtils';
 import { analyticsDataTableKeys } from '../data/constants';
 import '@testing-library/jest-dom';
+import { accessibilitySettings } from '../../../../tests/accessibility-settings';
 
 // Mock hooks
 jest.mock('../data/hooks', () => ({
@@ -53,6 +55,13 @@ describe('AnalyticsTable', () => {
       itemCount: 0,
       pageCount: 1,
     });
+  });
+
+  it('has no accessibility violations', async () => {
+    useEnterpriseAnalyticsData.mockReturnValue({ isFetching: false, isError: false, data: null });
+    const { container } = renderWithIntl(<AnalyticsTable {...defaultProps} />);
+    const results = await axe(container, accessibilitySettings);
+    expect(results).toHaveNoViolations();
   });
 
   test('disables CSV button when data.results is empty', () => {

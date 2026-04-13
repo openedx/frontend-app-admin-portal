@@ -2,14 +2,22 @@ import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import '@testing-library/jest-dom/extend-expect';
 import { IntlProvider } from '@edx/frontend-platform/i18n';
+import { axe } from 'jest-axe';
 import AdminRolesSurveyBanner from '.';
 import { ADMIN_ROLES_SURVEY_DISMISSED_COOKIE_NAME } from '../EnterpriseApp/data/constants';
+import { accessibilitySettings } from '../../../tests/accessibility-settings';
 
 const renderWithIntl = (ui) => render(<IntlProvider locale="en">{ui}</IntlProvider>);
 
 describe('<AdminRolesSurveyBanner />', () => {
   beforeEach(() => {
     global.localStorage.clear();
+  });
+
+  it('has no accessibility violations', async () => {
+    const { container } = renderWithIntl(<AdminRolesSurveyBanner />);
+    const results = await axe(container, accessibilitySettings);
+    expect(results).toHaveNoViolations();
   });
 
   it('renders the banner when the dismissed cookie is not set', () => {

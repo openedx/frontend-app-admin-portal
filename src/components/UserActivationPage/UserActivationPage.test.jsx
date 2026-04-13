@@ -8,7 +8,9 @@ import {
 } from 'react-router-dom';
 import { getAuthenticatedUser } from '@edx/frontend-platform/auth';
 import { IntlProvider } from '@edx/frontend-platform/i18n';
+import { axe } from 'jest-axe';
 import UserActivationPage from './index';
+import { accessibilitySettings } from '../../../tests/accessibility-settings';
 
 const TEST_ENTERPRISE_SLUG = 'test-enterprise';
 
@@ -60,6 +62,12 @@ UserActivationPageWrapper.propTypes = {
 describe('<UserActivationPage />', () => {
   beforeEach(() => {
     jest.resetAllMocks();
+  });
+
+  it('has no accessibility violations', async () => {
+    const { container } = render(<UserActivationPageWrapper />);
+    const results = await axe(container, accessibilitySettings);
+    expect(results).toHaveNoViolations();
   });
 
   it('renders loading message when not authenticated (redirect to enterprise proxy login)', async () => {

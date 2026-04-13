@@ -8,7 +8,9 @@ import { IntlProvider } from '@edx/frontend-platform/i18n';
 import { render } from '@testing-library/react';
 import '@testing-library/jest-dom';
 
+import { axe } from 'jest-axe';
 import PastWeekPassedLearnersTable from '.';
+import { accessibilitySettings } from '../../../tests/accessibility-settings';
 
 const enterpriseId = 'test-enterprise';
 const mockStore = configureMockStore([thunk]);
@@ -63,6 +65,12 @@ const PastWeekPassedLearnersWrapper = props => (
 );
 
 describe('PastWeekPassedLearnersTable', () => {
+  it('has no accessibility violations', async () => {
+    const { container } = render(<PastWeekPassedLearnersWrapper />);
+    const results = await axe(container, accessibilitySettings);
+    expect(results).toHaveNoViolations();
+  });
+
   it('renders table correctly', () => {
     const tree = renderer
       .create((

@@ -8,12 +8,14 @@ import { MemoryRouter } from 'react-router-dom';
 import configureMockStore from 'redux-mock-store';
 import thunk from 'redux-thunk';
 
+import { axe } from 'jest-axe';
 import BudgetDetailRequestsTabContent from '../BudgetDetailRequestsTabContent';
 import useBnrSubsidyRequests from '../data/hooks/useBnrSubsidyRequests';
 import { useBudgetId } from '../data';
 import EnterpriseAccessApiService from '../../../data/services/EnterpriseAccessApiService';
 import { queryClient } from '../../test/testUtils';
 import '@testing-library/jest-dom/extend-expect';
+import { accessibilitySettings } from '../../../../tests/accessibility-settings';
 
 jest.mock('../data/hooks/useBnrSubsidyRequests');
 jest.mock('../data', () => ({
@@ -110,6 +112,13 @@ const BudgetDetailRequestsTabContentWrapper = ({
 describe('BudgetDetailRequestsTabContent', () => {
   beforeEach(() => {
     jest.clearAllMocks();
+  });
+
+  // Skipped because this test fails a11y checks; to be addressed in ENT-11719
+  it.skip('has no accessibility violations', async () => {
+    const { container } = render(<BudgetDetailRequestsTabContentWrapper />);
+    const results = await axe(container, accessibilitySettings);
+    expect(results).toHaveNoViolations();
   });
 
   describe('Basic Rendering', () => {

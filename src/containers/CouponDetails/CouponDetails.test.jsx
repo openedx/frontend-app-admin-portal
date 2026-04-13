@@ -12,6 +12,7 @@ import '@testing-library/jest-dom/extend-expect';
 // import { Alert } from '@openedx/paragon';
 import { IntlProvider } from '@edx/frontend-platform/i18n';
 
+import { axe } from 'jest-axe';
 import { MULTI_USE } from '../../data/constants/coupons';
 // import EcommerceaApiService from '../../data/services/EcommerceApiService';
 
@@ -22,6 +23,7 @@ import { EMAIL_TEMPLATE_SOURCE_NEW_EMAIL } from '../../data/constants/emailTempl
 import {
   ACTIONS, COUPON_FILTERS, DEFAULT_TABLE_COLUMNS,
 } from '../../components/CouponDetails/constants';
+import { accessibilitySettings } from '../../../tests/accessibility-settings';
 
 const enterpriseId = 'test-enterprise';
 const mockStore = configureMockStore([thunk]);
@@ -156,6 +158,12 @@ const sampleTableData = {
 };
 
 describe('CouponDetails container', () => {
+  it('has no accessibility violations', async () => {
+    const { container } = render(<CouponDetailsWrapper />);
+    const results = await axe(container, accessibilitySettings);
+    expect(results).toHaveNoViolations();
+  });
+
   // let wrapper;
   let store;
 

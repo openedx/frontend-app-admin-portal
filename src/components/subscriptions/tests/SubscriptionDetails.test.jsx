@@ -7,6 +7,7 @@ import '@testing-library/jest-dom/extend-expect';
 import userEvent from '@testing-library/user-event';
 import { IntlProvider } from '@edx/frontend-platform/i18n';
 import React from 'react';
+import { axe } from 'jest-axe';
 import SubscriptionDetails from '../SubscriptionDetails';
 import {
   SubscriptionManagementContext,
@@ -19,6 +20,7 @@ import {
 import {
   INVITE_LEARNERS_BUTTON_TEXT,
 } from '../buttons/InviteLearnersButton';
+import { accessibilitySettings } from '../../../../tests/accessibility-settings';
 
 jest.mock('../buttons/InviteLearnersButton');
 
@@ -31,6 +33,25 @@ const PURCHASE_DATE = 'Purchase Date';
 describe('SubscriptionDetails', () => {
   afterEach(() => {
     cleanup();
+  });
+
+  it('has no accessibility violations', async () => {
+    const { container } = render(
+      <IntlProvider locale="en">
+        <SubscriptionManagementContext detailState={{
+          ...SUBSCRIPTION_PLAN_ASSIGNED_USER_STATE,
+          licenses: {
+            allocated: 1,
+            total: 1,
+          },
+        }}
+        >
+          <SubscriptionDetails {...defaultProps} />
+        </SubscriptionManagementContext>
+      </IntlProvider>,
+    );
+    const results = await axe(container, accessibilitySettings);
+    expect(results).toHaveNoViolations();
   });
 
   describe('invite learners button', () => {

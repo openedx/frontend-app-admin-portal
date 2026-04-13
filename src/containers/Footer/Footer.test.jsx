@@ -5,9 +5,12 @@ import { MemoryRouter } from 'react-router-dom';
 import configureMockStore from 'redux-mock-store';
 import thunk from 'redux-thunk';
 import { IntlProvider } from '@edx/frontend-platform/i18n';
+import { render } from '@testing-library/react';
+import { axe } from 'jest-axe';
 import { configuration } from '../../config';
 
 import Footer from './index';
+import { accessibilitySettings } from '../../../tests/accessibility-settings';
 
 const mockStore = configureMockStore([thunk]);
 
@@ -27,6 +30,13 @@ FooterWrapper.propTypes = {
 };
 
 describe('<Footer />', () => {
+  it('has no accessibility violations', async () => {
+    const store = mockStore({ portalConfiguration: { enterpriseName: 'Test', enterpriseSlug: 'test', enterpriseBranding: { logo: 'http://test.url/1.png' } } });
+    const { container } = render(<FooterWrapper store={store} />);
+    const results = await axe(container, accessibilitySettings);
+    expect(results).toHaveNoViolations();
+  });
+
   let store;
   let tree;
 

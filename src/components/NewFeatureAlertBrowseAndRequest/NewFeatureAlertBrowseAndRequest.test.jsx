@@ -11,6 +11,7 @@ import userEvent from '@testing-library/user-event';
 import { BrowserRouter as Router } from 'react-router-dom';
 import { IntlProvider } from '@edx/frontend-platform/i18n';
 
+import { axe } from 'jest-axe';
 import NewFeatureAlertBrowseAndRequest, { generateBrowseAndRequestAlertCookieName } from './index';
 import {
   REDIRECT_SETTINGS_BUTTON_TEXT,
@@ -18,6 +19,7 @@ import {
 } from './data/constants';
 import { ROUTE_NAMES } from '../EnterpriseApp/data/constants';
 import { ACCESS_TAB } from '../settings/data/constants';
+import { accessibilitySettings } from '../../../tests/accessibility-settings';
 
 const mockStore = configureMockStore([thunk]);
 
@@ -52,6 +54,12 @@ describe('<NewFeatureAlertBrowseAndRequest/>', () => {
   beforeEach(() => {
     global.localStorage.clear();
     jest.clearAllMocks();
+  });
+
+  it('has no accessibility violations', async () => {
+    const { container } = render(<NewFeatureAlertBrowseAndRequestWrapper />);
+    const results = await axe(container, accessibilitySettings);
+    expect(results).toHaveNoViolations();
   });
 
   afterEach(() => { cleanup(); });

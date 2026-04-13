@@ -6,7 +6,9 @@ import { MemoryRouter } from 'react-router-dom';
 import { Provider } from 'react-redux';
 import { IntlProvider } from '@edx/frontend-platform/i18n';
 
+import { axe } from 'jest-axe';
 import AdminPage from '.';
+import { accessibilitySettings } from '../../../tests/accessibility-settings';
 
 jest.mock('../../components/EnterpriseSubsidiesContext/data/hooks', () => ({
   ...jest.requireActual('../../components/EnterpriseSubsidiesContext/data/hooks'),
@@ -81,6 +83,13 @@ describe('<AdminPage />', () => {
     const activeLearnersCard = screen.getByText('active learners in the past week').closest('[data-testid="number-card"]');
     const activeLearnersCount = activeLearnersCard.querySelector('[data-testid="number-card-title"]').textContent;
     expect(activeLearnersCount).toBe('1');
+  });
+
+  // Skipped because this test fails a11y checks; to be addressed in ENT-11719
+  it.skip('has no accessibility violations', async () => {
+    const { container } = render(<AdminPageWrapper />);
+    const results = await axe(container, accessibilitySettings);
+    expect(results).toHaveNoViolations();
   });
 
   // it('fetchDashboardAnalytics dispatches fetchDashboardAnalytics action', () => {

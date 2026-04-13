@@ -10,6 +10,7 @@ import dayjs from 'dayjs';
 import { sendEnterpriseTrackEvent } from '@edx/frontend-enterprise-utils';
 import { IntlProvider } from '@edx/frontend-platform/i18n';
 
+import { axe } from 'jest-axe';
 import {
   TEST_ENTERPRISE_CUSTOMER_UUID,
   generateSubscriptionUser,
@@ -22,6 +23,7 @@ import { SUBSCRIPTION_TABLE_EVENTS } from '../../../../../eventTracking';
 import { DEBOUNCE_TIME_MILLIS } from '../../../../../algoliaUtils';
 import { PAGE_SIZE } from '../../../data/constants';
 import LicenseManagerApiService from '../../../../../data/services/LicenseManagerAPIService';
+import { accessibilitySettings } from '../../../../../../tests/accessibility-settings';
 
 jest.useFakeTimers('modern');
 
@@ -82,6 +84,15 @@ describe('<LicenseManagementTable />', () => {
   beforeEach(() => {
     jest.clearAllMocks();
   });
+
+  it.skip('has no accessibility violations', async () => {
+    const subscriptionPlan = generateSubscriptionPlan();
+    mockSubscriptionHooks(subscriptionPlan, []);
+    const { container } = render(<LicenseManagementTableWrapper subscriptionPlan={subscriptionPlan} />);
+    await screen.findByText('Get Started');
+    const results = await axe(container, accessibilitySettings);
+    expect(results).toHaveNoViolations();
+  }, 15000);
 
   describe('loading', () => {
     it('renders initially loading state', async () => {

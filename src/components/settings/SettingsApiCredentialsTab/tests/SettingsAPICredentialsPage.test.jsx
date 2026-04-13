@@ -4,11 +4,13 @@ import {
 import userEvent from '@testing-library/user-event';
 import '@testing-library/jest-dom/extend-expect';
 import { IntlProvider } from '@edx/frontend-platform/i18n';
+import { axe } from 'jest-axe';
 import LmsApiService from '../../../../data/services/LmsApiService';
 import SettingsApiCredentialsTab from '../index';
 import {
   API_CLIENT_DOCUMENTATION, HELP_CENTER_API_GUIDE, API_TERMS_OF_SERVICE, HELP_CENTER_LINK,
 } from '../../data/constants';
+import { accessibilitySettings } from '../../../../../tests/accessibility-settings';
 
 jest.mock('../../../../data/services/LmsApiService', () => ({
   fetchAPICredentials: jest.fn(),
@@ -49,6 +51,16 @@ describe('API Credentials Tab', () => {
       writable: true,
       configurable: true,
     });
+  });
+
+  it('has no accessibility violations', async () => {
+    const { container } = render(
+      <IntlProvider locale="en">
+        <SettingsApiCredentialsTab enterpriseId="test-enterprise-uuid" />
+      </IntlProvider>,
+    );
+    const results = await axe(container, accessibilitySettings);
+    expect(results).toHaveNoViolations();
   });
 
   afterEach(() => {

@@ -6,6 +6,7 @@ import userEvent from '@testing-library/user-event';
 import { IntlProvider } from '@edx/frontend-platform/i18n';
 import * as enterpriseUtils from '@edx/frontend-enterprise-utils';
 
+import { axe } from 'jest-axe';
 import SubscriptionExpirationBanner from '../../expiration/SubscriptionExpirationBanner';
 import {
   SUBSCRIPTION_DAYS_REMAINING_MODERATE,
@@ -17,6 +18,7 @@ import {
   SubscriptionManagementContext,
   TEST_ENTERPRISE_CUSTOMER_UUID,
 } from '../TestUtilities';
+import { accessibilitySettings } from '../../../../../tests/accessibility-settings';
 
 jest.mock('@edx/frontend-enterprise-utils', () => {
   const originalModule = jest.requireActual('@edx/frontend-enterprise-utils');
@@ -38,6 +40,12 @@ const ExpirationBannerWrapper = ({ detailState, isSubscriptionPlanDetails = fals
 
 describe('<SubscriptionExpirationBanner />', () => {
   afterEach(() => jest.clearAllMocks());
+
+  it('has no accessibility violations', async () => {
+    const { container } = render(<ExpirationBannerWrapper detailState={SUBSCRIPTION_PLAN_ZERO_STATE} />);
+    const results = await axe(container, accessibilitySettings);
+    expect(results).toHaveNoViolations();
+  });
 
   test('does not render an alert before the "moderate" days until expiration threshold', () => {
     const detailStateCopy = {

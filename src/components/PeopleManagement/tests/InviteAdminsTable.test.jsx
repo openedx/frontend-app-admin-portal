@@ -5,9 +5,11 @@ import userEvent from '@testing-library/user-event';
 
 import { IntlProvider } from '@edx/frontend-platform/i18n';
 import { logError } from '@edx/frontend-platform/logging';
+import { axe } from 'jest-axe';
 import InviteAdminsTable from '../InviteAdminsTable';
 import useEnterpriseAdminsTableData from '../data/hooks/useEnterpriseAdminsTableData';
 import LmsApiService from '../../../data/services/LmsApiService';
+import { accessibilitySettings } from '../../../../tests/accessibility-settings';
 
 /* =======================
    Mocks
@@ -150,6 +152,12 @@ describe('InviteAdminsTable', () => {
 
   afterEach(() => {
     jest.clearAllMocks();
+  });
+
+  it('has no accessibility violations', async () => {
+    const { container } = renderWithIntl(<InviteAdminsTable enterpriseId="test-enterprise" />);
+    const results = await axe(container, accessibilitySettings);
+    expect(results).toHaveNoViolations();
   });
 
   it('renders header and subtitle using intl messages', () => {

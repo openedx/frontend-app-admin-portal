@@ -9,9 +9,11 @@ import { Provider } from 'react-redux';
 import { logError } from '@edx/frontend-platform/logging';
 
 import { IntlProvider } from '@edx/frontend-platform/i18n';
+import { axe } from 'jest-axe';
 import LicenseManagerApiService from '../../../../../data/services/LicenseManagerAPIService';
 import LicenseManagementRemindModal from '../LicenseManagementRemindModal';
 import { ASSIGNED } from '../../../data/constants';
+import { accessibilitySettings } from '../../../../../../tests/accessibility-settings';
 
 const mockStore = configureMockStore();
 const store = mockStore({
@@ -136,6 +138,12 @@ describe('<LicenseManagementRemindModal />', () => {
     beforeEach(() => {
       LicenseManagerApiService.licenseRemindAll.mockResolvedValue({ data: {} });
       LicenseManagerApiService.licenseBulkRemind.mockResolvedValue({ data: {} });
+    });
+
+    it('has no accessibility violations', async () => {
+      const { container } = render(<LicenseManagementRemindModalWithStore {...basicProps} />);
+      const results = await axe(container, accessibilitySettings);
+      expect(results).toHaveNoViolations();
     });
 
     it('calls licenseRemindAll when reminding all users and there are no active filters', async () => {

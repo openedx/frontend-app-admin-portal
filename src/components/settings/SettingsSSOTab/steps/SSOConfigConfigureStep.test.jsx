@@ -3,10 +3,12 @@ import '@testing-library/jest-dom/extend-expect';
 import userEvent from '@testing-library/user-event';
 import { Provider } from 'react-redux';
 import { IntlProvider } from '@edx/frontend-platform/i18n';
+import { axe } from 'jest-axe';
 import { INVALID_LENGTH, INVALID_NAME } from '../../data/constants';
 import SSOConfigConfigureStep from './SSOConfigConfigureStep';
 import { SSO_INITIAL_STATE, SSOConfigContextProvider } from '../SSOConfigContext';
 import { getMockStore, initialStore } from '../testutils';
+import { accessibilitySettings } from '../../../../../tests/accessibility-settings';
 
 const defaultStore = getMockStore({ ...initialStore });
 const INITIAL_SSO_STATE = {
@@ -28,6 +30,12 @@ const SSOConfigConfigureStepWrapper = ({ store = defaultStore, initialState = IN
 );
 
 describe('SSO Config Configure step', () => {
+  it('has no accessibility violations', async () => {
+    const { container } = render(<SSOConfigConfigureStepWrapper />);
+    const results = await axe(container, accessibilitySettings);
+    expect(results).toHaveNoViolations();
+  });
+
   test('renders page with all form fields', () => {
     render(
       <SSOConfigConfigureStepWrapper>

@@ -9,11 +9,13 @@ import thunk from 'redux-thunk';
 import { IntlProvider } from '@edx/frontend-platform/i18n';
 
 import { Provider } from 'react-redux';
+import { axe } from 'jest-axe';
 import { HELP_CENTER_SAML_LINK } from '../../data/constants';
 import { features } from '../../../../config';
 import SettingsSSOTab from '..';
 import LmsApiService from '../../../../data/services/LmsApiService';
 import { queryClient, renderWithI18nProvider } from '../../../test/testUtils';
+import { accessibilitySettings } from '../../../../../tests/accessibility-settings';
 
 const enterpriseId = 'an-id-1';
 jest.mock('../../../../data/services/LmsApiService');
@@ -33,6 +35,16 @@ const getMockStore = aStore => mockStore(aStore);
 const store = getMockStore({ ...initialStore });
 
 describe('SAML Config Tab', () => {
+  it('has no accessibility violations', async () => {
+    const { container } = renderWithI18nProvider(
+      <Provider store={store}>
+        <SettingsSSOTab setHasSSOConfig={mockSetHasSSOConfig} enterpriseId={enterpriseId} />
+      </Provider>,
+    );
+    const results = await axe(container, accessibilitySettings);
+    expect(results).toHaveNoViolations();
+  });
+
   afterEach(() => {
     features.AUTH0_SELF_SERVICE_INTEGRATION = false;
     jest.clearAllMocks();

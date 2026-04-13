@@ -8,6 +8,7 @@ import '@testing-library/jest-dom';
 import { QueryClientProvider } from '@tanstack/react-query';
 import { IntlProvider } from '@edx/frontend-platform/i18n';
 import { sendEnterpriseTrackEvent } from '@edx/frontend-enterprise-utils';
+import { axe } from 'jest-axe';
 import { ROUTE_NAMES } from '../../EnterpriseApp/data/constants';
 import EVENT_NAMES from '../../../eventTracking';
 
@@ -20,6 +21,7 @@ import {
 import LearnerDetailPage from '../LearnerDetailPage/LearnerDetailPage';
 import LmsApiService from '../../../data/services/LmsApiService';
 import { queryClient } from '../../test/testUtils';
+import { accessibilitySettings } from '../../../../tests/accessibility-settings';
 
 const ENTERPRISE_ID = 'test-enterprise-id';
 const ENTERPRISE_SLUG = 'test-slug';
@@ -196,6 +198,12 @@ describe('LearnerDetailPage', () => {
       },
       error: null,
     });
+  });
+
+  it('has no accessibility violations', async () => {
+    const { container } = render(<LearnerDetailPageWrapper />);
+    const results = await axe(container, accessibilitySettings);
+    expect(results).toHaveNoViolations();
   });
 
   it('renders breadcrumb from people management page', async () => {

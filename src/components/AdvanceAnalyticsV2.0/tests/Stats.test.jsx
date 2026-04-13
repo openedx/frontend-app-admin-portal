@@ -1,7 +1,9 @@
 import React from 'react';
 import { render } from '@testing-library/react';
 import { IntlProvider } from '@edx/frontend-platform/i18n';
+import { axe } from 'jest-axe';
 import Stats from '../Stats';
+import { accessibilitySettings } from '../../../../tests/accessibility-settings';
 
 const data = {
   enrolls: 150400,
@@ -15,6 +17,16 @@ const data = {
 
 };
 describe('Stats', () => {
+  it('has no accessibility violations', async () => {
+    const { container } = render(
+      <IntlProvider locale="en">
+        <Stats data={data} isFetching={false} isError={false} title="Engagement" activeTab="engagements" />
+      </IntlProvider>,
+    );
+    const results = await axe(container, accessibilitySettings);
+    expect(results).toHaveNoViolations();
+  });
+
   it('renders the correct values for each engagement statistic', async () => {
     const { container } = render(
       <IntlProvider locale="en">

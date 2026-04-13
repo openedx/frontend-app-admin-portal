@@ -3,11 +3,13 @@ import '@testing-library/jest-dom';
 import { renderWithRouter } from '@edx/frontend-enterprise-utils';
 
 import { IntlProvider } from '@edx/frontend-platform/i18n';
+import { axe } from 'jest-axe';
 import SettingsAccessTab from '../index';
 import { SubsidyRequestsContext } from '../../../subsidy-requests';
 import { SUPPORTED_SUBSIDY_TYPES } from '../../../../data/constants/subsidyRequests';
 import { EnterpriseSubsidiesContext } from '../../../EnterpriseSubsidiesContext';
 import { useLearnerCreditBrowseAndRequest } from '../data/hooks';
+import { accessibilitySettings } from '../../../../../tests/accessibility-settings';
 
 jest.mock('../SettingsAccessSubsidyTypeSelection', () => ({
   __esModule: true, // this property makes it work
@@ -95,6 +97,12 @@ const SettingsAccessTabWrapper = ({
 /* eslint-enable react/prop-types */
 
 describe('<SettingsAccessTab />', () => {
+  it('has no accessibility violations', async () => {
+    const { container } = renderWithRouter(<SettingsAccessTabWrapper />);
+    const results = await axe(container, accessibilitySettings);
+    expect(results).toHaveNoViolations();
+  });
+
   it('should render <SettingsAccessSSOManagement/> if sso is configured', () => {
     renderWithRouter(<SettingsAccessTabWrapper props={{ identityProvider: 'idp' }} />);
     expect(screen.getByText('SettingsAccessSSOManagement')).toBeInTheDocument();

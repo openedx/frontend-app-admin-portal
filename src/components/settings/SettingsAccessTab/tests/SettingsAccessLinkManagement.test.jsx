@@ -7,6 +7,7 @@ import userEvent from '@testing-library/user-event';
 import { sendEnterpriseTrackEvent } from '@edx/frontend-enterprise-utils';
 import { IntlProvider } from '@edx/frontend-platform/i18n';
 
+import { axe } from 'jest-axe';
 import LmsApiService from '../../../../data/services/LmsApiService';
 import MockSettingsContext, { MOCK_CONSTANTS, generateStore } from './TestUtils';
 import SettingsAccessLinkManagement from '../SettingsAccessLinkManagement';
@@ -14,6 +15,7 @@ import * as hooks from '../../data/hooks';
 import { SETTINGS_ACCESS_EVENTS } from '../../../../eventTracking';
 import * as couponActions from '../../../../data/actions/coupons';
 import { MAX_UNIVERSAL_LINKS } from '../../data/constants';
+import { accessibilitySettings } from '../../../../../tests/accessibility-settings';
 
 jest.mock('../../../../data/actions/coupons');
 
@@ -70,6 +72,13 @@ describe('<SettingsAccessLinkManagement/>', () => {
 
   afterEach(() => {
     jest.clearAllMocks();
+  });
+
+  // Skipped because this test fails a11y checks; to be addressed in ENT-11719
+  it.skip('has no accessibility violations', async () => {
+    const { container } = render(<SettingsAccessLinkManagementWrapper />);
+    const results = await axe(container, accessibilitySettings);
+    expect(results).toHaveNoViolations();
   });
 
   test('Toggle Universal Link Off', async () => {

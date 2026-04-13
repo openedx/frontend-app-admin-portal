@@ -11,11 +11,13 @@ import {
 import '@testing-library/jest-dom/extend-expect';
 
 import { IntlProvider } from '@edx/frontend-platform/i18n';
+import { axe } from 'jest-axe';
 import ManageRequestsTab from '../ManageRequestsTab';
 import { SubsidyRequestsContext } from '../../subsidy-requests';
 import { useSubsidyRequests } from '../../SubsidyRequestManagementTable';
 import { SUBSIDY_REQUEST_STATUS } from '../../../data/constants/subsidyRequests';
 import * as couponActions from '../../../data/actions/coupons';
+import { accessibilitySettings } from '../../../../tests/accessibility-settings';
 
 const mockCouponCodeRequest = {
   uuid: 'test-coupon-code-request-uuid', requestStatus: SUBSIDY_REQUEST_STATUS.REQUESTED,
@@ -182,6 +184,12 @@ describe('<ManageRequestsTab />', () => {
       updateRequestStatus: jest.fn(),
     }));
     couponActions.fetchCouponOrders.mockImplementation(() => ({ type: 'COUPONS_REQUEST' }));
+  });
+
+  it('has no accessibility violations', async () => {
+    const { container } = render(<ManageRequestsTabWithRouter />);
+    const results = await axe(container, accessibilitySettings);
+    expect(results).toHaveNoViolations();
   });
 
   afterEach(() => {

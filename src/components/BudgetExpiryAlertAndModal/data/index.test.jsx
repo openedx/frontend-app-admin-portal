@@ -8,9 +8,11 @@ import { renderWithRouter } from '@edx/frontend-enterprise-utils';
 import { v4 as uuidv4 } from 'uuid';
 import dayjs from 'dayjs';
 import { useParams } from 'react-router-dom';
+import { axe } from 'jest-axe';
 import BudgetExpiryAlertAndModal from '../index';
 import { queryClient } from '../../test/testUtils';
 import { useEnterpriseBudgets } from '../../EnterpriseSubsidiesContext/data/hooks';
+import { accessibilitySettings } from '../../../../tests/accessibility-settings';
 
 jest.mock('../../EnterpriseSubsidiesContext/data/hooks', () => ({
   ...jest.requireActual('../../EnterpriseSubsidiesContext/data/hooks'),
@@ -73,6 +75,12 @@ describe('BudgetExpiryAlertAndModal', () => {
   beforeEach(() => {
     jest.clearAllMocks();
     useEnterpriseBudgets.mockReturnValue({ data: mockEnterpriseBudget });
+  });
+
+  it('has no accessibility violations', async () => {
+    const { container } = renderWithRouter(<BudgetExpiryAlertAndModalWrapper />);
+    const results = await axe(container, accessibilitySettings);
+    expect(results).toHaveNoViolations();
   });
 
   it('renders without crashing', () => {

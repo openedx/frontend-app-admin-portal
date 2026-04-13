@@ -8,9 +8,11 @@ import { render, screen } from '@testing-library/react';
 
 import { getAuthenticatedUser, hydrateAuthenticatedUser } from '@edx/frontend-platform/auth';
 import '@testing-library/jest-dom';
+import { axe } from 'jest-axe';
 import Header from './index';
 
 import { configuration } from '../../config';
+import { accessibilitySettings } from '../../../tests/accessibility-settings';
 
 const mockStore = configureMockStore([thunk]);
 
@@ -39,6 +41,31 @@ describe('<Header />', () => {
   afterEach(() => {
     hydrateAuthenticatedUser.mockClear();
     getAuthenticatedUser.mockClear();
+  });
+
+  it('has no accessibility violations', async () => {
+    getAuthenticatedUser.mockReturnValue({
+      email: 'test@example.com',
+      username: null,
+      profileImage: {
+        imageUrlMedium: null,
+      },
+    });
+    const storeData = {
+      portalConfiguration: {
+        enterpriseName: 'Test Enterprise',
+        enterpriseSlug: 'test-enterprise',
+        enterpriseBranding: {
+          logo: 'https://test.url/image/1.png',
+        },
+      },
+      sidebar: {},
+    };
+    store = mockStore({ ...storeData });
+
+    const { container } = render(<HeaderWrapper store={store} />);
+    const results = await axe(container, accessibilitySettings);
+    expect(results).toHaveNoViolations();
   });
 
   it('renders enterprise logo correctly', async () => {

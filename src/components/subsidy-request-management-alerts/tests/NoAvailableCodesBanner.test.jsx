@@ -6,7 +6,9 @@ import {
 import userEvent from '@testing-library/user-event';
 import dayjs from 'dayjs';
 import { IntlProvider } from '@edx/frontend-platform/i18n';
+import { axe } from 'jest-axe';
 import { NoAvailableCodesBanner } from '../NoAvailableCodesBanner';
+import { accessibilitySettings } from '../../../../tests/accessibility-settings';
 
 const NoAvailableCodesBannerWrapper = (props) => (
   <IntlProvider locale="en">
@@ -15,6 +17,12 @@ const NoAvailableCodesBannerWrapper = (props) => (
 );
 
 describe('<NoAvailableCodesBanner />', () => {
+  it('has no accessibility violations', async () => {
+    const { container } = render(<NoAvailableCodesBannerWrapper coupons={[]} />);
+    const results = await axe(container, accessibilitySettings);
+    expect(results).toHaveNoViolations();
+  });
+
   it('should render null if there are no coupons', () => {
     const { container } = render(<NoAvailableCodesBannerWrapper coupons={[]} />);
     expect(container.childElementCount).toEqual(0);

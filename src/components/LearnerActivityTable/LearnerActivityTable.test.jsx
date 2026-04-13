@@ -8,7 +8,9 @@ import { Provider } from 'react-redux';
 import '@testing-library/jest-dom';
 import { render } from '@testing-library/react';
 
+import { axe } from 'jest-axe';
 import LearnerActivityTable from '.';
+import { accessibilitySettings } from '../../../tests/accessibility-settings';
 
 const enterpriseId = 'test-enterprise';
 const mockStore = configureMockStore([thunk]);
@@ -134,6 +136,12 @@ const verifyLearnerActivityTableRendered = async (tableId, activity, columnTitle
 };
 
 describe('LearnerActivityTable', () => {
+  it('has no accessibility violations', async () => {
+    const { container } = render(<LearnerActivityEmptyTableWrapper />);
+    const results = await axe(container, accessibilitySettings);
+    expect(results).toHaveNoViolations();
+  });
+
   it('renders empty state correctly', () => {
     const tree = renderer
       .create((

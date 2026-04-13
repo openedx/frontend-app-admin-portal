@@ -6,7 +6,9 @@ import { MemoryRouter } from 'react-router-dom';
 import { Provider } from 'react-redux';
 import { IntlProvider } from '@edx/frontend-platform/i18n';
 
+import { axe } from 'jest-axe';
 import DownloadCsvButton from './index';
+import { accessibilitySettings } from '../../../tests/accessibility-settings';
 
 const mockStore = configureMockStore([thunk]);
 const enterpriseId = 'test-enterprise';
@@ -36,6 +38,12 @@ describe('<DownloadCsvButton />', () => {
         </Provider>
       </MemoryRouter>
     ));
+  });
+
+  it('has no accessibility violations', async () => {
+    const { container } = render(<MemoryRouter><Provider store={store}><IntlProvider locale="en"><DownloadCsvButton id="enrollments" /></IntlProvider></Provider></MemoryRouter>);
+    const results = await axe(container, accessibilitySettings);
+    expect(results).toHaveNoViolations();
   });
 
   it('fetchCsv dispatch action', async () => {

@@ -10,9 +10,11 @@ import axios from 'axios';
 import { getAuthenticatedHttpClient } from '@edx/frontend-platform/auth';
 import { BrowserRouter as Router } from 'react-router-dom';
 
+import { axe } from 'jest-axe';
 import { queryClient } from '../../test/testUtils';
 import EnterpriseDataApiService from '../../../data/services/EnterpriseDataApiService';
 import IndividualCompletionsTable from './IndividualCompletionsTable';
+import { accessibilitySettings } from '../../../../tests/accessibility-settings';
 
 jest.spyOn(EnterpriseDataApiService, 'fetchAdminAnalyticsData');
 
@@ -47,6 +49,12 @@ axios.get = jest.fn(() => Promise.resolve({ data: mockCompletionsData }));
 const TEST_ENTERPRISE_ID = '33ce6562-95e0-4ecf-a2a7-7d407eb96f69';
 
 describe('IndividualCompletionsTable Component', () => {
+  it('has no accessibility violations', async () => {
+    const { container } = render(<Router><QueryClientProvider client={queryClient()}><IntlProvider locale="en"><IndividualCompletionsTable enterpriseId={TEST_ENTERPRISE_ID} startDate="2024-10-01" endDate="2024-10-31" /></IntlProvider></QueryClientProvider></Router>);
+    const results = await axe(container, accessibilitySettings);
+    expect(results).toHaveNoViolations();
+  });
+
   test('renders correct title and subtitle', () => {
     render(
       <Router>

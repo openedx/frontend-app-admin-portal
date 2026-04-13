@@ -6,8 +6,10 @@ import {
 import { getAuthenticatedUser } from '@edx/frontend-platform/auth';
 import { isEnterpriseUser } from '@edx/frontend-enterprise-utils';
 import '@testing-library/jest-dom';
+import { axe } from 'jest-axe';
 import AdminRegisterPage from './index';
 import LmsApiService from '../../data/services/LmsApiService';
+import { accessibilitySettings } from '../../../tests/accessibility-settings';
 
 jest.mock('../../data/services/LmsApiService');
 jest.mock('@edx/frontend-enterprise-utils');
@@ -47,6 +49,12 @@ const AdminRegisterPageWrapper = ({
 describe('<AdminRegisterPage />', () => {
   beforeEach(() => {
     jest.resetAllMocks();
+  });
+
+  it('has no accessibility violations', async () => {
+    const { container } = render(<AdminRegisterPageWrapper />);
+    const results = await axe(container, accessibilitySettings);
+    expect(results).toHaveNoViolations();
   });
 
   it('renders loading skeleton when not authenticated (redirect to enterprise proxy login)', async () => {

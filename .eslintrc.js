@@ -2,6 +2,10 @@
 const { getBaseConfig } = require('@openedx/frontend-build');
 
 const config = getBaseConfig('eslint');
+
+/* Explicitly include jsx-a11y recommended rules */
+config.extends = [...(config.extends || []), 'plugin:jsx-a11y/recommended'];
+
 /* Custom config manipulations */
 config.rules = {
   ...config.rules,

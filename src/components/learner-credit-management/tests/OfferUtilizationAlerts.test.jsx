@@ -5,11 +5,13 @@ import { render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import '@testing-library/jest-dom/extend-expect';
 
+import { axe } from 'jest-axe';
 import OfferUtilizationAlerts from '../OfferUtilizationAlerts';
 import {
   LOW_REMAINING_BALANCE_PERCENT_THRESHOLD,
   NO_BALANCE_REMAINING_DOLLAR_THRESHOLD,
 } from '../data';
+import { accessibilitySettings } from '../../../../tests/accessibility-settings';
 
 const TEST_ENTERPRISE_UUID = 'test-enterprise-uuid';
 
@@ -20,6 +22,12 @@ const OfferUtilizationAlertsWrapper = (props) => (
 );
 
 describe('<OfferUtilizationAlerts />', () => {
+  it('has no accessibility violations', async () => {
+    const { container } = render(<OfferUtilizationAlertsWrapper />);
+    const results = await axe(container, accessibilitySettings);
+    expect(results).toHaveNoViolations();
+  });
+
   it('does not render any alerts if percent utilized and/or remaining funds is missing', () => {
     const { container } = render(
       <OfferUtilizationAlertsWrapper

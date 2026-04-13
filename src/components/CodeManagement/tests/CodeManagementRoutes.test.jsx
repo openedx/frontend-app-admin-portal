@@ -9,7 +9,9 @@ import {
 import configureMockStore from 'redux-mock-store';
 import { MemoryRouter, Route, Routes } from 'react-router-dom';
 
+import { axe } from 'jest-axe';
 import CodeManagementRoutes from '../CodeManagementRoutes';
+import { accessibilitySettings } from '../../../../tests/accessibility-settings';
 
 const COUPON_CODE_TABS_MOCK_CONTENT = 'coupon code tabs';
 const MANAGE_CODES_MOCK_CONTENT = 'manage codes';
@@ -77,6 +79,12 @@ CodeManagementRoutesWithRouter.defaultProps = {
 };
 
 describe('<CodeManagementRoutes />', () => {
+  it('has no accessibility violations', async () => {
+    const { container } = render(<CodeManagementRoutesWithRouter />);
+    const results = await axe(container, accessibilitySettings);
+    expect(results).toHaveNoViolations();
+  });
+
   it('redirects to default tab', () => {
     const newStore = getMockStore(initialStore);
 

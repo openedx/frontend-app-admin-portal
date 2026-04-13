@@ -9,7 +9,9 @@ import { MemoryRouter } from 'react-router-dom';
 import { Provider } from 'react-redux';
 import configureMockStore from 'redux-mock-store';
 import thunk from 'redux-thunk';
+import { axe } from 'jest-axe';
 import IconLink from './IconLink';
+import { accessibilitySettings } from '../../../tests/accessibility-settings';
 
 const mockStore = configureMockStore([thunk]);
 const store = mockStore({});
@@ -24,6 +26,14 @@ const IconLinkWrapper = props => (
   </MemoryRouter>
 );
 describe('<IconLink />', () => {
+  it('has no accessibility violations', async () => {
+    const { container } = render(
+      <IconLinkWrapper title="Internal Route" to="admin/test" icon={<Icon src={School} />} />,
+    );
+    const results = await axe(container, accessibilitySettings);
+    expect(results).toHaveNoViolations();
+  });
+
   it('renders with internal route when external is false (the default)', () => {
     const defaultProps = {
       title: 'Internal Route',

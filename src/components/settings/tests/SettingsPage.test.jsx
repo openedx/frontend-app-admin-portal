@@ -8,7 +8,9 @@ import configureMockStore from 'redux-mock-store';
 import { IntlProvider } from '@edx/frontend-platform/i18n';
 
 import { MemoryRouter, Route, Routes } from 'react-router-dom';
+import { axe } from 'jest-axe';
 import SettingsPage from '../index';
+import { accessibilitySettings } from '../../../../tests/accessibility-settings';
 
 jest.mock('../SettingsTabs');
 
@@ -35,6 +37,12 @@ const settingsPageWithRouter = (route) => (
 );
 
 describe('<SettingsPage />', () => {
+  it('has no accessibility violations', async () => {
+    const { container } = render(settingsPageWithRouter('/settings'));
+    const results = await axe(container, accessibilitySettings);
+    expect(results).toHaveNoViolations();
+  });
+
   afterEach(() => {
     jest.clearAllMocks();
   });

@@ -12,9 +12,11 @@ import { IntlProvider } from '@edx/frontend-platform/i18n';
 import {
   MemoryRouter, Route, Routes, mockNavigate,
 } from 'react-router-dom';
+import { axe } from 'jest-axe';
 import { SubscriptionContext } from '../SubscriptionData';
 import { ROUTE_NAMES } from '../../EnterpriseApp/data/constants';
 import MultipleSubscriptionsPage from '../MultipleSubscriptionsPage';
+import { accessibilitySettings } from '../../../../tests/accessibility-settings';
 
 jest.mock('react-router-dom', () => {
   const mockNavigation = jest.fn();
@@ -99,6 +101,12 @@ const MultipleSubscriptionsPageWrapper = ({ subscriptions = defaultSubscriptions
 describe('MultipleSubscriptionsPage', () => {
   beforeEach(() => {
     jest.clearAllMocks();
+  });
+
+  it('has no accessibility violations', async () => {
+    const { container } = render(<MultipleSubscriptionsPageWrapper />);
+    const results = await axe(container, accessibilitySettings);
+    expect(results).toHaveNoViolations();
   });
 
   it('displays the MultipleSubscriptionPicker when there are multiple subscriptions', () => {

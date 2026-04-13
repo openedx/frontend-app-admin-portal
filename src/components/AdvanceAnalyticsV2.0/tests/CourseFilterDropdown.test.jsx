@@ -4,8 +4,10 @@ import {
   render, screen, fireEvent, waitFor,
 } from '@testing-library/react';
 import { IntlProvider } from '@edx/frontend-platform/i18n';
+import { axe } from 'jest-axe';
 import CourseFilterDropdown from '../CourseFilterDropdown';
 import useEnterpriseCourses from '../data/hooks/useEnterpriseCourses';
+import { accessibilitySettings } from '../../../../tests/accessibility-settings';
 
 jest.mock('../data/hooks/useEnterpriseCourses', () => jest.fn());
 
@@ -14,6 +16,16 @@ describe('CourseFilterDropdown', () => {
 
   beforeEach(() => {
     jest.clearAllMocks();
+  });
+
+  it('has no accessibility violations', async () => {
+    const { container } = render(
+      <IntlProvider locale="en">
+        <CourseFilterDropdown selectedCourse="" onChange={onChangeMock} />
+      </IntlProvider>,
+    );
+    const results = await axe(container, accessibilitySettings);
+    expect(results).toHaveNoViolations();
   });
 
   it('renders label and placeholder correctly', () => {

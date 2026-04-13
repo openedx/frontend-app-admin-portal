@@ -7,11 +7,13 @@ import { Provider } from 'react-redux';
 import { IntlProvider } from '@edx/frontend-platform/i18n';
 import configureMockStore from 'redux-mock-store';
 import { renderWithRouter, sendEnterpriseTrackEvent } from '@edx/frontend-enterprise-utils';
+import { axe } from 'jest-axe';
 import ContentConfirmContentCard from '../ContentConfirmContentCard';
 import { testCourseData, testCourseAggregation, FOOTER_TEXT_BY_CONTENT_TYPE } from '../../data/constants';
 import { ContentHighlightsContext } from '../../ContentHighlightsContext';
 import { configuration } from '../../../../config';
 import { useContentHighlightsContext } from '../../data/hooks';
+import { accessibilitySettings } from '../../../../../tests/accessibility-settings';
 
 const mockStore = configureMockStore();
 
@@ -80,6 +82,12 @@ const ContentHighlightContentCardWrapper = ({
 };
 
 describe('<ContentConfirmContentCard />', () => {
+  it('has no accessibility violations', async () => {
+    const { container } = renderWithRouter(<ContentHighlightContentCardWrapper />);
+    const results = await axe(container, accessibilitySettings);
+    expect(results).toHaveNoViolations();
+  });
+
   it('renders the correct content', () => {
     renderWithRouter(<ContentHighlightContentCardWrapper />);
     for (let i = 0; i < testCourseData.length; i++) {

@@ -7,9 +7,11 @@ import { Provider } from 'react-redux';
 import thunk from 'redux-thunk';
 import configureMockStore from 'redux-mock-store';
 import { IntlProvider } from '@edx/frontend-platform/i18n';
+import { axe } from 'jest-axe';
 import BulkEnrollmentResultsDownloadPage from './index';
 
 import LicenseManagerApiService from '../../data/services/LicenseManagerAPIService';
+import { accessibilitySettings } from '../../../tests/accessibility-settings';
 
 const mockStore = configureMockStore([thunk]);
 
@@ -47,6 +49,14 @@ global.location = { href: assignMock };
 describe('<BulkEnrollmentResultsDownloadPage />', () => {
   beforeEach(() => {
     jest.resetAllMocks();
+  });
+
+  it('has no accessibility violations', async () => {
+    getAuthenticatedUser.mockReturnValue({ username: 'edx', roles: ['enterprise_admin:*'], isActive: true });
+    LicenseManagerApiService.fetchBulkEnrollmentJob.mockReturnValue(Promise.resolve({ data: {} }));
+    const { container } = render(<BulkEnrollmentResultsDownloadPageWrapper />);
+    const results = await axe(container, accessibilitySettings);
+    expect(results).toHaveNoViolations();
   });
   afterEach(() => {
     assignMock.mockClear();

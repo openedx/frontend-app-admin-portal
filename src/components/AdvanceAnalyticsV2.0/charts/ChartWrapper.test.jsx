@@ -1,7 +1,9 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
 import '@testing-library/jest-dom/extend-expect';
+import { axe } from 'jest-axe';
 import ChartWrapper from './ChartWrapper';
+import { accessibilitySettings } from '../../../../tests/accessibility-settings';
 
 jest.mock('./ScatterChart', () => jest.fn(() => <div data-testid="scatter-chart" />));
 jest.mock('./LineChart', () => jest.fn(() => <div data-testid="line-chart" />));
@@ -9,6 +11,26 @@ jest.mock('./BarChart', () => jest.fn(() => <div data-testid="bar-chart" />));
 jest.mock('./EmptyChart', () => jest.fn(() => <div data-testid="empty-chart" />));
 
 describe('ChartWrapper', () => {
+  it('has no accessibility violations', async () => {
+    const { container } = render(
+      <ChartWrapper
+        isFetching={false}
+        isError={false}
+        loadingMessage="Loading chart..."
+        chartProps={{
+          data: [{ x: 1, y: 2 }],
+          xKey: 'x',
+          yKey: 'y',
+          colorKey: 'color',
+          colorMap: { color: 'blue' },
+          hovertemplate: 'hover',
+        }}
+      />,
+    );
+    const results = await axe(container, accessibilitySettings);
+    expect(results).toHaveNoViolations();
+  });
+
   const baseProps = {
     isFetching: false,
     isError: false,

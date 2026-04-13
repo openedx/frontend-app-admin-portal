@@ -3,7 +3,9 @@ import Plot from 'react-plotly.js';
 import { render, screen } from '@testing-library/react';
 import '@testing-library/jest-dom/extend-expect';
 
+import { axe } from 'jest-axe';
 import BarChart from './BarChart';
+import { accessibilitySettings } from '../../../../tests/accessibility-settings';
 
 jest.mock('react-plotly.js', () => ({
   __esModule: true,
@@ -61,5 +63,22 @@ describe('BarChart', () => {
     expect(layout.barmode).toBe('stack');
     expect(config).toEqual({ displayModeBar: false });
     expect(style).toEqual({ width: '100%', height: '100%' });
+  });
+
+  it('has no accessibility violations', async () => {
+    const { container } = render(
+      <BarChart
+        data={mockData}
+        xKey="valueX"
+        yKey="valueY"
+        colorKey="category"
+        colorMap={colorMap}
+        hovertemplate={hovertemplate}
+        xAxisTitle="X Axis"
+        yAxisTitle="Y Axis"
+      />,
+    );
+    const results = await axe(container, accessibilitySettings);
+    expect(results).toHaveNoViolations();
   });
 });

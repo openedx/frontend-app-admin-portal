@@ -5,9 +5,11 @@ import {
 import userEvent from '@testing-library/user-event';
 import '@testing-library/jest-dom';
 
+import { axe } from 'jest-axe';
 import { SUPPORTED_SUBSIDY_TYPES } from '../../../../data/constants/subsidyRequests';
 import SettingsAccessSubsidyTypeSelection from '../SettingsAccessSubsidyTypeSelection';
 import { renderWithI18nProvider } from '../../../test/testUtils';
+import { accessibilitySettings } from '../../../../../tests/accessibility-settings';
 
 describe('<SettingsAccessSubsidyTypeSelection />', () => {
   const basicProps = {
@@ -17,6 +19,12 @@ describe('<SettingsAccessSubsidyTypeSelection />', () => {
     updateSubsidyRequestConfiguration: jest.fn(),
     subsidyTypes: Object.values(SUPPORTED_SUBSIDY_TYPES),
   };
+
+  it('has no accessibility violations', async () => {
+    const { container } = renderWithI18nProvider(<SettingsAccessSubsidyTypeSelection {...basicProps} />);
+    const results = await axe(container, accessibilitySettings);
+    expect(results).toHaveNoViolations();
+  });
 
   it('should open confirmation modal when subsidy type is selected', async () => {
     const user = userEvent.setup();

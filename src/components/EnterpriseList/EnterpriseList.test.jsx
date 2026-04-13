@@ -2,8 +2,10 @@
 import { renderWithRouter } from '@edx/frontend-enterprise-utils';
 import { screen, waitFor } from '@testing-library/react';
 import { IntlProvider } from '@edx/frontend-platform/i18n';
+import { axe } from 'jest-axe';
 import EnterpriseList from './index';
 import mockEnterpriseList from './EnterpriseList.mocks';
+import { accessibilitySettings } from '../../../tests/accessibility-settings';
 
 jest.mock('../../data/services/LmsApiService', () => ({
   fetchEnterpriseList: () => Promise.resolve({
@@ -18,6 +20,12 @@ const EnterpriseListWrapper = () => (
 );
 
 describe('EnterpriseList', () => {
+  it('has no accessibility violations', async () => {
+    const { container } = renderWithRouter(<EnterpriseListWrapper />);
+    const results = await axe(container, accessibilitySettings);
+    expect(results).toHaveNoViolations();
+  });
+
   it('renders the EnterpriseList', () => {
     renderWithRouter(<EnterpriseListWrapper />);
     expect(screen.getByText('loading')).toBeTruthy();

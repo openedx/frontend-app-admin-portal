@@ -7,6 +7,7 @@ import userEvent from '@testing-library/user-event';
 
 import * as enterpriseUtils from '@edx/frontend-enterprise-utils';
 import { IntlProvider } from '@edx/frontend-platform/i18n';
+import { axe } from 'jest-axe';
 import SubscriptionExpirationModals from '../../expiration/SubscriptionExpirationModals';
 import { EXPIRED_MODAL_TITLE } from '../../expiration/SubscriptionExpiredModal';
 import { EXPIRING_MODAL_TITLE } from '../../expiration/SubscriptionExpiringModal';
@@ -20,6 +21,7 @@ import {
   SUBSCRIPTION_PLAN_ZERO_STATE,
   SubscriptionManagementContext,
 } from '../TestUtilities';
+import { accessibilitySettings } from '../../../../../tests/accessibility-settings';
 
 jest.mock('@edx/frontend-enterprise-utils', () => {
   const originalModule = jest.requireActual('@edx/frontend-enterprise-utils');
@@ -48,6 +50,12 @@ describe('<SubscriptionExpirationModals />', () => {
       expect(screen.queryByLabelText(EXPIRED_MODAL_TITLE)).toBeFalsy();
       expect(screen.queryByLabelText(EXPIRING_MODAL_TITLE)).toBeFalsy();
     });
+  });
+
+  it('has no accessibility violations', async () => {
+    const { container } = render(<ExpirationModalsWithContext detailState={SUBSCRIPTION_PLAN_ZERO_STATE} />);
+    const results = await axe(container, accessibilitySettings);
+    expect(results).toHaveNoViolations();
   });
 
   describe('expired', () => {

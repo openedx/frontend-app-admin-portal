@@ -7,9 +7,11 @@ import configureMockStore from 'redux-mock-store';
 import thunk from 'redux-thunk';
 
 import { IntlProvider } from '@edx/frontend-platform/i18n';
+import { axe } from 'jest-axe';
 import CourseTitleCell from '../CourseTitleCell';
 import { renderWithRouter } from '../../test/testUtils';
 import DiscoveryApiService from '../../../data/services/DiscoveryApiService';
+import { accessibilitySettings } from '../../../../tests/accessibility-settings';
 
 jest.mock('../../../data/services/DiscoveryApiService', () => ({
   __esModule: true,
@@ -35,6 +37,12 @@ const defaultProps = {
 };
 
 describe('CourseTitleCell', () => {
+  it('has no accessibility violations', async () => {
+    const { container } = renderWithRouter(<IntlProvider locale="en"><Provider store={store}><CourseTitleCell {...defaultProps} /></Provider></IntlProvider>);
+    const results = await axe(container, accessibilitySettings);
+    expect(results).toHaveNoViolations();
+  });
+
   test('renders', async () => {
     const user = userEvent.setup();
     const mockCourseDetails = { shortDescription: 'Test short description' };

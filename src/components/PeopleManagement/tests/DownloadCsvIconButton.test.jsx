@@ -12,9 +12,11 @@ import '@testing-library/jest-dom/extend-expect';
 
 import { sendEnterpriseTrackEvent } from '@edx/frontend-enterprise-utils';
 import userEvent from '@testing-library/user-event';
+import { axe } from 'jest-axe';
 import DownloadCsvIconButton from '../GroupDetailPage/DownloadCsvIconButton';
 import { downloadCsv } from '../../../utils';
 import EVENT_NAMES from '../../../eventTracking';
+import { accessibilitySettings } from '../../../../tests/accessibility-settings';
 
 jest.mock('@edx/frontend-enterprise-utils', () => {
   const originalModule = jest.requireActual('@edx/frontend-enterprise-utils');
@@ -89,6 +91,12 @@ const DownloadCsvIconButtonWrapper = props => (
 );
 
 describe('DownloadCsvIconButton', () => {
+  it('has no accessibility violations', async () => {
+    const { container } = render(<DownloadCsvIconButtonWrapper {...DEFAULT_PROPS} />);
+    const results = await axe(container, accessibilitySettings);
+    expect(results).toHaveNoViolations();
+  });
+
   const flushPromises = () => new Promise(setImmediate);
 
   it('renders download csv button correctly.', async () => {

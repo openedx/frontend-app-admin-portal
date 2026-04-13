@@ -3,7 +3,9 @@ import Plot from 'react-plotly.js';
 import { render, screen } from '@testing-library/react';
 import { IntlProvider } from '@edx/frontend-platform/i18n';
 import '@testing-library/jest-dom/extend-expect';
+import { axe } from 'jest-axe';
 import ScatterChart from './ScatterChart';
+import { accessibilitySettings } from '../../../../tests/accessibility-settings';
 
 jest.mock('react-plotly.js', () => ({
   __esModule: true,
@@ -37,6 +39,16 @@ describe('ScatterChart', () => {
     markerSizes: [6.045, 6.075],
     customDataKeys: ['category'],
   };
+
+  it('has no accessibility violations', async () => {
+    const { container } = render(
+      <IntlProvider locale="en">
+        <ScatterChart {...props} />,
+      </IntlProvider>,
+    );
+    const results = await axe(container, accessibilitySettings);
+    expect(results).toHaveNoViolations();
+  });
 
   it('renders correctly', () => {
     render(

@@ -7,9 +7,11 @@ import userEvent from '@testing-library/user-event';
 import { logError } from '@edx/frontend-platform/logging';
 
 import { IntlProvider } from '@edx/frontend-platform/i18n';
+import { axe } from 'jest-axe';
 import LicenseManagerApiService from '../../../../../data/services/LicenseManagerAPIService';
 import LicenseManagementRevokeModal from '../LicenseManagementRevokeModal';
 import { ASSIGNED } from '../../../data/constants';
+import { accessibilitySettings } from '../../../../../../tests/accessibility-settings';
 
 jest.mock('../../../../../data/services/LicenseManagerAPIService', () => ({
   __esModule: true,
@@ -130,6 +132,12 @@ describe('<LicenseManagementRevokeModal />', () => {
 
       beforeEach(() => {
         jest.clearAllMocks();
+      });
+
+      it('has no accessibility violations', async () => {
+        const { container } = render(<LicenseManagementRevokeModalWrapper {...basicProps} />);
+        const results = await axe(container, accessibilitySettings);
+        expect(results).toHaveNoViolations();
       });
 
       it('handles 200 success response correctly', async () => {

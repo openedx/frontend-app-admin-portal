@@ -5,9 +5,11 @@ import {
 import userEvent from '@testing-library/user-event';
 import '@testing-library/jest-dom/extend-expect';
 import { IntlProvider } from '@edx/frontend-platform/i18n';
+import { axe } from 'jest-axe';
 import { INVALID_LINK, INVALID_NAME } from '../../data/constants';
 import CornerstoneConfig from '../LMSConfigs/Cornerstone/CornerstoneConfig';
 import FormContextWrapper from '../../../forms/FormContextWrapper';
+import { accessibilitySettings } from '../../../../../tests/accessibility-settings';
 
 const enterpriseId = 'test-enterprise-id';
 const mockOnClick = jest.fn();
@@ -73,6 +75,12 @@ describe('<CornerstoneConfig />', () => {
   beforeEach(() => {
     jest.clearAllMocks();
     jest.resetAllMocks();
+  });
+
+  it('has no accessibility violations', async () => {
+    const { container } = render(testCornerstoneConfigSetup(noConfigs));
+    const results = await axe(container, accessibilitySettings);
+    expect(results).toHaveNoViolations();
   });
   test('renders Cornerstone Enable Form', () => {
     render(testCornerstoneConfigSetup(noConfigs));

@@ -7,10 +7,12 @@ import { QueryClientProvider } from '@tanstack/react-query';
 import { Provider } from 'react-redux';
 import configureStore from 'redux-mock-store';
 
+import { axe } from 'jest-axe';
 import TourCollapsible from '../TourCollapsible';
 import { queryClient } from '../../test/testUtils';
 import { EnterpriseSubsidiesContext } from '../../EnterpriseSubsidiesContext';
 import { features } from '../../../config';
+import { accessibilitySettings } from '../../../../tests/accessibility-settings';
 
 // Mock FloatingCollapsible component
 jest.mock('../../FloatingCollapsible', () => {
@@ -110,6 +112,12 @@ const setup = (
 };
 
 describe('TourCollapsible', () => {
+  it('has no accessibility violations', async () => {
+    const { wrapper } = setup();
+    const results = await axe(wrapper.container, accessibilitySettings);
+    expect(results).toHaveNoViolations();
+  });
+
   it('renders FloatingCollapsible when tour is not completed and not dismissed', () => {
     setup(defaultState, true);
     expect(screen.queryByTestId('floating-collapsible')).toBeTruthy();

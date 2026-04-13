@@ -9,6 +9,7 @@ import userEvent from '@testing-library/user-event';
 import '@testing-library/jest-dom/extend-expect';
 import { QueryClientProvider, useQueryClient } from '@tanstack/react-query';
 import { IntlProvider } from '@edx/frontend-platform/i18n';
+import { axe } from 'jest-axe';
 import { queryClient } from '../../test/testUtils';
 import LmsApiService from '../../../data/services/LmsApiService';
 import { EMAIL_ADDRESSES_INPUT_VALUE_DEBOUNCE_DELAY } from '../../learner-credit-management/cards/data';
@@ -16,6 +17,7 @@ import AddMembersModal from '../AddMembersModal/AddMembersModal';
 import { useEnterpriseLearners } from '../../learner-credit-management/data';
 import { useAllEnterpriseGroupLearners, useEnterpriseMembersTableData } from '../data/hooks';
 import ValidatedEmailsContextProvider from '../data/ValidatedEmailsContextProvider';
+import { accessibilitySettings } from '../../../../tests/accessibility-settings';
 
 jest.mock('@tanstack/react-query', () => ({
   ...jest.requireActual('@tanstack/react-query'),
@@ -138,6 +140,12 @@ describe('<AddMembersModal />', () => {
         enrollments: 1,
       }],
     });
+  });
+
+  it('has no accessibility violations', async () => {
+    const { container } = render(<AddMembersModalWrapper />);
+    const results = await axe(container, accessibilitySettings);
+    expect(results).toHaveNoViolations();
   });
 
   it('renders as expected', async () => {

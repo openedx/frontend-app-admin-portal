@@ -8,9 +8,11 @@ import configureMockStore from 'redux-mock-store';
 import thunk from 'redux-thunk';
 import { Provider } from 'react-redux';
 import { IntlProvider } from '@edx/frontend-platform/i18n';
+import { axe } from 'jest-axe';
 import LmsApiService from '../../../../data/services/LmsApiService';
 import ExistingSSOConfigs from '../ExistingSSOConfigs';
 import handleErrors from '../../utils';
+import { accessibilitySettings } from '../../../../../tests/accessibility-settings';
 
 jest.mock('../../utils');
 jest.mock('../../../../data/services/LmsApiService');
@@ -64,6 +66,23 @@ const providerData = [{
 describe('<ExistingSSOConfigs />', () => {
   afterEach(() => {
     jest.clearAllMocks();
+  });
+  it('has no accessibility violations', async () => {
+    const { container } = render(
+      <Provider store={store}>
+        <IntlProvider locale="en">
+          <ExistingSSOConfigs
+            configs={activeConfig}
+            refreshBool
+            setRefreshBool={mockSetRefreshBool}
+            enterpriseId={enterpriseId}
+            providerData={providerData}
+          />
+        </IntlProvider>
+      </Provider>,
+    );
+    const results = await axe(container, accessibilitySettings);
+    expect(results).toHaveNoViolations();
   });
   it('renders active config card', async () => {
     const user = userEvent.setup();

@@ -6,7 +6,9 @@ import '@testing-library/jest-dom';
 import { IntlProvider } from '@edx/frontend-platform/i18n';
 import { useParams } from 'react-router';
 
+import { axe } from 'jest-axe';
 import OrgInviteAdminCard from '../OrgInviteAdminCard';
+import { accessibilitySettings } from '../../../../tests/accessibility-settings';
 
 /* ---------------- MOCKS ---------------- */
 
@@ -76,6 +78,13 @@ describe('OrgInviteAdminCard', () => {
   beforeEach(() => {
     jest.clearAllMocks();
     useParams.mockReturnValue({ enterpriseSlug: 'test-enterprise' });
+  });
+
+  // Skipped because this test fails a11y checks; to be addressed in ENT-11719
+  it.skip('has no accessibility violations', async () => {
+    const { container } = renderWithIntl(<OrgInviteAdminCard {...props} />);
+    const results = await axe(container, accessibilitySettings);
+    expect(results).toHaveNoViolations();
   });
 
   it('renders admin details', () => {

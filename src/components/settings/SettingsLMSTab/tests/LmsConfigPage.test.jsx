@@ -9,6 +9,7 @@ import thunk from 'redux-thunk';
 import { Provider } from 'react-redux';
 import { IntlProvider } from '@edx/frontend-platform/i18n';
 
+import { axe } from 'jest-axe';
 import { renderWithRouter } from '../../../test/testUtils';
 import {
   BLACKBOARD_TYPE, CANVAS_TYPE, CORNERSTONE_TYPE, DEGREED2_TYPE,
@@ -18,6 +19,7 @@ import { channelMapping } from '../../../../utils';
 
 import SettingsLMSTab from '../index';
 import buttonBool from '../utils';
+import { accessibilitySettings } from '../../../../../tests/accessibility-settings';
 
 const enterpriseId = 'aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee';
 const enterpriseSlug = 'test-slug';
@@ -73,6 +75,12 @@ const SettingsLMSWrapperWithSSO = () => (
 );
 
 describe('<SettingsLMSTab />', () => {
+  it('has no accessibility violations', async () => {
+    const { container } = renderWithRouter(<SettingsLMSWrapper />);
+    const results = await axe(container, accessibilitySettings);
+    expect(results).toHaveNoViolations();
+  });
+
   it('Renders with no config card present w/o sso', async () => {
     renderWithRouter(<SettingsLMSWrapper />);
     await waitFor(() => {

@@ -5,6 +5,9 @@ const config = createConfig('jest', {
   setupFiles: [
     '<rootDir>/src/setupTest.js',
   ],
+  setupFilesAfterEnv: [
+    '<rootDir>/src/setupA11yMatchers.js',
+  ],
 });
 config.transformIgnorePatterns = ['node_modules/(?!(lodash-es|@(open)?edx)/)'];
 

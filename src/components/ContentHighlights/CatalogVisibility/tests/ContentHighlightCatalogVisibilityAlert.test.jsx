@@ -8,6 +8,7 @@ import configureMockStore from 'redux-mock-store';
 import { Provider } from 'react-redux';
 import { camelCaseObject } from '@edx/frontend-platform';
 import userEvent from '@testing-library/user-event';
+import { axe } from 'jest-axe';
 import { EnterpriseAppContext } from '../../../EnterpriseApp/EnterpriseAppContextProvider';
 import { ContentHighlightsContext } from '../../ContentHighlightsContext';
 import {
@@ -15,6 +16,7 @@ import {
 } from '../../data/constants';
 import ContentHighlightCatalogVisibilityAlert from '../ContentHighlightCatalogVisibilityAlert';
 import ContentHighlightStepper from '../../HighlightStepper/ContentHighlightStepper';
+import { accessibilitySettings } from '../../../../../tests/accessibility-settings';
 
 const mockStore = configureMockStore([thunk]);
 const mockHighlightSetResponse = camelCaseObject(TEST_COURSE_HIGHLIGHTS_DATA);
@@ -82,6 +84,12 @@ jest.mock('@edx/frontend-enterprise-utils', () => {
 });
 
 describe('ContentHighlightCatalogVisibilityAlert', () => {
+  it('has no accessibility violations', async () => {
+    const { container } = renderWithRouter(<ContentHighlightCatalogVisibilityAlertWrapper />);
+    const results = await axe(container, accessibilitySettings);
+    expect(results).toHaveNoViolations();
+  });
+
   it('renders API response failure when catalogVisibilityAlertOpen context true', () => {
     renderWithRouter(
       <ContentHighlightCatalogVisibilityAlertWrapper catalogVisibility />,

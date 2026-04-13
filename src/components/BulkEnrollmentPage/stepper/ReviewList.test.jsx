@@ -3,8 +3,10 @@ import { screen, render, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import '@testing-library/jest-dom/extend-expect';
 
+import { axe } from 'jest-axe';
 import ReviewList, { ShowHideButton, MAX_ITEMS_DISPLAYED } from './ReviewList';
 import { deleteSelectedRowAction } from '../data/actions';
+import { accessibilitySettings } from '../../../../tests/accessibility-settings';
 
 const defaultProps = {
   isLoading: false,
@@ -49,6 +51,12 @@ const rowGenerator = (numRows) => {
 describe('ReviewList', () => {
   beforeEach(() => {
     jest.clearAllMocks();
+  });
+
+  it('has no accessibility violations', async () => {
+    const { container } = render(<ReviewList {...defaultProps} />);
+    const results = await axe(container, accessibilitySettings);
+    expect(results).toHaveNoViolations();
   });
   it('displays a title', () => {
     render(<ReviewList {...defaultProps} />);
