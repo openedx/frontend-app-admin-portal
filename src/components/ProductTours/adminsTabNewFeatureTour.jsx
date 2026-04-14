@@ -1,5 +1,6 @@
 import PropTypes from 'prop-types';
 import { sendEnterpriseTrackEvent } from '@edx/frontend-enterprise-utils';
+import { intlShape } from '@edx/frontend-platform/i18n';
 
 import {
   TOUR_TARGETS,
@@ -9,10 +10,11 @@ import {
   ADMINS_TAB_NEW_FEATURE_ON_END_EVENT_NAME,
 } from './constants';
 import { disableAll } from './data/utils';
+import messages from './messages';
 
 export const generateAdminsTabAlertCookieName = () => ADMINS_TAB_NEW_FEATURE_COOKIE_NAME;
 
-const adminsTabNewFeatureTour = ({ enterpriseSlug }) => {
+const adminsTabNewFeatureTour = ({ enterpriseSlug, intl }) => {
   const alertCookieName = generateAdminsTabAlertCookieName();
 
   const disableTour = () => {
@@ -38,20 +40,21 @@ const adminsTabNewFeatureTour = ({ enterpriseSlug }) => {
 
   return {
     placement: 'right',
-    body: "We've recently added the ability for you to invite and manage your admins.",
+    body: intl.formatMessage(messages.adminsTabNewFeatureTourBody),
     target: `#${TOUR_TARGETS.PEOPLE_MANAGEMENT}`,
-    title: 'New Feature',
+    title: intl.formatMessage(messages.newFeatureTitle),
     onAdvance: handleAdvanceTour,
     onDismiss: handleDismissTour,
     onEnd: handleTourEnd,
     dismissible: true,
-    advanceButtonText: 'Next',
-    endButtonText: 'Dismiss',
+    advanceButtonText: intl.formatMessage(messages.newFeatureNextButton),
+    endButtonText: intl.formatMessage(messages.newFeatureDismissButton),
   };
 };
 
 adminsTabNewFeatureTour.propTypes = {
   enterpriseSlug: PropTypes.string.isRequired,
+  intl: intlShape.isRequired,
 };
 
 export const useAdminsTabNewFeatureTour = (enableInviteAdmins) => {

@@ -4,7 +4,9 @@ import { connect } from 'react-redux';
 import { useNavigate } from 'react-router';
 import { ProductTour } from '@openedx/paragon';
 import { getConfig } from '@edx/frontend-platform/config';
+import { useIntl } from '@edx/frontend-platform/i18n';
 import { features } from '../../config';
+import tourMessages from './messages';
 import portalAppearanceTour from './portalAppearanceTour';
 import learnerCreditTour from './learnerCreditTour';
 import learnerDetailPageTour from './learnerDetailPageTour';
@@ -55,6 +57,7 @@ const ProductTours = ({
   onboardingTourDismissed,
 }) => {
   const { isLoading } = useHydrateAdminOnboardingData(enterpriseId);
+  const intl = useIntl();
   const navigate = useNavigate();
   const { FEATURE_CONTENT_HIGHLIGHTS } = getConfig();
   const enablePortalAppearance = features.SETTINGS_PAGE_APPEARANCE_TAB;
@@ -72,18 +75,18 @@ const ProductTours = ({
     [ADMINS_TAB_NEW_FEATURE_COOKIE_NAME]: useAdminsTabNewFeatureTour(enableInviteAdmins),
   };
   const newFeatureTourCheckpoints = {
-    [BROWSE_AND_REQUEST_TOUR_COOKIE_NAME]: browseAndRequestTour({ enterpriseSlug }),
-    [HIGHLIGHTS_COOKIE_NAME]: highlightsTour({ enterpriseSlug }),
-    [ANALYTICS_COOKIE_NAME]: analyticsTour({ enterpriseSlug }),
-    [LEARNER_CREDIT_COOKIE_NAME]: learnerCreditTour({ enterpriseSlug }),
-    [LEARNER_DETAIL_PAGE_COOKIE_NAME]: learnerDetailPageTour({ enterpriseSlug }),
-    [PORTAL_APPEARANCE_TOUR_COOKIE_NAME]: portalAppearanceTour({ enterpriseSlug }),
-    [ADMINS_TAB_NEW_FEATURE_COOKIE_NAME]: adminsTabNewFeatureTour({ enterpriseId, enterpriseSlug }),
+    [BROWSE_AND_REQUEST_TOUR_COOKIE_NAME]: browseAndRequestTour({ enterpriseSlug, intl }),
+    [HIGHLIGHTS_COOKIE_NAME]: highlightsTour({ enterpriseSlug, intl }),
+    [ANALYTICS_COOKIE_NAME]: analyticsTour({ enterpriseSlug, intl }),
+    [LEARNER_CREDIT_COOKIE_NAME]: learnerCreditTour({ enterpriseSlug, intl }),
+    [LEARNER_DETAIL_PAGE_COOKIE_NAME]: learnerDetailPageTour({ enterpriseSlug, intl }),
+    [PORTAL_APPEARANCE_TOUR_COOKIE_NAME]: portalAppearanceTour({ enterpriseSlug, intl }),
+    [ADMINS_TAB_NEW_FEATURE_COOKIE_NAME]: adminsTabNewFeatureTour({ enterpriseId, enterpriseSlug, intl }),
   };
   const checkpointsArray = filterCheckpoints(newFeatureTourCheckpoints, enabledFeatures);
   const tours = [{
     tourId: 'newFeatureTour',
-    backButtonText: 'Back',
+    backButtonText: intl.formatMessage(tourMessages.newFeatureBackButton),
     enabled: checkpointsArray?.length > 0,
     onEnd: () => disableAll(),
     checkpoints: checkpointsArray,

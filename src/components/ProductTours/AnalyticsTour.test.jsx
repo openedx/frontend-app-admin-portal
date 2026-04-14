@@ -18,6 +18,10 @@ jest.mock('./data/utils', () => ({
   disableAll: jest.fn(),
 }));
 
+const mockIntl = {
+  formatMessage: ({ defaultMessage }) => defaultMessage,
+};
+
 describe('analyticsTour', () => {
   const enterpriseSlug = 'test-enterprise';
   let tourConfig;
@@ -27,7 +31,7 @@ describe('analyticsTour', () => {
     jest.clearAllMocks();
     // Mock localStorage
     Storage.prototype.setItem = jest.fn();
-    tourConfig = analyticsTour({ enterpriseSlug });
+    tourConfig = analyticsTour({ enterpriseSlug, intl: mockIntl });
   });
 
   it('should return a tour configuration object with correct properties', () => {

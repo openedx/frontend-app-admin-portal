@@ -1,5 +1,6 @@
 import PropTypes from 'prop-types';
 import { sendEnterpriseTrackEvent } from '@edx/frontend-enterprise-utils';
+import { intlShape } from '@edx/frontend-platform/i18n';
 
 import {
   ANALYTICS_COOKIE_NAME,
@@ -9,9 +10,11 @@ import {
   TOUR_TARGETS,
 } from './constants';
 import { disableAll } from './data/utils';
+import messages from './messages';
 
 const analyticsTour = ({
   enterpriseSlug,
+  intl,
 }) => {
   const disableTour = () => {
     global.localStorage.setItem(ANALYTICS_COOKIE_NAME, true);
@@ -34,14 +37,14 @@ const analyticsTour = ({
 
   const tour = {
     placement: 'right',
-    body: 'We redesigned our Analytics page! Same tools, now with more control over your data.',
+    body: intl.formatMessage(messages.analyticsTourBody),
     target: `#${TOUR_TARGETS.ANALYTICS_SIDEBAR}`,
-    title: 'New Feature',
+    title: intl.formatMessage(messages.newFeatureTitle),
     onAdvance: handleAdvanceTour,
     onDismiss: handleDismissTour,
     onEnd: handleTourEnd,
-    advanceButtonText: 'Next',
-    endButtonText: 'End',
+    advanceButtonText: intl.formatMessage(messages.newFeatureNextButton),
+    endButtonText: intl.formatMessage(messages.newFeatureEndButton),
   };
 
   return tour;
@@ -49,7 +52,7 @@ const analyticsTour = ({
 
 analyticsTour.propTypes = {
   enterpriseSlug: PropTypes.string.isRequired,
-  tourEnabled: PropTypes.bool.isRequired,
+  intl: intlShape.isRequired,
 };
 
 export default analyticsTour;

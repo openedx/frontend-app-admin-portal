@@ -12,15 +12,7 @@ import {
 import { useIntl } from '@edx/frontend-platform/i18n';
 
 import FloatingCollapsible from '../FloatingCollapsible';
-import messages, {
-  ADMINISTER_SUBSCRIPTIONS_TITLE,
-  ALLOCATE_LEARNING_BUDGET_TITLE,
-  ORGANIZE_LEARNERS_TITLE,
-  SET_UP_PREFERENCES_TITLE,
-  TRACK_LEARNER_PROGRESS_TITLE,
-  CUSTOMIZE_REPORTS_TITLE,
-  ANALYTICS_V2_TITLE,
-} from './AdminOnboardingTours/messages';
+import messages from './AdminOnboardingTours/messages';
 import { dismissOnboardingTour, reopenOnboardingTour } from '../../data/actions/enterpriseCustomerAdmin';
 import { Step } from './AdminOnboardingTours/OnboardingSteps';
 import {
@@ -90,68 +82,73 @@ const TourCollapsible: FC<Props> = (
   useEffect(() => {
     const QUICK_START_GUIDE_STEPS: StepDefinition[] = [{
       icon: TrendingUp,
-      title: TRACK_LEARNER_PROGRESS_TITLE,
+      title: intl.formatMessage(messages.trackLearnerProgressStepOneTitle),
       timeEstimate: 2,
       targetId: TRACK_LEARNER_PROGRESS_TARGETS.LEARNER_PROGRESS_SIDEBAR,
       completed: false,
     }, {
       icon: InsertChartOutlined,
-      title: ANALYTICS_V2_TITLE,
+      title: intl.formatMessage(messages.analyticsStepOneTitle),
       timeEstimate: 1,
       targetId: ANALYTICS_V2_TARGETS.SIDEBAR,
       completed: false,
     }, {
       icon: MoneyOutline,
-      title: ALLOCATE_LEARNING_BUDGET_TITLE,
+      title: intl.formatMessage(messages.allocateLearningBudgetTitle),
       timeEstimate: 2,
       targetId: ALLOCATE_LEARNING_BUDGETS_TARGETS.SIDEBAR,
     }, {
       icon: CreditCard,
-      title: ADMINISTER_SUBSCRIPTIONS_TITLE,
+      title: intl.formatMessage(messages.administerSubscriptionsTitle),
       timeEstimate: 2,
       targetId: ADMINISTER_SUBSCRIPTIONS_TARGETS.SIDEBAR,
       completed: false,
     }, {
       icon: Person,
-      title: ORGANIZE_LEARNERS_TITLE,
+      title: intl.formatMessage(messages.organizeLearnersStepOneTitle),
       timeEstimate: 2,
       targetId: ORGANIZE_LEARNER_TARGETS.PEOPLE_MANAGEMENT_SIDEBAR,
       completed: false,
     }, {
       icon: TextSnippet,
-      title: CUSTOMIZE_REPORTS_TITLE,
+      title: intl.formatMessage(messages.viewCustomizeReportsTitle),
       timeEstimate: 1,
       targetId: CUSTOMIZE_REPORTS_SIDEBAR,
       completed: false,
     }, {
       icon: Settings,
-      title: SET_UP_PREFERENCES_TITLE,
+      title: intl.formatMessage(messages.viewSetUpPreferencesTitle),
       timeEstimate: 1,
       targetId: TOUR_TARGETS.SETTINGS_SIDEBAR,
       completed: false,
     }];
 
+    const { ADMIN_ONBOARDING_UUIDS } = configuration;
     const FLOW_UUID_MAPPING = new Map([
-      [ALLOCATE_LEARNING_BUDGET_TITLE, configuration.ADMIN_ONBOARDING_UUIDS.FLOW_ALLOCATE_BUDGETS_UUID?.toString()],
-      [TRACK_LEARNER_PROGRESS_TITLE, configuration.ADMIN_ONBOARDING_UUIDS.FLOW_TRACK_LEARNER_PROGRESS_UUID?.toString()],
-      [ANALYTICS_V2_TITLE, configuration.ADMIN_ONBOARDING_UUIDS.FLOW_ANALYTICS_UUID?.toString()],
-      [ADMINISTER_SUBSCRIPTIONS_TITLE, configuration.ADMIN_ONBOARDING_UUIDS.FLOW_SUBSCRIPTIONS_UUID?.toString()],
-      [ORGANIZE_LEARNERS_TITLE, configuration.ADMIN_ONBOARDING_UUIDS.FLOW_ORGANIZE_LEARNERS_UUID?.toString()],
-      [CUSTOMIZE_REPORTS_TITLE, configuration.ADMIN_ONBOARDING_UUIDS.FLOW_CUSTOMIZE_REPORTS_UUID?.toString()],
-      [SET_UP_PREFERENCES_TITLE, configuration.ADMIN_ONBOARDING_UUIDS.FLOW_PREFERENCES_UUID?.toString()],
+      [ALLOCATE_LEARNING_BUDGETS_TARGETS.SIDEBAR, ADMIN_ONBOARDING_UUIDS.FLOW_ALLOCATE_BUDGETS_UUID?.toString()],
+      [TRACK_LEARNER_PROGRESS_TARGETS.LEARNER_PROGRESS_SIDEBAR,
+        ADMIN_ONBOARDING_UUIDS.FLOW_TRACK_LEARNER_PROGRESS_UUID?.toString(),
+      ],
+      [ANALYTICS_V2_TARGETS.SIDEBAR, ADMIN_ONBOARDING_UUIDS.FLOW_ANALYTICS_UUID?.toString()],
+      [ADMINISTER_SUBSCRIPTIONS_TARGETS.SIDEBAR, ADMIN_ONBOARDING_UUIDS.FLOW_SUBSCRIPTIONS_UUID?.toString()],
+      [ORGANIZE_LEARNER_TARGETS.PEOPLE_MANAGEMENT_SIDEBAR,
+        ADMIN_ONBOARDING_UUIDS.FLOW_ORGANIZE_LEARNERS_UUID?.toString(),
+      ],
+      [CUSTOMIZE_REPORTS_SIDEBAR, ADMIN_ONBOARDING_UUIDS.FLOW_CUSTOMIZE_REPORTS_UUID?.toString()],
+      [TOUR_TARGETS.SETTINGS_SIDEBAR, ADMIN_ONBOARDING_UUIDS.FLOW_PREFERENCES_UUID?.toString()],
     ]);
 
     // filter out steps that are turned off for the user
     const steps = QUICK_START_GUIDE_STEPS.filter(step => {
-      switch (step.title) {
-        case ADMINISTER_SUBSCRIPTIONS_TITLE:
+      switch (step.targetId) {
+        case ADMINISTER_SUBSCRIPTIONS_TARGETS.SIDEBAR:
           return enableSubscriptionManagementScreen
             && (!isLoadingCustomerAgreement && !isEmpty(customerAgreement?.subscriptions));
-        case ALLOCATE_LEARNING_BUDGET_TITLE:
+        case ALLOCATE_LEARNING_BUDGETS_TARGETS.SIDEBAR:
           return canManageLearnerCredit;
-        case CUSTOMIZE_REPORTS_TITLE:
+        case CUSTOMIZE_REPORTS_SIDEBAR:
           return enableReportingConfigScreen;
-        case ANALYTICS_V2_TITLE:
+        case ANALYTICS_V2_TARGETS.SIDEBAR:
           return features.ANALYTICS && enableAnalyticsScreen;
         default:
           return true;
@@ -160,7 +157,7 @@ const TourCollapsible: FC<Props> = (
 
     if (onboardingTourData?.completedTourFlows) {
       steps.forEach((step) => {
-        const flowUuid = FLOW_UUID_MAPPING.get(step.title);
+        const flowUuid = FLOW_UUID_MAPPING.get(step.targetId);
         if (flowUuid && onboardingTourData?.completedTourFlows?.includes(flowUuid)) {
           step.completed = true; // eslint-disable-line no-param-reassign
         }
@@ -181,6 +178,7 @@ const TourCollapsible: FC<Props> = (
     isLoadingCustomerAgreement,
     onboardingTourData?.completedTourFlows,
     onboardingTourData?.onboardingTourCompleted,
+    intl,
   ]);
 
   return (
@@ -201,7 +199,7 @@ const TourCollapsible: FC<Props> = (
               <Step
                 completed={step.completed}
                 icon={step.icon}
-                key={step.title}
+                key={step.targetId}
                 onTourSelect={onTourSelect}
                 targetId={step.targetId}
                 timeEstimate={step.timeEstimate}

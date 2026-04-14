@@ -1,5 +1,6 @@
 import PropTypes from 'prop-types';
 import { sendEnterpriseTrackEvent } from '@edx/frontend-enterprise-utils';
+import { intlShape } from '@edx/frontend-platform/i18n';
 
 import {
   LEARNER_DETAIL_PAGE_COOKIE_NAME,
@@ -7,9 +8,11 @@ import {
   TOUR_TARGETS,
 } from './constants';
 import { disableAll } from './data/utils';
+import messages from './messages';
 
 const learnerDetailPageTour = ({
   enterpriseSlug,
+  intl,
 }) => {
   const handleDismissTour = () => {
     disableAll();
@@ -19,13 +22,12 @@ const learnerDetailPageTour = ({
 
   const tour = {
     placement: 'right',
-    body: "With the new learner profile feature, you can view a learner's enrollments, budgets, and groups "
-    + "all in one place. Access the learner profile by clicking on 'View more' on the People Management page.",
+    body: intl.formatMessage(messages.learnerDetailPageTourBody),
     target: `#${TOUR_TARGETS.PEOPLE_MANAGEMENT}`,
-    title: 'New Feature',
+    title: intl.formatMessage(messages.newFeatureTitle),
     onDismiss: handleDismissTour,
-    advanceButtonText: 'Next',
-    endButtonText: 'Dismiss',
+    advanceButtonText: intl.formatMessage(messages.newFeatureNextButton),
+    endButtonText: intl.formatMessage(messages.newFeatureDismissButton),
   };
 
   return tour;
@@ -33,6 +35,7 @@ const learnerDetailPageTour = ({
 
 learnerDetailPageTour.propTypes = {
   enterpriseSlug: PropTypes.string.isRequired,
+  intl: intlShape.isRequired,
 };
 
 export default learnerDetailPageTour;

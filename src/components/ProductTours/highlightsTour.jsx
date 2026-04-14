@@ -1,5 +1,6 @@
 import PropTypes from 'prop-types';
 import { sendEnterpriseTrackEvent } from '@edx/frontend-enterprise-utils';
+import { intlShape } from '@edx/frontend-platform/i18n';
 
 import {
   HIGHLIGHTS_COOKIE_NAME,
@@ -9,9 +10,11 @@ import {
   TOUR_TARGETS,
 } from './constants';
 import { disableAll } from './data/utils';
+import messages from './messages';
 
 const highlightsTour = ({
   enterpriseSlug,
+  intl,
 }) => {
   const disableTour = () => {
     global.localStorage.setItem(HIGHLIGHTS_COOKIE_NAME, true);
@@ -34,14 +37,14 @@ const highlightsTour = ({
 
   const tour = {
     placement: 'right',
-    body: "We've recently added a Highlights feature that allows you to create and recommend course collections to your learners.",
+    body: intl.formatMessage(messages.highlightsTourBody),
     target: `#${TOUR_TARGETS.CONTENT_HIGHLIGHTS}`,
-    title: 'New Feature',
+    title: intl.formatMessage(messages.newFeatureTitle),
     onAdvance: handleAdvanceTour,
     onDismiss: handleDismissTour,
     onEnd: handleTourEnd,
-    advanceButtonText: 'Next',
-    endButtonText: 'End',
+    advanceButtonText: intl.formatMessage(messages.newFeatureNextButton),
+    endButtonText: intl.formatMessage(messages.newFeatureEndButton),
   };
 
   return tour;
@@ -49,7 +52,7 @@ const highlightsTour = ({
 
 highlightsTour.propTypes = {
   enterpriseSlug: PropTypes.string.isRequired,
-  tourEnabled: PropTypes.bool.isRequired,
+  intl: intlShape.isRequired,
 };
 
 export default highlightsTour;

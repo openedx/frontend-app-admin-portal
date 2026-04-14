@@ -23,6 +23,11 @@ import {
   TOUR_TARGETS,
 } from '../constants';
 import adminsTabNewFeatureTour, { generateAdminsTabAlertCookieName } from '../adminsTabNewFeatureTour';
+import browseAndRequestTour from '../browseAndRequestTour';
+import learnerCreditTour from '../learnerCreditTour';
+import learnerDetailPageTour from '../learnerDetailPageTour';
+import portalAppearanceTour from '../portalAppearanceTour';
+import highlightsTour from '../highlightsTour';
 import { ONBOARDING_WELCOME_MODAL_COOKIE_NAME } from '../AdminOnboardingTours/constants';
 import { ROUTE_NAMES } from '../../EnterpriseApp/data/constants';
 import { ACCESS_TAB } from '../../settings/data/constants';
@@ -46,6 +51,7 @@ jest.mock('@edx/frontend-enterprise-utils', () => {
 
 const ENTERPRISE_SLUG = 'sluggy';
 const ENTERPRISE_UUID = 'test-enterprise-uuid';
+const mockIntl = { formatMessage: ({ defaultMessage }) => defaultMessage };
 
 const SUBSCRIPTION_PAGE_LOCATION = `/${ENTERPRISE_SLUG}/admin/${ROUTE_NAMES.subscriptionManagement}`;
 const SETTINGS_PAGE_LOCATION = `/${ENTERPRISE_SLUG}/admin/${ROUTE_NAMES.settings}/${ACCESS_TAB}`;
@@ -145,10 +151,25 @@ describe('<ProductTours/>', () => {
       features.SETTINGS_PAGE_APPEARANCE_TAB = appearanceFeatureFlagValue;
     });
 
+    it('returns correct tour config with i18n strings', () => {
+      const tourConfig = portalAppearanceTour({ enterpriseSlug: ENTERPRISE_SLUG, intl: mockIntl });
+      expect(tourConfig).toEqual(expect.objectContaining({
+        title: 'New Feature',
+        body: expect.stringContaining('Portal Appearance feature'),
+        advanceButtonText: 'Next',
+        endButtonText: 'End',
+        target: `#${TOUR_TARGETS.SETTINGS_SIDEBAR}`,
+      }));
+      expect(tourConfig).toHaveProperty('onAdvance');
+      expect(tourConfig).toHaveProperty('onDismiss');
+      expect(tourConfig).toHaveProperty('onEnd');
+    });
+
     it('is shown when feature is enabled, and no cookie found', () => {
       features.SETTINGS_PAGE_APPEARANCE_TAB = true;
       render(<ToursWithContext />);
-      expect(screen.queryByText('Portal Appearance', { exact: false })).toBeTruthy();
+      expect(screen.queryByText('New Feature')).toBeTruthy();
+      expect(screen.queryByText('Portal Appearance feature', { exact: false })).toBeTruthy();
     });
     it('is not shown when feature is turned off', () => {
       features.SETTINGS_PAGE_APPEARANCE_TAB = false;
@@ -162,6 +183,21 @@ describe('<ProductTours/>', () => {
       global.localStorage.setItem(LEARNER_DETAIL_PAGE_COOKIE_NAME, true);
       global.localStorage.setItem(PORTAL_APPEARANCE_TOUR_COOKIE_NAME, true);
     });
+
+    it('returns correct tour config with i18n strings', () => {
+      const tourConfig = browseAndRequestTour({ enterpriseSlug: ENTERPRISE_SLUG, intl: mockIntl });
+      expect(tourConfig).toEqual(expect.objectContaining({
+        title: 'New Feature',
+        body: expect.stringContaining('browse for courses'),
+        advanceButtonText: 'Next',
+        endButtonText: 'End',
+        target: `#${TOUR_TARGETS.SETTINGS_SIDEBAR}`,
+      }));
+      expect(tourConfig).toHaveProperty('onAdvance');
+      expect(tourConfig).toHaveProperty('onDismiss');
+      expect(tourConfig).toHaveProperty('onEnd');
+    });
+
     it('is shown when feature is enabled, enterprise is eligible for browse and request, and no cookie found', () => {
       render(<ToursWithContext enableLearnerPortal />);
       expect(screen.queryByText('browse for courses', { exact: false })).toBeTruthy();
@@ -208,6 +244,22 @@ describe('<ProductTours/>', () => {
       global.localStorage.setItem(PORTAL_APPEARANCE_TOUR_COOKIE_NAME, true);
     });
 
+    it('returns correct tour config with i18n strings', () => {
+      const tourConfig = adminsTabNewFeatureTour({
+        enterpriseSlug: ENTERPRISE_SLUG, enterpriseId: ENTERPRISE_UUID, intl: mockIntl,
+      });
+      expect(tourConfig).toEqual(expect.objectContaining({
+        title: 'New Feature',
+        body: expect.stringContaining('invite and manage your admins'),
+        advanceButtonText: 'Next',
+        endButtonText: 'Dismiss',
+        target: `#${TOUR_TARGETS.PEOPLE_MANAGEMENT}`,
+      }));
+      expect(tourConfig).toHaveProperty('onAdvance');
+      expect(tourConfig).toHaveProperty('onDismiss');
+      expect(tourConfig).toHaveProperty('onEnd');
+    });
+
     it('is not shown when invite admins feature is disabled', () => {
       render(<ToursWithContext />);
       expect(screen.queryByText("We've recently added the ability for you to invite and manage your admins.", { exact: false })).toBeFalsy();
@@ -227,14 +279,18 @@ describe('<ProductTours/>', () => {
 
     it('sets invite admins alert cookie when closed via X button', () => {
       const alertCookie = generateAdminsTabAlertCookieName();
-      const tour = adminsTabNewFeatureTour({ enterpriseId: ENTERPRISE_UUID, enterpriseSlug: ENTERPRISE_SLUG });
+      const tour = adminsTabNewFeatureTour({
+        enterpriseId: ENTERPRISE_UUID, enterpriseSlug: ENTERPRISE_SLUG, intl: mockIntl,
+      });
       tour.onDismiss();
       expect(global.localStorage.getItem(alertCookie)).toBe('true');
     });
 
     it('sets invite admins alert cookie when dismissed via Dismiss button', () => {
       const alertCookie = generateAdminsTabAlertCookieName();
-      const tour = adminsTabNewFeatureTour({ enterpriseId: ENTERPRISE_UUID, enterpriseSlug: ENTERPRISE_SLUG });
+      const tour = adminsTabNewFeatureTour({
+        enterpriseId: ENTERPRISE_UUID, enterpriseSlug: ENTERPRISE_SLUG, intl: mockIntl,
+      });
       tour.onEnd();
       expect(global.localStorage.getItem(alertCookie)).toBe('true');
     });
@@ -248,9 +304,24 @@ describe('<ProductTours/>', () => {
       global.localStorage.setItem(PORTAL_APPEARANCE_TOUR_COOKIE_NAME, true);
     });
 
+    it('returns correct tour config with i18n strings', () => {
+      const tourConfig = learnerCreditTour({ enterpriseSlug: ENTERPRISE_SLUG, intl: mockIntl });
+      expect(tourConfig).toEqual(expect.objectContaining({
+        title: 'New Feature',
+        body: expect.stringContaining('Learner Credit feature'),
+        advanceButtonText: 'Next',
+        endButtonText: 'End',
+        target: `#${TOUR_TARGETS.LEARNER_CREDIT}`,
+      }));
+      expect(tourConfig).toHaveProperty('onAdvance');
+      expect(tourConfig).toHaveProperty('onDismiss');
+      expect(tourConfig).toHaveProperty('onEnd');
+    });
+
     it('is shown if Learner Credit Management feature is on, enterprise has subsidy', () => {
       render(<ToursWithContext canManageLearnerCredit />);
       expect(screen.queryByText('New Feature')).toBeTruthy();
+      expect(screen.queryByText('Learner Credit feature', { exact: false })).toBeTruthy();
     });
 
     it('is not shown if localStorage record is present', () => {
@@ -295,6 +366,17 @@ describe('<ProductTours/>', () => {
       render(<ToursWithContext />);
       expect(screen.queryByText('Welcome!')).not.toBeTruthy();
     });
+    it('renders quick start guide step titles when expanded', async () => {
+      global.localStorage.setItem(ONBOARDING_WELCOME_MODAL_COOKIE_NAME, true);
+      render(<ToursWithContext />);
+      // FloatingCollapsible starts open by default, so step titles are immediately visible.
+      // Only steps not filtered by feature flags / context are checked here.
+      await waitFor(() => {
+        expect(screen.queryByText('Track learner progress')).toBeTruthy();
+        expect(screen.queryByText('Organize learners')).toBeTruthy();
+        expect(screen.queryByText('Set up preferences')).toBeTruthy();
+      });
+    });
 
     describe('with onboarding disabled', () => {
       beforeEach(() => {
@@ -307,6 +389,22 @@ describe('<ProductTours/>', () => {
     });
   });
 
+  describe('highlights tour', () => {
+    it('returns correct tour config with i18n strings', () => {
+      const tourConfig = highlightsTour({ enterpriseSlug: ENTERPRISE_SLUG, intl: mockIntl });
+      expect(tourConfig).toEqual(expect.objectContaining({
+        title: 'New Feature',
+        body: expect.stringContaining('Highlights feature'),
+        advanceButtonText: 'Next',
+        endButtonText: 'End',
+        target: `#${TOUR_TARGETS.CONTENT_HIGHLIGHTS}`,
+      }));
+      expect(tourConfig).toHaveProperty('onAdvance');
+      expect(tourConfig).toHaveProperty('onDismiss');
+      expect(tourConfig).toHaveProperty('onEnd');
+    });
+  });
+
   describe('learner detail page tour', () => {
     beforeEach(() => {
       jest.clearAllMocks();
@@ -315,6 +413,19 @@ describe('<ProductTours/>', () => {
       global.localStorage.setItem(LEARNER_DETAIL_PAGE_COOKIE_NAME, true);
       global.localStorage.setItem(PORTAL_APPEARANCE_TOUR_COOKIE_NAME, true);
     });
+
+    it('returns correct tour config with i18n strings', () => {
+      const tourConfig = learnerDetailPageTour({ enterpriseSlug: ENTERPRISE_SLUG, intl: mockIntl });
+      expect(tourConfig).toEqual(expect.objectContaining({
+        title: 'New Feature',
+        body: expect.stringContaining('learner profile feature'),
+        advanceButtonText: 'Next',
+        endButtonText: 'Dismiss',
+        target: `#${TOUR_TARGETS.PEOPLE_MANAGEMENT}`,
+      }));
+      expect(tourConfig).toHaveProperty('onDismiss');
+    });
+
     it('is shown when no cookie found', () => {
       global.localStorage.setItem(LEARNER_DETAIL_PAGE_COOKIE_NAME, undefined);
       render(<ToursWithContext />);

@@ -108,4 +108,23 @@ describe('FloatingCollapsible', () => {
       expect(screen.queryByText('Test Content')).toBeFalsy();
     });
   });
+
+  it('renders Dismiss and Close button text via i18n', () => {
+    const translatedMessages = {
+      'admin.portal.productTours.collapsible.dismiss': 'Translated Dismiss',
+      'admin.portal.productTours.collapsible.close': 'Translated Close',
+    };
+    const store = mockStore(defaultState);
+    render(
+      <IntlProvider locale="en" messages={translatedMessages}>
+        <Provider store={store}>
+          <FloatingCollapsible title="Test" onDismiss={jest.fn()}>
+            <div>Content</div>
+          </FloatingCollapsible>
+        </Provider>
+      </IntlProvider>,
+    );
+    expect(screen.getByText('Translated Dismiss')).toBeTruthy();
+    expect(screen.getByText('Translated Close')).toBeTruthy();
+  });
 });

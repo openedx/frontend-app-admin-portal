@@ -1,5 +1,6 @@
 import PropTypes from 'prop-types';
 import { sendEnterpriseTrackEvent } from '@edx/frontend-enterprise-utils';
+import { intlShape } from '@edx/frontend-platform/i18n';
 
 import {
   BROWSE_AND_REQUEST_TOUR_COOKIE_NAME,
@@ -9,9 +10,11 @@ import {
   TOUR_TARGETS,
 } from './constants';
 import { disableAll } from './data/utils';
+import messages from './messages';
 
 const browseAndRequestTour = ({
   enterpriseSlug,
+  intl,
 }) => {
   const disableTour = () => {
     global.localStorage.setItem(BROWSE_AND_REQUEST_TOUR_COOKIE_NAME, true);
@@ -34,15 +37,14 @@ const browseAndRequestTour = ({
 
   const tour = {
     placement: 'right',
-    body: "We've recently added a new feature that enables learners to browse for courses and request access. "
-      + 'Continue to the settings page to learn more and configure access.',
+    body: intl.formatMessage(messages.browseAndRequestTourBody),
     target: `#${TOUR_TARGETS.SETTINGS_SIDEBAR}`,
-    title: 'New Feature',
+    title: intl.formatMessage(messages.newFeatureTitle),
     onAdvance: handleAdvanceTour,
     onDismiss: handleDismissTour,
     onEnd: handleTourEnd,
-    advanceButtonText: 'Next',
-    endButtonText: 'End',
+    advanceButtonText: intl.formatMessage(messages.newFeatureNextButton),
+    endButtonText: intl.formatMessage(messages.newFeatureEndButton),
   };
 
   return tour;
@@ -50,6 +52,7 @@ const browseAndRequestTour = ({
 
 browseAndRequestTour.propTypes = {
   enterpriseSlug: PropTypes.string.isRequired,
+  intl: intlShape.isRequired,
 };
 
 export default browseAndRequestTour;
