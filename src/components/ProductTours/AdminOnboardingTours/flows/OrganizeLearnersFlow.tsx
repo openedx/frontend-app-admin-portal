@@ -1,11 +1,8 @@
 import React from 'react';
-import { useIntl, FormattedMessage } from '@edx/frontend-platform/i18n';
+import { FormattedMessage, useIntl } from '@edx/frontend-platform/i18n';
 import { Hyperlink } from '@openedx/paragon';
 
-import {
-  ADMIN_TOUR_EVENT_NAMES,
-  ORGANIZE_LEARNER_TARGETS,
-} from '../constants';
+import { ADMIN_TOUR_EVENT_NAMES, ORGANIZE_LEARNER_TARGETS } from '../constants';
 import messages from '../messages';
 import { configuration } from '../../../../config';
 import { TourStep } from '../../types';
@@ -136,11 +133,9 @@ const OrganizeLearnersFlow = ({
     target: `#${ORGANIZE_LEARNER_TARGETS.PEOPLE_MANAGEMENT_SIDEBAR}`,
     placement: 'right',
     title: intl.formatMessage(messages.organizeLearnersStepOneTitle),
-    body: intl.formatMessage(
-      enableInviteAdmins
-        ? messages.organizeLearnersStepOneWithAdminsBody
-        : messages.organizeLearnersStepOneBody,
-    ),
+    body: enableInviteAdmins
+      ? intl.formatMessage(messages.organizeLearnersStepOneWithAdminsBody)
+      : intl.formatMessage(messages.organizeLearnersStepOneBody),
     onAdvance: onOrganizeAdvance,
   }, ...(enableInviteAdmins ? [adminsTabStep] : []), {
     target: `#${ORGANIZE_LEARNER_TARGETS.ORG_MEMBER_TABLE}`,

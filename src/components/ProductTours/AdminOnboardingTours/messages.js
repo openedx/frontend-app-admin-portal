@@ -1,13 +1,5 @@
 import { defineMessages } from '@edx/frontend-platform/i18n';
 
-export const ORGANIZE_LEARNERS_TITLE = 'Organize learners';
-export const TRACK_LEARNER_PROGRESS_TITLE = 'Track learner progress';
-export const ANALYTICS_V2_TITLE = 'View enrollment insights';
-export const ADMINISTER_SUBSCRIPTIONS_TITLE = 'Administer subscriptions';
-export const ALLOCATE_LEARNING_BUDGET_TITLE = 'Allocate learning budget';
-export const CUSTOMIZE_REPORTS_TITLE = 'Customize reports';
-export const SET_UP_PREFERENCES_TITLE = 'Set up preferences';
-
 const messages = defineMessages({
   collapsibleTitle: {
     id: 'admin.portal.productTours.collapsible.title',
@@ -59,7 +51,7 @@ const messages = defineMessages({
   },
   trackLearnerProgressStepOneTitle: {
     id: 'adminPortal.productTours.adminOnboarding.trackLearnerProgress.title.1',
-    defaultMessage: TRACK_LEARNER_PROGRESS_TITLE,
+    defaultMessage: 'Track learner progress',
     description: 'Title for the learner progress tracking step',
   },
   trackLearnerProgressStepOneBody: {
@@ -99,7 +91,7 @@ const messages = defineMessages({
   },
   analyticsStepOneTitle: {
     id: 'adminPortal.productTours.adminOnboarding.analytics.title.1',
-    defaultMessage: ANALYTICS_V2_TITLE,
+    defaultMessage: 'View enrollment insights',
     description: 'Title for the analytics step one',
   },
   analyticsStepOneBody: {
@@ -124,7 +116,7 @@ const messages = defineMessages({
   },
   organizeLearnersStepOneTitle: {
     id: 'adminPortal.productTours.adminOnboarding.organizeLearners.title.1',
-    defaultMessage: ORGANIZE_LEARNERS_TITLE,
+    defaultMessage: 'Organize learners',
     description: 'Title for the organize learners flow step one',
   },
   organizeLearnersStepOneBody: {
@@ -186,7 +178,7 @@ const messages = defineMessages({
 
   administerSubscriptionsTitle: {
     id: 'adminPortal.productTours.adminOnboarding.administerSubscriptions.title',
-    defaultMessage: ADMINISTER_SUBSCRIPTIONS_TITLE,
+    defaultMessage: 'Administer subscriptions',
     description: 'Title for the administer subscriptions step',
   },
   administerSubscriptionsStepOneBody: {
@@ -238,7 +230,7 @@ const messages = defineMessages({
   },
   allocateLearningBudgetTitle: {
     id: 'adminPortal.productTours.adminOnboarding.allocateLearningBudget.title',
-    defaultMessage: ALLOCATE_LEARNING_BUDGET_TITLE,
+    defaultMessage: 'Allocate learning budget',
     description: 'Description for the allocate learning budgets flow step one title',
   },
   allocateLearningBudgetStepOneBody: {
