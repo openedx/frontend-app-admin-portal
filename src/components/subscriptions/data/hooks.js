@@ -263,6 +263,7 @@ export const useStripeEventsBySubscription = ({ subscriptions, setErrors }) => {
     fetchAll().catch(err => {
       logError(err);
       setErrors(s => ({ ...s, [STRIPE_EVENT_SUMMARY]: NETWORK_ERROR_MESSAGE }));
+      setStripeInfoByUuid(Object.fromEntries(subscriptions.results.map(s => [s.uuid, null])));
       setLoadingStripeInfo(false);
     });
   }, [subscriptions, setErrors]);

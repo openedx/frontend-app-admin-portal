@@ -371,7 +371,7 @@ describe('useStripeEventsBySubscription', () => {
     });
   });
 
-  test('sets STRIPE_EVENT_SUMMARY error and loadingStripeInfo=false when fetchAll rejects', async () => {
+  test('sets STRIPE_EVENT_SUMMARY error, resets stripeInfoByUuid to null map, and sets loadingStripeInfo=false when fetchAll rejects', async () => {
     const syncError = new Error('Unexpected sync error');
     // Throwing synchronously inside the map causes fetchAll() to reject, triggering .catch
     EnterpriseAccessApiService.fetchStripeEvent.mockImplementation(() => { throw syncError; });
@@ -387,6 +387,8 @@ describe('useStripeEventsBySubscription', () => {
       expect(logError).toHaveBeenCalledWith(syncError);
       expect(setErrors).toHaveBeenCalledTimes(1);
       expect(result.current.loadingStripeInfo).toBe(false);
+      // stale Stripe data must not persist — current UUIDs are mapped to null
+      expect(result.current.stripeInfoByUuid).toEqual({ 'uuid-1': null });
     });
   });
 
