@@ -1,4 +1,7 @@
-import { useCallback, useEffect, useState } from 'react';
+import {
+  useCallback, useEffect, useMemo, useState,
+} from 'react';
+import dayjs from 'dayjs';
 import { logError } from '@edx/frontend-platform/logging';
 import { camelCaseObject } from '@edx/frontend-platform/utils';
 
@@ -215,6 +218,58 @@ export const useSubscriptionUsers = ({
   return [subscriptionUsers, forceRefresh, loadingUsers];
 };
 
+/**
+ * Fetches Stripe payment event for each subscription simultaneously.
+ * Builds a lookup table mapping each subscription UUID to its Stripe data,
+ * or null if the request failed. Returns that lookup table and a loading flag.
+ * @param {Object} subscriptions - The subscriptions object with a `results` array.
+ * @param {Function} setErrors - Error setter from SubscriptionContext.
+ */
+export const useStripeEventsBySubscription = ({ subscriptions, setErrors }) => {
+  const [stripeInfoByUuid, setStripeInfoByUuid] = useState({});
+  const [loadingStripeInfo, setLoadingStripeInfo] = useState(true);
+
+  useEffect(() => {
+    if (!subscriptions?.results?.length) {
+      setStripeInfoByUuid(prev => (Object.keys(prev).length > 0 ? {} : prev));
+      setLoadingStripeInfo(false);
+      return;
+    }
+    setLoadingStripeInfo(true);
+    const fetchAll = async () => {
+      const uuids = subscriptions.results.map(s => s.uuid);
+      const settled = await Promise.allSettled(
+        uuids.map(uuid => EnterpriseAccessApiService.fetchStripeEvent(uuid)),
+      );
+      const infoMap = {};
+      let hasError = false;
+      settled.forEach((result, idx) => {
+        if (result.status === 'fulfilled' && result.value?.data) {
+          infoMap[uuids[idx]] = camelCaseObject(result.value.data);
+        } else {
+          if (result.status === 'rejected') {
+            logError(result.reason);
+            hasError = true;
+          }
+          infoMap[uuids[idx]] = null;
+        }
+      });
+      if (hasError) {
+        setErrors(s => ({ ...s, [STRIPE_EVENT_SUMMARY]: NETWORK_ERROR_MESSAGE }));
+      }
+      setStripeInfoByUuid(infoMap);
+      setLoadingStripeInfo(false);
+    };
+    fetchAll().catch(err => {
+      logError(err);
+      setErrors(s => ({ ...s, [STRIPE_EVENT_SUMMARY]: NETWORK_ERROR_MESSAGE }));
+      setLoadingStripeInfo(false);
+    });
+  }, [subscriptions, setErrors]);
+
+  return { stripeInfoByUuid, loadingStripeInfo };
+};
+
 /*
  * This hook provides top level subscription data and customer agreement data for the given enterprise customer UUID.
  * It also provides an error state to be used by all subscription and license components.
@@ -226,13 +281,29 @@ export const useSubscriptionData = ({ enterpriseId }) => {
     forceRefresh,
     loading,
   } = useSubscriptions({ enterpriseId, setErrors });
+  const { stripeInfoByUuid, loadingStripeInfo } = useStripeEventsBySubscription({ subscriptions, setErrors });
+
+  const suppressedSubscriptionUuids = useMemo(() => {
+    const suppressed = new Set();
+    Object.values(stripeInfoByUuid).forEach(info => {
+      if (info?.renewedSubscriptionPlanUuid) {
+        const futureCancellation = info.canceledDate && dayjs(info.canceledDate).isAfter(dayjs());
+        if (info.isCanceled || futureCancellation) {
+          suppressed.add(info.renewedSubscriptionPlanUuid);
+        }
+      }
+    });
+    return suppressed;
+  }, [stripeInfoByUuid]);
 
   return {
     subscriptions,
     errors,
     setErrors,
     forceRefresh,
-    loading,
+    loading: loading || loadingStripeInfo,
+    stripeInfoByUuid,
+    suppressedSubscriptionUuids,
   };
 };
 
@@ -246,6 +317,8 @@ export const useStripeSubscriptionPlanInfo = ({ subPlanUuid, setErrors }) => {
   const [invoiceAmount, setInvoiceAmount] = useState(null);
   const [currency, setCurrency] = useState(null);
   const [canceledDate, setCanceledDate] = useState(null);
+  const [isCanceled, setIsCanceled] = useState(false);
+  const [renewedSubscriptionPlanUuid, setRenewedSubscriptionPlanUuid] = useState(null);
   useEffect(() => {
     const fetchStripeEvent = async () => {
       try {
@@ -262,6 +335,8 @@ export const useStripeSubscriptionPlanInfo = ({ subPlanUuid, setErrors }) => {
         }
         setCurrency(results.currency);
         setCanceledDate(results.canceledDate);
+        setIsCanceled(results.isCanceled ?? false);
+        setRenewedSubscriptionPlanUuid(results.renewedSubscriptionPlanUuid ?? null);
       } catch (error) {
         logError(error);
         setErrors(s => ({
@@ -279,6 +354,8 @@ export const useStripeSubscriptionPlanInfo = ({ subPlanUuid, setErrors }) => {
     invoiceAmount,
     currency,
     canceledDate,
+    isCanceled,
+    renewedSubscriptionPlanUuid,
     loadingStripeSummary,
   };
 };

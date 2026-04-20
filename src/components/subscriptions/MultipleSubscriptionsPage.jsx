@@ -27,8 +27,8 @@ const MultipleSubscriptionsPage = ({
   leadText,
   createActions,
 }) => {
-  const { data, loading } = useContext(SubscriptionContext);
-  const subscriptions = data.results;
+  const { data, loading, suppressedSubscriptionUuids } = useContext(SubscriptionContext);
+  const subscriptions = data.results.filter(sub => !suppressedSubscriptionUuids?.has(sub.uuid));
 
   if (loading) {
     return <LoadingMessage className="subscriptions" />;
@@ -72,7 +72,7 @@ const MultipleSubscriptionsPage = ({
     );
   }
 
-  if (subscriptions.length === 1) {
+  if (subscriptions.length === 1 && !suppressedSubscriptionUuids?.size) {
     return (
       <Navigate to={`/${enterpriseSlug}/admin/${redirectPage}/${subscriptions[0].uuid}`} replace />
     );

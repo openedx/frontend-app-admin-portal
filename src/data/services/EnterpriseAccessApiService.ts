@@ -19,6 +19,8 @@ type SubPlanStripeEvent = {
   upcoming_invoice_amount_due: number | null;
   currency: string | null;
   canceled_date: string | null;
+  is_canceled: boolean;
+  renewed_subscription_plan_uuid: string | null;
 };
 
 export type SubPlanStripeEventResponse = {

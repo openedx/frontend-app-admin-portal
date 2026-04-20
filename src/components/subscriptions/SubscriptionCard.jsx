@@ -12,7 +12,6 @@ import classNames from 'classnames';
 import {
   ACTIVE, CANCELED, FREE_TRIAL_BADGE, SCHEDULED, SELF_SERVICE_TRIAL, SUBSCRIPTION_STATUS_BADGE_MAP,
 } from './data/constants';
-import { useStripeSubscriptionPlanInfo } from './data/hooks';
 import { SubscriptionContext } from './SubscriptionData';
 import { ADMINISTER_SUBSCRIPTIONS_TARGETS } from '../ProductTours/AdminOnboardingTours/constants';
 import { makePlural } from '../../utils';
@@ -32,10 +31,14 @@ const SubscriptionCard = ({
     title,
     uuid: subPlanUuid,
   } = subscription;
-  const { setErrors } = useContext(SubscriptionContext);
-  const {
-    invoiceAmount, currency, canceledDate, loadingStripeSummary,
-  } = useStripeSubscriptionPlanInfo({ subPlanUuid, setErrors });
+  const { stripeInfoByUuid } = useContext(SubscriptionContext);
+  const rawStripeInfo = stripeInfoByUuid?.[subPlanUuid];
+  const loadingStripeSummary = !(subPlanUuid in (stripeInfoByUuid ?? {}));
+  const invoiceAmount = rawStripeInfo?.upcomingInvoiceAmountDue != null
+    ? rawStripeInfo.upcomingInvoiceAmountDue / 100
+    : null;
+  const currency = rawStripeInfo?.currency ?? null;
+  const canceledDate = rawStripeInfo?.canceledDate ?? null;
   const formattedStartDate = dayjs(startDate).format('MMMM D, YYYY');
   const formattedExpirationDate = dayjs(expirationDate).format('MMMM D, YYYY');
   const formattedCanceledDate = canceledDate ? dayjs(canceledDate).format('MMMM D, YYYY') : null;
