@@ -45,7 +45,7 @@ const SubscriptionCard = ({
   const subscriptionStatus = getSubscriptionStatus(subscription, canceledDate);
 
   let subscriptionUpcomingPrice;
-  if (!loadingStripeSummary && invoiceAmount) {
+  if (!loadingStripeSummary && invoiceAmount != null && currency) {
     const locale = getLocale();
     subscriptionUpcomingPrice = `${invoiceAmount.toLocaleString(locale, { style: 'currency', currency, maximumFractionDigits: 0 })} ${currency.toUpperCase()}`;
   }
