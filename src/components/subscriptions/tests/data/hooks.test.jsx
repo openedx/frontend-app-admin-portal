@@ -341,6 +341,45 @@ describe('useStripeEventsBySubscription', () => {
     await waitFor(() => expect(result.current.loadingStripeInfo).toBe(false));
   });
 
+  test('ignores stale response when subscriptions change mid-flight', async () => {
+    const uuid1 = 'uuid-stale';
+    const uuid2 = 'uuid-fresh';
+    let resolveStale;
+    const staleResponse = {
+      data: {
+        upcoming_invoice_amount_due: 9999, currency: 'usd', canceled_date: null, is_canceled: false, renewed_subscription_plan_uuid: null,
+      },
+    };
+    const freshResponse = {
+      data: {
+        upcoming_invoice_amount_due: 1111, currency: 'usd', canceled_date: null, is_canceled: false, renewed_subscription_plan_uuid: null,
+      },
+    };
+
+    // First call (uuid1) is held; second call (uuid2) resolves immediately
+    EnterpriseAccessApiService.fetchStripeEvent
+      .mockImplementationOnce(() => new Promise(resolve => { resolveStale = resolve; }))
+      .mockResolvedValue(freshResponse);
+
+    const setErrors = jest.fn();
+    const { result, rerender } = renderHook(
+      ({ subs }) => useStripeEventsBySubscription({ subscriptions: subs, setErrors }),
+      { initialProps: { subs: { results: [{ uuid: uuid1 }] } } },
+    );
+
+    // Change subscriptions before the first fetch resolves — triggers cleanup
+    rerender({ subs: { results: [{ uuid: uuid2 }] } });
+
+    await waitFor(() => expect(result.current.loadingStripeInfo).toBe(false));
+
+    // Now resolve the stale request — should be a no-op
+    resolveStale(staleResponse);
+    await new Promise(r => { setTimeout(r, 50); });
+
+    expect(result.current.stripeInfoByUuid).toHaveProperty(uuid2);
+    expect(result.current.stripeInfoByUuid).not.toHaveProperty(uuid1);
+  });
+
   test('computes suppressedSubscriptionUuids when isCanceled=true (tested via useSubscriptionData integration)', async () => {
     // This test verifies the raw stripeInfoByUuid data from the hook
     const trialUuid = 'trial-uuid';

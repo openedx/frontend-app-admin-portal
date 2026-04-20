@@ -230,10 +230,11 @@ export const useStripeEventsBySubscription = ({ subscriptions, setErrors }) => {
   const [loadingStripeInfo, setLoadingStripeInfo] = useState(true);
 
   useEffect(() => {
+    let cancelled = false;
     if (!subscriptions?.results?.length) {
       setStripeInfoByUuid(prev => (Object.keys(prev).length > 0 ? {} : prev));
       setLoadingStripeInfo(false);
-      return;
+      return undefined;
     }
     setLoadingStripeInfo(true);
     const fetchAll = async () => {
@@ -241,6 +242,7 @@ export const useStripeEventsBySubscription = ({ subscriptions, setErrors }) => {
       const settled = await Promise.allSettled(
         uuids.map(uuid => EnterpriseAccessApiService.fetchStripeEvent(uuid)),
       );
+      if (cancelled) { return; }
       const infoMap = {};
       let hasError = false;
       settled.forEach((result, idx) => {
@@ -261,11 +263,13 @@ export const useStripeEventsBySubscription = ({ subscriptions, setErrors }) => {
       setLoadingStripeInfo(false);
     };
     fetchAll().catch(err => {
+      if (cancelled) { return; }
       logError(err);
       setErrors(s => ({ ...s, [STRIPE_EVENT_SUMMARY]: NETWORK_ERROR_MESSAGE }));
       setStripeInfoByUuid(Object.fromEntries(subscriptions.results.map(s => [s.uuid, null])));
       setLoadingStripeInfo(false);
     });
+    return () => { cancelled = true; };
   }, [subscriptions, setErrors]);
 
   return { stripeInfoByUuid, loadingStripeInfo };
