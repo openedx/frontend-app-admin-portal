@@ -278,6 +278,39 @@ describe('useStripeEventsBySubscription', () => {
     });
   });
 
+  test('keeps loadingStripeInfo=true while subscriptionsLoading=true, preventing flicker', async () => {
+    const setErrors = jest.fn();
+    EnterpriseAccessApiService.fetchStripeEvent.mockResolvedValue({
+      data: {
+        upcoming_invoice_amount_due: 0, currency: 'usd', canceled_date: null, is_canceled: false, renewed_subscription_plan_uuid: null,
+      },
+    });
+
+    const { result, rerender } = renderHook(
+      ({ subs, subsLoading }) => useStripeEventsBySubscription({
+        subscriptions: subs,
+        subscriptionsLoading: subsLoading,
+        setErrors,
+      }),
+      { initialProps: { subs: { results: [] }, subsLoading: true } },
+    );
+
+    // While subscriptions are still loading, loadingStripeInfo must stay true (no early false)
+    await waitFor(() => {
+      expect(result.current.loadingStripeInfo).toBe(true);
+      expect(EnterpriseAccessApiService.fetchStripeEvent).not.toHaveBeenCalled();
+    });
+
+    // Subscriptions finish loading with results — loading should remain true until Stripe resolves
+    rerender({ subs: { results: [{ uuid: 'uuid-1' }] }, subsLoading: false });
+    expect(result.current.loadingStripeInfo).toBe(true);
+
+    await waitFor(() => {
+      expect(result.current.loadingStripeInfo).toBe(false);
+      expect(EnterpriseAccessApiService.fetchStripeEvent).toHaveBeenCalledTimes(1);
+    });
+  });
+
   test('sets loadingStripeInfo=false and clears stripeInfoByUuid when subscriptions is empty', async () => {
     const setErrors = jest.fn();
     const { result } = renderHook(() => useStripeEventsBySubscription({

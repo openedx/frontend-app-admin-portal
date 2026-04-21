@@ -236,14 +236,20 @@ const normalizeStripeInfo = (data) => {
  * Builds a lookup table mapping each subscription UUID to its Stripe data,
  * or null if the request failed. Returns that lookup table and a loading flag.
  * @param {Object} subscriptions - The subscriptions object with a `results` array.
+ * @param {boolean} subscriptionsLoading - Whether the subscriptions fetch is still in-flight.
+ *   Keeping loadingStripeInfo=true while subscriptions are loading prevents a brief combined
+ *   loading=false flash between when subscriptions resolve and when this effect re-runs.
  * @param {Function} setErrors - Error setter from SubscriptionContext.
  */
-export const useStripeEventsBySubscription = ({ subscriptions, setErrors }) => {
+export const useStripeEventsBySubscription = ({ subscriptions, subscriptionsLoading, setErrors }) => {
   const [stripeInfoByUuid, setStripeInfoByUuid] = useState({});
   const [loadingStripeInfo, setLoadingStripeInfo] = useState(true);
 
   useEffect(() => {
     let cancelled = false;
+    if (subscriptionsLoading) {
+      return undefined;
+    }
     if (!subscriptions?.results?.length) {
       setStripeInfoByUuid(prev => (Object.keys(prev).length > 0 ? {} : prev));
       setLoadingStripeInfo(false);
@@ -283,7 +289,7 @@ export const useStripeEventsBySubscription = ({ subscriptions, setErrors }) => {
       setLoadingStripeInfo(false);
     });
     return () => { cancelled = true; };
-  }, [subscriptions, setErrors]);
+  }, [subscriptions, subscriptionsLoading, setErrors]);
 
   return { stripeInfoByUuid, loadingStripeInfo };
 };
@@ -299,7 +305,11 @@ export const useSubscriptionData = ({ enterpriseId }) => {
     forceRefresh,
     loading,
   } = useSubscriptions({ enterpriseId, setErrors });
-  const { stripeInfoByUuid, loadingStripeInfo } = useStripeEventsBySubscription({ subscriptions, setErrors });
+  const { stripeInfoByUuid, loadingStripeInfo } = useStripeEventsBySubscription({
+    subscriptions,
+    subscriptionsLoading: loading,
+    setErrors,
+  });
 
   const suppressedSubscriptionUuids = useMemo(() => {
     const suppressed = new Set();
