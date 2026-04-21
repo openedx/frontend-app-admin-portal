@@ -74,9 +74,9 @@ const endedTrialProps = {
   },
 };
 
-// camelCase context shape (as produced by camelCaseObject on the API response)
+// normalized context shape (as produced by normalizeStripeInfo in hooks.js)
 const mockStripeInfoActive = {
-  upcomingInvoiceAmountDue: 200000, // divided by 100 → 2000
+  invoiceAmountDue: 2000,
   currency: 'usd',
   canceledDate: null,
   isCanceled: false,
@@ -84,7 +84,7 @@ const mockStripeInfoActive = {
 };
 
 const mockStripeInfoCanceled = {
-  upcomingInvoiceAmountDue: null,
+  invoiceAmountDue: null,
   currency: null,
   canceledDate: '2027-01-29T14:24:33Z',
   isCanceled: false,

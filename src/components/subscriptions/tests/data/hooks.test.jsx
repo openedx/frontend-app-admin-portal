@@ -470,6 +470,31 @@ describe('useStripeEventsBySubscription', () => {
     });
   });
 
+  test('normalizes upcomingInvoiceAmountDue from cents to dollars as invoiceAmountDue', async () => {
+    const uuid1 = 'uuid-normalize';
+    EnterpriseAccessApiService.fetchStripeEvent.mockResolvedValue({
+      data: {
+        upcoming_invoice_amount_due: 500000,
+        currency: 'usd',
+        canceled_date: null,
+        is_canceled: false,
+        renewed_subscription_plan_uuid: null,
+      },
+    });
+
+    const setErrors = jest.fn();
+    const subscriptions = makeSubscriptions([uuid1]);
+    const { result } = renderHook(() => useStripeEventsBySubscription({
+      subscriptions,
+      setErrors,
+    }));
+
+    await waitFor(() => {
+      expect(result.current.stripeInfoByUuid[uuid1]).toMatchObject({ invoiceAmountDue: 5000 });
+      expect(result.current.stripeInfoByUuid[uuid1]).not.toHaveProperty('upcomingInvoiceAmountDue');
+    });
+  });
+
   test('stores null for subscriptions when API returns no data (e.g. 404)', async () => {
     const uuid1 = 'uuid-no-data';
     EnterpriseAccessApiService.fetchStripeEvent.mockResolvedValue({ status: 404 });

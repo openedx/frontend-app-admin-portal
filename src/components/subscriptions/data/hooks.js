@@ -219,6 +219,19 @@ export const useSubscriptionUsers = ({
 };
 
 /**
+ * Normalizes raw camelCased Stripe API data into a consistent shape for consumers.
+ * Converts upcomingInvoiceAmountDue from cents to dollars as invoiceAmountDue.
+ */
+const normalizeStripeInfo = (data) => {
+  if (!data) { return data; }
+  const { upcomingInvoiceAmountDue, ...rest } = data;
+  return {
+    ...rest,
+    invoiceAmountDue: upcomingInvoiceAmountDue != null ? upcomingInvoiceAmountDue / 100 : null,
+  };
+};
+
+/**
  * Fetches Stripe payment event for each subscription simultaneously.
  * Builds a lookup table mapping each subscription UUID to its Stripe data,
  * or null if the request failed. Returns that lookup table and a loading flag.
@@ -247,7 +260,7 @@ export const useStripeEventsBySubscription = ({ subscriptions, setErrors }) => {
       let hasError = false;
       settled.forEach((result, idx) => {
         if (result.status === 'fulfilled' && result.value?.data) {
-          infoMap[uuids[idx]] = camelCaseObject(result.value.data);
+          infoMap[uuids[idx]] = normalizeStripeInfo(camelCaseObject(result.value.data));
         } else {
           if (result.status === 'rejected') {
             logError(result.reason);

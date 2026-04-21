@@ -32,22 +32,17 @@ const SubscriptionCard = ({
     uuid: subPlanUuid,
   } = subscription;
   const { stripeInfoByUuid } = useContext(SubscriptionContext);
-  const rawStripeInfo = stripeInfoByUuid?.[subPlanUuid];
   const loadingStripeSummary = !(subPlanUuid in (stripeInfoByUuid ?? {}));
-  const invoiceAmount = rawStripeInfo?.upcomingInvoiceAmountDue != null
-    ? rawStripeInfo.upcomingInvoiceAmountDue / 100
-    : null;
-  const currency = rawStripeInfo?.currency ?? null;
-  const canceledDate = rawStripeInfo?.canceledDate ?? null;
+  const { invoiceAmountDue = null, currency = null, canceledDate = null } = stripeInfoByUuid?.[subPlanUuid] ?? {};
   const formattedStartDate = dayjs(startDate).format('MMMM D, YYYY');
   const formattedExpirationDate = dayjs(expirationDate).format('MMMM D, YYYY');
   const formattedCanceledDate = canceledDate ? dayjs(canceledDate).format('MMMM D, YYYY') : null;
   const subscriptionStatus = getSubscriptionStatus(subscription, canceledDate);
 
   let subscriptionUpcomingPrice;
-  if (!loadingStripeSummary && invoiceAmount != null && currency) {
+  if (!loadingStripeSummary && invoiceAmountDue != null && currency) {
     const locale = getLocale();
-    subscriptionUpcomingPrice = `${invoiceAmount.toLocaleString(locale, { style: 'currency', currency, maximumFractionDigits: 0 })} ${currency.toUpperCase()}`;
+    subscriptionUpcomingPrice = `${invoiceAmountDue.toLocaleString(locale, { style: 'currency', currency, maximumFractionDigits: 0 })} ${currency.toUpperCase()}`;
   }
 
   const renderDaysUntilPlanStartText = (className) => {
