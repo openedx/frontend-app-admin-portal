@@ -17,7 +17,7 @@ const SubscriptionData = ({ children, enterpriseId }) => {
     stripeInfoByUuid,
     suppressedSubscriptionUuids,
   } = useSubscriptionData({ enterpriseId });
-  const hasSubscription = subscriptions?.length > 0;
+  const hasSubscription = subscriptions?.results?.length > 0;
   const intl = useIntl();
 
   const context = useMemo(() => ({
@@ -30,7 +30,7 @@ const SubscriptionData = ({ children, enterpriseId }) => {
     suppressedSubscriptionUuids,
   }), [subscriptions, errors, loading, forceRefresh, setErrors, stripeInfoByUuid, suppressedSubscriptionUuids]);
 
-  if (subscriptions) {
+  if (loading || hasSubscription) {
     return (
       <SubscriptionContext.Provider value={context}>
         {children}
