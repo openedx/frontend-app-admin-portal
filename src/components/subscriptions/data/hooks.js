@@ -311,6 +311,10 @@ export const useSubscriptionData = ({ enterpriseId }) => {
     setErrors,
   });
 
+  // Builds the set of subscription UUIDs that should be hidden from the UI.
+  // A renewed subscription's predecessor is suppressed when Stripe reports it as
+  // canceled (or scheduled for future cancellation), preventing duplicate rows
+  // for the same logical plan during a renewal transition.
   const suppressedSubscriptionUuids = useMemo(() => {
     const suppressed = new Set();
     Object.values(stripeInfoByUuid).forEach(info => {
