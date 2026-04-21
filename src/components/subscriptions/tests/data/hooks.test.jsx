@@ -6,6 +6,7 @@ import LicenseManagerApiService from '../../../../data/services/LicenseManagerAP
 import EnterpriseAccessApiService from '../../../../data/services/EnterpriseAccessApiService';
 import {
   useStripeSubscriptionPlanInfo,
+  useSubscriptionData,
   useSubscriptionUsersOverview,
   useStripeEventsBySubscription,
 } from '../../data/hooks';
@@ -15,6 +16,7 @@ const TEST_SUBSCRIPTION_PLAN_UUID = 'test-plan-uuid-1';
 jest.mock('../../../../data/services/LicenseManagerAPIService', () => ({
   __esModule: true,
   default: {
+    fetchCustomerAgreementData: jest.fn(),
     fetchSubscriptionUsersOverview: jest.fn(),
   },
 }));
@@ -484,6 +486,97 @@ describe('useStripeEventsBySubscription', () => {
       // This allows SubscriptionCard to detect the fetch completed (not still loading)
       expect(result.current.stripeInfoByUuid).toHaveProperty(uuid1, null);
       expect(result.current.loadingStripeInfo).toBe(false);
+    });
+  });
+});
+
+describe('useSubscriptionData', () => {
+  const enterpriseId = 'test-enterprise-uuid';
+  const trialUuid = 'trial-sub-uuid';
+  const renewedUuid = 'renewed-sub-uuid';
+
+  const makeCustomerAgreementResponse = () => ({
+    data: {
+      results: [
+        {
+          subscriptions: [{ uuid: trialUuid }],
+          disable_expiration_notifications: false,
+          net_days_until_expiration: 10,
+        },
+      ],
+      count: 1,
+    },
+  });
+
+  const makeStripeResponse = (overrides = {}) => ({
+    data: {
+      upcoming_invoice_amount_due: null,
+      currency: null,
+      canceled_date: null,
+      is_canceled: false,
+      renewed_subscription_plan_uuid: renewedUuid,
+      ...overrides,
+    },
+  });
+
+  beforeEach(() => {
+    jest.resetAllMocks();
+    LicenseManagerApiService.fetchCustomerAgreementData.mockResolvedValue(
+      makeCustomerAgreementResponse(),
+    );
+  });
+
+  afterEach(() => cleanup());
+
+  test('suppressedSubscriptionUuids includes renewedSubscriptionPlanUuid when isCanceled=true', async () => {
+    EnterpriseAccessApiService.fetchStripeEvent.mockResolvedValue(
+      makeStripeResponse({ is_canceled: true }),
+    );
+
+    const { result } = renderHook(() => useSubscriptionData({ enterpriseId }));
+
+    await waitFor(() => {
+      expect(result.current.loading).toBe(false);
+      expect(result.current.suppressedSubscriptionUuids.has(renewedUuid)).toBe(true);
+    });
+  });
+
+  test('suppressedSubscriptionUuids includes renewedSubscriptionPlanUuid when canceledDate is in the future', async () => {
+    EnterpriseAccessApiService.fetchStripeEvent.mockResolvedValue(
+      makeStripeResponse({ canceled_date: '2099-01-01T00:00:00Z', is_canceled: false }),
+    );
+
+    const { result } = renderHook(() => useSubscriptionData({ enterpriseId }));
+
+    await waitFor(() => {
+      expect(result.current.loading).toBe(false);
+      expect(result.current.suppressedSubscriptionUuids.has(renewedUuid)).toBe(true);
+    });
+  });
+
+  test('suppressedSubscriptionUuids excludes renewedSubscriptionPlanUuid when neither canceled nor future cancellation', async () => {
+    EnterpriseAccessApiService.fetchStripeEvent.mockResolvedValue(
+      makeStripeResponse({ canceled_date: null, is_canceled: false }),
+    );
+
+    const { result } = renderHook(() => useSubscriptionData({ enterpriseId }));
+
+    await waitFor(() => {
+      expect(result.current.loading).toBe(false);
+      expect(result.current.suppressedSubscriptionUuids.has(renewedUuid)).toBe(false);
+    });
+  });
+
+  test('suppressedSubscriptionUuids excludes uuid when canceledDate is in the past and not isCanceled', async () => {
+    EnterpriseAccessApiService.fetchStripeEvent.mockResolvedValue(
+      makeStripeResponse({ canceled_date: '2020-01-01T00:00:00Z', is_canceled: false }),
+    );
+
+    const { result } = renderHook(() => useSubscriptionData({ enterpriseId }));
+
+    await waitFor(() => {
+      expect(result.current.loading).toBe(false);
+      expect(result.current.suppressedSubscriptionUuids.has(renewedUuid)).toBe(false);
     });
   });
 });
