@@ -72,7 +72,8 @@ const MultipleSubscriptionsPage = ({
     );
   }
 
-  if (subscriptions.length === 1 && !suppressedSubscriptionUuids?.size) {
+  const anySuppressedInResults = data.results.some(sub => suppressedSubscriptionUuids?.has(sub.uuid));
+  if (subscriptions.length === 1 && !anySuppressedInResults) {
     return (
       <Navigate to={`/${enterpriseSlug}/admin/${redirectPage}/${subscriptions[0].uuid}`} replace />
     );

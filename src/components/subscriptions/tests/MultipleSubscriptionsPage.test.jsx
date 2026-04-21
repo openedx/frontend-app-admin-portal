@@ -166,6 +166,26 @@ describe('MultipleSubscriptionsPage', () => {
     expect(mockNavigate).toHaveBeenCalledWith(`/${fakeSlug}/admin/${redirectPage}/${subsUuid}`);
   });
 
+  it('redirects when only one subscription exists and suppressedSubscriptionUuids contains unrelated UUIDs', () => {
+    const subsUuid = 'only-sub-uuid';
+    const unrelatedUuid = 'uuid-not-in-results';
+    const subscriptions = {
+      data: {
+        results: [{
+          uuid: subsUuid,
+          title: 'Enterprise A',
+          startDate: '2021-04-13',
+          expirationDate: '2024-04-13',
+          licenses: { allocated: 10, total: 20 },
+        }],
+      },
+      suppressedSubscriptionUuids: new Set([unrelatedUuid]),
+      stripeInfoByUuid: {},
+    };
+    render(<MultipleSubscriptionsPageWrapper subscriptions={subscriptions} {...defaultProps} />);
+    expect(mockNavigate).toHaveBeenLastCalledWith(`/${fakeSlug}/admin/${ROUTE_NAMES.subscriptionManagement}/${subsUuid}`);
+  });
+
   it('does not redirect when the only visible subscription is a canceled trial and the paid renewal is suppressed', () => {
     const trialUuid = 'trial-only-uuid';
     const renewedUuid = 'suppressed-paid-uuid';
