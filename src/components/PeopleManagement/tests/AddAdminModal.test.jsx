@@ -17,19 +17,13 @@ jest.mock('@edx/frontend-platform/logging');
 const messages = {
   'adminPortal.peopleManagement.addAdmin.modal.title': 'Invite Admins',
   'adminPortal.peopleManagement.addAdmin.modal.emailLabel': 'Enter email address',
-  'adminPortal.peopleManagement.addAdmin.modal.helperText': 'Maximum invite at a time: 10 emails. To add more than one member, enter one email address per line.',
+  'adminPortal.peopleManagement.addAdmin.modal.helperText.maxCount': 'Maximum invite at a time: 10 emails',
+  'adminPortal.peopleManagement.addAdmin.modal.helperText.perLine': 'To add more than one member, enter one email address per line.',
   'adminPortal.peopleManagement.addAdmin.modal.cancel': 'Cancel',
   'adminPortal.peopleManagement.addAdmin.modal.submit': 'Invite',
   'adminPortal.peopleManagement.addAdmin.modal.submitting': 'Inviting...',
   'adminPortal.peopleManagement.addAdmin.modal.success': 'Invited!',
   'adminPortal.peopleManagement.addAdmin.modal.error': 'Try again',
-  'adminPortal.peopleManagement.addAdmin.modal.error.noEmail': 'Please add at least one email address.',
-  'adminPortal.peopleManagement.addAdmin.modal.error.tooManyEmails': '{enteredCount} emails entered ({maxCount} maximum). Delete {extraCount} {extraCount, plural, one {email} other {emails}} to proceed.',
-  'adminPortal.peopleManagement.addAdmin.modal.error.invalidEmail': '{email} is not a valid email.',
-  'adminPortal.peopleManagement.addAdmin.modal.error.duplicateEmails': '{email}{otherCount, plural, =0 { was entered more than once.} one { and # other email address was entered more than once.} other { and # other email addresses were entered more than once.}}',
-  'adminPortal.peopleManagement.addAdmin.modal.error.inviteFailed': 'Failed to invite admins.',
-  'adminPortal.peopleManagement.addAdmin.modal.successTitle': 'Invitation Results',
-  'adminPortal.peopleManagement.addAdmin.modal.successMessage': 'Admins invited successfully!',
 };
 
 const AddAdminModalWrapper = (props) => (
@@ -44,6 +38,7 @@ describe('<AddAdminModal />', () => {
     onClose: jest.fn(),
     enterpriseId: 'test-enterprise-id',
     onSuccess: jest.fn(),
+    onError: jest.fn(),
   };
 
   beforeEach(() => {
@@ -67,7 +62,8 @@ describe('<AddAdminModal />', () => {
 
       expect(screen.getByText('Invite Admins')).toBeInTheDocument();
       expect(screen.getByText('Enter email address')).toBeInTheDocument();
-      expect(screen.getByText('Maximum invite at a time: 10 emails. To add more than one member, enter one email address per line.')).toBeInTheDocument();
+      expect(screen.getByText('Maximum invite at a time: 10 emails')).toBeInTheDocument();
+      expect(screen.getByText('To add more than one member, enter one email address per line.')).toBeInTheDocument();
     });
 
     it('does not render modal when isOpen is false', () => {
@@ -112,9 +108,6 @@ describe('<AddAdminModal />', () => {
       const textarea = screen.getByRole('textbox');
       await user.type(textarea, 'invalid-email');
 
-      const inviteButton = screen.getByText('Invite');
-      await user.click(inviteButton);
-
       await waitFor(() => {
         expect(screen.getByText('invalid-email is not a valid email.')).toBeInTheDocument();
       });
@@ -125,17 +118,17 @@ describe('<AddAdminModal />', () => {
       expect(mockOnClose).toHaveBeenCalled();
     });
 
-    it('resets success message when modal is closed', async () => {
-      jest.useFakeTimers();
-      const user = userEvent.setup({ delay: null });
+    it('closes modal immediately on successful invite', async () => {
+      const user = userEvent.setup();
       const mockOnClose = jest.fn();
+      const mockOnSuccess = jest.fn();
       const mockResponse = {
         status: 200,
         data: [{ email: 'admin@example.com', status: 'invite sent' }],
       };
       LmsApiService.inviteEnterpriseAdmin.mockResolvedValue(mockResponse);
 
-      const { rerender } = render(<AddAdminModalWrapper {...defaultProps} onClose={mockOnClose} />);
+      render(<AddAdminModalWrapper {...defaultProps} onClose={mockOnClose} onSuccess={mockOnSuccess} />);
 
       const textarea = screen.getByRole('textbox');
       await user.type(textarea, 'admin@example.com');
@@ -143,52 +136,33 @@ describe('<AddAdminModal />', () => {
       await user.click(inviteButton);
 
       await waitFor(() => {
-        expect(screen.getByText('Invitation Results')).toBeInTheDocument();
-      });
-
-      act(() => {
-        jest.advanceTimersByTime(3000);
-      });
-
-      await waitFor(() => {
+        expect(mockOnSuccess).toHaveBeenCalledWith(mockResponse);
         expect(mockOnClose).toHaveBeenCalled();
       });
-
-      rerender(<AddAdminModalWrapper {...defaultProps} isOpen onClose={mockOnClose} />);
-
-      expect(screen.getByRole('textbox')).toBeInTheDocument();
-      expect(screen.queryByText('Invitation Results')).not.toBeInTheDocument();
-
-      jest.useRealTimers();
     });
   });
 
   describe('Email Input Validation', () => {
-    it('shows error when no email is entered', async () => {
-      const user = userEvent.setup();
+    it('invite button is disabled when no email is entered', () => {
       render(<AddAdminModalWrapper {...defaultProps} />);
 
-      const inviteButton = screen.getByText('Invite');
-      await user.click(inviteButton);
-
-      await waitFor(() => {
-        expect(screen.getByText('Please add at least one email address.')).toBeInTheDocument();
-      });
+      const inviteButton = screen.getByText('Invite').closest('button');
+      expect(inviteButton).toBeDisabled();
     });
 
-    it('shows error for invalid email format', async () => {
+    it('shows real-time validation error as user types invalid email', async () => {
       const user = userEvent.setup();
       render(<AddAdminModalWrapper {...defaultProps} />);
 
       const textarea = screen.getByRole('textbox');
       await user.type(textarea, 'invalid-email');
 
-      const inviteButton = screen.getByText('Invite');
-      await user.click(inviteButton);
-
       await waitFor(() => {
         expect(screen.getByText('invalid-email is not a valid email.')).toBeInTheDocument();
       });
+
+      const inviteButton = screen.getByText('Invite').closest('button');
+      expect(inviteButton).toBeDisabled();
     });
 
     it('accepts valid single email', async () => {
@@ -229,7 +203,7 @@ describe('<AddAdminModal />', () => {
       });
     });
 
-    it('shows error when more than 10 emails are entered', async () => {
+    it('shows real-time error when more than 10 emails are entered', async () => {
       const user = userEvent.setup();
       render(<AddAdminModalWrapper {...defaultProps} />);
 
@@ -237,34 +211,50 @@ describe('<AddAdminModal />', () => {
       const textarea = screen.getByRole('textbox');
       await user.type(textarea, emails.join('\n'));
 
-      const inviteButton = screen.getByText('Invite');
-      await user.click(inviteButton);
-
       await waitFor(() => {
         expect(screen.getByText('11 emails entered (10 maximum). Delete 1 email to proceed.')).toBeInTheDocument();
       });
 
+      const inviteButton = screen.getByText('Invite').closest('button');
+      expect(inviteButton).toBeDisabled();
       expect(LmsApiService.inviteEnterpriseAdmin).not.toHaveBeenCalled();
     });
 
-    it('shows error for duplicate emails', async () => {
+    it('shows real-time error for duplicate emails', async () => {
       const user = userEvent.setup();
       render(<AddAdminModalWrapper {...defaultProps} />);
 
       const textarea = screen.getByRole('textbox');
       await user.type(textarea, 'admin@example.com\nadmin@example.com');
 
-      const inviteButton = screen.getByText('Invite');
-      await user.click(inviteButton);
-
       await waitFor(() => {
-        expect(screen.getByText('admin@example.com was entered more than once.')).toBeInTheDocument();
+        const elements = screen.getAllByText((content, element) => element?.textContent === 'admin@example.com was entered more than once.');
+        expect(elements.length).toBeGreaterThan(0);
       });
 
+      const inviteButton = screen.getByText('Invite').closest('button');
+      expect(inviteButton).toBeDisabled();
       expect(LmsApiService.inviteEnterpriseAdmin).not.toHaveBeenCalled();
     });
 
-    it('trims whitespace from emails', async () => {
+    it('shows real-time error for case-insensitive duplicate emails', async () => {
+      const user = userEvent.setup();
+      render(<AddAdminModalWrapper {...defaultProps} />);
+
+      const textarea = screen.getByRole('textbox');
+      await user.type(textarea, 'admin@example.com\nAdmin@Example.COM');
+
+      await waitFor(() => {
+        const elements = screen.getAllByText((content, element) => element?.textContent === 'Admin@Example.COM was entered more than once.');
+        expect(elements.length).toBeGreaterThan(0);
+      });
+
+      const inviteButton = screen.getByText('Invite').closest('button');
+      expect(inviteButton).toBeDisabled();
+      expect(LmsApiService.inviteEnterpriseAdmin).not.toHaveBeenCalled();
+    });
+
+    it('trims leading/trailing spaces from emails before validation', async () => {
       const user = userEvent.setup();
       LmsApiService.inviteEnterpriseAdmin.mockResolvedValue({ status: 200 });
       render(<AddAdminModalWrapper {...defaultProps} />);
@@ -273,6 +263,7 @@ describe('<AddAdminModal />', () => {
       await user.type(textarea, '  admin@example.com  ');
 
       const inviteButton = screen.getByText('Invite');
+      expect(inviteButton.closest('button')).not.toBeDisabled();
       await user.click(inviteButton);
 
       await waitFor(() => {
@@ -302,21 +293,23 @@ describe('<AddAdminModal />', () => {
       });
     });
 
-    it('clears error message when user types in textarea', async () => {
+    it('clears error message when user corrects invalid email', async () => {
       const user = userEvent.setup();
       render(<AddAdminModalWrapper {...defaultProps} />);
 
       const textarea = screen.getByRole('textbox');
-      const inviteButton = screen.getByText('Invite');
-      await user.click(inviteButton);
+      await user.type(textarea, 'invalid-email');
 
       await waitFor(() => {
-        expect(screen.getByText('Please add at least one email address.')).toBeInTheDocument();
+        expect(screen.getByText('invalid-email is not a valid email.')).toBeInTheDocument();
       });
 
+      await user.clear(textarea);
       await user.type(textarea, 'admin@example.com');
 
-      expect(screen.queryByText('Please add at least one email address.')).not.toBeInTheDocument();
+      await waitFor(() => {
+        expect(screen.queryByText('invalid-email is not a valid email.')).not.toBeInTheDocument();
+      });
     });
   });
 
@@ -339,11 +332,12 @@ describe('<AddAdminModal />', () => {
       });
     });
 
-    it('shows complete state after successful invitation', async () => {
-      jest.useFakeTimers();
-      const user = userEvent.setup({ delay: null });
+    it('calls onSuccess and closes modal after successful invitation', async () => {
+      const user = userEvent.setup();
+      const mockOnSuccess = jest.fn();
+      const mockOnClose = jest.fn();
       LmsApiService.inviteEnterpriseAdmin.mockResolvedValue({ status: 200, data: 'Success' });
-      render(<AddAdminModalWrapper {...defaultProps} />);
+      render(<AddAdminModalWrapper {...defaultProps} onSuccess={mockOnSuccess} onClose={mockOnClose} />);
 
       const textarea = screen.getByRole('textbox');
       await user.type(textarea, 'admin@example.com');
@@ -352,15 +346,13 @@ describe('<AddAdminModal />', () => {
       await user.click(inviteButton);
 
       await waitFor(() => {
-        expect(screen.getByText('Admins invited successfully!')).toBeInTheDocument();
+        expect(mockOnSuccess).toHaveBeenCalled();
+        expect(mockOnClose).toHaveBeenCalled();
       });
-
-      jest.useRealTimers();
     });
 
-    it('calls onSuccess with API response and closes modal after successful invitation', async () => {
-      jest.useFakeTimers();
-      const user = userEvent.setup({ delay: null });
+    it('calls onSuccess with API response and closes modal immediately', async () => {
+      const user = userEvent.setup();
       const mockOnSuccess = jest.fn();
       const mockOnClose = jest.fn();
       const mockResponse = {
@@ -381,20 +373,10 @@ describe('<AddAdminModal />', () => {
       await user.click(inviteButton);
 
       await waitFor(() => {
-        expect(screen.getByText('Invitation Results')).toBeInTheDocument();
-      });
-
-      act(() => {
-        jest.advanceTimersByTime(3000);
-      });
-
-      await waitFor(() => {
         expect(mockOnSuccess).toHaveBeenCalledTimes(1);
         expect(mockOnSuccess).toHaveBeenCalledWith(mockResponse);
         expect(mockOnClose).toHaveBeenCalledTimes(1);
       });
-
-      jest.useRealTimers();
     });
 
     it('sends all emails in a single API request', async () => {
@@ -428,9 +410,10 @@ describe('<AddAdminModal />', () => {
       jest.useRealTimers();
     });
 
-    it('displays detailed success message with email statuses', async () => {
-      jest.useFakeTimers();
-      const user = userEvent.setup({ delay: null });
+    it('closes modal and calls onSuccess for multi-email invite', async () => {
+      const user = userEvent.setup();
+      const mockOnSuccess = jest.fn();
+      const mockOnClose = jest.fn();
       const mockResponse = {
         status: 200,
         data: [
@@ -440,7 +423,7 @@ describe('<AddAdminModal />', () => {
       };
       LmsApiService.inviteEnterpriseAdmin.mockResolvedValue(mockResponse);
 
-      render(<AddAdminModalWrapper {...defaultProps} />);
+      render(<AddAdminModalWrapper {...defaultProps} onSuccess={mockOnSuccess} onClose={mockOnClose} />);
 
       const textarea = screen.getByRole('textbox');
       await user.type(textarea, 'test1@test.com\ntest2@test.com');
@@ -449,74 +432,21 @@ describe('<AddAdminModal />', () => {
       await user.click(inviteButton);
 
       await waitFor(() => {
-        expect(screen.getByText('Invitation Results')).toBeInTheDocument();
-        expect(screen.getByText('test1@test.com')).toBeInTheDocument();
-        expect(screen.getByText('test2@test.com')).toBeInTheDocument();
-        expect(screen.getByText('already sent')).toBeInTheDocument();
-        expect(screen.getByText('invite sent')).toBeInTheDocument();
+        expect(mockOnSuccess).toHaveBeenCalledWith(mockResponse);
+        expect(mockOnClose).toHaveBeenCalled();
       });
-
-      jest.useRealTimers();
-    });
-
-    it('hides form and buttons when showing success message', async () => {
-      jest.useFakeTimers();
-      const user = userEvent.setup({ delay: null });
-      const mockResponse = {
-        status: 200,
-        data: [{ email: 'admin@example.com', status: 'invite sent' }],
-      };
-      LmsApiService.inviteEnterpriseAdmin.mockResolvedValue(mockResponse);
-
-      render(<AddAdminModalWrapper {...defaultProps} />);
-
-      const textarea = screen.getByRole('textbox');
-      await user.type(textarea, 'admin@example.com');
-
-      const inviteButton = screen.getByText('Invite');
-      await user.click(inviteButton);
-
-      await waitFor(() => {
-        expect(screen.getByText('Invitation Results')).toBeInTheDocument();
-      });
-
-      expect(screen.queryByRole('textbox')).not.toBeInTheDocument();
-
-      jest.useRealTimers();
-    });
-
-    it('displays fallback message for non-array response', async () => {
-      jest.useFakeTimers();
-      const user = userEvent.setup({ delay: null });
-      const mockResponse = {
-        status: 200,
-        data: 'Success',
-      };
-      LmsApiService.inviteEnterpriseAdmin.mockResolvedValue(mockResponse);
-
-      render(<AddAdminModalWrapper {...defaultProps} />);
-
-      const textarea = screen.getByRole('textbox');
-      await user.type(textarea, 'admin@example.com');
-
-      const inviteButton = screen.getByText('Invite');
-      await user.click(inviteButton);
-
-      await waitFor(() => {
-        expect(screen.getByText('Admins invited successfully!')).toBeInTheDocument();
-      });
-
-      jest.useRealTimers();
     });
   });
 
   describe('Error Handling', () => {
-    it('shows error state when API call fails', async () => {
+    it('calls onError and closes modal when API call fails', async () => {
       const user = userEvent.setup();
+      const mockOnError = jest.fn();
+      const mockOnClose = jest.fn();
       const error = new Error('Failed to invite admin');
       LmsApiService.inviteEnterpriseAdmin.mockRejectedValue(error);
 
-      render(<AddAdminModalWrapper {...defaultProps} />);
+      render(<AddAdminModalWrapper {...defaultProps} onError={mockOnError} onClose={mockOnClose} />);
 
       const textarea = screen.getByRole('textbox');
       await user.type(textarea, 'admin@example.com');
@@ -525,25 +455,8 @@ describe('<AddAdminModal />', () => {
       await user.click(inviteButton);
 
       await waitFor(() => {
-        expect(screen.getByText('Try again')).toBeInTheDocument();
-      });
-    });
-
-    it('displays API error message', async () => {
-      const user = userEvent.setup();
-      const error = new Error('Admin already exists');
-      LmsApiService.inviteEnterpriseAdmin.mockRejectedValue(error);
-
-      render(<AddAdminModalWrapper {...defaultProps} />);
-
-      const textarea = screen.getByRole('textbox');
-      await user.type(textarea, 'admin@example.com');
-
-      const inviteButton = screen.getByText('Invite');
-      await user.click(inviteButton);
-
-      await waitFor(() => {
-        expect(screen.getByText('Admin already exists')).toBeInTheDocument();
+        expect(mockOnError).toHaveBeenCalledWith(error);
+        expect(mockOnClose).toHaveBeenCalled();
       });
     });
 
@@ -564,51 +477,6 @@ describe('<AddAdminModal />', () => {
         expect(logError).toHaveBeenCalledWith(error);
       });
     });
-
-    it('shows default error message when no error message is provided', async () => {
-      const user = userEvent.setup();
-      const error = new Error();
-      error.message = '';
-      LmsApiService.inviteEnterpriseAdmin.mockRejectedValue(error);
-
-      render(<AddAdminModalWrapper {...defaultProps} />);
-
-      const textarea = screen.getByRole('textbox');
-      await user.type(textarea, 'admin@example.com');
-
-      const inviteButton = screen.getByText('Invite');
-      await user.click(inviteButton);
-
-      await waitFor(() => {
-        expect(screen.getByText('Failed to invite admins.')).toBeInTheDocument();
-      });
-    });
-
-    it('allows retry after error', async () => {
-      const user = userEvent.setup();
-      LmsApiService.inviteEnterpriseAdmin
-        .mockRejectedValueOnce(new Error('Network error'))
-        .mockResolvedValueOnce({ status: 200 });
-
-      render(<AddAdminModalWrapper {...defaultProps} />);
-
-      const textarea = screen.getByRole('textbox');
-      await user.type(textarea, 'admin@example.com');
-
-      const inviteButton = screen.getByText('Invite');
-      await user.click(inviteButton);
-
-      await waitFor(() => {
-        expect(screen.getByText('Try again')).toBeInTheDocument();
-      });
-
-      const retryButton = screen.getByText('Try again');
-      await user.click(retryButton);
-
-      await waitFor(() => {
-        expect(LmsApiService.inviteEnterpriseAdmin).toHaveBeenCalledTimes(2);
-      });
-    });
   });
 
   describe('Button State Management', () => {
@@ -616,6 +484,32 @@ describe('<AddAdminModal />', () => {
       render(<AddAdminModalWrapper {...defaultProps} />);
 
       expect(screen.getByText('Invite')).toBeInTheDocument();
+    });
+
+    it('invite button is disabled when error message is showing', async () => {
+      const user = userEvent.setup();
+      render(<AddAdminModalWrapper {...defaultProps} />);
+
+      const textarea = screen.getByRole('textbox');
+      await user.type(textarea, 'invalid-email');
+
+      await waitFor(() => {
+        expect(screen.getByText('invalid-email is not a valid email.')).toBeInTheDocument();
+      });
+
+      const inviteButton = screen.getByText('Invite').closest('button');
+      expect(inviteButton).toBeDisabled();
+    });
+
+    it('invite button is enabled when valid email is entered', async () => {
+      const user = userEvent.setup();
+      render(<AddAdminModalWrapper {...defaultProps} />);
+
+      const textarea = screen.getByRole('textbox');
+      await user.type(textarea, 'admin@example.com');
+
+      const inviteButton = screen.getByText('Invite').closest('button');
+      expect(inviteButton).not.toBeDisabled();
     });
 
     it('disables form during submission', async () => {
@@ -736,14 +630,57 @@ describe('<AddAdminModal />', () => {
       const textarea = screen.getByRole('textbox');
       await user.type(textarea, 'valid@example.com\ninvalid-email\nanother@example.com');
 
-      const inviteButton = screen.getByText('Invite');
-      await user.click(inviteButton);
+      await waitFor(() => {
+        expect(screen.getByText('invalid-email is not a valid email.')).toBeInTheDocument();
+      });
+
+      const inviteButton = screen.getByText('Invite').closest('button');
+      expect(inviteButton).toBeDisabled();
+      expect(LmsApiService.inviteEnterpriseAdmin).not.toHaveBeenCalled();
+    });
+
+    it('clears error when input becomes whitespace-only lines', async () => {
+      const user = userEvent.setup();
+      render(<AddAdminModalWrapper {...defaultProps} />);
+
+      const textarea = screen.getByRole('textbox');
+      await user.type(textarea, 'invalid-email');
 
       await waitFor(() => {
         expect(screen.getByText('invalid-email is not a valid email.')).toBeInTheDocument();
       });
 
-      expect(LmsApiService.inviteEnterpriseAdmin).not.toHaveBeenCalled();
+      await user.clear(textarea);
+      await user.type(textarea, '   ');
+
+      await waitFor(() => {
+        expect(screen.queryByText(/is not a valid email/)).not.toBeInTheDocument();
+      });
+    });
+
+    it('does not call API again while submission is pending', async () => {
+      const user = userEvent.setup();
+      let resolvePromise;
+      const promise = new Promise((resolve) => { resolvePromise = resolve; });
+      LmsApiService.inviteEnterpriseAdmin.mockReturnValue(promise);
+
+      render(<AddAdminModalWrapper {...defaultProps} />);
+
+      const textarea = screen.getByRole('textbox');
+      await user.type(textarea, 'admin@example.com');
+
+      const inviteButton = screen.getByText('Invite');
+      await user.click(inviteButton);
+
+      const pendingButton = await screen.findByRole('button', { name: /inviting/i });
+
+      // Try clicking again while pending - should not call API again
+      await user.click(pendingButton);
+      expect(LmsApiService.inviteEnterpriseAdmin).toHaveBeenCalledTimes(1);
+
+      await act(async () => {
+        resolvePromise({ status: 200 });
+      });
     });
   });
 });

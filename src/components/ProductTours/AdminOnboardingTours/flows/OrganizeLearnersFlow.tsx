@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useRef } from 'react';
 import { FormattedMessage, useIntl } from '@edx/frontend-platform/i18n';
 import { Hyperlink } from '@openedx/paragon';
 
@@ -6,7 +6,10 @@ import { ADMIN_TOUR_EVENT_NAMES, ORGANIZE_LEARNER_TARGETS } from '../constants';
 import messages from '../messages';
 import { configuration } from '../../../../config';
 import { TourStep } from '../../types';
-import { setPeopleManagementTabFromTour } from '../../../PeopleManagement';
+import {
+  getPeopleManagementActiveTabForTour,
+  setPeopleManagementTabFromTour,
+} from '../../../PeopleManagement';
 import useHydrateAdminOnboardingData, { HydratedAdminOnboardingData } from '../data/useHydrateAdminOnboardingData';
 import { ENTERPRISE_HELP_GROUPING } from '../../../settings/data/constants';
 
@@ -30,12 +33,18 @@ const OrganizeLearnersFlow = ({
     configuration.ADMIN_ONBOARDING_UUIDS.FLOW_ORGANIZE_LEARNERS_UUID,
   );
   const onOrganizeBack = () => handleBackTour(ADMIN_TOUR_EVENT_NAMES.ORGANIZE_LEARNERS_BACK_EVENT_NAME);
+  const shouldRestoreAdminsTabOnBackRef = useRef(false);
+
   const onAdminsStepAdvance = () => {
+    shouldRestoreAdminsTabOnBackRef.current = getPeopleManagementActiveTabForTour() === 'admins';
     setPeopleManagementTabFromTour('learners');
     onOrganizeAdvance();
   };
-  const onMembersStepBack = () => {
-    setPeopleManagementTabFromTour('admins');
+  const onMemberTableBack = () => {
+    if (shouldRestoreAdminsTabOnBackRef.current) {
+      setPeopleManagementTabFromTour('admins');
+      shouldRestoreAdminsTabOnBackRef.current = false;
+    }
     onOrganizeBack();
   };
 
@@ -108,7 +117,7 @@ const OrganizeLearnersFlow = ({
     placement: 'top',
     body: intl.formatMessage(messages.organizeLearnersStepTwoBody),
     onAdvance: onOrganizeAdvance,
-    onBack: enableInviteAdmins ? onMembersStepBack : onOrganizeBack,
+    onBack: onMemberTableBack,
   }, {
     target: `#${ORGANIZE_LEARNER_TARGETS.MEMBER_VIEW_MORE}`,
     placement: 'left',
@@ -142,7 +151,7 @@ const OrganizeLearnersFlow = ({
     placement: 'top',
     body: intl.formatMessage(messages.organizeLearnersStepTwoBody),
     onAdvance: onOrganizeAdvance,
-    onBack: enableInviteAdmins ? onMembersStepBack : onOrganizeBack,
+    onBack: onMemberTableBack,
   }, {
     target: `#${ORGANIZE_LEARNER_TARGETS.MEMBER_VIEW_MORE}`,
     placement: 'left',

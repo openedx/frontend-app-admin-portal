@@ -45,8 +45,9 @@ jest.mock('../OrgInviteAdminCard', () => function OrgInviteAdminCard({ onRemoveA
 jest.mock('@openedx/paragon', () => {
   const actual = jest.requireActual('@openedx/paragon');
 
-  const MockDataTable = ({ children, isLoading }) => (
+  const MockDataTable = ({ children, isLoading, tableActions }) => (
     <div data-testid="data-table" data-loading={isLoading}>
+      {tableActions && <div data-testid="table-actions">{tableActions}</div>}
       {children}
     </div>
   );
@@ -86,7 +87,7 @@ jest.mock('@openedx/paragon', () => {
 });
 
 jest.mock('../AddAdminModal', () => function AddAdminModal({
-  isOpen, onClose, enterpriseId, onSuccess,
+  isOpen, onClose, enterpriseId, onSuccess, onError,
 }) {
   return isOpen ? (
     <div data-testid="add-admin-modal">
@@ -108,6 +109,16 @@ jest.mock('../AddAdminModal', () => function AddAdminModal({
       >
         Success
       </button>
+      <button
+        type="button"
+        data-testid="modal-error-button"
+        onClick={() => {
+          onError(new Error('fail'));
+          onClose();
+        }}
+      >
+        Error
+      </button>
     </div>
   ) : null;
 });
@@ -123,6 +134,10 @@ const messages = {
     'View all admins of your organization.',
   'adminPortal.peopleManagement.inviteAdmin.removeSuccess':
     'Admin removed',
+  'adminPortal.peopleManagement.inviteAdmin.inviteSuccess':
+    'Invite sent',
+  'adminPortal.peopleManagement.inviteAdmin.inviteError':
+    'Invite failed to send',
 };
 
 const renderWithIntl = (ui) => render(
@@ -539,6 +554,42 @@ describe('Add Admin functionality', () => {
     // Modal should close
     await waitFor(() => {
       expect(screen.queryByTestId('add-admin-modal')).not.toBeInTheDocument();
+    });
+  });
+
+  it('shows success toast after successful admin invite', async () => {
+    renderWithIntl(<InviteAdminsTable enterpriseId="test-enterprise" />);
+
+    const addButton = screen.getByRole('button', { name: /add admins/i });
+    await userEvent.click(addButton);
+
+    await waitFor(() => {
+      expect(screen.getByTestId('add-admin-modal')).toBeInTheDocument();
+    });
+
+    const successButton = screen.getByTestId('modal-success-button');
+    await userEvent.click(successButton);
+
+    await waitFor(() => {
+      expect(screen.getByText('Invite sent')).toBeInTheDocument();
+    });
+  });
+
+  it('shows error toast after failed admin invite', async () => {
+    renderWithIntl(<InviteAdminsTable enterpriseId="test-enterprise" />);
+
+    const addButton = screen.getByRole('button', { name: /add admins/i });
+    await userEvent.click(addButton);
+
+    await waitFor(() => {
+      expect(screen.getByTestId('add-admin-modal')).toBeInTheDocument();
+    });
+
+    const errorButton = screen.getByTestId('modal-error-button');
+    await userEvent.click(errorButton);
+
+    await waitFor(() => {
+      expect(screen.getByText('Invite failed to send')).toBeInTheDocument();
     });
   });
 

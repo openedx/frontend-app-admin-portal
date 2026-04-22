@@ -16,6 +16,25 @@ import LmsApiService from '../../data/services/LmsApiService';
 import DownloadAdminsCsvIconButton from './DownloadAdminsCsvIconButton';
 import AddAdminModal from './AddAdminModal';
 
+const AddAdminTableAction = ({ openModal }) => (
+  <Button
+    className="align-top"
+    iconBefore={Add}
+    onClick={openModal}
+    variant="outline-primary"
+  >
+    <FormattedMessage
+      id="adminPortal.peopleManagement.inviteAdmin.addButton"
+      defaultMessage="Add admins"
+      description="Button text to add new admin"
+    />
+  </Button>
+);
+
+AddAdminTableAction.propTypes = {
+  openModal: PropTypes.func.isRequired,
+};
+
 const FilterStatus = (rest) => (
   <DataTable.FilterStatus showFilteredFields={false} {...rest} />
 );
@@ -29,7 +48,7 @@ const InviteAdminsTable = ({ enterpriseId }) => {
   } = useEnterpriseAdminsTableData({ enterpriseId });
 
   const [isRemovingAdmin, setIsRemovingAdmin] = useState(false);
-  const [showToast, setShowToast] = useState(false);
+  const [toastMessage, setToastMessage] = useState(null);
   const [isAddAdminModalOpen, setIsAddAdminModalOpen] = useState(false);
 
   const handleRemoveAdmin = useCallback(async (admin) => {
@@ -37,7 +56,11 @@ const InviteAdminsTable = ({ enterpriseId }) => {
       setIsRemovingAdmin(true);
       await LmsApiService.removeEnterpriseAdmin(enterpriseId, admin.id, { role: admin.status });
 
-      setShowToast(true);
+      setToastMessage(intl.formatMessage({
+        id: 'adminPortal.peopleManagement.inviteAdmin.removeSuccess',
+        defaultMessage: 'Admin removed',
+        description: 'Success message when admin is removed',
+      }));
 
       // Refresh the table data after successful removal
       fetchEnterpriseAdminsTableData({
@@ -51,9 +74,14 @@ const InviteAdminsTable = ({ enterpriseId }) => {
     } finally {
       setIsRemovingAdmin(false);
     }
-  }, [enterpriseId, fetchEnterpriseAdminsTableData]);
+  }, [enterpriseId, fetchEnterpriseAdminsTableData, intl]);
 
   const handleAddAdminSuccess = useCallback(() => {
+    setToastMessage(intl.formatMessage({
+      id: 'adminPortal.peopleManagement.inviteAdmin.inviteSuccess',
+      defaultMessage: 'Invite sent',
+      description: 'Success toast message when admin invite is sent',
+    }));
     // Refresh the table data after successful addition
     fetchEnterpriseAdminsTableData({
       pageIndex: 0,
@@ -61,7 +89,15 @@ const InviteAdminsTable = ({ enterpriseId }) => {
       filters: [],
       sortBy: [{ id: 'name', desc: true }],
     });
-  }, [fetchEnterpriseAdminsTableData]);
+  }, [fetchEnterpriseAdminsTableData, intl]);
+
+  const handleAddAdminError = useCallback(() => {
+    setToastMessage(intl.formatMessage({
+      id: 'adminPortal.peopleManagement.inviteAdmin.inviteError',
+      defaultMessage: 'Invite failed to send',
+      description: 'Error toast message when admin invite fails',
+    }));
+  }, [intl]);
 
   const CardComponentWithProps = useCallback((props) => (
     <OrgInviteAdminCard
@@ -77,41 +113,21 @@ const InviteAdminsTable = ({ enterpriseId }) => {
   return (
     <>
       {/* ================= Header ================= */}
-      <div className="d-flex justify-content-between align-items-start mt-3 mb-2">
-
-        <div>
-          <h3>
-            <FormattedMessage
-              id="adminPortal.peopleManagement.inviteAdmin.title"
-              defaultMessage="Your organization's admins"
-              description="Title for people management invite admin data table."
-            />
-          </h3>
-          <p>
-            <FormattedMessage
-              id="adminPortal.peopleManagement.inviteAdmin.subtitle"
-              defaultMessage="View all admins of your organization."
-              description="Subtitle for people management admins data table."
-            />
-          </p>
-        </div>
-        <div className="d-flex align-items-center gap-2">
-          <DownloadAdminsCsvIconButton
-            fetchData={fetchAllEnterpriseAdminsData}
-            dataCount={enterpriseAdminsTableData.itemCount}
+      <div className="mt-3 mb-2">
+        <h3>
+          <FormattedMessage
+            id="adminPortal.peopleManagement.inviteAdmin.title"
+            defaultMessage="Your organization's admins"
+            description="Title for people management invite admin data table."
           />
-          <Button
-            variant="primary"
-            iconBefore={Add}
-            onClick={() => setIsAddAdminModalOpen(true)}
-          >
-            <FormattedMessage
-              id="adminPortal.peopleManagement.inviteAdmin.addButton"
-              defaultMessage="Add admins"
-              description="Button text to add new admin"
-            />
-          </Button>
-        </div>
+        </h3>
+        <p>
+          <FormattedMessage
+            id="adminPortal.peopleManagement.inviteAdmin.subtitle"
+            defaultMessage="View all admins of your organization."
+            description="Subtitle for people management admins data table."
+          />
+        </p>
       </div>
 
       {/* ================= Table ================= */}
@@ -138,7 +154,13 @@ const InviteAdminsTable = ({ enterpriseId }) => {
         itemCount={enterpriseAdminsTableData.itemCount}
         pageCount={enterpriseAdminsTableData.pageCount}
         EmptyTableComponent={CustomDataTableEmptyState}
-
+        tableActions={[
+          <AddAdminTableAction openModal={() => setIsAddAdminModalOpen(true)} />,
+          <DownloadAdminsCsvIconButton
+            fetchData={fetchAllEnterpriseAdminsData}
+            dataCount={enterpriseAdminsTableData.itemCount}
+          />,
+        ]}
       >
         <DataTable.TableControlBar />
         <CardView
@@ -154,17 +176,15 @@ const InviteAdminsTable = ({ enterpriseId }) => {
         onClose={() => setIsAddAdminModalOpen(false)}
         enterpriseId={enterpriseId}
         onSuccess={handleAddAdminSuccess}
+        onError={handleAddAdminError}
       />
       {/* ================= Toast ================= */}
       <Toast
-        show={showToast}
-        onClose={() => setShowToast(false)}
+        show={!!toastMessage}
+        onClose={() => setToastMessage(null)}
+        delay={3000}
       >
-        {intl.formatMessage({
-          id: 'adminPortal.peopleManagement.inviteAdmin.removeSuccess',
-          defaultMessage: 'Admin removed',
-          description: 'Success message when admin is removed',
-        })}
+        {toastMessage}
       </Toast>
     </>
   );

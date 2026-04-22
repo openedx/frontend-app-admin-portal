@@ -24,11 +24,19 @@ import {
 } from '../ProductTours/AdminOnboardingTours/constants';
 
 let setTabFromTourHandler = null;
+let getActiveTabFromTourHandler = null;
 
 export const setPeopleManagementTabFromTour = (tabKey) => {
   if (typeof setTabFromTourHandler === 'function') {
     setTabFromTourHandler(tabKey);
   }
+};
+
+export const getPeopleManagementActiveTabForTour = () => {
+  if (typeof getActiveTabFromTourHandler === 'function') {
+    return getActiveTabFromTourHandler();
+  }
+  return null;
 };
 
 const PeopleManagementPage = ({ enterpriseId, learnersTabEnabled }) => {
@@ -96,11 +104,13 @@ const PeopleManagementPage = ({ enterpriseId, learnersTabEnabled }) => {
         }
       }
     };
+    getActiveTabFromTourHandler = () => activeTab;
 
     return () => {
       setTabFromTourHandler = null;
+      getActiveTabFromTourHandler = null;
     };
-  }, [onAdminsTabClick]);
+  }, [activeTab, onAdminsTabClick]);
 
   let groupsCardSection = (<Skeleton height="20vh" />);
   if (!isGroupsLoading) {

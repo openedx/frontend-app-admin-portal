@@ -2,14 +2,19 @@ import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import { useParams } from 'react-router';
 import {
-  Avatar, Card, Col, Row,
+  Avatar, Card, Chip, Col, Row,
 } from '@openedx/paragon';
+import { Timelapse } from '@openedx/paragon/icons';
 import { logError } from '@edx/frontend-platform/logging';
 
 import { FormattedMessage } from '@edx/frontend-platform/i18n';
 import AdminActionsMenu from './AdminActionsMenu';
 import LinkCopiedToast from '../settings/SettingsAccessTab/LinkCopiedToast';
 import { configuration } from '../../config';
+
+const renderAdminStatus = (status) => (
+  status === 'Pending' ? <Chip iconBefore={Timelapse}>{status}</Chip> : status
+);
 
 const OrgInviteAdminCard = ({
   original, onRemoveAdmin,
@@ -86,7 +91,7 @@ const OrgInviteAdminCard = ({
                   description="Title for people management invite admin Role status."
                 />
               </h5>
-              {status}
+              {renderAdminStatus(status)}
             </Col>
             <div>
               <AdminActionsMenu

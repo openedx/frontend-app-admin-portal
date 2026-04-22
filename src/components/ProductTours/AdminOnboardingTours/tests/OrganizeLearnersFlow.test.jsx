@@ -10,7 +10,10 @@ import {
 } from '../constants';
 import messages from '../messages';
 import useHydrateAdminOnboardingData from '../data/useHydrateAdminOnboardingData';
-import { setPeopleManagementTabFromTour } from '../../../PeopleManagement';
+import {
+  getPeopleManagementActiveTabForTour,
+  setPeopleManagementTabFromTour,
+} from '../../../PeopleManagement';
 import { queryClient } from '../../../test/testUtils';
 
 const mockFormatMessage = jest.fn((message) => message.defaultMessage || message.id || 'Mocked message');
@@ -33,6 +36,7 @@ jest.mock('../../../learner-credit-management/data', () => ({
 
 jest.mock('../data/useHydrateAdminOnboardingData');
 jest.mock('../../../PeopleManagement', () => ({
+  getPeopleManagementActiveTabForTour: jest.fn(),
   setPeopleManagementTabFromTour: jest.fn(),
 }));
 
@@ -52,6 +56,7 @@ const enterpriseId = 'enterprise-id';
 describe('useCreateOrganizeLearnersFlow', () => {
   beforeEach(() => {
     jest.clearAllMocks();
+    getPeopleManagementActiveTabForTour.mockReturnValue('learners');
     useParams.mockReturnValue({
       '*': '',
     });
@@ -284,7 +289,33 @@ describe('useCreateOrganizeLearnersFlow', () => {
     );
 
     result.current[2].onBack();
-    expect(setPeopleManagementTabFromTour).toHaveBeenCalledWith('admins');
+    expect(setPeopleManagementTabFromTour).toHaveBeenCalledTimes(1);
+    expect(mockHandleBackTour).toHaveBeenCalledWith(
+      ADMIN_TOUR_EVENT_NAMES.ORGANIZE_LEARNERS_BACK_EVENT_NAME,
+    );
+  });
+
+  it('restores admins tab on back when admins tab was active before advancing', () => {
+    useHydrateAdminOnboardingData.mockReturnValue({ data: { hasEnterpriseMembers: true, hasEnterpriseGroups: true } });
+    getPeopleManagementActiveTabForTour.mockReturnValue('admins');
+
+    const { result, rerender } = renderHook(
+      () => OrganizeLearnersFlow({
+        enterpriseId,
+        enableInviteAdmins: true,
+        handleAdvanceTour: mockHandleAdvanceTour,
+        handleEndTour: mockHandleEndTour,
+        handleBackTour: mockHandleBackTour,
+      }),
+      { wrapper },
+    );
+
+    result.current[1].onAdvance();
+    rerender();
+    result.current[2].onBack();
+
+    expect(setPeopleManagementTabFromTour).toHaveBeenNthCalledWith(1, 'learners');
+    expect(setPeopleManagementTabFromTour).toHaveBeenNthCalledWith(2, 'admins');
     expect(mockHandleBackTour).toHaveBeenCalledWith(
       ADMIN_TOUR_EVENT_NAMES.ORGANIZE_LEARNERS_BACK_EVENT_NAME,
     );

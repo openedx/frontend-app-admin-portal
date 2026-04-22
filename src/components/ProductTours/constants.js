@@ -30,6 +30,7 @@ export const COOKIE_NAMES = {
   LEARNER_DETAIL_PAGE_COOKIE_NAME,
   PORTAL_APPEARANCE_TOUR_COOKIE_NAME,
   ANALYTICS_COOKIE_NAME,
+  ADMINS_TAB_NEW_FEATURE_COOKIE_NAME,
 };
 
 export const BROWSE_AND_REQUEST_ADVANCE_EVENT_NAME = 'edx.ui.enterprise.admin-portal.tours.browse-and-request.advanced';

@@ -18,8 +18,8 @@ const AdminActionsMenu = ({ adminId, onRemove, onCopy }) => {
         aria-label="Admin actions"
       />
 
-      <Dropdown.Menu>
-        <Dropdown.Item onClick={onRemove}>
+      <Dropdown.Menu style={{ minWidth: 'auto' }}>
+        <Dropdown.Item onClick={onRemove} className="py-2 px-3">
           <Icon
             src={RemoveCircle}
             className="mr-2 text-danger-500"
@@ -31,7 +31,7 @@ const AdminActionsMenu = ({ adminId, onRemove, onCopy }) => {
           />
         </Dropdown.Item>
 
-        <Dropdown.Item onClick={onCopy}>
+        <Dropdown.Item onClick={onCopy} className="py-2 px-3">
           <Icon
             src={ContentCopy}
             className="mr-2"
