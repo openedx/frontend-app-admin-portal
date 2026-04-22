@@ -1,5 +1,6 @@
 .learner-credit-management {
-  .budget-detail-assignments {
+  .budget-detail-assignments,
+  .budget-detail-approved-requests {
     // This is a (temporary) workaround to ensure the `Chip` modal popups within the "Assigned" table status column
     // properly overlays the underlying `DataTable`.
     .pgn__data-table-container,
