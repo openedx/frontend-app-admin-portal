@@ -146,7 +146,7 @@ describe('<AddAdminModal />', () => {
     it('invite button is disabled when no email is entered', () => {
       render(<AddAdminModalWrapper {...defaultProps} />);
 
-      const inviteButton = screen.getByText('Invite').closest('button');
+      const inviteButton = screen.getByRole('button', { name: /invite/i });
       expect(inviteButton).toBeDisabled();
     });
 
@@ -161,7 +161,7 @@ describe('<AddAdminModal />', () => {
         expect(screen.getByText('invalid-email is not a valid email.')).toBeInTheDocument();
       });
 
-      const inviteButton = screen.getByText('Invite').closest('button');
+      const inviteButton = screen.getByRole('button', { name: /invite/i });
       expect(inviteButton).toBeDisabled();
     });
 
@@ -215,7 +215,7 @@ describe('<AddAdminModal />', () => {
         expect(screen.getByText('11 emails entered (10 maximum). Delete 1 email to proceed.')).toBeInTheDocument();
       });
 
-      const inviteButton = screen.getByText('Invite').closest('button');
+      const inviteButton = screen.getByRole('button', { name: /invite/i });
       expect(inviteButton).toBeDisabled();
       expect(LmsApiService.inviteEnterpriseAdmin).not.toHaveBeenCalled();
     });
@@ -228,11 +228,10 @@ describe('<AddAdminModal />', () => {
       await user.type(textarea, 'admin@example.com\nadmin@example.com');
 
       await waitFor(() => {
-        const elements = screen.getAllByText((content, element) => element?.textContent === 'admin@example.com was entered more than once.');
-        expect(elements.length).toBeGreaterThan(0);
+        expect(screen.getByText('admin@example.com was entered more than once.')).toBeInTheDocument();
       });
 
-      const inviteButton = screen.getByText('Invite').closest('button');
+      const inviteButton = screen.getByRole('button', { name: /invite/i });
       expect(inviteButton).toBeDisabled();
       expect(LmsApiService.inviteEnterpriseAdmin).not.toHaveBeenCalled();
     });
@@ -245,33 +244,76 @@ describe('<AddAdminModal />', () => {
       await user.type(textarea, 'admin@example.com\nAdmin@Example.COM');
 
       await waitFor(() => {
-        const elements = screen.getAllByText((content, element) => element?.textContent === 'Admin@Example.COM was entered more than once.');
-        expect(elements.length).toBeGreaterThan(0);
+        expect(screen.getByText('admin@example.com was entered more than once.')).toBeInTheDocument();
       });
 
-      const inviteButton = screen.getByText('Invite').closest('button');
+      const inviteButton = screen.getByRole('button', { name: /invite/i });
       expect(inviteButton).toBeDisabled();
       expect(LmsApiService.inviteEnterpriseAdmin).not.toHaveBeenCalled();
     });
 
-    it('trims leading/trailing spaces from emails before validation', async () => {
+    it('shows correct message for multiple unique duplicate emails', async () => {
       const user = userEvent.setup();
-      LmsApiService.inviteEnterpriseAdmin.mockResolvedValue({ status: 200 });
+      render(<AddAdminModalWrapper {...defaultProps} />);
+
+      const textarea = screen.getByRole('textbox');
+      await user.type(textarea, 'a@test.com\na@test.com\nb@test.com\nb@test.com');
+
+      await waitFor(() => {
+        expect(
+          screen.getByText('a@test.com and 1 other email address were entered more than once.'),
+        ).toBeInTheDocument();
+      });
+
+      const inviteButton = screen.getByRole('button', { name: /invite/i });
+      expect(inviteButton).toBeDisabled();
+    });
+
+    it('shows correct plural message for more than two duplicate emails', async () => {
+      const user = userEvent.setup();
+      render(<AddAdminModalWrapper {...defaultProps} />);
+
+      const textarea = screen.getByRole('textbox');
+      await user.type(textarea, 'a@test.com\na@test.com\nb@test.com\nb@test.com\nc@test.com\nc@test.com');
+
+      await waitFor(() => {
+        expect(
+          screen.getByText('a@test.com and 2 other email addresses were entered more than once.'),
+        ).toBeInTheDocument();
+      });
+
+      const inviteButton = screen.getByRole('button', { name: /invite/i });
+      expect(inviteButton).toBeDisabled();
+    });
+
+    it('treats emails with leading/trailing spaces as invalid', async () => {
+      const user = userEvent.setup();
       render(<AddAdminModalWrapper {...defaultProps} />);
 
       const textarea = screen.getByRole('textbox');
       await user.type(textarea, '  admin@example.com  ');
 
-      const inviteButton = screen.getByText('Invite');
-      expect(inviteButton.closest('button')).not.toBeDisabled();
-      await user.click(inviteButton);
+      await waitFor(() => {
+        expect(screen.getByText(/admin@example.com is not a valid email\./)).toBeInTheDocument();
+      });
+
+      const inviteButton = screen.getByRole('button', { name: /invite/i });
+      expect(inviteButton).toBeDisabled();
+    });
+
+    it('shows invalid email error instead of duplicate when spaces are present', async () => {
+      const user = userEvent.setup();
+      render(<AddAdminModalWrapper {...defaultProps} />);
+
+      const textarea = screen.getByRole('textbox');
+      await user.type(textarea, 'admin@example.com\n   admin@example.com');
 
       await waitFor(() => {
-        expect(LmsApiService.inviteEnterpriseAdmin).toHaveBeenCalledWith(
-          'test-enterprise-id',
-          { emails: ['admin@example.com'] },
-        );
+        expect(screen.getByText(/admin@example.com is not a valid email\./)).toBeInTheDocument();
       });
+
+      const inviteButton = screen.getByRole('button', { name: /invite/i });
+      expect(inviteButton).toBeDisabled();
     });
 
     it('ignores empty lines between emails', async () => {
@@ -282,7 +324,7 @@ describe('<AddAdminModal />', () => {
       const textarea = screen.getByRole('textbox');
       await user.type(textarea, 'admin1@example.com\n\n\nadmin2@example.com');
 
-      const inviteButton = screen.getByText('Invite');
+      const inviteButton = screen.getByRole('button', { name: /invite/i });
       await user.click(inviteButton);
 
       await waitFor(() => {
@@ -497,7 +539,7 @@ describe('<AddAdminModal />', () => {
         expect(screen.getByText('invalid-email is not a valid email.')).toBeInTheDocument();
       });
 
-      const inviteButton = screen.getByText('Invite').closest('button');
+      const inviteButton = screen.getByRole('button', { name: /invite/i });
       expect(inviteButton).toBeDisabled();
     });
 
@@ -508,7 +550,7 @@ describe('<AddAdminModal />', () => {
       const textarea = screen.getByRole('textbox');
       await user.type(textarea, 'admin@example.com');
 
-      const inviteButton = screen.getByText('Invite').closest('button');
+      const inviteButton = screen.getByRole('button', { name: /invite/i });
       expect(inviteButton).not.toBeDisabled();
     });
 
@@ -634,7 +676,7 @@ describe('<AddAdminModal />', () => {
         expect(screen.getByText('invalid-email is not a valid email.')).toBeInTheDocument();
       });
 
-      const inviteButton = screen.getByText('Invite').closest('button');
+      const inviteButton = screen.getByRole('button', { name: /invite/i });
       expect(inviteButton).toBeDisabled();
       expect(LmsApiService.inviteEnterpriseAdmin).not.toHaveBeenCalled();
     });

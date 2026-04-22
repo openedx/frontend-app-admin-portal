@@ -11,7 +11,7 @@ import { FormattedMessage, useIntl } from '@edx/frontend-platform/i18n';
 import { logError } from '@edx/frontend-platform/logging';
 import LmsApiService from '../../data/services/LmsApiService';
 import { isInviteEmailAddressesInputValueValid } from '../learner-credit-management/cards/data';
-import { makePlural } from '../../utils';
+import { isEmail, makePlural } from '../../utils';
 
 const MAX_EMAIL_INVITES = 10;
 
@@ -25,8 +25,23 @@ const AddAdminModal = ({
 
   const parseEmails = (input) => input
     .split(/\n+/)
-    .map(email => email.trim())
     .filter(email => email.length > 0);
+
+  const getDuplicateEmails = (emails) => {
+    const seen = new Set();
+    const duplicates = new Set();
+
+    emails.forEach((email) => {
+      const normalized = email.toLowerCase();
+      if (seen.has(normalized)) {
+        duplicates.add(normalized);
+      } else {
+        seen.add(normalized);
+      }
+    });
+
+    return Array.from(duplicates);
+  };
 
   const getValidationError = (emails) => {
     if (emails.length > MAX_EMAIL_INVITES) {
@@ -34,8 +49,40 @@ const AddAdminModal = ({
       return `${emails.length} emails entered (${MAX_EMAIL_INVITES} maximum). Delete ${makePlural(extraCount, 'email')} to proceed.`;
     }
 
+    const emailWithSpaces = emails.find(email => email !== email.trim());
+    if (emailWithSpaces) {
+      return `${emailWithSpaces} is not a valid email.`;
+    }
+
+    const trimmedEmails = emails.map(email => email.trim());
+
+    const invalidEmail = trimmedEmails.find(email => email && !isEmail(email));
+    if (invalidEmail) {
+      return `${invalidEmail} is not a valid email.`;
+    }
+
+    const duplicateEmails = getDuplicateEmails(trimmedEmails);
+
+    if (duplicateEmails.length > 0) {
+      const [firstDuplicate] = duplicateEmails;
+      const otherCount = duplicateEmails.length - 1;
+
+      return intl.formatMessage(
+        {
+          id: 'adminPortal.peopleManagement.addAdmin.modal.error.duplicateEmails',
+          defaultMessage:
+            '{email}{otherCount, plural, =0 { was entered more than once.} one { and # other email address were entered more than once.} other { and # other email addresses were entered more than once.}}',
+          description: 'Error message when duplicate emails are entered',
+        },
+        {
+          email: firstDuplicate,
+          otherCount,
+        },
+      );
+    }
+
     const { validationError } = isInviteEmailAddressesInputValueValid({
-      learnerEmails: emails,
+      learnerEmails: trimmedEmails,
     });
 
     return validationError?.message || '';
@@ -54,12 +101,16 @@ const AddAdminModal = ({
     }
 
     const emails = parseEmails(emailInput);
+    const trimmedEmails = emails.map(email => email.trim());
 
     try {
       setButtonState('pending');
       setErrorMessage('');
 
-      const response = await LmsApiService.inviteEnterpriseAdmin(enterpriseId, { emails });
+      const response = await LmsApiService.inviteEnterpriseAdmin(
+        enterpriseId,
+        { emails: trimmedEmails },
+      );
 
       onSuccess(response);
       handleClose();
