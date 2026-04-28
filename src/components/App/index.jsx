@@ -15,7 +15,7 @@ import {
   QueryClientProvider,
 } from '@tanstack/react-query';
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
-import { initializeHotjar } from '@edx/frontend-enterprise-hotjar';
+import { initializeHotjar } from '@2uinc/frontend-enterprise-hotjar';
 import { AuthenticatedPageRoute, PageWrap, AppProvider } from '@edx/frontend-platform/react';
 import { logError } from '@edx/frontend-platform/logging';
 import { getAuthenticatedHttpClient } from '@edx/frontend-platform/auth';

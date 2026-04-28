@@ -6,7 +6,7 @@ import { useEffect, useRef } from 'react';
 import { Form } from '@openedx/paragon';
 import { Info } from '@openedx/paragon/icons';
 
-import { sendEnterpriseTrackEvent } from '@edx/frontend-enterprise-utils';
+import { sendEnterpriseTrackEvent } from '@2uinc/frontend-enterprise-utils';
 import { FormattedMessage, useIntl } from '@edx/frontend-platform/i18n';
 
 import EVENT_NAMES from '../../eventTracking';

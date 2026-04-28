@@ -7,7 +7,7 @@ import {
 import { FormattedMessage } from '@edx/frontend-platform/i18n';
 import { Mail } from '@openedx/paragon/icons';
 import { connect } from 'react-redux';
-import { sendEnterpriseTrackEvent } from '@edx/frontend-enterprise-utils';
+import { sendEnterpriseTrackEvent } from '@2uinc/frontend-enterprise-utils';
 import useRemindApprovedRequest from './data/hooks/useRemindApprovedRequest';
 import RemindApprovedRequestModal from './RemindApprovedRequestModal';
 import EVENT_NAMES from '../../eventTracking';

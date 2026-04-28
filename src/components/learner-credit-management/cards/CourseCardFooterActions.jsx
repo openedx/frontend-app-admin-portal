@@ -1,5 +1,5 @@
 import { Button, Hyperlink } from '@openedx/paragon';
-import { sendEnterpriseTrackEvent } from '@edx/frontend-enterprise-utils';
+import { sendEnterpriseTrackEvent } from '@2uinc/frontend-enterprise-utils';
 
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';

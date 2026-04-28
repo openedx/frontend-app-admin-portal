@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { CardGrid } from '@openedx/paragon';
 import { connect } from 'react-redux';
-import { sendEnterpriseTrackEvent } from '@edx/frontend-enterprise-utils';
+import { sendEnterpriseTrackEvent } from '@2uinc/frontend-enterprise-utils';
 import ContentHighlightSetCard from './ContentHighlightSetCard';
 import { HIGHLIGHTS_CARD_GRID_COLUMN_SIZES } from './data/constants';
 import EVENT_NAMES from '../../eventTracking';

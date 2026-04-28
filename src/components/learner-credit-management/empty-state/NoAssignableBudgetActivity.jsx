@@ -4,7 +4,7 @@ import classNames from 'classnames';
 import {
   Button, Card, Row, Col,
 } from '@openedx/paragon';
-import { sendEnterpriseTrackEvent } from '@edx/frontend-enterprise-utils';
+import { sendEnterpriseTrackEvent } from '@2uinc/frontend-enterprise-utils';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 

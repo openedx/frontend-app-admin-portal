@@ -6,7 +6,7 @@ import { useIntl } from '@edx/frontend-platform/i18n';
 import {
   Skeleton, Tab, Tabs, Toast, useToggle,
 } from '@openedx/paragon';
-import { sendEnterpriseTrackEvent } from '@edx/frontend-enterprise-utils';
+import { sendEnterpriseTrackEvent } from '@2uinc/frontend-enterprise-utils';
 
 import Hero from '../Hero';
 import { SUBSIDY_TYPES } from '../../data/constants/subsidyTypes';

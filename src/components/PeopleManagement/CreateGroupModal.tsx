@@ -8,7 +8,7 @@ import { snakeCaseObject } from '@edx/frontend-platform/utils';
 import {
   ActionRow, Button, FullscreenModal, StatefulButton, useToggle,
 } from '@openedx/paragon';
-import { sendEnterpriseTrackEvent } from '@edx/frontend-enterprise-utils';
+import { sendEnterpriseTrackEvent } from '@2uinc/frontend-enterprise-utils';
 
 import LmsApiService from '../../data/services/LmsApiService';
 import SystemErrorAlertModal

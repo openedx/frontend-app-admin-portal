@@ -1,6 +1,6 @@
 import { useContext } from 'react';
 import { useIntl } from '@edx/frontend-platform/i18n';
-import { sendEnterpriseTrackEvent } from '@edx/frontend-enterprise-utils';
+import { sendEnterpriseTrackEvent } from '@2uinc/frontend-enterprise-utils';
 import { useParams } from 'react-router';
 
 import { SubsidyRequestsContext } from '../../../subsidy-requests';

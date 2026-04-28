@@ -33,8 +33,8 @@ jest.mock('../../../../data/services/EnterpriseAccessApiService', () => ({
   fetchBnrSubsidyRequests: jest.fn(),
 }));
 
-jest.mock('@edx/frontend-enterprise-utils', () => ({
-  ...jest.requireActual('@edx/frontend-enterprise-utils'),
+jest.mock('@2uinc/frontend-enterprise-utils', () => ({
+  ...jest.requireActual('@2uinc/frontend-enterprise-utils'),
   camelCaseObject: jest.fn(obj => obj),
 }));
 

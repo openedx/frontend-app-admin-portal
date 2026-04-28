@@ -5,7 +5,7 @@ import {
 import PropTypes from 'prop-types';
 import { Add } from '@openedx/paragon/icons';
 import { FormattedMessage } from '@edx/frontend-platform/i18n';
-import { sendEnterpriseTrackEvent } from '@edx/frontend-enterprise-utils';
+import { sendEnterpriseTrackEvent } from '@2uinc/frontend-enterprise-utils';
 import { connect } from 'react-redux';
 import cardImage from '../data/images/ContentHighlightImage.svg';
 import ZeroStateCardImage from './ZeroStateCardImage';

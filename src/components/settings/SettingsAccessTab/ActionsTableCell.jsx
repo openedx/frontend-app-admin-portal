@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { ActionRow, Button } from '@openedx/paragon';
 import PropTypes from 'prop-types';
 import { logError } from '@edx/frontend-platform/logging';
-import { sendEnterpriseTrackEvent } from '@edx/frontend-enterprise-utils';
+import { sendEnterpriseTrackEvent } from '@2uinc/frontend-enterprise-utils';
 
 import { FormattedMessage } from '@edx/frontend-platform/i18n';
 import LinkDeactivationAlertModal from './LinkDeactivationAlertModal';

@@ -1,4 +1,4 @@
-import { sendEnterpriseTrackEvent } from '@edx/frontend-enterprise-utils';
+import { sendEnterpriseTrackEvent } from '@2uinc/frontend-enterprise-utils';
 import { logError } from '@edx/frontend-platform/logging';
 
 import {

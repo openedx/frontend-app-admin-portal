@@ -9,7 +9,7 @@ import { Provider } from 'react-redux';
 import '@testing-library/jest-dom/extend-expect';
 
 import { IntlProvider } from '@edx/frontend-platform/i18n';
-import { sendEnterpriseTrackEvent } from '@edx/frontend-enterprise-utils';
+import { sendEnterpriseTrackEvent } from '@2uinc/frontend-enterprise-utils';
 import { axe } from 'jest-axe';
 import { SUBSCRIPTION_TABLE_EVENTS } from '../../../../../eventTracking';
 
@@ -28,8 +28,8 @@ import {
 import EnrollBulkAction from './EnrollBulkAction';
 import { accessibilitySettings } from '../../../../../../tests/accessibility-settings';
 
-jest.mock('@edx/frontend-enterprise-utils', () => {
-  const originalModule = jest.requireActual('@edx/frontend-enterprise-utils');
+jest.mock('@2uinc/frontend-enterprise-utils', () => {
+  const originalModule = jest.requireActual('@2uinc/frontend-enterprise-utils');
   return ({
     ...originalModule,
     sendEnterpriseTrackEvent: jest.fn(),

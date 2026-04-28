@@ -4,7 +4,7 @@ import {
 } from '@testing-library/react';
 import { QueryClientProvider } from '@tanstack/react-query';
 import { IntlProvider } from '@edx/frontend-platform/i18n';
-import { sendEnterpriseTrackEvent } from '@edx/frontend-enterprise-utils';
+import { sendEnterpriseTrackEvent } from '@2uinc/frontend-enterprise-utils';
 import '@testing-library/jest-dom';
 // eslint-disable-next-line import/no-extraneous-dependencies
 import axios from 'axios';
@@ -47,8 +47,8 @@ const mockAnalyticsSkillsData = {
 jest.spyOn(EnterpriseDataApiService, 'fetchAdminAnalyticsData');
 getAuthenticatedHttpClient.mockReturnValue(axios);
 
-jest.mock('@edx/frontend-enterprise-utils', () => {
-  const originalModule = jest.requireActual('@edx/frontend-enterprise-utils');
+jest.mock('@2uinc/frontend-enterprise-utils', () => {
+  const originalModule = jest.requireActual('@2uinc/frontend-enterprise-utils');
   return ({
     ...originalModule,
     sendEnterpriseTrackEvent: jest.fn(),

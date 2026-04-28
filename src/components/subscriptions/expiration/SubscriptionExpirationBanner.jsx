@@ -1,7 +1,7 @@
 import React, { useContext, useState } from 'react';
 import { Alert } from '@openedx/paragon';
 import PropTypes from 'prop-types';
-import { sendEnterpriseTrackEvent } from '@edx/frontend-enterprise-utils';
+import { sendEnterpriseTrackEvent } from '@2uinc/frontend-enterprise-utils';
 
 import { useIntl } from '@edx/frontend-platform/i18n';
 import {

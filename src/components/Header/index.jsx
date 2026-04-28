@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import {
   Dropdown, Navbar, AvatarButton, Nav,
 } from '@openedx/paragon';
-import { getProxyLoginUrl } from '@edx/frontend-enterprise-logistration';
+import { getProxyLoginUrl } from '@2uinc/frontend-enterprise-logistration';
 
 import {
   getAuthenticatedUser, getLogoutRedirectUrl,

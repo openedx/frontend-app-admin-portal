@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { Delete } from '@openedx/paragon/icons';
 import { IconButton, Icon } from '@openedx/paragon';
 import { connect } from 'react-redux';
-import { sendEnterpriseTrackEvent } from '@edx/frontend-enterprise-utils';
+import { sendEnterpriseTrackEvent } from '@2uinc/frontend-enterprise-utils';
 import ContentHighlightCardItem from '../ContentHighlightCardItem';
 import { useContentHighlightsContext } from '../data/hooks';
 import { generateAboutPageUrl } from '../data/utils';

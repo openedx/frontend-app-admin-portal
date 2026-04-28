@@ -4,7 +4,7 @@ import {
 } from '@openedx/paragon';
 import { FormattedMessage } from '@edx/frontend-platform/i18n';
 import { Info, Add } from '@openedx/paragon/icons';
-import { sendEnterpriseTrackEvent } from '@edx/frontend-enterprise-utils';
+import { sendEnterpriseTrackEvent } from '@2uinc/frontend-enterprise-utils';
 import { useContextSelector } from 'use-context-selector';
 import { BUTTON_TEXT } from '../data/constants';
 import { useContentHighlightsContext } from '../data/hooks';

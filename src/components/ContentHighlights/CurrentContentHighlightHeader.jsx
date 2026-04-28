@@ -5,7 +5,7 @@ import {
 } from '@openedx/paragon';
 import { FormattedMessage, useIntl } from '@edx/frontend-platform/i18n';
 import PropTypes from 'prop-types';
-import { sendEnterpriseTrackEvent } from '@edx/frontend-enterprise-utils';
+import { sendEnterpriseTrackEvent } from '@2uinc/frontend-enterprise-utils';
 import { connect } from 'react-redux';
 import { Add, Info } from '@openedx/paragon/icons';
 import { useContentHighlightsContext } from './data/hooks';

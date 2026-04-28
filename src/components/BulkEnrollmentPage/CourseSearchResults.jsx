@@ -7,7 +7,7 @@ import PropTypes from 'prop-types';
 import { connectStateResults } from 'react-instantsearch-dom';
 import { Alert, DataTable, Skeleton } from '@openedx/paragon';
 import { Error, ErrorOutline } from '@openedx/paragon/icons';
-import { SearchContext, SearchPagination } from '@edx/frontend-enterprise-catalog-search';
+import { SearchContext, SearchPagination } from '@2uinc/frontend-enterprise-catalog-search';
 
 import { CourseNameCell, FormattedDateCell } from './table/CourseSearchResultsCells';
 import { BulkEnrollContext } from './BulkEnrollmentContext';

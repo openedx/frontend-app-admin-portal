@@ -1,7 +1,7 @@
 import { useEffect, useRef } from 'react';
 import { Row, Col } from '@openedx/paragon';
 
-import { SearchData, SEARCH_FACET_FILTERS } from '@edx/frontend-enterprise-catalog-search';
+import { SearchData, SEARCH_FACET_FILTERS } from '@2uinc/frontend-enterprise-catalog-search';
 import { useLocation, useNavigate } from 'react-router-dom';
 import CatalogSearch from './search/CatalogSearch';
 import {

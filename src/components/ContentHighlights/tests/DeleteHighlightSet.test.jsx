@@ -8,7 +8,7 @@ import { Provider } from 'react-redux';
 import { Routes, Route, MemoryRouter } from 'react-router-dom';
 import configureMockStore from 'redux-mock-store';
 import thunk from 'redux-thunk';
-import { sendEnterpriseTrackEvent } from '@edx/frontend-enterprise-utils';
+import { sendEnterpriseTrackEvent } from '@2uinc/frontend-enterprise-utils';
 
 import { axe } from 'jest-axe';
 import DeleteHighlightSet from '../DeleteHighlightSet';
@@ -20,8 +20,8 @@ import { accessibilitySettings } from '../../../../tests/accessibility-settings'
 
 jest.mock('../../../data/services/EnterpriseCatalogApiService');
 
-jest.mock('@edx/frontend-enterprise-utils', () => {
-  const originalModule = jest.requireActual('@edx/frontend-enterprise-utils');
+jest.mock('@2uinc/frontend-enterprise-utils', () => {
+  const originalModule = jest.requireActual('@2uinc/frontend-enterprise-utils');
   return ({
     ...originalModule,
     sendEnterpriseTrackEvent: jest.fn(),

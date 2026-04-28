@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { Breadcrumb } from '@openedx/paragon';
 import { Link } from 'react-router-dom';
 import React from 'react';
-import { sendEnterpriseTrackEvent } from '@edx/frontend-enterprise-utils';
+import { sendEnterpriseTrackEvent } from '@2uinc/frontend-enterprise-utils';
 import { useIntl } from '@edx/frontend-platform/i18n';
 import { ROUTE_NAMES } from '../EnterpriseApp/data/constants';
 import EVENT_NAMES from '../../eventTracking';

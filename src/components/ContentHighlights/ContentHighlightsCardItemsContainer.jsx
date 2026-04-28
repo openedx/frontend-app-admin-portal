@@ -5,7 +5,7 @@ import {
 import PropTypes from 'prop-types';
 import { FormattedMessage } from '@edx/frontend-platform/i18n';
 import { connect } from 'react-redux';
-import { sendEnterpriseTrackEvent } from '@edx/frontend-enterprise-utils';
+import { sendEnterpriseTrackEvent } from '@2uinc/frontend-enterprise-utils';
 import ContentHighlightCardItem from './ContentHighlightCardItem';
 import {
   DEFAULT_ERROR_MESSAGE,

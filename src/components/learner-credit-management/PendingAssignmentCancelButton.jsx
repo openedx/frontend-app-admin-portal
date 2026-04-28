@@ -5,7 +5,7 @@ import {
 } from '@openedx/paragon';
 import { DoNotDisturbOn } from '@openedx/paragon/icons';
 import { connect } from 'react-redux';
-import { sendEnterpriseTrackEvent } from '@edx/frontend-enterprise-utils';
+import { sendEnterpriseTrackEvent } from '@2uinc/frontend-enterprise-utils';
 import useCancelContentAssignments from './data/hooks/useCancelContentAssignments';
 import CancelAssignmentModal from './CancelAssignmentModal';
 import EVENT_NAMES from '../../eventTracking';

@@ -2,7 +2,7 @@ import { renderHook, act } from '@testing-library/react';
 import '@testing-library/jest-dom';
 import { useParams } from 'react-router';
 import { IntlProvider } from '@edx/frontend-platform/i18n';
-import { sendEnterpriseTrackEvent } from '@edx/frontend-enterprise-utils';
+import { sendEnterpriseTrackEvent } from '@2uinc/frontend-enterprise-utils';
 
 import { SubsidyRequestsContext } from '../../../subsidy-requests';
 import AdministerSubscriptionsFlow from '../flows/AdministerSubscriptionsFlow';
@@ -37,8 +37,8 @@ jest.mock('react-router', () => ({
   useParams: jest.fn(),
 }));
 
-jest.mock('@edx/frontend-enterprise-utils', () => {
-  const originalModule = jest.requireActual('@edx/frontend-enterprise-utils');
+jest.mock('@2uinc/frontend-enterprise-utils', () => {
+  const originalModule = jest.requireActual('@2uinc/frontend-enterprise-utils');
   return ({
     ...originalModule,
     sendEnterpriseTrackEvent: jest.fn(),

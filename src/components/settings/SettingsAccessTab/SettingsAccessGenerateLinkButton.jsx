@@ -4,7 +4,7 @@ import {
   StatefulButton,
 } from '@openedx/paragon';
 import { logError } from '@edx/frontend-platform/logging';
-import { sendEnterpriseTrackEvent } from '@edx/frontend-enterprise-utils';
+import { sendEnterpriseTrackEvent } from '@2uinc/frontend-enterprise-utils';
 
 import { useIntl } from '@edx/frontend-platform/i18n';
 import LmsApiService from '../../../data/services/LmsApiService';

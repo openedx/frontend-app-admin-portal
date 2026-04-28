@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { FormattedMessage } from '@edx/frontend-platform/i18n';
 import PropTypes from 'prop-types';
-import { sendEnterpriseTrackEvent } from '@edx/frontend-enterprise-utils';
+import { sendEnterpriseTrackEvent } from '@2uinc/frontend-enterprise-utils';
 import { ANALYTICS_TABS } from '../constants';
 import {
   COURSE_TYPES, ALL_COURSES, GRANULARITY, CALCULATION,

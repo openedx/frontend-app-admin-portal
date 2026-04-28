@@ -2,8 +2,8 @@ import React, { useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { logError } from '@edx/frontend-platform/logging';
 import { getAuthenticatedUser } from '@edx/frontend-platform/auth';
-import { LoginRedirect, getProxyLoginUrl } from '@edx/frontend-enterprise-logistration';
-import { isEnterpriseUser, ENTERPRISE_ADMIN } from '@edx/frontend-enterprise-utils';
+import { LoginRedirect, getProxyLoginUrl } from '@2uinc/frontend-enterprise-logistration';
+import { isEnterpriseUser, ENTERPRISE_ADMIN } from '@2uinc/frontend-enterprise-utils';
 import { v5 as uuidv5 } from 'uuid';
 
 import EnterpriseAppSkeleton from '../EnterpriseApp/EnterpriseAppSkeleton';

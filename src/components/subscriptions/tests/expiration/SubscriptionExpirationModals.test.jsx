@@ -5,7 +5,7 @@ import {
 import '@testing-library/jest-dom/extend-expect';
 import userEvent from '@testing-library/user-event';
 
-import * as enterpriseUtils from '@edx/frontend-enterprise-utils';
+import * as enterpriseUtils from '@2uinc/frontend-enterprise-utils';
 import { IntlProvider } from '@edx/frontend-platform/i18n';
 import { axe } from 'jest-axe';
 import SubscriptionExpirationModals from '../../expiration/SubscriptionExpirationModals';
@@ -23,8 +23,8 @@ import {
 } from '../TestUtilities';
 import { accessibilitySettings } from '../../../../../tests/accessibility-settings';
 
-jest.mock('@edx/frontend-enterprise-utils', () => {
-  const originalModule = jest.requireActual('@edx/frontend-enterprise-utils');
+jest.mock('@2uinc/frontend-enterprise-utils', () => {
+  const originalModule = jest.requireActual('@2uinc/frontend-enterprise-utils');
   return ({
     ...originalModule,
     sendEnterpriseTrackEvent: jest.fn(),

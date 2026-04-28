@@ -1,4 +1,4 @@
-import { sendEnterpriseTrackEvent } from '@edx/frontend-enterprise-utils';
+import { sendEnterpriseTrackEvent } from '@2uinc/frontend-enterprise-utils';
 import { getConfig } from '@edx/frontend-platform/config';
 import { camelCaseObject, snakeCaseObject } from '@edx/frontend-platform/utils';
 import {

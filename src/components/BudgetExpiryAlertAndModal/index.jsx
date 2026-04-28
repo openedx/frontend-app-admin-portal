@@ -5,7 +5,7 @@ import {
 
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { sendEnterpriseTrackEvent } from '@edx/frontend-enterprise-utils';
+import { sendEnterpriseTrackEvent } from '@2uinc/frontend-enterprise-utils';
 import { matchPath, useLocation } from 'react-router-dom';
 import { FormattedMessage } from '@edx/frontend-platform/i18n';
 import { useEnterpriseBudgets } from '../EnterpriseSubsidiesContext/data/hooks';

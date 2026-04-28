@@ -7,7 +7,7 @@ import configureMockStore from 'redux-mock-store';
 import thunk from 'redux-thunk';
 import { camelCaseObject } from '@edx/frontend-platform';
 import { IntlProvider } from '@edx/frontend-platform/i18n';
-import { renderWithRouter } from '@edx/frontend-enterprise-utils';
+import { renderWithRouter } from '@2uinc/frontend-enterprise-utils';
 
 import { axe } from 'jest-axe';
 import { TEST_COURSE_HIGHLIGHTS_DATA } from '../data/constants';
@@ -20,8 +20,8 @@ import { accessibilitySettings } from '../../../../tests/accessibility-settings'
 const mockStore = configureMockStore([thunk]);
 
 jest.mock('../../../data/services/EnterpriseCatalogApiService');
-jest.mock('@edx/frontend-enterprise-utils', () => {
-  const originalModule = jest.requireActual('@edx/frontend-enterprise-utils');
+jest.mock('@2uinc/frontend-enterprise-utils', () => {
+  const originalModule = jest.requireActual('@2uinc/frontend-enterprise-utils');
   return ({
     ...originalModule,
     sendEnterpriseTrackEvent: jest.fn(),

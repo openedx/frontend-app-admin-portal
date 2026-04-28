@@ -10,7 +10,7 @@ import {
   mergeConfig,
 } from '@edx/frontend-platform';
 import { ErrorPage } from '@edx/frontend-platform/react';
-import { hasFeatureFlagEnabled } from '@edx/frontend-enterprise-utils';
+import { hasFeatureFlagEnabled } from '@2uinc/frontend-enterprise-utils';
 
 import { createRoot } from 'react-dom/client';
 import messages from './i18n';

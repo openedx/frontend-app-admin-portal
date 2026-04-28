@@ -5,7 +5,7 @@ import {
   Stack, Collapsible, Row, Col, Button,
 } from '@openedx/paragon';
 import { ArrowDownward } from '@openedx/paragon/icons';
-import { sendEnterpriseTrackEvent } from '@edx/frontend-enterprise-utils';
+import { sendEnterpriseTrackEvent } from '@2uinc/frontend-enterprise-utils';
 import { generatePath, useParams, Link } from 'react-router-dom';
 
 import { FormattedMessage, useIntl } from '@edx/frontend-platform/i18n';

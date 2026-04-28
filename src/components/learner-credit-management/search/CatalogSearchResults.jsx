@@ -2,7 +2,7 @@ import { useContext, useEffect, useMemo } from 'react';
 import { connectStateResults } from 'react-instantsearch-dom';
 import PropTypes from 'prop-types';
 
-import { SearchPagination, SearchContext } from '@edx/frontend-enterprise-catalog-search';
+import { SearchPagination, SearchContext } from '@2uinc/frontend-enterprise-catalog-search';
 import { FormattedMessage } from '@edx/frontend-platform/i18n';
 import {
   Alert, CardView, DataTable, TextFilter,

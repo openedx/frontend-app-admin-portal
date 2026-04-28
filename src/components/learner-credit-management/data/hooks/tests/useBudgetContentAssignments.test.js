@@ -1,11 +1,11 @@
 import { renderHook, waitFor } from '@testing-library/react';
-import { sendEnterpriseTrackEvent } from '@edx/frontend-enterprise-utils';
+import { sendEnterpriseTrackEvent } from '@2uinc/frontend-enterprise-utils';
 
 import useBudgetContentAssignments from '../useBudgetContentAssignments';
 import EnterpriseAccessApiService from '../../../../../data/services/EnterpriseAccessApiService';
 
-jest.mock('@edx/frontend-enterprise-utils', () => ({
-  ...jest.requireActual('@edx/frontend-enterprise-utils'),
+jest.mock('@2uinc/frontend-enterprise-utils', () => ({
+  ...jest.requireActual('@2uinc/frontend-enterprise-utils'),
   sendEnterpriseTrackEvent: jest.fn(),
 }));
 

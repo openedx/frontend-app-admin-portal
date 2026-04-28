@@ -1,7 +1,7 @@
 import React from 'react';
 import { Button } from '@openedx/paragon';
 import PropTypes from 'prop-types';
-import { sendEnterpriseTrackEvent } from '@edx/frontend-enterprise-utils';
+import { sendEnterpriseTrackEvent } from '@2uinc/frontend-enterprise-utils';
 import { connect } from 'react-redux';
 import { FormattedMessage } from '@edx/frontend-platform/i18n';
 import EVENT_NAMES from '../../eventTracking';

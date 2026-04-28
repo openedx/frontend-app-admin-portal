@@ -5,7 +5,7 @@ import {
   Container, Row, Col, Alert, MailtoLink, Toast,
 } from '@openedx/paragon';
 import { getAuthenticatedUser, hydrateAuthenticatedUser } from '@edx/frontend-platform/auth';
-import { LoginRedirect } from '@edx/frontend-enterprise-logistration';
+import { LoginRedirect } from '@2uinc/frontend-enterprise-logistration';
 import { configuration } from '../../config';
 
 import { useInterval } from '../../hooks';

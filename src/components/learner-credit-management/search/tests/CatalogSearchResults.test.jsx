@@ -4,9 +4,9 @@ import '@testing-library/jest-dom/extend-expect';
 import { Provider } from 'react-redux';
 import thunk from 'redux-thunk';
 import configureMockStore from 'redux-mock-store';
-import { SearchContext } from '@edx/frontend-enterprise-catalog-search';
+import { SearchContext } from '@2uinc/frontend-enterprise-catalog-search';
 import { IntlProvider } from '@edx/frontend-platform/i18n';
-import { renderWithRouter } from '@edx/frontend-enterprise-utils';
+import { renderWithRouter } from '@2uinc/frontend-enterprise-utils';
 import { QueryClientProvider } from '@tanstack/react-query';
 
 import { axe } from 'jest-axe';
