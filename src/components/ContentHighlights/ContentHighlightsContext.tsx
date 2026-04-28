@@ -9,6 +9,9 @@ export type StepperModalState = {
   highlightTitle: string | null;
   titleStepValidationError: string | null;
   currentSelectedRowIds: Record<string, boolean>;
+  isEditMode: boolean;
+  highlightSetUuid: string | null;
+  existingContentKeys: string[];
 };
 
 export type ContentHighlightsAlgoliaContextValue = {
@@ -41,6 +44,9 @@ const initialState = {
     highlightTitle: null,
     titleStepValidationError: null,
     currentSelectedRowIds: {},
+    isEditMode: false,
+    highlightSetUuid: null,
+    existingContentKeys: [],
   },
   contentHighlights: [],
   algolia: {

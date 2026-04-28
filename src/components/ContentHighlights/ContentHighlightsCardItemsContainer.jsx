@@ -1,6 +1,6 @@
 import React from 'react';
 import {
-  ActionRow, Alert, Button, CardGrid, useToggle,
+  ActionRow, Alert, Button, CardGrid, Form, useToggle,
 } from '@openedx/paragon';
 import PropTypes from 'prop-types';
 import { FormattedMessage } from '@edx/frontend-platform/i18n';
@@ -21,6 +21,7 @@ import { isArchivedContent } from '../../utils';
 
 const ContentHighlightsCardItemsContainer = ({
   enterpriseId, enterpriseSlug, isLoading, highlightedContent, updateHighlightSet,
+  isEditing, selectedContentKeys, onToggleSelect,
 }) => {
   const [isDeleteModalOpen, openDeleteModal, closeDeleteModal] = useToggle(false);
 
@@ -32,11 +33,55 @@ const ContentHighlightsCardItemsContainer = ({
       <SkeletonContentCardContainer itemCount={MAX_CONTENT_ITEMS_PER_HIGHLIGHT_SET} />
     );
   }
+
   if (!highlightedContent || highlightedContent?.length === 0) {
     return (
       <Alert data-testid="empty-highlighted-content" variant="warning">
         {DEFAULT_ERROR_MESSAGE.EMPTY_HIGHLIGHT_SET}
       </Alert>
+    );
+  }
+
+  if (isEditing) {
+    return (
+      <div data-testid="edit-mode-card-grid">
+        <CardGrid columnSizes={HIGHLIGHTS_CARD_GRID_COLUMN_SIZES}>
+          {highlightedContent.map(({
+            uuid, title, contentType, authoringOrganizations, cardImageUrl, contentKey,
+          }) => (
+            <div
+              key={uuid}
+              style={{ position: 'relative' }}
+              data-testid={`selectable-card-wrapper-${uuid}`}
+            >
+              <div
+                style={{
+                  position: 'absolute',
+                  top: '0.5rem',
+                  right: '0.5rem',
+                  zIndex: 1,
+                }}
+              >
+                <Form.Checkbox
+                  aria-label={`Select ${title} for removal`}
+                  checked={selectedContentKeys.has(contentKey)}
+                  onChange={() => onToggleSelect(contentKey)}
+                  data-testid={`select-checkbox-${uuid}`}
+                />
+              </div>
+              <ContentHighlightCardItem
+                isLoading={isLoading}
+                key={uuid}
+                cardImageUrl={cardImageUrl}
+                title={title}
+                archived={false}
+                contentType={contentType.toLowerCase()}
+                partners={authoringOrganizations}
+              />
+            </div>
+          ))}
+        </CardGrid>
+      </div>
     );
   }
 
@@ -179,6 +224,15 @@ ContentHighlightsCardItemsContainer.propTypes = {
     courseRunStatuses: PropTypes.arrayOf(PropTypes.string),
   })).isRequired,
   updateHighlightSet: PropTypes.func.isRequired,
+  isEditing: PropTypes.bool,
+  selectedContentKeys: PropTypes.instanceOf(Set),
+  onToggleSelect: PropTypes.func,
+};
+
+ContentHighlightsCardItemsContainer.defaultProps = {
+  isEditing: false,
+  selectedContentKeys: new Set(),
+  onToggleSelect: () => {},
 };
 
 const mapStateToProps = state => ({

@@ -47,7 +47,10 @@ const ContentHighlightStepper = ({ enterpriseId }) => {
   const [isPublishing, setIsPublishing] = useState(false);
   const [isCloseAlertOpen, openCloseAlert, closeCloseAlert] = useToggle(false);
   const { resetStepperModal } = useContentHighlightsContext();
-  const isStepperModalOpen = useContextSelector(ContentHighlightsContext, v => v[0].stepperModal.isOpen);
+  const isStepperModalOpen = useContextSelector(
+    ContentHighlightsContext,
+    v => v[0].stepperModal.isOpen && !v[0].stepperModal.isEditMode,
+  );
   const titleStepValidationError = useContextSelector(
     ContentHighlightsContext,
     v => v[0].stepperModal.titleStepValidationError,
