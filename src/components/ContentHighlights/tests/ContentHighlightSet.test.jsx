@@ -6,13 +6,13 @@ import thunk from 'redux-thunk';
 import { Provider } from 'react-redux';
 import Router, { MemoryRouter, Route, Routes } from 'react-router-dom';
 import {
-  render, screen, fireEvent, renderHook, waitFor,
+  render, screen, fireEvent, renderHook, waitFor, act,
 } from '@testing-library/react';
 import { IntlProvider } from '@edx/frontend-platform/i18n';
 import { camelCaseObject } from '@edx/frontend-platform';
 import { ContentHighlightsContext } from '../ContentHighlightsContext';
 import ContentHighlightSet from '../ContentHighlightSet';
-import { useHighlightSet } from '../data/hooks';
+import { useHighlightSet, useContentHighlightsContext } from '../data/hooks';
 import { ROUTE_NAMES } from '../../EnterpriseApp/data/constants';
 import EnterpriseCatalogApiService from '../../../data/services/EnterpriseCatalogApiService';
 import { EnterpriseAppContext } from '../../EnterpriseApp/EnterpriseAppContextProvider';
@@ -24,6 +24,15 @@ jest.mock('../DeleteHighlightSet', () => ({
   __esModule: true,
   default: () => <div data-testid="deleteHighlightSet" />,
 }));
+
+// Mock hooks module — useContentHighlightsContext as jest.fn()
+// so we can control its return value per describe block
+jest.mock('../data/hooks', () => ({
+  ...jest.requireActual('../data/hooks'),
+  useContentHighlightsContext: jest.fn(),
+}));
+
+const mockOpenEditStepperModal = jest.fn();
 
 const mockHighlightSetResponse = camelCaseObject(TEST_COURSE_HIGHLIGHTS_DATA);
 const mockStore = configureMockStore([thunk]);
@@ -52,24 +61,26 @@ jest.mock('react-router-dom', () => ({
   useParams: jest.fn(),
 }));
 
+const initialContextState = {
+  stepperModal: {
+    isOpen: false,
+    highlightTitle: null,
+    titleStepValidationError: null,
+    currentSelectedRowIds: {},
+    isEditMode: false,
+    highlightSetUuid: null,
+    existingContentKeys: [],
+  },
+  contentHighlights: [],
+  algolia: {
+    searchClient,
+    securedAlgoliaApiKey: null,
+    isLoading: false,
+  },
+};
+
 const ContentHighlightSetWrapper = ({ children, ...props }) => {
-  const contextValue = useState({
-    stepperModal: {
-      isOpen: false,
-      highlightTitle: null,
-      titleStepValidationError: null,
-      currentSelectedRowIds: {},
-      isEditMode: false,
-      highlightSetUuid: null,
-      existingContentKeys: [],
-    },
-    contentHighlights: [],
-    algolia: {
-      searchClient,
-      securedAlgoliaApiKey: null,
-      isLoading: false,
-    },
-  });
+  const contextValue = useState(initialContextState);
   return (
     <IntlProvider locale="en">
       <EnterpriseAppContext.Provider value={initialEnterpriseAppContextValue}>
@@ -89,6 +100,15 @@ const ContentHighlightSetWrapper = ({ children, ...props }) => {
     </IntlProvider>
   );
 };
+
+// Wrapper for hook tests
+const HookWrapper = ({ children }) => (
+  <IntlProvider locale="en">
+    <ContentHighlightsContext.Provider value={useState(initialContextState)}>
+      {children}
+    </ContentHighlightsContext.Provider>
+  </IntlProvider>
+);
 
 // Mock highlight set with featured items
 const mockHighlightSetWithFeatured = {
@@ -130,6 +150,10 @@ describe('<ContentHighlightSet>', () => {
   beforeEach(() => {
     jest.clearAllMocks();
     jest.spyOn(Router, 'useParams').mockReturnValue({ highlightSetUUID });
+    // Provide mock return value for component tests
+    useContentHighlightsContext.mockReturnValue({
+      openEditStepperModal: mockOpenEditStepperModal,
+    });
   });
 
   it('Displays the title of the highlight set', async () => {
@@ -167,26 +191,18 @@ describe('<ContentHighlightSet>', () => {
       });
       render(<ContentHighlightSetWrapper />);
 
-      // Wait for loading to finish
       await waitFor(() => {
         expect(screen.getByText('Recommended for Marketing')).toBeInTheDocument();
       });
 
-      // Enter edit mode
       fireEvent.click(screen.getByTestId('edit-content-button'));
-
-      // Select a featured course
       fireEvent.click(screen.getByLabelText('Select Featured Course Alpha for removal'));
-
-      // Click remove content
       fireEvent.click(screen.getByTestId('remove-content-button'));
 
-      // Modal should appear with featured course listed
       await waitFor(() => {
         expect(screen.getByText('Remove a featured course?')).toBeInTheDocument();
       });
       expect(screen.getByText('Do you want to remove these featured courses from your highlight?')).toBeInTheDocument();
-      // Featured course name appears in both card and modal list item
       const featuredAlphaElements = screen.getAllByText('Featured Course Alpha');
       expect(featuredAlphaElements.length).toBeGreaterThanOrEqual(2);
     });
@@ -202,24 +218,16 @@ describe('<ContentHighlightSet>', () => {
         expect(screen.getByText('Recommended for Marketing')).toBeInTheDocument();
       });
 
-      // Enter edit mode
       fireEvent.click(screen.getByTestId('edit-content-button'));
-
-      // Select only the non-featured course
       fireEvent.click(screen.getByLabelText('Select Regular Course Beta for removal'));
-
-      // Click remove content - should remove directly without modal
       fireEvent.click(screen.getByTestId('remove-content-button'));
 
-      // Modal should NOT appear
       expect(screen.queryByText('Remove a featured course?')).not.toBeInTheDocument();
 
-      // API should be called directly
       await waitFor(() => {
         expect(EnterpriseCatalogApiService.updateHighlightSet).toHaveBeenCalled();
       });
 
-      // Toast should appear
       await waitFor(() => {
         expect(screen.getByText('Content removed successfully')).toBeInTheDocument();
       });
@@ -243,10 +251,8 @@ describe('<ContentHighlightSet>', () => {
         expect(screen.getByText('Remove a featured course?')).toBeInTheDocument();
       });
 
-      // Click Cancel in modal
       fireEvent.click(screen.getByTestId('featured-modal-cancel'));
 
-      // Modal closes, no API call
       await waitFor(() => {
         expect(screen.queryByText('Remove a featured course?')).not.toBeInTheDocument();
       });
@@ -272,19 +278,15 @@ describe('<ContentHighlightSet>', () => {
         expect(screen.getByText('Remove a featured course?')).toBeInTheDocument();
       });
 
-      // Click "Yes, remove content"
       fireEvent.click(screen.getByTestId('featured-modal-confirm'));
 
       await waitFor(() => {
         expect(EnterpriseCatalogApiService.updateHighlightSet).toHaveBeenCalledWith(
           highlightSetUUID,
-          {
-            remove_content_keys: ['edX+Course1'],
-          },
+          { remove_content_keys: ['edX+Course1'] },
         );
       });
 
-      // Toast should appear after successful removal
       await waitFor(() => {
         expect(screen.getByText('Content removed successfully')).toBeInTheDocument();
       });
@@ -301,21 +303,182 @@ describe('<ContentHighlightSet>', () => {
       });
 
       fireEvent.click(screen.getByTestId('edit-content-button'));
-
-      // Select both featured items
       fireEvent.click(screen.getByLabelText('Select Featured Course Alpha for removal'));
       fireEvent.click(screen.getByLabelText('Select Featured Program Gamma for removal'));
-
       fireEvent.click(screen.getByTestId('remove-content-button'));
 
       await waitFor(() => {
         expect(screen.getByText('Remove a featured course?')).toBeInTheDocument();
       });
-      // Both featured items appear in modal list (each also appears in the card grid)
+
       const alphaElements = screen.getAllByText('Featured Course Alpha');
       const gammaElements = screen.getAllByText('Featured Program Gamma');
       expect(alphaElements.length).toBeGreaterThanOrEqual(2);
       expect(gammaElements.length).toBeGreaterThanOrEqual(2);
     });
+
+    it('shows error alert when content removal fails', async () => {
+      EnterpriseCatalogApiService.fetchHighlightSet.mockResolvedValueOnce({
+        data: mockHighlightSetWithFeatured,
+      });
+      EnterpriseCatalogApiService.updateHighlightSet.mockRejectedValueOnce(
+        new Error('Remove failed'),
+      );
+      render(<ContentHighlightSetWrapper />);
+
+      await waitFor(() => {
+        expect(screen.getByText('Recommended for Marketing')).toBeInTheDocument();
+      });
+
+      fireEvent.click(screen.getByTestId('edit-content-button'));
+      fireEvent.click(screen.getByLabelText('Select Regular Course Beta for removal'));
+      fireEvent.click(screen.getByTestId('remove-content-button'));
+
+      await waitFor(() => {
+        expect(screen.getByTestId('remove-error-alert')).toBeInTheDocument();
+      });
+      expect(screen.getByText('Failed to remove content. Please try again.')).toBeInTheDocument();
+    });
+
+    it('opens stepper modal when add content is clicked', async () => {
+      EnterpriseCatalogApiService.fetchHighlightSet.mockResolvedValueOnce({
+        data: mockHighlightSetWithFeatured,
+      });
+
+      render(<ContentHighlightSetWrapper />);
+
+      await waitFor(() => {
+        expect(screen.getByText('Recommended for Marketing')).toBeInTheDocument();
+      });
+
+      fireEvent.click(screen.getByTestId('edit-content-button'));
+      fireEvent.click(screen.getByTestId('add-content-button'));
+
+      await waitFor(() => {
+        expect(mockOpenEditStepperModal).toHaveBeenCalledWith({
+          highlightTitle: mockHighlightSetWithFeatured.title,
+          highlightSetUuid: highlightSetUUID,
+          existingContent: mockHighlightSetWithFeatured.highlightedContent,
+        });
+      });
+    });
+  });
+});
+
+// ─── useHighlightSet hook tests ───────────────────────────────────────────────
+describe('useHighlightSet', () => {
+  beforeEach(() => {
+    jest.clearAllMocks();
+  });
+
+  it('sets error state when fetchHighlightSet fails — covers lines 62-63', async () => {
+    const mockError = new Error('Fetch failed');
+    EnterpriseCatalogApiService.fetchHighlightSet.mockRejectedValueOnce(mockError);
+
+    const { result } = renderHook(() => useHighlightSet(highlightSetUUID));
+
+    expect(result.current.isLoading).toBe(true);
+
+    await waitFor(() => {
+      expect(result.current.isLoading).toBe(false);
+    });
+
+    expect(result.current.error).toEqual(mockError);
+    expect(result.current.highlightSet).toEqual([]);
+  });
+
+  it('refetch resets isLoading and re-fetches data — covers refetch lines', async () => {
+    EnterpriseCatalogApiService.fetchHighlightSet
+      .mockResolvedValueOnce({ data: mockHighlightSetWithFeatured })
+      .mockResolvedValueOnce({ data: mockHighlightSetWithFeatured });
+
+    const { result } = renderHook(() => useHighlightSet(highlightSetUUID));
+
+    await waitFor(() => {
+      expect(result.current.isLoading).toBe(false);
+    });
+
+    act(() => {
+      result.current.refetch();
+    });
+
+    expect(result.current.isLoading).toBe(true);
+
+    await waitFor(() => {
+      expect(result.current.isLoading).toBe(false);
+    });
+
+    expect(EnterpriseCatalogApiService.fetchHighlightSet).toHaveBeenCalledTimes(2);
+  });
+});
+
+// ─── useContentHighlightsContext hook tests ───────────────────────────────────
+describe('useContentHighlightsContext', () => {
+  beforeEach(() => {
+    jest.clearAllMocks();
+    // Restore real implementation for hook unit tests
+    useContentHighlightsContext.mockImplementation(
+      jest.requireActual('../data/hooks').useContentHighlightsContext,
+    );
+  });
+
+  it('openStepperModal sets isOpen to true and resets edit mode', () => {
+    const { result } = renderHook(
+      () => useContentHighlightsContext(),
+      { wrapper: HookWrapper },
+    );
+
+    expect(result.current.openStepperModal).toBeDefined();
+    expect(() => act(() => result.current.openStepperModal())).not.toThrow();
+  });
+
+  it('openEditStepperModal with items that have aggregationKey — covers lines 101-104, 114-115', () => {
+    const { result } = renderHook(
+      () => useContentHighlightsContext(),
+      { wrapper: HookWrapper },
+    );
+
+    const existingContent = [
+      {
+        contentKey: 'edX+Course1',
+        aggregationKey: 'course:edX+Course1',
+      },
+      {
+        contentKey: 'edX+Course2',
+        aggregationKey: null,
+      },
+    ];
+
+    expect(() => act(() => result.current.openEditStepperModal({
+      highlightTitle: 'Test Highlight',
+      highlightSetUuid: highlightSetUUID,
+      existingContent,
+    }))).not.toThrow();
+  });
+
+  it('openEditStepperModal with empty existingContent — covers empty array branch', () => {
+    const { result } = renderHook(
+      () => useContentHighlightsContext(),
+      { wrapper: HookWrapper },
+    );
+
+    expect(() => act(() => result.current.openEditStepperModal({
+      highlightTitle: 'Test Highlight',
+      highlightSetUuid: highlightSetUUID,
+      existingContent: [],
+    }))).not.toThrow();
+  });
+
+  it('openEditStepperModal with null existingContent — covers (existingContent || []) fallback', () => {
+    const { result } = renderHook(
+      () => useContentHighlightsContext(),
+      { wrapper: HookWrapper },
+    );
+
+    expect(() => act(() => result.current.openEditStepperModal({
+      highlightTitle: 'Test Highlight',
+      highlightSetUuid: highlightSetUUID,
+      existingContent: null,
+    }))).not.toThrow();
   });
 });

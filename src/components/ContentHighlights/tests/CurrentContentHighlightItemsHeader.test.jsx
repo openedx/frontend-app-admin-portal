@@ -160,4 +160,31 @@ describe('<CurrentContentHighlightItemsHeader>', () => {
     fireEvent.click(screen.getByTestId('remove-content-button'));
     expect(onRemoveSelectedContent).toHaveBeenCalledTimes(1);
   });
+
+  it('Remove content button shows pending state when isRemoving is true', () => {
+    render(
+      <CurrentContentHighlightItemsHeaderWrapper
+        isLoading={false}
+        highlightTitle={highlightTitle}
+        isEditing
+        selectedCount={1}
+        isRemoving
+      />,
+    );
+    expect(screen.getByText('Removing...')).toBeInTheDocument();
+    expect(screen.getByTestId('remove-content-button')).toBeDisabled();
+  });
+
+  it('Remove content button is disabled when isRemoving is true even with selectedCount > 0', () => {
+    render(
+      <CurrentContentHighlightItemsHeaderWrapper
+        isLoading={false}
+        highlightTitle={highlightTitle}
+        isEditing
+        selectedCount={3}
+        isRemoving
+      />,
+    );
+    expect(screen.getByTestId('remove-content-button')).toBeDisabled();
+  });
 });
