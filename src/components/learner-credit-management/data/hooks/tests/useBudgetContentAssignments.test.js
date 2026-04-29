@@ -1,4 +1,6 @@
-import { renderHook, waitFor } from '@testing-library/react';
+import {
+  renderHook, waitFor, act,
+} from '@testing-library/react';
 import { sendEnterpriseTrackEvent } from '@2uinc/frontend-enterprise-utils';
 
 import useBudgetContentAssignments from '../useBudgetContentAssignments';
@@ -12,6 +14,12 @@ jest.mock('@2uinc/frontend-enterprise-utils', () => ({
 describe('useBudgetContentAssignments', () => {
   beforeEach(() => {
     jest.clearAllMocks();
+    // The hook debounces calls, so use fake timers to flush
+    // deterministically instead of racing CI.
+    jest.useFakeTimers();
+  });
+  afterEach(() => {
+    jest.useRealTimers();
   });
   it('does not call fetchContentAssignments if isEnabled is false', async () => {
     const { result } = renderHook(() => useBudgetContentAssignments({
@@ -34,6 +42,8 @@ describe('useBudgetContentAssignments', () => {
       pageSize: 10,
       filters: [],
     });
+    // Flush the debounce so the hook processes the call.
+    await act(async () => { jest.runAllTimers(); });
 
     await waitFor(() => {
       expect(result.current).toBeDefined();
@@ -68,6 +78,8 @@ describe('useBudgetContentAssignments', () => {
       pageSize: 10,
       filters: [],
     });
+    // Flush the debounce so the hook processes the call.
+    await act(async () => { jest.runAllTimers(); });
 
     await waitFor(() => {
       expect(result.current.isLoading).toEqual(false);
@@ -133,6 +145,8 @@ describe('useBudgetContentAssignments', () => {
       pageSize: 10,
       filters,
     });
+    // Flush the debounce so the hook processes the call.
+    await act(async () => { jest.runAllTimers(); });
 
     await waitFor(() => {
       expect(result.current.isLoading).toEqual(false);
@@ -192,6 +206,8 @@ describe('useBudgetContentAssignments', () => {
       pageSize: 10,
       filters,
     });
+    // Flush the debounce so the hook processes the call.
+    await act(async () => { jest.runAllTimers(); });
 
     await waitFor(() => {
       expect(result.current.isLoading).toEqual(false);
@@ -289,6 +305,8 @@ describe('useBudgetContentAssignments', () => {
       pageSize: 10,
       sortBy,
     });
+    // Flush the debounce so the hook processes the call.
+    await act(async () => { jest.runAllTimers(); });
 
     await waitFor(() => {
       expect(result.current.isLoading).toEqual(false);
@@ -343,6 +361,8 @@ describe('useBudgetContentAssignments', () => {
       pageSize: 10,
       sortBy: [initialSortByMetadata],
     });
+    // Flush the debounce so the hook processes the call.
+    await act(async () => { jest.runAllTimers(); });
 
     await waitFor(() => {
       expect(result.current.isLoading).toEqual(false);
@@ -360,6 +380,8 @@ describe('useBudgetContentAssignments', () => {
       pageSize: 10,
       sortBy: [modifiedSortByMetaData],
     });
+    // Flush the debounce so the hook processes the call.
+    await act(async () => { jest.runAllTimers(); });
 
     await waitFor(() => {
       expect(sendEnterpriseTrackEvent).toHaveBeenCalledTimes(1);
