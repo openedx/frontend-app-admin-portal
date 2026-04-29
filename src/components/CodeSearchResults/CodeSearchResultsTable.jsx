@@ -1,43 +1,19 @@
-import React from 'react';
+import React, {
+  useCallback, useEffect, useMemo, useState,
+} from 'react';
 import PropTypes from 'prop-types';
 import dayjs from 'dayjs';
-import { useLocation } from 'react-router-dom';
-import { Icon } from '@openedx/paragon';
-import { Check } from '@openedx/paragon/icons';
+import {
+  Alert, DataTable, Icon,
+} from '@openedx/paragon';
+import { Check, Error as ErrorIcon } from '@openedx/paragon/icons';
 
 import { isValidEmail } from '../../utils';
-import TableContainer from '../../containers/TableContainer';
 import RemindButton from '../RemindButton';
 import RevokeButton from '../RevokeButton';
-
 import EcommerceApiService from '../../data/services/EcommerceApiService';
 
-const tableColumns = [
-  {
-    label: 'Coupon Batch',
-    key: 'couponName',
-  },
-  {
-    label: 'Code',
-    key: 'code',
-  },
-  {
-    label: 'Redeemed',
-    key: 'isRedeemed',
-  },
-  {
-    label: 'Redemption Date',
-    key: 'redemptionDate',
-  },
-  {
-    label: 'Course Title',
-    key: 'courseTitle',
-  },
-  {
-    label: 'Actions',
-    key: 'actions',
-  },
-];
+const DEFAULT_EMPTY_VALUE = '-';
 
 const getFormattedDate = (date) => {
   if (!date) {
@@ -72,94 +48,175 @@ const searchParameter = (searchQuery) => {
   return 'voucher_code';
 };
 
-const handleTableColumns = (searchQuery) => {
-  const assignedToColumnIndex = tableColumns.findIndex(column => column.key === 'assignedTo');
-  // If search is made by email, no need to show "Assigned To" field
-  if (isValidEmail(searchQuery) === undefined && assignedToColumnIndex > -1) {
-    // Remove "Assigned To" column if it already exists
-    tableColumns.splice(assignedToColumnIndex, 1);
-  } else if (isValidEmail(searchQuery) !== undefined && assignedToColumnIndex === -1) {
-    // Add "Assigned To" column if it doesn't already exist
-    tableColumns.splice(4, 0, {
-      label: 'Assigned To',
-      key: 'assignedTo',
-    });
-  }
-  return tableColumns;
-};
-
 const CodeSearchResultsTable = ({
   searchQuery,
   shouldRefreshTable,
   onRemindSuccess,
   onRevokeSuccess,
 }) => {
-  const location = useLocation();
-  const queryParams = new URLSearchParams(location.search);
-  const formatSearchResultsData = (results) => {
-    const transformedSearchResults = transformSearchResults(results);
-    const defaultEmptyValue = '-';
-    return transformedSearchResults.map(({
-      isRedeemed,
-      isAssigned,
-      couponId,
-      courseTitle,
-      redemptionDate,
-      code,
-      couponName,
-      assignedTo,
-    }) => ({
-      couponId,
-      couponName,
-      code,
-      isRedeemed: isRedeemed ? (
-        <Icon className="text-primary" src={Check} screenReaderText="has been redeemed" />
-      ) : defaultEmptyValue,
-      courseTitle: courseTitle || defaultEmptyValue,
-      assignedTo: assignedTo || defaultEmptyValue,
-      redemptionDate: redemptionDate || defaultEmptyValue,
-      actions: !isRedeemed && isAssigned ? (
-        <>
-          <RemindButton
-            couponId={couponId}
-            couponTitle={couponName}
-            data={{
-              email: assignedTo,
-              code,
-            }}
-            onSuccess={onRemindSuccess}
-          />
-          {' | '}
-          <RevokeButton
-            couponId={couponId}
-            couponTitle={couponName}
-            data={{
-              assigned_to: assignedTo,
-              code,
-            }}
-            onSuccess={onRevokeSuccess}
-          />
-        </>
-      ) : defaultEmptyValue,
-    }));
-  };
+  const [tableData, setTableData] = useState([]);
+  const [isLoading, setIsLoading] = useState(false);
+  const [fetchError, setFetchError] = useState(null);
+  const [pageCount, setPageCount] = useState(0);
+  const [itemCount, setItemCount] = useState(0);
+  // currentPage is driven by DataTable's fetchData callback (0-based)
+  const [currentPage, setCurrentPage] = useState(0);
 
-  const fetchOptions = {
-    [searchParameter(searchQuery)]: searchQuery,
-  };
-  if (queryParams.get('page')) {
-    fetchOptions.page = parseInt(queryParams.get('page'), 10);
+  const isEmailSearch = isValidEmail(searchQuery) === undefined;
+
+  // Fetch data whenever searchQuery, shouldRefreshTable, or currentPage changes.
+  // Using a dedicated useEffect keeps this decoupled from DataTable's own
+  // pagination-state updates and avoids infinite-fetch loops.
+  useEffect(() => {
+    let cancelled = false;
+    const doFetch = async () => {
+      setIsLoading(true);
+      setFetchError(null);
+      try {
+        const response = await EcommerceApiService.fetchCodeSearchResults({
+          [searchParameter(searchQuery)]: searchQuery,
+          page: currentPage + 1, // API uses 1-based pagination
+        });
+        if (!cancelled) {
+          const { results = [], num_pages: numPages = 0, count } = response.data;
+          const transformed = transformSearchResults(results);
+          setTableData(transformed);
+          setPageCount(numPages);
+          setItemCount(count !== undefined ? count : transformed.length);
+        }
+      } catch (err) {
+        if (!cancelled) {
+          setFetchError(err);
+        }
+      } finally {
+        if (!cancelled) {
+          setIsLoading(false);
+        }
+      }
+    };
+    doFetch();
+    return () => { cancelled = true; };
+  }, [searchQuery, shouldRefreshTable, currentPage]);
+
+  // DataTable calls this when the user changes pages, sort, or filters.
+  // We only store the new page index; the useEffect above handles the fetch.
+  const handleFetchData = useCallback(({ pageIndex }) => {
+    setCurrentPage(pageIndex ?? 0);
+  }, []);
+
+  const columns = useMemo(() => {
+    const baseColumns = [
+      {
+        Header: 'Coupon Batch',
+        accessor: 'couponName',
+      },
+      {
+        Header: 'Code',
+        accessor: 'code',
+      },
+      {
+        Header: 'Redeemed',
+        accessor: 'isRedeemed',
+        /* eslint-disable react/prop-types, react/no-unstable-nested-components */
+        Cell: ({ value }) => (value ? (
+          <Icon className="text-primary" src={Check} screenReaderText="has been redeemed" />
+        ) : DEFAULT_EMPTY_VALUE),
+        /* eslint-enable react/prop-types, react/no-unstable-nested-components */
+        disableSortBy: true,
+      },
+      {
+        Header: 'Redemption Date',
+        accessor: 'redemptionDate',
+        /* eslint-disable-next-line react/prop-types, react/no-unstable-nested-components */
+        Cell: ({ value }) => value || DEFAULT_EMPTY_VALUE,
+        disableSortBy: true,
+      },
+      {
+        Header: 'Course Title',
+        accessor: 'courseTitle',
+        /* eslint-disable-next-line react/prop-types, react/no-unstable-nested-components */
+        Cell: ({ value }) => value || DEFAULT_EMPTY_VALUE,
+      },
+    ];
+
+    if (!isEmailSearch) {
+      // Insert "Assigned To" before "Course Title" for code (non-email) searches
+      baseColumns.splice(4, 0, {
+        Header: 'Assigned To',
+        accessor: 'assignedTo',
+        /* eslint-disable-next-line react/prop-types, react/no-unstable-nested-components */
+        Cell: ({ value }) => value || DEFAULT_EMPTY_VALUE,
+      });
+    }
+
+    return [
+      ...baseColumns,
+      {
+        Header: 'Actions',
+        accessor: 'actions',
+        /* eslint-disable react/prop-types, react/no-unstable-nested-components */
+        Cell: ({ row }) => {
+          const {
+            isRedeemed, isAssigned, couponId, couponName, assignedTo, code,
+          } = row.original;
+          if (!isRedeemed && isAssigned) {
+            return (
+              <>
+                <RemindButton
+                  couponId={couponId}
+                  couponTitle={couponName}
+                  data={{ email: assignedTo, code }}
+                  onSuccess={onRemindSuccess}
+                />
+                {' | '}
+                <RevokeButton
+                  couponId={couponId}
+                  couponTitle={couponName}
+                  data={{ assigned_to: assignedTo, code }}
+                  onSuccess={onRevokeSuccess}
+                />
+              </>
+            );
+          }
+          return DEFAULT_EMPTY_VALUE;
+        },
+        /* eslint-enable react/prop-types, react/no-unstable-nested-components */
+        disableSortBy: true,
+      },
+    ];
+  }, [isEmailSearch, onRemindSuccess, onRevokeSuccess]);
+
+  if (fetchError) {
+    return (
+      <Alert variant="danger" icon={ErrorIcon}>
+        <Alert.Heading>Unable to load data</Alert.Heading>
+        <p>
+          Try refreshing your screen
+          {' '}
+          {fetchError.message}
+        </p>
+      </Alert>
+    );
   }
 
   return (
-    <TableContainer
+    <DataTable
       key={`code-search-results-${searchQuery}-${shouldRefreshTable}`}
-      id="code-search-results"
+      isPaginated
+      manualPagination
+      isSortable
+      isLoading={isLoading}
+      columns={columns}
+      data={tableData}
+      itemCount={itemCount}
+      pageCount={pageCount}
+      fetchData={handleFetchData}
       className="code-search-results-table"
-      fetchMethod={() => EcommerceApiService.fetchCodeSearchResults(fetchOptions)}
-      columns={handleTableColumns(searchQuery)}
-      formatData={formatSearchResultsData}
-    />
+    >
+      <DataTable.Table />
+      <DataTable.EmptyTable content="There are no results." />
+      <DataTable.TableFooter />
+    </DataTable>
   );
 };
 
