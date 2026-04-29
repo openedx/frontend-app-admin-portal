@@ -12,6 +12,9 @@ import CouponDetails from './index';
 import { COUPON_FILTERS, DEFAULT_TABLE_COLUMNS } from './constants';
 import { EMAIL_TEMPLATE_SOURCE_NEW_EMAIL } from '../../data/constants/emailTemplate';
 import { MULTI_USE } from '../../data/constants/coupons';
+import EcommerceApiService from '../../data/services/EcommerceApiService';
+
+jest.mock('../../data/services/EcommerceApiService');
 
 const mockStore = configureMockStore([thunk]);
 
@@ -50,31 +53,31 @@ const sampleCodeData = {
 };
 
 const sampleTableData = {
-  loading: false,
-  error: null,
-  data: {
-    count: 5,
-    num_pages: 2,
-    current_page: 1,
-    results: [
-      sampleCodeData,
-      {
-        ...sampleCodeData,
-        code: 'test-code-2',
-        redemptions: {
-          total: 100,
-          used: 100,
-          num_assignments: 0,
-        },
+  count: 5,
+  num_pages: 2,
+  current_page: 1,
+  results: [
+    sampleCodeData,
+    {
+      ...sampleCodeData,
+      code: 'test-code-2',
+      redemptions: {
+        total: 100,
+        used: 100,
+        num_assignments: 0,
       },
-      {
-        ...sampleCodeData,
-        code: 'test-code-3',
-        assigned_to: null,
-      },
-    ],
-  },
+    },
+    {
+      ...sampleCodeData,
+      code: 'test-code-3',
+      assigned_to: null,
+    },
+  ],
 };
+
+// Minimal redux state – the deprecated `table` slice is no longer consumed by
+// CouponDetails, but the store must still satisfy connected child components
+// (DownloadCsvButton, modals).
 const reduxState = {
   portalConfiguration: {
     enterpriseId: 'LaelCo',
@@ -83,9 +86,6 @@ const reduxState = {
   },
   csv: {
     'coupon-details': {},
-  },
-  table: {
-    'coupon-details': sampleTableData,
   },
   form: {
     'code-assignment-modal-form': {
@@ -125,10 +125,6 @@ const couponData = {
 
 const defaultProps = {
   fetchCouponOrder: () => {},
-  couponDetailsTable: {
-    data: sampleTableData.data,
-    loading: false,
-  },
   couponData,
   isExpanded: true,
 };
@@ -147,7 +143,15 @@ const CouponDetailsWrapper = props => (
 
 // NOTE: Further integration testing can be found in src/containers/CouponDetails.test.jsx
 
+// Helper to flush all pending Promises in the microtask queue (React 18 async
+// state updates triggered by fetchData mock resolutions).
+const flushPromises = () => new Promise(setImmediate);
+
 describe('CouponDetails component', () => {
+  beforeEach(() => {
+    EcommerceApiService.fetchCouponDetails.mockResolvedValue({ data: sampleTableData });
+  });
+
   it('does not display contents when not expanded', () => {
     render(<CouponDetailsWrapper {...defaultProps} isExpanded={false} />);
     expect(screen.queryByText('Coupon Details')).not.toBeInTheDocument();
@@ -173,7 +177,11 @@ describe('CouponDetails component', () => {
         errors: [{ code: 'test-code-1', user_email: 'test@bestrun.com' }],
       }}
     />);
+    // Wait for initial fetchData so the filter select is enabled.
+    await flushPromises();
     await user.selectOptions(screen.getByLabelText('Filter by code status'), COUPON_FILTERS.unredeemed.label);
+    // Flush the async fetchData for the newly-selected filter.
+    await flushPromises();
     expect(screen.getByText('An error has occurred:', { exact: false })).toBeInTheDocument();
   });
 });

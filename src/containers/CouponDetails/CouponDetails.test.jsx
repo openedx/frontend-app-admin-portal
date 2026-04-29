@@ -7,21 +7,17 @@ import { MemoryRouter } from 'react-router-dom';
 import configureMockStore from 'redux-mock-store';
 import thunk from 'redux-thunk';
 import { render, screen } from '@testing-library/react';
-
 import '@testing-library/jest-dom/extend-expect';
-// import { Alert } from '@openedx/paragon';
 import { IntlProvider } from '@edx/frontend-platform/i18n';
-
 import { MULTI_USE } from '../../data/constants/coupons';
-// import EcommerceaApiService from '../../data/services/EcommerceApiService';
-
+import EcommerceApiService from '../../data/services/EcommerceApiService';
 import CouponDetails from './index';
 import { EMAIL_TEMPLATE_SOURCE_NEW_EMAIL } from '../../data/constants/emailTemplate';
-// import CodeReminderModal from '../CodeReminderModal';
-// import CodeAssignmentModal from '../../components/CodeAssignmentModal';
 import {
   ACTIONS, COUPON_FILTERS, DEFAULT_TABLE_COLUMNS,
 } from '../../components/CouponDetails/constants';
+
+jest.mock('../../data/services/EcommerceApiService');
 
 const enterpriseId = 'test-enterprise';
 const mockStore = configureMockStore([thunk]);
@@ -45,6 +41,7 @@ const emailDefaults = {
   'email-template-files': [{ name: 'file1.png', size: 123, contents: '' }, { name: 'file2.png', size: 456, contents: '' }],
 };
 
+// The deprecated `table` redux slice is no longer consumed by CouponDetails.
 const initialState = {
   portalConfiguration: {
     enterpriseId,
@@ -52,9 +49,6 @@ const initialState = {
     enableLearnerPortal: true,
   },
   csv: {
-    'coupon-details': {},
-  },
-  table: {
     'coupon-details': {},
   },
   form: {
@@ -92,6 +86,44 @@ const initialCouponData = {
   available: true,
 };
 
+const sampleCodeData = {
+  code: 'test-code-1',
+  assigned_to: 'test@bestrun.com',
+  redemptions: {
+    total: 100,
+    used: 10,
+    num_assignments: 5,
+  },
+  assignment_date: 'June 02, 2020 13:09',
+  last_reminder_date: 'June 22, 2020 12:01',
+  revocation_date: '',
+  error: null,
+  is_public: false,
+};
+
+const sampleTableData = {
+  count: 5,
+  num_pages: 2,
+  current_page: 1,
+  results: [
+    sampleCodeData,
+    {
+      ...sampleCodeData,
+      code: 'test-code-2',
+      redemptions: {
+        total: 100,
+        used: 100,
+        num_assignments: 0,
+      },
+    },
+    {
+      ...sampleCodeData,
+      code: 'test-code-3',
+      assigned_to: null,
+    },
+  ],
+};
+
 const CouponDetailsWrapper = props => (
   <MemoryRouter>
     <Provider store={props.store}>
@@ -113,57 +145,16 @@ CouponDetailsWrapper.propTypes = {
   store: PropTypes.shape({}),
 };
 
-const sampleCodeData = {
-  code: 'test-code-1',
-  assigned_to: 'test@bestrun.com',
-  redemptions: {
-    total: 100,
-    used: 10,
-    num_assignments: 5,
-  },
-  assignment_date: 'June 02, 2020 13:09',
-  last_reminder_date: 'June 22, 2020 12:01',
-  revocation_date: '',
-  error: null,
-  is_public: false,
-};
-
-const sampleTableData = {
-  loading: false,
-  error: null,
-  data: {
-    count: 5,
-    num_pages: 2,
-    current_page: 1,
-    results: [
-      sampleCodeData,
-      {
-        ...sampleCodeData,
-        code: 'test-code-2',
-        redemptions: {
-          total: 100,
-          used: 100,
-          num_assignments: 0,
-        },
-      },
-      {
-        ...sampleCodeData,
-        code: 'test-code-3',
-        assigned_to: null,
-      },
-    ],
-  },
-};
-
 describe('CouponDetails container', () => {
-  // let wrapper;
   let store;
 
-  // const selectAllCodesOnPage = ({ isSelected, expectedSelectionLength }) => {
-  //   const selectAllCheckbox = wrapper.find('table th').find('input[type=\'checkbox\']');
-  //   selectAllCheckbox.simulate('change', { target: { checked: isSelected } });
-  //   expect(wrapper.find('CouponDetails').instance().state.selectedCodes).toHaveLength(expectedSelectionLength);
-  // };
+  // Helper to flush all pending Promises (React 18 async state updates
+  // from the fetchData mock resolutions outside act()).
+  const flushPromises = () => new Promise(setImmediate);
+
+  beforeEach(() => {
+    EcommerceApiService.fetchCouponDetails.mockResolvedValue({ data: sampleTableData });
+  });
 
   describe('renders', () => {
     it('does not display contents when not expanded', () => {
@@ -176,12 +167,6 @@ describe('CouponDetails container', () => {
       expect(screen.getByText('Download full report (CSV)')).toBeInTheDocument();
     });
     it('renders the unassigned table by default', () => {
-      store = mockStore({
-        ...initialState,
-        table: {
-          'coupon-details': sampleTableData,
-        },
-      });
       render(<CouponDetailsWrapper store={store} isExpanded />);
       expect(screen.getByText(COUPON_FILTERS.unassigned.label)).toBeInTheDocument();
       DEFAULT_TABLE_COLUMNS.unassigned.forEach(({ label }) => {
@@ -196,28 +181,20 @@ describe('CouponDetails container', () => {
       [COUPON_FILTERS.redeemed.value],
     ])('renders the correct table columns for each coupon filter type %s', async (filterType) => {
       const user = userEvent.setup();
-      store = mockStore({
-        ...initialState,
-        table: {
-          'coupon-details': sampleTableData,
-        },
-      });
       render(<CouponDetailsWrapper store={store} isExpanded />);
+      // Wait for the initial fetchData to complete so the filter select is enabled.
+      await flushPromises();
+
       await user.selectOptions(screen.getByLabelText('Filter by code status'), filterType);
+      // Flush the async fetchData for the newly-selected filter.
+      await flushPromises();
 
       DEFAULT_TABLE_COLUMNS[filterType].forEach(({ label }) => {
         expect(screen.getByText(label)).toBeInTheDocument();
       });
     });
 
-    it('shows Assign button for an available coupon', () => {
-      store = mockStore({
-        ...initialState,
-        table: {
-          'coupon-details': sampleTableData,
-        },
-      });
-
+    it('shows Assign button for an available coupon', async () => {
       render(<CouponDetailsWrapper
         store={store}
         couponData={{
@@ -226,19 +203,13 @@ describe('CouponDetails container', () => {
         isExpanded
       />);
 
-      const table = document.getElementsByTagName('table')[0];
-      // getByText will throw an error if the text is not present
+      // Wait for the async fetchData call to resolve and rows to render
+      await flushPromises();
+      const table = screen.getByRole('table');
       within(table).getByText(ACTIONS.assign.label);
     });
 
-    it('does not show Assign button for an unavailable coupon', () => {
-      store = mockStore({
-        ...initialState,
-        table: {
-          'coupon-details': sampleTableData,
-        },
-      });
-
+    it('does not show Assign button for an unavailable coupon', async () => {
       render(<CouponDetailsWrapper
         store={store}
         couponData={{
@@ -248,7 +219,8 @@ describe('CouponDetails container', () => {
         isExpanded
       />);
 
-      const table = document.getElementsByTagName('table')[0];
+      await flushPromises();
+      const table = screen.getByRole('table');
       expect(within(table).queryByText(ACTIONS.assign.label)).toBeNull();
     });
   });
@@ -361,16 +333,11 @@ describe('CouponDetails container', () => {
     expect(screen.getByLabelText('Bulk action')).toBeDisabled();
   });
 
-  it('enables bulk action select when unassignedCodes !== 0', () => {
-    store = mockStore({
-      ...initialState,
-      table: {
-        'coupon-details': sampleTableData,
-      },
-    });
+  it('enables bulk action select when unassignedCodes !== 0', async () => {
+    render(<CouponDetailsWrapper isExpanded />);
 
-    render(<CouponDetailsWrapper store={store} isExpanded />);
-
+    // Wait for the async fetchData to resolve (hasTableData becomes true)
+    await flushPromises();
     expect(screen.getByLabelText('Bulk action')).toBeEnabled();
   });
 

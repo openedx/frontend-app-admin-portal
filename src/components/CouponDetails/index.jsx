@@ -1,212 +1,199 @@
-import React from 'react';
+import React, {
+  useState, useCallback, useMemo, useContext, useEffect, useRef,
+} from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import {
-  Alert, Button, Icon, Form,
+  Alert, Button, Icon, DataTable, DataTableContext,
 } from '@openedx/paragon';
 import { CheckCircle, Error } from '@openedx/paragon/icons';
 
-import TableContainer from '../../containers/TableContainer';
 import DownloadCsvButton from '../../containers/DownloadCsvButton';
 import CodeAssignmentModal from '../../containers/CodeAssignmentModal';
 import CodeReminderModal from '../../containers/CodeReminderModal';
 import CodeRevokeModal from '../../containers/CodeRevokeModal';
 
 import EcommerceApiService from '../../data/services/EcommerceApiService';
-import { updateUrl } from '../../utils';
 import { MODAL_TYPES } from '../EmailTemplateForm/constants';
 import {
   getFilterOptions, shouldShowSelectAllStatusAlert,
 } from './helpers';
 import {
-  ACTIONS, COUPON_FILTERS, DEFAULT_TABLE_COLUMNS, SUCCESS_MESSAGES,
+  ACTIONS, COUPON_FILTERS, SUCCESS_MESSAGES,
 } from './constants';
 import ActionButton from './ActionButton';
 import FilterBulkActionRow from './FilterBulkActionRow';
-import { withLocation, withNavigate } from '../../hoc';
 
-class CouponDetails extends React.Component {
-  constructor(props) {
-    super(props);
+/**
+ * Rendered as a child of DataTable to bridge DataTable's internal row-selection
+ * state back to the parent via an `onSelectionChange` callback.  The component
+ * produces no DOM output.
+ */
+const SelectionBridge = ({ onSelectionChange }) => {
+  const { state: { selectedRowIds = {} }, rows = [] } = useContext(DataTableContext);
+  const prevIdsRef = useRef(null);
 
-    this.selectAllCheckBoxRef = React.createRef();
+  // Stringify to get a stable comparison so the callback is only triggered on real changes.
+  const idsJson = JSON.stringify(selectedRowIds);
 
-    this.hasAllTableRowsSelected = false;
-    this.selectedTableRows = {};
-
-    const tableColumns = this.getNewColumns(COUPON_FILTERS.unassigned.value);
-
-    this.state = {
-      selectedToggle: COUPON_FILTERS.unassigned.value,
-      tableColumns,
-      modals: {
-        assignment: null,
-      },
-      isCodeAssignmentSuccessful: undefined,
-      isCodeReminderSuccessful: undefined,
-      isCodeRevokeSuccessful: undefined,
-      doesCodeActionHaveErrors: undefined,
-      selectedCodes: [],
-      hasAllCodesSelected: false,
-      /**
-        * In some scenarios, we want to create a new instance of the table so that it recreates
-        * checkboxes (clearing their states), refetches the data, and adjusts table columns
-        * appropriately. The `refreshIndex` can be used as a quick and easy way to create a new
-        * table instance simply by changing it's value (e.g., incrementing). In combination with
-        * the `selectedToggle` state, a new table instance is created whenever the `selectedToggle`
-        * or `refreshIndex` state changes by altering the table's `key` prop.
-        */
-      refreshIndex: 0,
-    };
-
-    this.formatCouponData = this.formatCouponData.bind(this);
-    this.handleToggleSelect = this.handleToggleSelect.bind(this);
-    this.handleBulkAction = this.handleBulkAction.bind(this);
-    this.resetModals = this.resetModals.bind(this);
-    this.handleCodeActionSuccess = this.handleCodeActionSuccess.bind(this);
-    this.resetCodeActionStatus = this.resetCodeActionStatus.bind(this);
-    this.setModalState = this.setModalState.bind(this);
-  }
-
-  componentDidUpdate(prevProps) {
-    const { isExpanded } = this.props;
-
-    if (isExpanded && isExpanded !== prevProps.isExpanded) {
-      // On expand, ensure the table view reflects the selected toggle
-      this.handleToggleSelect();
+  useEffect(() => {
+    if (prevIdsRef.current === idsJson) {
+      return;
     }
+    prevIdsRef.current = idsJson;
+    const selected = rows
+      .filter(row => selectedRowIds[row.id])
+      .map(row => row.original);
+    onSelectionChange(selected);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [idsJson]);
 
-    if (!isExpanded && isExpanded !== prevProps.isExpanded) {
-      // On collapse, reset to default states
-      this.reset();
-    }
-  }
+  return null;
+};
 
-  handleToggleSelect(newValue) {
-    const { selectedToggle } = this.state;
-    const { navigate, location } = this.props;
+SelectionBridge.propTypes = {
+  onSelectionChange: PropTypes.func.isRequired,
+};
 
+const CouponDetails = ({
+  fetchCouponOrder,
+  couponData,
+  couponOverviewError,
+  couponOverviewLoading,
+  isExpanded,
+}) => {
+  const {
+    id,
+    errors,
+    title: couponTitle,
+    num_unassigned: numUnassignedCodes,
+    usage_limitation: couponType,
+    available: couponAvailable,
+  } = couponData;
+
+  const [selectedToggle, setSelectedToggle] = useState(COUPON_FILTERS.unassigned.value);
+  const [selectedCodes, setSelectedCodes] = useState([]);
+  const [hasAllCodesSelected, setHasAllCodesSelected] = useState(false);
+  const [tableData, setTableData] = useState({ count: 0, num_pages: 0, results: [] });
+  const [isTableLoading, setIsTableLoading] = useState(false);
+  const [refreshIndex, setRefreshIndex] = useState(0);
+  const [modals, setModals] = useState({ assignment: null, revoke: null, remind: null });
+  const [isCodeAssignmentSuccessful, setIsCodeAssignmentSuccessful] = useState(undefined);
+  const [isCodeReminderSuccessful, setIsCodeReminderSuccessful] = useState(undefined);
+  const [isCodeRevokeSuccessful, setIsCodeRevokeSuccessful] = useState(undefined);
+  const [doesCodeActionHaveErrors, setDoesCodeActionHaveErrors] = useState(undefined);
+
+  // ─── helpers ──────────────────────────────────────────────────────────────
+
+  const resetCodeActionStatus = useCallback(() => {
+    setIsCodeAssignmentSuccessful(undefined);
+    setIsCodeReminderSuccessful(undefined);
+    setIsCodeRevokeSuccessful(undefined);
+    setDoesCodeActionHaveErrors(undefined);
+  }, []);
+
+  const resetModals = useCallback(() => {
+    setModals({ assignment: null, revoke: null, remind: null });
+  }, []);
+
+  const setModalState = useCallback(({ key, options }) => {
+    setModals(prev => ({ ...prev, [key]: options }));
+  }, []);
+
+  const updateCouponOverviewData = useCallback(() => {
+    fetchCouponOrder(id);
+  }, [fetchCouponOrder, id]);
+
+  // ─── filter toggle ─────────────────────────────────────────────────────────
+
+  const handleToggleSelect = useCallback((newValue) => {
     const value = newValue || selectedToggle;
+    resetCodeActionStatus();
+    setSelectedToggle(value);
+    setSelectedCodes([]);
+    setHasAllCodesSelected(false);
+  }, [selectedToggle, resetCodeActionStatus]);
 
-    this.resetCodeActionStatus();
-    updateUrl(navigate, location.pathname, { page: undefined });
-    this.setState({
-      tableColumns: this.getNewColumns(value),
-      selectedToggle: value,
-      selectedCodes: [],
-      hasAllCodesSelected: false,
-    }, () => {
-      this.updateSelectAllCheckBox();
-    });
-  }
+  // ─── selection bridge ──────────────────────────────────────────────────────
 
-  handleCodeActionSuccess(action, response) {
-    let stateKey;
-    let doesCodeActionHaveErrors;
+  const handleSelectionChange = useCallback((rows) => {
+    setSelectedCodes(rows);
+    // Clear the "select all codes" flag when the page-level selection changes.
+    setHasAllCodesSelected(false);
+  }, []);
+
+  // ─── data fetching ─────────────────────────────────────────────────────────
+  // DataTable calls fetchData with { pageIndex, pageSize } whenever pagination
+  // changes.  We keep a ref to selectedToggle so the callback is stable and
+  // does not need to be in the DataTable key dep-set separately.
+  const selectedToggleRef = useRef(selectedToggle);
+  useEffect(() => {
+    selectedToggleRef.current = selectedToggle;
+  }, [selectedToggle]);
+
+  const fetchData = useCallback(async ({ pageIndex, pageSize }) => {
+    setIsTableLoading(true);
+    try {
+      const response = await EcommerceApiService.fetchCouponDetails(id, {
+        page: pageIndex + 1,
+        page_size: pageSize,
+        code_filter: selectedToggleRef.current,
+      });
+      setTableData(response.data);
+    } catch (_err) {
+      // DataTable will show an empty state; error is non-fatal for UI.
+    } finally {
+      setIsTableLoading(false);
+    }
+  }, [id]);
+
+  // ─── code-action success ───────────────────────────────────────────────────
+
+  const handleCodeActionSuccess = useCallback((action, response) => {
+    let doesHaveErrors;
+    if (action === ACTIONS.revoke.value || action === ACTIONS.remind.value) {
+      doesHaveErrors = response && response.some && response.some(item => item.detail === 'failure');
+    }
+    if (action === ACTIONS.assign.value || action === ACTIONS.revoke.value) {
+      updateCouponOverviewData();
+    }
+
+    resetCodeActionStatus();
 
     switch (action) {
-      case ACTIONS.assign.value: {
-        stateKey = 'isCodeAssignmentSuccessful';
+      case ACTIONS.assign.value:
+        setIsCodeAssignmentSuccessful(true);
         break;
-      }
-      case ACTIONS.revoke.value: {
-        stateKey = 'isCodeRevokeSuccessful';
-        doesCodeActionHaveErrors = response && response.some && response.some(item => item.detail === 'failure');
+      case ACTIONS.revoke.value:
+        setIsCodeRevokeSuccessful(true);
+        setDoesCodeActionHaveErrors(doesHaveErrors);
         break;
-      }
-      case ACTIONS.remind.value: {
-        stateKey = 'isCodeReminderSuccessful';
-        doesCodeActionHaveErrors = response && response.some && response.some(item => item.detail === 'failure');
+      case ACTIONS.remind.value:
+        setIsCodeReminderSuccessful(true);
+        setDoesCodeActionHaveErrors(doesHaveErrors);
         break;
-      }
-      default: {
-        stateKey = null;
-        doesCodeActionHaveErrors = null;
+      default:
         break;
-      }
     }
 
-    if (action === ACTIONS.assign.value || action === ACTIONS.revoke.value) {
-      this.updateCouponOverviewData();
-    }
+    // Force a new DataTable instance so rows and checkboxes are reset.
+    setRefreshIndex(prev => prev + 1);
+    setSelectedCodes([]);
+    setHasAllCodesSelected(false);
+  }, [resetCodeActionStatus, updateCouponOverviewData]);
 
-    this.resetCodeActionStatus();
+  // ─── bulk actions ──────────────────────────────────────────────────────────
 
-    if (stateKey) {
-      this.setState((state) => ({
-        [stateKey]: true,
-        refreshIndex: state.refreshIndex + 1, // force new table instance
-        selectedCodes: [],
-        doesCodeActionHaveErrors,
-      }), () => {
-        this.updateSelectAllCheckBox();
-      });
-    }
-  }
-
-  handleCodeSelection({ checked, code }) {
-    let { selectedCodes, hasAllCodesSelected } = this.state;
-
-    if (checked) {
-      // Add code to selected codes array
-      selectedCodes = [...selectedCodes, code];
-    } else {
-      // Remove code from selected codes array
-      selectedCodes = selectedCodes.filter(selectedCode => selectedCode !== code);
-      hasAllCodesSelected = false;
-    }
-
-    this.setState({
-      selectedCodes,
-      hasAllCodesSelected,
-    }, () => {
-      this.updateSelectAllCheckBox();
-    });
-  }
-
-  handleSelectAllCodes(checked) {
-    const { couponDetailsTable: { data: tableData } } = this.props;
-    let { hasAllCodesSelected, selectedCodes } = this.state;
-
-    if (checked) {
-      selectedCodes = tableData.results;
-    } else {
-      selectedCodes = [];
-      hasAllCodesSelected = false;
-    }
-
-    this.setState({
-      selectedCodes,
-      hasAllCodesSelected,
-    }, () => {
-      this.updateSelectAllCheckBox();
-    });
-  }
-
-  handleBulkAction(bulkActionToggle) {
-    const {
-      couponData: {
-        id,
-        title: couponTitle,
-        num_unassigned: unassignedCodes,
-        usage_limitation: couponType,
-      },
-    } = this.props;
-    const {
-      hasAllCodesSelected,
-      selectedCodes,
-      selectedToggle,
-    } = this.state;
-
+  const handleBulkAction = useCallback((bulkActionToggle) => {
     if (bulkActionToggle === ACTIONS.assign.value) {
-      this.setModalState({
+      setModalState({
         key: 'assignment',
         options: {
           couponId: id,
           title: couponTitle,
           isBulkAssign: true,
           data: {
-            unassignedCodes,
+            unassignedCodes: numUnassignedCodes,
             selectedCodes: hasAllCodesSelected ? [] : selectedCodes,
             hasAllCodesSelected,
             couponType,
@@ -214,504 +201,396 @@ class CouponDetails extends React.Component {
         },
       });
     } else if (bulkActionToggle === ACTIONS.revoke.value) {
-      this.setModalState({
+      setModalState({
         key: 'revoke',
         options: {
           couponId: id,
           title: couponTitle,
           isBulkRevoke: true,
-          data: {
-            selectedCodes,
-          },
+          data: { selectedCodes },
         },
       });
     } else if (bulkActionToggle === ACTIONS.remind.value) {
-      this.setModalState({
+      setModalState({
         key: 'remind',
         options: {
           couponId: id,
           title: couponTitle,
           isBulkRemind: true,
           selectedToggle,
-          data: {
-            selectedCodes,
-          },
+          data: { selectedCodes },
         },
       });
     }
-  }
+  }, [
+    id, couponTitle, numUnassignedCodes, couponType,
+    hasAllCodesSelected, selectedCodes, selectedToggle, setModalState,
+  ]);
 
-  getNewColumns(selectedToggle) {
-    const selectColumn = {
-      label: (
-        <Form.Checkbox
-          id="select-all-codes"
-          name="select all codes"
-          onChange={(event) => {
-            this.hasAllTableRowsSelected = event.target.checked;
-            this.handleSelectAllCodes(event.target.checked);
-          }}
-          checked={this.hasAllTableRowsSelected}
-          ref={this.selectAllCheckBoxRef}
+  // ─── isExpanded lifecycle ──────────────────────────────────────────────────
+
+  const prevIsExpandedRef = useRef(isExpanded);
+  useEffect(() => {
+    const wasExpanded = prevIsExpandedRef.current;
+    prevIsExpandedRef.current = isExpanded;
+
+    if (isExpanded && !wasExpanded) {
+      // Ensure the correct toggle view is active on re-expand.
+      handleToggleSelect();
+    }
+    if (!isExpanded && wasExpanded) {
+      // Reset to clean state on collapse.
+      resetModals();
+      resetCodeActionStatus();
+      setSelectedCodes([]);
+      setHasAllCodesSelected(false);
+      setRefreshIndex(0);
+    }
+  }, [isExpanded, handleToggleSelect, resetModals, resetCodeActionStatus]);
+
+  // ─── derived state ─────────────────────────────────────────────────────────
+
+  const hasTableData = !!(tableData && tableData.count);
+  const shouldDisplayErrors = selectedToggle === 'unredeemed' && errors.length > 0;
+
+  const showSelectAllStatusAlert = shouldShowSelectAllStatusAlert({
+    tableData,
+    selectedToggle,
+    selectedCodes,
+    hasAllCodesSelected,
+  });
+
+  const hasStatusAlert = !isTableLoading && [
+    errors.length > 0,
+    couponOverviewError,
+    isCodeAssignmentSuccessful,
+    isCodeReminderSuccessful,
+    isCodeRevokeSuccessful,
+    doesCodeActionHaveErrors,
+    showSelectAllStatusAlert,
+  ].some(Boolean);
+
+  const tableFilterSelectOptions = getFilterOptions(couponData.usage_limitation);
+
+  // ─── DataTable column definitions ─────────────────────────────────────────
+  // Column `Header` values intentionally match constants.DEFAULT_TABLE_COLUMNS
+  // labels so existing tests that assert on header text continue to pass.
+  /* eslint-disable react/no-unstable-nested-components, react/prop-types */
+  const columns = useMemo(() => {
+    const commonColumns = [
+      {
+        Header: 'Redemptions',
+        accessor: 'redemptions',
+        Cell: ({ row }) => `${row.original.redemptions.used} of ${row.original.redemptions.total}`,
+        disableSortBy: true,
+      },
+      {
+        Header: 'Code',
+        accessor: 'code',
+        Cell: ({ row }) => <span data-hj-suppress>{row.original.code}</span>,
+        disableSortBy: true,
+      },
+    ];
+
+    const actionsColumn = {
+      Header: 'Actions',
+      accessor: 'actions',
+      Cell: ({ row }) => (
+        <ActionButton
+          code={row.original}
+          couponData={couponData}
+          selectedToggle={selectedToggle}
+          handleCodeActionSuccess={handleCodeActionSuccess}
+          setModalState={setModalState}
         />
       ),
-      key: 'select',
+      disableSortBy: true,
     };
+
+    const assignedToColumn = {
+      Header: 'Assigned to',
+      accessor: 'assigned_to',
+      Cell: ({ row }) => {
+        const code = row.original;
+        if (code.error) {
+          return (
+            <span className="text-danger">
+              <Icon className="mr-2" screenReaderText="Error" src={Error} />
+              {code.error}
+            </span>
+          );
+        }
+        return code.assigned_to;
+      },
+      disableSortBy: true,
+    };
+
+    const redemptionDateColumns = [
+      {
+        Header: 'Assignment date',
+        accessor: 'assignment_date',
+        disableSortBy: true,
+      },
+      {
+        Header: 'Last reminder date',
+        accessor: 'last_reminder_date',
+        disableSortBy: true,
+      },
+    ];
 
     switch (selectedToggle) {
       case COUPON_FILTERS.unassigned.value:
         return [
-          selectColumn,
-          ...DEFAULT_TABLE_COLUMNS[COUPON_FILTERS.unassigned.value],
+          ...commonColumns,
+          {
+            Header: 'Assignments remaining',
+            accessor: 'assignments_remaining',
+            Cell: ({ row }) => {
+              const r = row.original.redemptions;
+              return `${r.total - r.used - r.num_assignments}`;
+            },
+            disableSortBy: true,
+          },
+          actionsColumn,
         ];
       case COUPON_FILTERS.unredeemed.value:
-        return [
-          selectColumn,
-          ...DEFAULT_TABLE_COLUMNS[COUPON_FILTERS.unredeemed.value],
-        ];
       case COUPON_FILTERS.partiallyRedeemed.value:
         return [
-          selectColumn,
-          ...DEFAULT_TABLE_COLUMNS[COUPON_FILTERS.partiallyRedeemed.value],
+          assignedToColumn,
+          ...commonColumns,
+          ...redemptionDateColumns,
+          actionsColumn,
         ];
       case COUPON_FILTERS.redeemed.value:
         return [
-          selectColumn,
-          ...DEFAULT_TABLE_COLUMNS[COUPON_FILTERS.redeemed.value],
+          {
+            Header: 'Redeemed by',
+            accessor: 'assigned_to',
+            disableSortBy: true,
+          },
+          ...commonColumns,
+          ...redemptionDateColumns,
         ];
       default:
-        return this.tableColumns;
+        return commonColumns;
     }
-  }
+  }, [selectedToggle, couponData, handleCodeActionSuccess, setModalState]);
+  /* eslint-enable react/no-unstable-nested-components, react/prop-types */
 
-  getTableFilterSelectOptions() {
-    const { couponData: { usage_limitation: usageLimitation } } = this.props;
-    return getFilterOptions(usageLimitation);
-  }
+  // ─── alert renderers ───────────────────────────────────────────────────────
 
-  setModalState({ key, options }) {
-    this.setState((state) => ({
-      modals: {
-        ...state.modals,
-        [key]: options,
-      },
-    }));
-  }
+  const renderErrorMessage = ({ title, message }) => (
+    <Alert variant="danger" icon={Error}>
+      {title && <Alert.Heading>{title}</Alert.Heading>}
+      <p>{message}</p>
+    </Alert>
+  );
 
-  reset() {
-    this.resetModals();
-    this.resetCodeActionStatus();
+  const renderSuccessMessage = ({ title, message }) => (
+    <Alert
+      variant="success"
+      icon={CheckCircle}
+      className={classNames({ 'mt-2': errors.length > 0 || couponOverviewError })}
+      onClose={resetCodeActionStatus}
+      dismissible
+    >
+      {title && <Alert.Heading>{title}</Alert.Heading>}
+      <p>{message}</p>
+    </Alert>
+  );
 
-    this.setState({
-      selectedCodes: [],
-      hasAllCodesSelected: false,
-      refreshIndex: 0,
-    });
-  }
+  const renderInfoMessage = ({ message }) => (
+    <Alert
+      variant="info"
+      className={classNames({ 'mt-2': errors.length > 0 || couponOverviewError })}
+    >
+      <p>{message}</p>
+    </Alert>
+  );
 
-  shouldShowSelectAllStatusAlert() {
-    const { couponDetailsTable: { data: tableData } } = this.props;
-    const { selectedToggle, selectedCodes, hasAllCodesSelected } = this.state;
-    return shouldShowSelectAllStatusAlert({
-      tableData, selectedToggle, selectedCodes, hasAllCodesSelected,
-    });
-  }
+  // ─── render ────────────────────────────────────────────────────────────────
 
-  hasStatusAlert() {
-    // The following are the scenarios where a status alert will be shown. Note, the coupon
-    // details table must be finished loading for status alert to show:
-    //  - Coupon has an error
-    //  - Code assignment/remind/revoke status (error or success)
-    //  - Code selection status (e.g., "50 codes selected. Select all 65 codes?")
+  return (
+    <div
+      id={`coupon-details-${id}`}
+      data-testid="coupon-details"
+      className={classNames([
+        'coupon-details row no-gutters px-2 my-3',
+        { 'd-none': !isExpanded },
+      ])}
+    >
+      <div className="col">
+        {isExpanded && (
+          <>
+            <div className="details-header row no-gutters mb-5">
+              <div className="col-12 col-md-6 mb-2 mb-md-0">
+                <h3>Coupon Details</h3>
+              </div>
+              <div className="col-12 col-md-6 mb-2 mb-md-0 text-md-right">
+                <DownloadCsvButton
+                  id="coupon-details"
+                  fetchMethod={() => EcommerceApiService.fetchCouponDetails(
+                    id,
+                    { code_filter: selectedToggle },
+                    { csv: true },
+                  )}
+                  disabled={isTableLoading}
+                />
+              </div>
+            </div>
 
-    const {
-      couponData: { errors },
-      couponOverviewError,
-    } = this.props;
-    const {
-      isCodeAssignmentSuccessful,
-      isCodeReminderSuccessful,
-      isCodeRevokeSuccessful,
-      doesCodeActionHaveErrors,
-    } = this.state;
+            <FilterBulkActionRow
+              selectedToggle={selectedToggle}
+              isTableLoading={isTableLoading}
+              couponFilterProps={{
+                tableFilterSelectOptions,
+                handleToggleSelect,
+              }}
+              couponBulkActionProps={{
+                handleBulkAction,
+                numUnassignedCodes,
+                couponAvailable,
+                hasTableData,
+                numSelectedCodes: selectedCodes.length,
+              }}
+            />
 
-    const hasStatusAlert = [
-      errors.length > 0,
-      couponOverviewError,
-      isCodeAssignmentSuccessful,
-      isCodeReminderSuccessful,
-      isCodeRevokeSuccessful,
-      doesCodeActionHaveErrors,
-      this.shouldShowSelectAllStatusAlert(),
-    ].some(item => item);
-
-    return !this.isTableLoading() && hasStatusAlert;
-  }
-
-  updateSelectAllCheckBox() {
-    const { selectedCodes, tableColumns } = this.state;
-    const { couponDetailsTable: { data: tableData } } = this.props;
-
-    const allCodesForPageSelected = (
-      tableData && tableData.results && tableData.results.length !== 0
-      && selectedCodes.length === tableData.results.length
-    );
-    const hasPartialSelection = selectedCodes.length > 0 && !allCodesForPageSelected;
-
-    const selectColumn = tableColumns.shift();
-
-    selectColumn.label = React.cloneElement(selectColumn.label, {
-      checked: allCodesForPageSelected,
-      className: hasPartialSelection ? ['mixed'] : [],
-    });
-
-    // The Paragon `CheckBox` component does not currently support the mixed state. To
-    // get around this, we get the DOM node of the checkbox and replace the `aria-checked`
-    // attribute appropriately.
-    //
-    // TODO: Paragon now has an IndeterminateCheckbox that can be used here.
-    const selectAllCheckBoxRef = selectColumn.label.ref && selectColumn.label.ref.current;
-    const selectAllCheckBoxDOM = (
-      selectAllCheckBoxRef && document.getElementById(selectAllCheckBoxRef.props?.id)
-    );
-
-    if (selectAllCheckBoxDOM && hasPartialSelection) {
-      selectAllCheckBoxDOM.setAttribute('aria-checked', 'mixed');
-    } else if (selectAllCheckBoxDOM && !hasPartialSelection) {
-      selectAllCheckBoxDOM.setAttribute('aria-checked', allCodesForPageSelected);
-    }
-
-    this.setState({
-      tableColumns: [selectColumn, ...tableColumns],
-    });
-  }
-
-  updateCouponOverviewData() {
-    const { couponData: { id } } = this.props;
-    this.props.fetchCouponOrder(id);
-  }
-
-  formatCouponData(data) {
-    const { couponData } = this.props;
-    const { selectedCodes, selectedToggle } = this.state;
-
-    return data.map(code => ({
-      ...code,
-      code: <span data-hj-suppress>{code.code}</span>,
-      assigned_to: code.error ? (
-        <span className="text-danger">
-          <Icon className="mr-2" screenReaderText="Error" src={Error} />
-          {code.error}
-        </span>
-      ) : code.assigned_to,
-      redemptions: `${code.redemptions.used} of ${code.redemptions.total}`,
-      assignments_remaining: `${code.redemptions.total - code.redemptions.used - code.redemptions.num_assignments}`,
-      assignment_date: `${code.assignment_date}`,
-      last_reminder_date: `${code.last_reminder_date}`,
-      actions: <ActionButton
-        code={code}
-        couponData={couponData}
-        selectedToggle={selectedToggle}
-        handleCodeActionSuccess={this.handleCodeActionSuccess}
-        setModalState={this.setModalState}
-      />,
-      select: (
-        <Form.Checkbox
-          name={`select code ${code.code}`}
-          onChange={(event) => {
-            this.handleCodeSelection({ checked: event.target.checked, code });
-            if (event.target.checked && !this.selectedTableRows[code.code]) {
-              this.selectedTableRows[code.code] = true;
-            } else if (!event.target.checked && this.selectedTableRows[code.code]) {
-              delete this.selectedTableRows[code.code];
-            }
-          }}
-          checked={selectedCodes.findIndex(selectedCode => selectedCode === code) !== -1}
-        />
-      ),
-    }));
-  }
-
-  isTableLoading() {
-    const { couponDetailsTable } = this.props;
-    return !!(couponDetailsTable && couponDetailsTable.loading);
-  }
-
-  resetModals() {
-    this.setState({
-      modals: {
-        assignment: null,
-        revoke: null,
-        remind: null,
-      },
-    });
-  }
-
-  resetCodeActionStatus() {
-    this.setState({
-      isCodeAssignmentSuccessful: undefined,
-      isCodeReminderSuccessful: undefined,
-      isCodeRevokeSuccessful: undefined,
-      doesCodeActionHaveErrors: undefined,
-    });
-  }
-
-  renderErrorMessage({ title, message }) {
-    return (
-      <Alert
-        variant="danger"
-        icon={Error}
-      >
-        <Alert.Heading>{title}</Alert.Heading>
-        <p>{message}</p>
-      </Alert>
-    );
-  }
-
-  renderSuccessMessage({ title, message }) {
-    const {
-      couponData: { errors },
-      couponOverviewError,
-    } = this.props;
-
-    return (
-      <Alert
-        variant="success"
-        icon={CheckCircle}
-        className={classNames({ 'mt-2': errors.length > 0 || couponOverviewError })}
-        onClose={this.resetCodeActionStatus}
-        dismissible
-      >
-        <Alert.Heading>{title}</Alert.Heading>
-        <p>{message}</p>
-      </Alert>
-    );
-  }
-
-  renderInfoMessage({ title, message }) {
-    const {
-      couponData: { errors },
-      couponOverviewError,
-    } = this.props;
-
-    return (
-      <Alert
-        variant="info"
-        className={classNames({ 'mt-2': errors.length > 0 || couponOverviewError })}
-      >
-        <Alert.Heading>{title}</Alert.Heading>
-        <p>{message}</p>
-      </Alert>
-    );
-  }
-
-  render() {
-    const {
-      selectedToggle,
-      selectedCodes,
-      tableColumns,
-      modals,
-      isCodeAssignmentSuccessful,
-      isCodeReminderSuccessful,
-      isCodeRevokeSuccessful,
-      doesCodeActionHaveErrors,
-      refreshIndex,
-      hasAllCodesSelected,
-    } = this.state;
-
-    const {
-      couponData: {
-        id, errors, num_unassigned: numUnassignedCodes, available: couponAvailable,
-      },
-      couponDetailsTable: { data: tableData },
-      couponOverviewLoading,
-      couponOverviewError,
-      isExpanded,
-    } = this.props;
-
-    const shouldDisplayErrors = selectedToggle === 'unredeemed' && errors.length > 0;
-    const isTableLoading = this.isTableLoading();
-    const hasTableData = !!(tableData && tableData.count);
-
-    return (
-      <div
-        id={`coupon-details-${id}`}
-        data-testid="coupon-details"
-        className={classNames([
-          'coupon-details row no-gutters px-2 my-3',
-          {
-            'd-none': !isExpanded,
-          },
-        ])}
-      >
-        <div className="col">
-          {isExpanded && (
-            <>
-              <div className="details-header row no-gutters mb-5">
-                <div className="col-12 col-md-6 mb-2 mb-md-0">
-                  <h3>Coupon Details</h3>
-                </div>
-                <div className="col-12 col-md-6 mb-2 mb-md-0 text-md-right">
-                  <DownloadCsvButton
-                    id="coupon-details"
-                    fetchMethod={() => EcommerceApiService.fetchCouponDetails(
-                      id,
-                      { code_filter: selectedToggle },
-                      { csv: true },
-                    )}
-                    disabled={isTableLoading}
-                  />
+            {hasStatusAlert && (
+              <div className="row mb-3">
+                <div className="col">
+                  {shouldDisplayErrors && renderErrorMessage({
+                    message: (
+                      <>
+                        {errors.length > 1
+                          ? `${errors.length} errors have occurred: ` : 'An error has occurred: '}
+                        <ul className="m-0 pl-4">
+                          {errors.map(error => (
+                            <li key={error.code}>
+                              {`Unable to send code assignment email to ${error.user_email} for ${error.code} code.`}
+                            </li>
+                          ))}
+                        </ul>
+                      </>
+                    ),
+                  })}
+                  {couponOverviewError && !couponOverviewLoading && renderErrorMessage({
+                    message: (
+                      <>
+                        Failed to fetch coupon overview data ({couponOverviewError.message}).
+                        <Button
+                          variant="link"
+                          className="p-0 pl-1 border-0"
+                          onClick={() => fetchCouponOrder(id)}
+                        >
+                          Please try again.
+                        </Button>
+                      </>
+                    ),
+                  })}
+                  {isCodeAssignmentSuccessful && renderSuccessMessage({
+                    title: SUCCESS_MESSAGES.assign,
+                    message: (
+                      <>
+                        To view the newly assigned code(s), filter by
+                        <Button
+                          variant="link"
+                          className="p-0 pl-1 border-0"
+                          onClick={() => handleToggleSelect('unredeemed')}
+                        >
+                          unredeemed codes.
+                        </Button>
+                      </>
+                    ),
+                  })}
+                  {isCodeReminderSuccessful && renderSuccessMessage({
+                    message: SUCCESS_MESSAGES.remind,
+                  })}
+                  {isCodeRevokeSuccessful && renderSuccessMessage({
+                    message: SUCCESS_MESSAGES.revoke,
+                  })}
+                  {doesCodeActionHaveErrors && renderErrorMessage({
+                    title: 'An unexpected error has occurred. Please try again or contact your Customer Success Manager.',
+                    message: '',
+                  })}
+                  {showSelectAllStatusAlert && renderInfoMessage({
+                    message: (
+                      <>
+                        {hasAllCodesSelected
+                          ? `All ${tableData.count} codes are selected.`
+                          : `${selectedCodes.length} codes are selected.`}
+                        {!hasAllCodesSelected && (
+                          <Button
+                            variant="link"
+                            className="p-0 pl-1 border-0"
+                            onClick={() => setHasAllCodesSelected(true)}
+                          >
+                            {`Select all ${tableData.count} codes?`}
+                          </Button>
+                        )}
+                      </>
+                    ),
+                  })}
                 </div>
               </div>
-              <FilterBulkActionRow
-                selectedToggle={selectedToggle}
-                isTableLoading={isTableLoading}
-                couponFilterProps={{
-                  tableFilterSelectOptions: this.getTableFilterSelectOptions(),
-                  handleToggleSelect: this.handleToggleSelect,
-                }}
-                couponBulkActionProps={{
-                  handleBulkAction: this.handleBulkAction,
-                  numUnassignedCodes,
-                  couponAvailable,
-                  hasTableData,
-                  numSelectedCodes: selectedCodes?.length || 0,
-                }}
-              />
-              {this.hasStatusAlert() && (
-                <div className="row mb-3">
-                  <div className="col">
-                    {shouldDisplayErrors && this.renderErrorMessage({
-                      message: (
-                        <>
-                          {errors.length > 1
-                            ? `${errors.length} errors have occurred: ` : 'An error has occurred: '}
-                          <ul className="m-0 pl-4">
-                            {errors.map(error => (
-                              <li key={error.code}>
-                                {`Unable to send code assignment email to
-                                 ${error.user_email} for ${error.code} code.`}
-                              </li>
-                            ))}
-                          </ul>
-                        </>
-                      ),
-                    })}
-                    {couponOverviewError && !couponOverviewLoading && this.renderErrorMessage({
-                      message: (
-                        <>
-                          Failed to fetch coupon overview data ({couponOverviewError.message}).
-                          <Button
-                            variant="link"
-                            className="p-0 pl-1 border-0"
-                            onClick={() => this.props.fetchCouponOrder(id)}
-                          >
-                            Please try again.
-                          </Button>
-                        </>
-                      ),
-                    })}
-                    {isCodeAssignmentSuccessful && this.renderSuccessMessage({
-                      title: SUCCESS_MESSAGES.assign,
-                      message: (
-                        <>
-                          To view the newly assigned code(s), filter by
-                          <Button
-                            variant="link"
-                            className="p-0 pl-1 border-0"
-                            onClick={() => {
-                              this.setState({
-                                selectedToggle: 'unredeemed',
-                              }, () => {
-                                this.handleToggleSelect();
-                              });
-                            }}
-                          >
-                            unredeemed codes.
-                          </Button>
-                        </>
-                      ),
-                    })}
-                    {isCodeReminderSuccessful && this.renderSuccessMessage({
-                      message: SUCCESS_MESSAGES.remind,
-                    })}
-                    {isCodeRevokeSuccessful && this.renderSuccessMessage({
-                      message: SUCCESS_MESSAGES.revoke,
-                    })}
-                    {doesCodeActionHaveErrors && this.renderErrorMessage({
-                      title: 'An unexpected error has occurred. Please try again or contact your Customer Success Manager.',
-                      message: '',
-                    })}
-                    {this.shouldShowSelectAllStatusAlert() && this.renderInfoMessage({
-                      message: (
-                        <>
-                          {hasAllCodesSelected ? `All ${tableData.count} codes are selected.` : `${selectedCodes.length} codes are selected.`}
-                          {!hasAllCodesSelected && (
-                            <Button
-                              variant="link"
-                              className="p-0 pl-1 border-0"
-                              onClick={() => this.setState({
-                                hasAllCodesSelected: true,
-                              })}
-                            >
-                              {`Select all ${tableData.count} codes?`}
-                            </Button>
-                          )}
-                        </>
-                      ),
-                    })}
-                  </div>
-                </div>
-              )}
-              <TableContainer
-                // Setting a key to force a new instance of the TableContainer
-                // when the selected toggle and/or the refresh index changes.
-                key={`table-${selectedToggle}--${refreshIndex}`}
-                id="coupon-details"
-                className="coupon-details-table"
-                fetchMethod={(enterpriseId, options) => {
-                  const apiOptions = {
-                    ...options,
-                    code_filter: selectedToggle,
-                  };
+            )}
 
-                  return EcommerceApiService.fetchCouponDetails(id, apiOptions);
-                }}
-                columns={tableColumns}
-                formatData={this.formatCouponData}
+            {/*
+              * The `key` forces DataTable to fully remount whenever the active
+              * filter tab or refreshIndex changes, which clears selection state
+              * and triggers a fresh page-1 fetch – matching the prior behaviour
+              * of the deprecated TableContainer approach.
+              */}
+            <DataTable
+              key={`table-${selectedToggle}-${refreshIndex}`}
+              className="coupon-details-table"
+              isSelectable
+              isPaginated
+              manualPagination
+              isLoading={isTableLoading}
+              fetchData={fetchData}
+              data={tableData.results || []}
+              itemCount={tableData.count || 0}
+              pageCount={tableData.num_pages || 0}
+              columns={columns}
+              initialState={{ pageIndex: 0, pageSize: 25 }}
+            >
+              {/* Syncs DataTable-internal selection up to component state */}
+              <SelectionBridge onSelectionChange={handleSelectionChange} />
+              <DataTable.Table />
+              <DataTable.EmptyTable content="There are no results." />
+              <DataTable.TableFooter />
+            </DataTable>
+
+            {modals.assignment && (
+              <CodeAssignmentModal
+                {...modals.assignment}
+                onClose={resetModals}
+                onSuccess={response => handleCodeActionSuccess(MODAL_TYPES.assign, response)}
               />
-              {modals.assignment && (
-                <CodeAssignmentModal
-                  {...modals.assignment}
-                  onClose={this.resetModals}
-                  onSuccess={response => this.handleCodeActionSuccess(MODAL_TYPES.assign, response)}
-                />
-              )}
-              {modals.revoke && (
-                <CodeRevokeModal
-                  {...modals.revoke}
-                  onClose={this.resetModals}
-                  onSuccess={response => this.handleCodeActionSuccess(MODAL_TYPES.revoke, response)}
-                />
-              )}
-              {modals.remind && (
-                <CodeReminderModal
-                  {...modals.remind}
-                  onClose={this.resetModals}
-                  onSuccess={response => this.handleCodeActionSuccess(MODAL_TYPES.remind, response)}
-                />
-              )}
-            </>
-          )}
-        </div>
+            )}
+            {modals.revoke && (
+              <CodeRevokeModal
+                {...modals.revoke}
+                onClose={resetModals}
+                onSuccess={response => handleCodeActionSuccess(MODAL_TYPES.revoke, response)}
+              />
+            )}
+            {modals.remind && (
+              <CodeReminderModal
+                {...modals.remind}
+                onClose={resetModals}
+                onSuccess={response => handleCodeActionSuccess(MODAL_TYPES.remind, response)}
+              />
+            )}
+          </>
+        )}
       </div>
-    );
-  }
-}
+    </div>
+  );
+};
 
 CouponDetails.defaultProps = {
   isExpanded: false,
-  couponDetailsTable: {},
   couponOverviewError: null,
   couponOverviewLoading: false,
 };
@@ -719,13 +598,6 @@ CouponDetails.defaultProps = {
 CouponDetails.propTypes = {
   // props from container
   fetchCouponOrder: PropTypes.func.isRequired,
-  couponDetailsTable: PropTypes.shape({
-    data: PropTypes.shape({
-      count: PropTypes.number,
-      results: PropTypes.arrayOf(PropTypes.shape()),
-    }),
-    loading: PropTypes.bool,
-  }),
   couponOverviewError: PropTypes.instanceOf(Error),
   couponOverviewLoading: PropTypes.bool,
 
@@ -736,13 +608,9 @@ CouponDetails.propTypes = {
     errors: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
     num_unassigned: PropTypes.number.isRequired,
     usage_limitation: PropTypes.string.isRequired,
-    available: PropTypes.bool.isRequired.isRequired,
+    available: PropTypes.bool.isRequired,
   }).isRequired,
   isExpanded: PropTypes.bool,
-  navigate: PropTypes.func,
-  location: PropTypes.shape({
-    pathname: PropTypes.string,
-  }),
 };
 
-export default withLocation(withNavigate(CouponDetails));
+export default CouponDetails;

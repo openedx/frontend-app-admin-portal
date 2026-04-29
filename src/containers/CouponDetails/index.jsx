@@ -4,10 +4,9 @@ import CouponDetails from '../../components/CouponDetails';
 
 import { fetchCouponOrder } from '../../data/actions/coupons';
 
-const couponDetailsTableId = 'coupon-details';
-
+// CouponDetails now manages table data locally via direct API calls, so
+// couponDetailsTable is no longer injected from the Redux store.
 const mapStateToProps = state => ({
-  couponDetailsTable: state.table[couponDetailsTableId],
   couponOverviewError: state.coupons.couponOverviewError,
   couponOverviewLoading: state.coupons.couponOverviewLoading,
 });
