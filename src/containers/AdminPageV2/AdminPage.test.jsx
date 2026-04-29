@@ -7,6 +7,7 @@ import { Provider } from 'react-redux';
 import { IntlProvider } from '@edx/frontend-platform/i18n';
 
 import AdminPage from '.';
+import EnterpriseDataApiService from '../../data/services/EnterpriseDataApiService';
 
 jest.mock('../../components/EnterpriseSubsidiesContext/data/hooks', () => ({
   ...jest.requireActual('../../components/EnterpriseSubsidiesContext/data/hooks'),
@@ -60,8 +61,15 @@ const AdminPageWrapper = () => (
 );
 
 describe('<AdminPage />', () => {
+  let mockFetchCourseEnrollments;
   beforeEach(() => {
     jest.clearAllMocks();
+    mockFetchCourseEnrollments = jest.spyOn(EnterpriseDataApiService, 'fetchCourseEnrollments').mockResolvedValue({
+      data: { results: [], count: 0, num_pages: 0 },
+    });
+  });
+  afterEach(() => {
+    mockFetchCourseEnrollments.mockRestore();
   });
 
   it('renders the appropriate number cards summary', () => {

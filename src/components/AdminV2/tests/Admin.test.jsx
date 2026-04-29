@@ -163,6 +163,16 @@ describe('<Admin />', () => {
     groups: [],
   };
 
+  let mockFetchCourseEnrollments;
+  beforeEach(() => {
+    mockFetchCourseEnrollments = jest.spyOn(EnterpriseDataApiService, 'fetchCourseEnrollments').mockResolvedValue({
+      data: { results: [], count: 0, num_pages: 0 },
+    });
+  });
+  afterEach(() => {
+    mockFetchCourseEnrollments.mockRestore();
+  });
+
   describe('renders correctly', () => {
     it('calls fetchDashboardAnalytics prop', () => {
       const mockFetchDashboardAnalytics = jest.fn();
