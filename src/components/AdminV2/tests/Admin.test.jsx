@@ -163,6 +163,18 @@ describe('<Admin />', () => {
     groups: [],
   };
 
+  // RegisteredLearnersTable (DataTable-based) auto-fetches on mount. Mock the
+  // API method globally so any test that renders that table doesn't trigger real
+  // HTTP requests or leave unresolved promises that pollute subsequent tests.
+  beforeEach(() => {
+    jest.spyOn(EnterpriseDataApiService, 'fetchUnenrolledRegisteredLearners')
+      .mockResolvedValue({ data: { results: [], count: 0, num_pages: 0 } });
+  });
+
+  afterEach(() => {
+    jest.restoreAllMocks();
+  });
+
   describe('renders correctly', () => {
     it('calls fetchDashboardAnalytics prop', () => {
       const mockFetchDashboardAnalytics = jest.fn();
