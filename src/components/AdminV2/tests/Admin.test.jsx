@@ -163,6 +163,12 @@ describe('<Admin />', () => {
     groups: [],
   };
 
+  beforeEach(() => {
+    jest.spyOn(EnterpriseDataApiService, 'fetchEnrolledLearnersForInactiveCourses').mockResolvedValue({
+      data: { results: [], count: 0, num_pages: 0 },
+    });
+  });
+
   describe('renders correctly', () => {
     it('calls fetchDashboardAnalytics prop', () => {
       const mockFetchDashboardAnalytics = jest.fn();
