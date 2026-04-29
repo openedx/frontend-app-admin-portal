@@ -1,292 +1,182 @@
 import React from 'react';
 import { MemoryRouter } from 'react-router-dom';
+import { render, screen, waitFor } from '@testing-library/react';
+import '@testing-library/jest-dom/extend-expect';
 import { IntlProvider } from '@edx/frontend-platform/i18n';
-import renderer from 'react-test-renderer';
 import configureMockStore from 'redux-mock-store';
 import thunk from 'redux-thunk';
 import { Provider } from 'react-redux';
-import '@testing-library/jest-dom';
-import { render } from '@testing-library/react';
 
 import LearnerActivityTable from '.';
+import EnterpriseDataApiService from '../../data/services/EnterpriseDataApiService';
+
+jest.mock('../../data/services/EnterpriseDataApiService');
+jest.mock('@edx/frontend-enterprise-utils', () => {
+  const originalModule = jest.requireActual('@edx/frontend-enterprise-utils');
+  return ({
+    ...originalModule,
+    sendEnterpriseTrackEvent: jest.fn(),
+  });
+});
+jest.mock('@edx/frontend-platform/logging', () => ({
+  logError: jest.fn(),
+}));
 
 const enterpriseId = 'test-enterprise';
 const mockStore = configureMockStore([thunk]);
-const learnerActivityEmptyStore = mockStore({
-  portalConfiguration: {
-    enterpriseId,
-  },
-  table: {
-    'active-week': {
-      data: {
-        results: [],
-        current_page: 1,
-        num_pages: 1,
-      },
-      ordering: null,
-      loading: false,
-      error: null,
-    },
-  },
+const store = mockStore({
+  portalConfiguration: { enterpriseId },
 });
 
-const tableMockData = {
+const defaultApiResponse = {
+  data: {
+    count: 0,
+    num_pages: 1,
+    results: [],
+  },
+};
+
+const mockEnrollments = [
+  {
+    id: 1,
+    passed_date: '2018-09-23T16:27:34.690065Z',
+    course_title: 'Dive into ReactJS',
+    course_key: 'edX/ReactJS',
+    user_email: 'awesome.me@example.com',
+    course_list_price: '200',
+    course_start_date: '2017-10-21T23:47:32.738Z',
+    course_end_date: '2018-05-13T12:47:27.534Z',
+    current_grade: '0.66',
+    progress_status: 'Failed',
+    last_activity_date: '2018-09-22T10:59:28.628Z',
+  },
+  {
+    id: 5,
+    passed_date: '2018-09-22T16:27:34.690065Z',
+    course_title: 'Redux with ReactJS',
+    course_key: 'edX/Redux_ReactJS',
+    user_email: 'new@example.com',
+    course_list_price: '200',
+    course_start_date: '2017-10-21T23:47:32.738Z',
+    course_end_date: '2018-05-13T12:47:27.534Z',
+    current_grade: '0.80',
+    progress_status: 'Passed',
+    last_activity_date: '2018-09-25T10:59:28.628Z',
+  },
+];
+
+const dataApiResponse = {
   data: {
     count: 2,
     num_pages: 1,
-    current_page: 1,
-    results: [
-      {
-        id: 1,
-        passed_date: '2018-09-23T16:27:34.690065Z',
-        course_title: 'Dive into ReactJS',
-        course_key: 'edX/ReactJS',
-        user_email: 'awesome.me@example.com',
-        course_list_price: '200',
-        course_start_date: '2017-10-21T23:47:32.738Z',
-        course_end_date: '2018-05-13T12:47:27.534Z',
-        current_grade: '0.66',
-        progress_status: 'Failed',
-        last_activity_date: '2018-09-22T10:59:28.628Z',
-      },
-      {
-        id: 5,
-        passed_date: '2018-09-22T16:27:34.690065Z',
-        course_title: 'Redux with ReactJS',
-        course_key: 'edX/Redux_ReactJS',
-        user_email: 'new@example.com',
-        course_list_price: '200',
-        course_start_date: '2017-10-21T23:47:32.738Z',
-        course_end_date: '2018-05-13T12:47:27.534Z',
-        current_grade: '0.80',
-        progress_status: 'Passed',
-        last_activity_date: '2018-09-25T10:59:28.628Z',
-      },
-    ],
-    next: null,
-    start: 0,
-    previous: null,
+    results: mockEnrollments,
   },
-  ordering: null,
-  loading: false,
-  error: null,
 };
 
-const learnerActivityStore = mockStore({
-  portalConfiguration: {
-    enterpriseId,
-  },
-  table: {
-    'active-week': tableMockData,
-    'inactive-week': tableMockData,
-    'inactive-month': tableMockData,
-  },
-});
-
-const LearnerActivityEmptyTableWrapper = props => (
+const Wrapper = props => (
   <MemoryRouter>
     <IntlProvider locale="en">
-      <Provider store={learnerActivityEmptyStore}>
-        <LearnerActivityTable
-          {...props}
-        />
+      <Provider store={store}>
+        <LearnerActivityTable {...props} />
       </Provider>
     </IntlProvider>
   </MemoryRouter>
 );
-
-const LearnerActivityTableWrapper = props => (
-  <MemoryRouter>
-    <IntlProvider locale="en">
-      <Provider store={learnerActivityStore}>
-        <LearnerActivityTable
-          {...props}
-        />
-      </Provider>
-    </IntlProvider>
-  </MemoryRouter>
-);
-
-const verifyLearnerActivityTableRendered = async (tableId, activity, columnTitles, rowsData) => {
-  const { container } = render((
-    <LearnerActivityTableWrapper id={tableId} activity={activity} />
-  ));
-  // Verify that table has correct number of columns
-  const tableColumns = await container.querySelectorAll(`.${tableId} thead th`);
-  expect(tableColumns.length).toEqual(columnTitles.length);
-
-  // Verify only expected columns are shown
-  tableColumns.forEach((column, index) => {
-    expect(column).toHaveTextContent(columnTitles[index]);
-  });
-
-  // Verify that table has correct number of rows
-  const tableRows = await container.querySelectorAll(`.${tableId} tbody tr`);
-  expect(tableRows.length).toEqual(2);
-
-  // Verify each row in table has correct data
-  tableRows.forEach((row, rowIndex) => {
-    const rowCells = row.querySelectorAll('td');
-    rowCells.forEach((cell, colIndex) => {
-      expect(cell.textContent).toEqual(rowsData[rowIndex][colIndex]);
-    });
-  });
-};
 
 describe('LearnerActivityTable', () => {
-  it('renders empty state correctly', () => {
-    const tree = renderer
-      .create((
-        <LearnerActivityEmptyTableWrapper id="active-week" activity="active_past_week" />
-      ))
-      .toJSON();
-    expect(tree).toMatchSnapshot();
+  beforeEach(() => {
+    EnterpriseDataApiService.fetchCourseEnrollments.mockResolvedValue(defaultApiResponse);
   });
 
-  it('renders active learners table correctly', () => {
-    const tree = renderer
-      .create((
-        <LearnerActivityTableWrapper id="active-week" activity="active_past_week" />
-      ))
-      .toJSON();
-    expect(tree).toMatchSnapshot();
+  afterEach(() => {
+    jest.clearAllMocks();
   });
 
-  it('renders inactive past week learners table correctly', () => {
-    const tree = renderer
-      .create((
-        <LearnerActivityTableWrapper id="inactive-week" activity="inactive_past_week" />
-      ))
-      .toJSON();
-    expect(tree).toMatchSnapshot();
+  it('renders loading state initially', () => {
+    render(<Wrapper id="active-week" activity="active_past_week" />);
+    expect(screen.queryByRole('table')).toBeInTheDocument();
   });
 
-  it('renders inactive past month learners table correctly', () => {
-    const tree = renderer
-      .create((
-        <LearnerActivityTableWrapper id="inactive-month" activity="inactive_past_month" />
-      ))
-      .toJSON();
-    expect(tree).toMatchSnapshot();
+  it('renders empty state after loading with no results', async () => {
+    render(<Wrapper id="active-week" activity="active_past_week" />);
+    await waitFor(() => {
+      expect(EnterpriseDataApiService.fetchCourseEnrollments).toHaveBeenCalledWith(
+        enterpriseId,
+        expect.objectContaining({ learnerActivity: 'active_past_week', page: 1 }),
+      );
+    });
+    await waitFor(() => {
+      expect(screen.getByText('There are no results.')).toBeInTheDocument();
+    });
   });
 
-  it('renders active learners table with correct data', () => {
-    const tableId = 'active-week';
-    const activity = 'active_past_week';
-    const columnTitles = [
-      'Email',
-      'Course Title',
-      'Course Price',
-      'Start Date',
-      'End Date',
-      'Passed Date',
-      'Current Grade',
-      'Progress Status',
-      'Last Activity Date',
-    ];
-    const rowsData = [
-      [
-        'awesome.me@example.com',
-        'Dive into ReactJS',
-        '$200',
-        'October 21, 2017',
-        'May 13, 2018',
-        'September 23, 2018',
-        '66%',
-        'Failed',
-        'September 22, 2018',
-      ],
-      [
-        'new@example.com',
-        'Redux with ReactJS',
-        '$200',
-        'October 21, 2017',
-        'May 13, 2018',
-        'September 22, 2018',
-        '80%',
-        'Passed',
-        'September 25, 2018',
-      ],
-    ];
-
-    verifyLearnerActivityTableRendered(tableId, activity, columnTitles, rowsData);
+  it('renders error alert when the API call fails', async () => {
+    const apiError = new Error('Network Error');
+    EnterpriseDataApiService.fetchCourseEnrollments.mockRejectedValue(apiError);
+    render(<Wrapper id="active-week" activity="active_past_week" />);
+    await waitFor(() => {
+      expect(screen.getByText('Unable to load data')).toBeInTheDocument();
+    });
   });
 
-  it('renders inactive past week learners table with correct data', () => {
-    const tableId = 'inactive-week';
-    const activity = 'inactive_past_week';
-    const columnTitles = [
-      'Email',
-      'Course Title',
-      'Course Price',
-      'Start Date',
-      'End Date',
-      'Current Grade',
-      'Progress Status',
-      'Last Activity Date',
-    ];
-    const rowsData = [
-      [
-        'awesome.me@example.com',
-        'Dive into ReactJS',
-        '$200',
-        'October 21, 2017',
-        'May 13, 2018',
-        '66%',
-        'Failed',
-        'September 22, 2018',
-      ],
-      [
-        'new@example.com',
-        'Redux with ReactJS',
-        '$200',
-        'October 21, 2017',
-        'May 13, 2018',
-        '80%',
-        'Passed',
-        'September 25, 2018',
-      ],
-    ];
-
-    verifyLearnerActivityTableRendered(tableId, activity, columnTitles, rowsData);
+  it('renders active learners table with all 9 columns including Passed Date', async () => {
+    EnterpriseDataApiService.fetchCourseEnrollments.mockResolvedValue(dataApiResponse);
+    render(<Wrapper id="active-week" activity="active_past_week" />);
+    await waitFor(() => {
+      expect(screen.getByText('awesome.me@example.com')).toBeInTheDocument();
+    });
+    expect(screen.getByText('Email')).toBeInTheDocument();
+    expect(screen.getByText('Course Title')).toBeInTheDocument();
+    expect(screen.getByText('Course Price')).toBeInTheDocument();
+    expect(screen.getByText('Start Date')).toBeInTheDocument();
+    expect(screen.getByText('End Date')).toBeInTheDocument();
+    expect(screen.getByText('Passed Date')).toBeInTheDocument();
+    expect(screen.getByText('Current Grade')).toBeInTheDocument();
+    expect(screen.getByText('Progress Status')).toBeInTheDocument();
+    expect(screen.getByText('Last Activity Date')).toBeInTheDocument();
   });
 
-  it('renders inactive past month learners table with correct data', () => {
-    const tableId = 'inactive-month';
-    const activity = 'inactive_past_month';
-    const columnTitles = [
-      'Email',
-      'Course Title',
-      'Course Price',
-      'Start Date',
-      'End Date',
-      'Current Grade',
-      'Progress Status',
-      'Last Activity Date',
-    ];
-    const rowsData = [
-      [
-        'awesome.me@example.com',
-        'Dive into ReactJS',
-        '$200',
-        'October 21, 2017',
-        'May 13, 2018',
-        '66%',
-        'Failed',
-        'September 22, 2018',
-      ],
-      [
-        'new@example.com',
-        'Redux with ReactJS',
-        '$200',
-        'October 21, 2017',
-        'May 13, 2018',
-        '80%',
-        'Passed',
-        'September 25, 2018',
-      ],
-    ];
+  it('renders inactive past week table without Passed Date column', async () => {
+    EnterpriseDataApiService.fetchCourseEnrollments.mockResolvedValue(dataApiResponse);
+    render(<Wrapper id="inactive-week" activity="inactive_past_week" />);
+    await waitFor(() => {
+      expect(screen.getByText('awesome.me@example.com')).toBeInTheDocument();
+    });
+    expect(screen.queryByText('Passed Date')).not.toBeInTheDocument();
+    expect(screen.getByText('Email')).toBeInTheDocument();
+    expect(screen.getByText('Last Activity Date')).toBeInTheDocument();
+  });
 
-    verifyLearnerActivityTableRendered(tableId, activity, columnTitles, rowsData);
+  it('renders inactive past month table without Passed Date column', async () => {
+    EnterpriseDataApiService.fetchCourseEnrollments.mockResolvedValue(dataApiResponse);
+    render(<Wrapper id="inactive-month" activity="inactive_past_month" />);
+    await waitFor(() => {
+      expect(screen.getByText('awesome.me@example.com')).toBeInTheDocument();
+    });
+    expect(screen.queryByText('Passed Date')).not.toBeInTheDocument();
+  });
+
+  it('renders formatted cell values for active learners', async () => {
+    EnterpriseDataApiService.fetchCourseEnrollments.mockResolvedValue(dataApiResponse);
+    render(<Wrapper id="active-week" activity="active_past_week" />);
+    await waitFor(() => {
+      expect(screen.getByText('awesome.me@example.com')).toBeInTheDocument();
+    });
+    expect(screen.getAllByText('$200').length).toBeGreaterThan(0);
+    expect(screen.getByText('66%')).toBeInTheDocument();
+    expect(screen.getByText('80%')).toBeInTheDocument();
+    expect(screen.getByText('Failed')).toBeInTheDocument();
+    expect(screen.getByText('Passed')).toBeInTheDocument();
+    expect(screen.getByText('Dive into ReactJS')).toBeInTheDocument();
+  });
+
+  it('calls fetchCourseEnrollments with correct learnerActivity param', async () => {
+    render(<Wrapper id="inactive-week" activity="inactive_past_week" />);
+    await waitFor(() => {
+      expect(EnterpriseDataApiService.fetchCourseEnrollments).toHaveBeenCalledWith(
+        enterpriseId,
+        expect.objectContaining({ learnerActivity: 'inactive_past_week', page: 1 }),
+      );
+    });
   });
 });
