@@ -1,187 +1,138 @@
 import React from 'react';
 import { MemoryRouter } from 'react-router-dom';
-import renderer from 'react-test-renderer';
-import configureMockStore from 'redux-mock-store';
 import { IntlProvider } from '@edx/frontend-platform/i18n';
+import configureMockStore from 'redux-mock-store';
 import thunk from 'redux-thunk';
 import { Provider } from 'react-redux';
-import { render } from '@testing-library/react';
+import '@testing-library/jest-dom';
+import { render, screen, waitFor } from '@testing-library/react';
 
 import EnrolledLearnersForInactiveCoursesTable from '.';
+import EnterpriseDataApiService from '../../data/services/EnterpriseDataApiService';
+
+jest.mock('../../data/services/EnterpriseDataApiService');
 
 const enterpriseId = 'test-enterprise';
 const mockStore = configureMockStore([thunk]);
-const enrolledLearnersForInactiveCoursesEmptyStore = mockStore({
+const store = mockStore({
   portalConfiguration: {
     enterpriseId,
-  },
-  table: {
-    'enrolled-learners-inactive-courses': {
-      data: {
-        results: [],
-        current_page: 1,
-        num_pages: 1,
-      },
-      ordering: null,
-      loading: false,
-      error: null,
-    },
-  },
-});
-const enrolledLearnersForInactiveCoursesStore = mockStore({
-  portalConfiguration: {
-    enterpriseId,
-  },
-  table: {
-    'enrolled-learners-inactive-courses': {
-      data: {
-        count: 3,
-        num_pages: 1,
-        current_page: 1,
-        results: [
-          {
-            id: 1,
-            enterprise_id: '72416e52-8c77-4860-9584-15e5b06220fb',
-            lms_user_id: 11,
-            enterprise_user_id: 222,
-            enterprise_sso_uid: 'harry',
-            user_account_creation_timestamp: '2015-02-12T23:14:35Z',
-            user_email: 'test_user_1@example.com',
-            user_username: 'test_user_1',
-            user_country_code: 'US',
-            last_activity_date: '2017-06-23',
-            enrollment_count: 2,
-            course_completion_count: 1,
-          },
-          {
-            id: 1,
-            enterprise_id: '72416e52-8c77-4860-9584-15e5b06220fb',
-            lms_user_id: 22,
-            enterprise_user_id: 333,
-            enterprise_sso_uid: 'harry',
-            user_account_creation_timestamp: '2016-05-12T22:14:36Z',
-            user_email: 'test_user_2@example.com',
-            user_username: 'test_user_2',
-            user_country_code: 'US',
-            last_activity_date: '2018-01-15',
-            enrollment_count: 5,
-            course_completion_count: 5,
-          },
-          {
-            id: 1,
-            enterprise_id: '72416e52-8c77-4860-9584-15e5b06220fb',
-            lms_user_id: 33,
-            enterprise_user_id: 444,
-            enterprise_sso_uid: 'harry',
-            user_account_creation_timestamp: '2017-12-12T18:10:15Z',
-            user_email: 'test_user_3@example.com',
-            user_username: 'test_user_3',
-            user_country_code: 'US',
-            last_activity_date: '2017-11-18',
-            enrollment_count: 6,
-            course_completion_count: 4,
-          },
-        ],
-        next: null,
-        start: 0,
-        previous: null,
-      },
-      ordering: null,
-      loading: false,
-      error: null,
-    },
   },
 });
 
-const EnrolledLearnersForInactiveCoursesEmptyTableWrapper = props => (
-  <MemoryRouter>
-    <IntlProvider locale="en">
-      <Provider store={enrolledLearnersForInactiveCoursesEmptyStore}>
-        <EnrolledLearnersForInactiveCoursesTable
-          {...props}
-        />
-      </Provider>
-    </IntlProvider>
-  </MemoryRouter>
-);
+const emptyApiResponse = {
+  data: {
+    count: 0,
+    num_pages: 0,
+    current_page: 1,
+    results: [],
+  },
+};
+
+const populatedApiResponse = {
+  data: {
+    count: 3,
+    num_pages: 1,
+    current_page: 1,
+    results: [
+      {
+        id: 1,
+        enterprise_id: '72416e52-8c77-4860-9584-15e5b06220fb',
+        lms_user_id: 11,
+        enterprise_user_id: 222,
+        user_email: 'test_user_1@example.com',
+        user_username: 'test_user_1',
+        last_activity_date: '2017-06-23',
+        enrollment_count: 2,
+        course_completion_count: 1,
+      },
+      {
+        id: 2,
+        enterprise_id: '72416e52-8c77-4860-9584-15e5b06220fb',
+        lms_user_id: 22,
+        enterprise_user_id: 333,
+        user_email: 'test_user_2@example.com',
+        user_username: 'test_user_2',
+        last_activity_date: '2018-01-15',
+        enrollment_count: 5,
+        course_completion_count: 5,
+      },
+      {
+        id: 3,
+        enterprise_id: '72416e52-8c77-4860-9584-15e5b06220fb',
+        lms_user_id: 33,
+        enterprise_user_id: 444,
+        user_email: 'test_user_3@example.com',
+        user_username: 'test_user_3',
+        last_activity_date: '2017-11-18',
+        enrollment_count: 6,
+        course_completion_count: 4,
+      },
+    ],
+  },
+};
 
 const EnrolledLearnersForInactiveCoursesWrapper = props => (
   <MemoryRouter>
     <IntlProvider locale="en">
-      <Provider store={enrolledLearnersForInactiveCoursesStore}>
-        <EnrolledLearnersForInactiveCoursesTable
-          {...props}
-        />
+      <Provider store={store}>
+        <EnrolledLearnersForInactiveCoursesTable {...props} />
       </Provider>
     </IntlProvider>
   </MemoryRouter>
 );
 
 describe('EnrolledLearnersForInactiveCoursesTable', () => {
-  it('renders empty state correctly', () => {
-    const tree = renderer
-      .create((
-        <EnrolledLearnersForInactiveCoursesEmptyTableWrapper />
-      ))
-      .toJSON();
-    expect(tree).toMatchSnapshot();
+  beforeEach(() => {
+    EnterpriseDataApiService.fetchEnrolledLearnersForInactiveCourses.mockResolvedValue(emptyApiResponse);
   });
 
-  it('renders enrolled learners for inactive courses table correctly', () => {
-    const tree = renderer
-      .create((
-        <EnrolledLearnersForInactiveCoursesWrapper />
-      ))
-      .toJSON();
-    expect(tree).toMatchSnapshot();
+  afterEach(() => {
+    jest.clearAllMocks();
   });
 
-  it('renders enrolled learners for inactive courses table with correct data', () => {
-    const tableId = 'enrolled-learners-inactive-courses';
-    const columnTitles = [
-      'Email', 'Total Course Enrollment Count', 'Total Completed Courses Count', 'Last Activity Date',
-    ];
-    const rowsData = [
-      [
-        'test_user_1@example.com',
-        '2',
-        '1',
-        'June 23, 2017',
-      ],
-      [
-        'test_user_2@example.com',
-        '5',
-        '5',
-        'January 15, 2018',
-      ],
-      [
-        'test_user_3@example.com',
-        '6',
-        '4',
-        'November 18, 2017',
-      ],
-    ];
-
-    const { container } = render((
-      <EnrolledLearnersForInactiveCoursesWrapper />
-    ));
-
-    // Verify that table has correct number of columns
-    expect(container.querySelectorAll(`.${tableId} thead th`).length).toEqual(columnTitles.length);
-
-    // Verify only expected columns are shown
-    container.querySelectorAll(`.${tableId} thead th`).forEach((column, index) => {
-      expect(column.textContent).toContain(columnTitles[index]);
+  it('renders empty state correctly', async () => {
+    render(<EnrolledLearnersForInactiveCoursesWrapper />);
+    await waitFor(() => {
+      expect(EnterpriseDataApiService.fetchEnrolledLearnersForInactiveCourses).toHaveBeenCalledWith(
+        enterpriseId,
+        expect.objectContaining({ page: 1 }),
+      );
     });
+    expect(await screen.findByText('No results found.')).toBeInTheDocument();
+  });
 
-    // Verify that table has correct number of rows
-    expect(container.querySelectorAll(`.${tableId} tbody tr`).length).toEqual(rowsData.length);
+  it('renders column headers correctly', async () => {
+    render(<EnrolledLearnersForInactiveCoursesWrapper />);
+    expect(await screen.findByText('Email')).toBeInTheDocument();
+    expect(await screen.findByText('Total Course Enrollment Count')).toBeInTheDocument();
+    expect(await screen.findByText('Total Completed Courses Count')).toBeInTheDocument();
+    expect(await screen.findByText('Last Activity Date')).toBeInTheDocument();
+  });
 
-    // Verify each row in table has correct data
-    container.querySelectorAll(`.${tableId} tbody tr`).forEach((row, rowIndex) => {
-      row.querySelectorAll('td').forEach((cell, colIndex) => {
-        expect(cell.textContent).toEqual(rowsData[rowIndex][colIndex]);
-      });
+  it('renders learner data correctly', async () => {
+    EnterpriseDataApiService.fetchEnrolledLearnersForInactiveCourses.mockResolvedValue(populatedApiResponse);
+    render(<EnrolledLearnersForInactiveCoursesWrapper />);
+    await waitFor(() => {
+      expect(screen.getByText('test_user_1@example.com')).toBeInTheDocument();
+    });
+    expect(screen.getByText('test_user_2@example.com')).toBeInTheDocument();
+    expect(screen.getByText('test_user_3@example.com')).toBeInTheDocument();
+    expect(screen.getByText('June 23, 2017')).toBeInTheDocument();
+    expect(screen.getByText('January 15, 2018')).toBeInTheDocument();
+    expect(screen.getByText('November 18, 2017')).toBeInTheDocument();
+  });
+
+  it('calls fetchEnrolledLearnersForInactiveCourses with correct parameters', async () => {
+    render(<EnrolledLearnersForInactiveCoursesWrapper />);
+    await waitFor(() => {
+      expect(EnterpriseDataApiService.fetchEnrolledLearnersForInactiveCourses).toHaveBeenCalledWith(
+        enterpriseId,
+        expect.objectContaining({
+          page: 1,
+          page_size: 50,
+        }),
+      );
     });
   });
 });
