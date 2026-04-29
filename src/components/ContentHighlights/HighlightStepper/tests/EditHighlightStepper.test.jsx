@@ -5,7 +5,7 @@ import { useState } from 'react';
 import { IntlProvider } from '@edx/frontend-platform/i18n';
 import algoliasearch from 'algoliasearch/lite';
 import thunk from 'redux-thunk';
-import { renderWithRouter } from '@edx/frontend-enterprise-utils';
+import { renderWithRouter } from '@2uinc/frontend-enterprise-utils';
 import configureMockStore from 'redux-mock-store';
 import { Provider } from 'react-redux';
 import { ContentHighlightsContext } from '../../ContentHighlightsContext';
