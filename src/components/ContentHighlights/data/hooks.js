@@ -63,12 +63,28 @@ export function useHighlightSet(highlightSetUUID) {
     getHighlightSet();
   }, [getHighlightSet]);
 
+  const updateHighlightTitle = useCallback(async (newTitle) => {
+    try {
+      const { data } = await EnterpriseCatalogApiService.updateHighlightSet(highlightSetUUID, { title: newTitle });
+      const result = camelCaseObject(data);
+      setHighlightSet((prevHighlightSet) => ({
+        ...prevHighlightSet,
+        title: result.title,
+      }));
+      return result;
+    } catch (e) {
+      setError(e);
+      throw e;
+    }
+  }, [highlightSetUUID]);
+
   useEffect(() => {
     getHighlightSet();
   }, [getHighlightSet]);
 
   return {
     updateHighlightSet,
+    updateHighlightTitle,
     highlightSet,
     isLoading,
     error,

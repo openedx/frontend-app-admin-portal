@@ -1,6 +1,6 @@
 import { render, screen, fireEvent } from '@testing-library/react';
 import '@testing-library/jest-dom/extend-expect';
-
+import userEvent from '@testing-library/user-event';
 import { MemoryRouter, Route, Routes } from 'react-router-dom';
 import { IntlProvider } from '@edx/frontend-platform/i18n';
 
@@ -51,6 +51,44 @@ describe('<CurrentContentHighlightItemsHeader>', () => {
     );
     expect(screen.queryByText(highlightTitle)).not.toBeInTheDocument();
     expect(screen.getByTestId('header-skeleton')).toBeInTheDocument();
+  });
+
+  it('shows edit button when onSaveTitle is provided', () => {
+    const onSaveTitle = jest.fn();
+    render(
+      <CurrentContentHighlightItemsHeaderWrapper
+        isLoading={false}
+        highlightTitle={highlightTitle}
+        onSaveTitle={onSaveTitle}
+      />,
+    );
+    expect(screen.getByTestId('edit-highlight-title-button')).toBeInTheDocument();
+  });
+
+  it('hides edit button when onSaveTitle is not provided', () => {
+    render(
+      <CurrentContentHighlightItemsHeaderWrapper
+        isLoading={false}
+        highlightTitle={highlightTitle}
+        onSaveTitle={null}
+      />,
+    );
+    expect(screen.queryByTestId('edit-highlight-title-button')).not.toBeInTheDocument();
+  });
+
+  it('opens edit modal when edit button is clicked', async () => {
+    const user = userEvent.setup();
+    const onSaveTitle = jest.fn();
+    render(
+      <CurrentContentHighlightItemsHeaderWrapper
+        isLoading={false}
+        highlightTitle={highlightTitle}
+        onSaveTitle={onSaveTitle}
+      />,
+    );
+    const editButton = screen.getByTestId('edit-highlight-title-button');
+    await user.click(editButton);
+    expect(screen.getByTestId('edit-highlight-title-input')).toBeInTheDocument();
   });
 
   it('shows Edit content button and Delete in view mode', () => {

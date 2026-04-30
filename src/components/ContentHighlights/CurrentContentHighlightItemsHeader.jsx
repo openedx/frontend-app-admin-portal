@@ -1,15 +1,18 @@
 import React from 'react';
 import {
-  ActionRow, Button, Skeleton, StatefulButton,
+  ActionRow, Button, Icon, IconButton, Skeleton, StatefulButton, useToggle,
 } from '@openedx/paragon';
+import { Edit } from '@openedx/paragon/icons';
+import { useIntl, FormattedMessage } from '@edx/frontend-platform/i18n';
 import PropTypes from 'prop-types';
-import { FormattedMessage } from '@edx/frontend-platform/i18n';
 import ContentHighlightHelmet from './ContentHighlightHelmet';
 import DeleteHighlightSet from './DeleteHighlightSet';
+import EditHighlightTitleModal from './EditHighlightTitleModal';
 
 const CurrentContentHighlightItemsHeader = ({
   isLoading,
   highlightTitle,
+  onSaveTitle,
   isEditing,
   onEditClick,
   onCancelClick,
@@ -18,6 +21,8 @@ const CurrentContentHighlightItemsHeader = ({
   selectedCount,
   isRemoving,
 }) => {
+  const intl = useIntl();
+  const [isEditModalOpen, openEditModal, closeEditModal] = useToggle(false);
   if (isLoading) {
     return (
       <ActionRow data-testid="header-skeleton">
@@ -94,6 +99,19 @@ const CurrentContentHighlightItemsHeader = ({
         <h2 className="m-0">
           {highlightTitle}
         </h2>
+        {onSaveTitle && (
+        <IconButton
+          src={Edit}
+          iconAs={Icon}
+          alt={intl.formatMessage({
+            id: 'highlights.edit.highlight.name.button.alt',
+            defaultMessage: 'Edit highlight name',
+            description: 'Alt text for the edit highlight name icon button.',
+          })}
+          onClick={openEditModal}
+          data-testid="edit-highlight-title-button"
+        />
+        )}
         <ActionRow.Spacer />
         <Button
           variant="outline-primary"
@@ -108,6 +126,14 @@ const CurrentContentHighlightItemsHeader = ({
         </Button>
         <DeleteHighlightSet />
       </ActionRow>
+      {onSaveTitle && (
+      <EditHighlightTitleModal
+        isOpen={isEditModalOpen}
+        onClose={closeEditModal}
+        currentTitle={highlightTitle}
+        onSave={onSaveTitle}
+      />
+      )}
     </>
   );
 };
@@ -122,6 +148,7 @@ CurrentContentHighlightItemsHeader.propTypes = {
   onAddContentClick: PropTypes.func,
   selectedCount: PropTypes.number,
   isRemoving: PropTypes.bool,
+  onSaveTitle: PropTypes.func,
 };
 
 CurrentContentHighlightItemsHeader.defaultProps = {
@@ -133,6 +160,7 @@ CurrentContentHighlightItemsHeader.defaultProps = {
   onAddContentClick: () => {},
   selectedCount: 0,
   isRemoving: false,
+  onSaveTitle: null,
 };
 
 export default CurrentContentHighlightItemsHeader;

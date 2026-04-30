@@ -10,6 +10,7 @@ import {
 } from '@testing-library/react';
 import { IntlProvider } from '@edx/frontend-platform/i18n';
 import { camelCaseObject } from '@edx/frontend-platform';
+import { logError } from '@edx/frontend-platform/logging';
 import { ContentHighlightsContext } from '../ContentHighlightsContext';
 import ContentHighlightSet from '../ContentHighlightSet';
 import { useHighlightSet, useContentHighlightsContext } from '../data/hooks';
@@ -20,6 +21,7 @@ import { TEST_COURSE_HIGHLIGHTS_DATA } from '../data/constants';
 import { configuration } from '../../../config';
 
 jest.mock('../../../data/services/EnterpriseCatalogApiService');
+jest.mock('@edx/frontend-platform/logging');
 jest.mock('../DeleteHighlightSet', () => ({
   __esModule: true,
   default: () => <div data-testid="deleteHighlightSet" />,
@@ -166,6 +168,7 @@ describe('<ContentHighlightSet>', () => {
       error: null,
       highlightSet: [],
       updateHighlightSet: expect.any(Function),
+      updateHighlightTitle: expect.any(Function),
       refetch: expect.any(Function),
     });
 
@@ -177,6 +180,7 @@ describe('<ContentHighlightSet>', () => {
       error: null,
       highlightSet: camelCaseObject(TEST_COURSE_HIGHLIGHTS_DATA),
       updateHighlightSet: expect.any(Function),
+      updateHighlightTitle: expect.any(Function),
       refetch: expect.any(Function),
     });
     expect(
@@ -480,5 +484,79 @@ describe('useContentHighlightsContext', () => {
       highlightSetUuid: highlightSetUUID,
       existingContent: null,
     }))).not.toThrow();
+  });
+  it('updateHighlightTitle patches the title and updates highlight set state', async () => {
+    jest.spyOn(Router, 'useParams').mockReturnValue({ highlightSetUUID });
+    const updatedData = { ...mockHighlightSetResponse, title: 'Updated Title' };
+    EnterpriseCatalogApiService.fetchHighlightSet.mockResolvedValueOnce({ data: mockHighlightSetResponse });
+    EnterpriseCatalogApiService.updateHighlightSet.mockResolvedValueOnce({ data: updatedData });
+
+    const { result } = renderHook(() => useHighlightSet(highlightSetUUID));
+    await waitFor(() => expect(result.current.isLoading).toBe(false));
+
+    const updateResult = await result.current.updateHighlightTitle('Updated Title');
+
+    expect(EnterpriseCatalogApiService.updateHighlightSet).toHaveBeenCalledWith(
+      highlightSetUUID,
+      { title: 'Updated Title' },
+    );
+    await waitFor(() => expect(result.current.highlightSet.title).toBe('Updated Title'));
+    expect(updateResult.title).toBe('Updated Title');
+  });
+
+  it('updateHighlightTitle sets error state and rethrows on failure', async () => {
+    jest.spyOn(Router, 'useParams').mockReturnValue({ highlightSetUUID });
+    const updateError = new Error('Update failed');
+    EnterpriseCatalogApiService.fetchHighlightSet.mockResolvedValueOnce({ data: mockHighlightSetResponse });
+    EnterpriseCatalogApiService.updateHighlightSet.mockRejectedValueOnce(updateError);
+
+    const { result } = renderHook(() => useHighlightSet(highlightSetUUID));
+    await waitFor(() => expect(result.current.isLoading).toBe(false));
+
+    await expect(result.current.updateHighlightTitle('New Title')).rejects.toThrow(updateError);
+    await waitFor(() => expect(result.current.error).toBe(updateError));
+    expect(logError).not.toHaveBeenCalled();
+  });
+
+  it('passes editHighlightsEnabled=true when feature flag is enabled in Redux state', () => {
+    const stateWithFeatureFlagEnabled = {
+      ...initialState,
+      portalConfiguration: {
+        ...initialState.portalConfiguration,
+        enterpriseFeatures: {
+          enterpriseEditHighlightsEnabled: true,
+        },
+      },
+    };
+    const store = mockStore(stateWithFeatureFlagEnabled);
+    expect(store.getState().portalConfiguration.enterpriseFeatures.enterpriseEditHighlightsEnabled).toBe(true);
+  });
+
+  it('passes editHighlightsEnabled=false when feature flag is disabled in Redux state', () => {
+    const stateWithFeatureFlagDisabled = {
+      ...initialState,
+      portalConfiguration: {
+        ...initialState.portalConfiguration,
+        enterpriseFeatures: {
+          enterpriseEditHighlightsEnabled: false,
+        },
+      },
+    };
+    const store = mockStore(stateWithFeatureFlagDisabled);
+    expect(store.getState().portalConfiguration.enterpriseFeatures.enterpriseEditHighlightsEnabled).toBe(false);
+  });
+
+  it('defaults editHighlightsEnabled to false when feature flag is missing', () => {
+    const stateWithoutFeatureFlag = {
+      ...initialState,
+      portalConfiguration: {
+        ...initialState.portalConfiguration,
+
+      },
+    };
+    const store = mockStore(stateWithoutFeatureFlag);
+    const state = store.getState();
+    const defaultValue = state.portalConfiguration.enterpriseFeatures?.enterpriseEditHighlightsEnabled ?? false;
+    expect(defaultValue).toBe(false);
   });
 });

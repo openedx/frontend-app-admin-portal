@@ -37,4 +37,12 @@ describe('EnterpriseCatalogApiService', () => {
       options,
     );
   });
+  test('updateHighlightSet calls enterprise-catalog with PATCH', () => {
+    const updatePayload = { title: 'Updated Title' };
+    EnterpriseCatalogApiService.updateHighlightSet(mockHighlightSetUUID, updatePayload);
+    expect(axios.patch).toBeCalledWith(
+      `${enterpriseCatalogBaseUrl}/highlight-sets-admin/${mockHighlightSetUUID}/`,
+      expect.any(Object),
+    );
+  });
 });

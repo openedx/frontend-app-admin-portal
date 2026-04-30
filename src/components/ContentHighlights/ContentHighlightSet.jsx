@@ -1,7 +1,9 @@
 import React, { useEffect } from 'react';
+import { connect } from 'react-redux';
 import {
   ActionRow, Alert, AlertModal, Button, Container, Toast, useToggle,
 } from '@openedx/paragon';
+import PropTypes from 'prop-types';
 import { useLocation, useParams } from 'react-router-dom';
 import { FormattedMessage, useIntl } from '@edx/frontend-platform/i18n';
 import ContentHighlightsCardItemContainer from './ContentHighlightsCardItemsContainer';
@@ -9,11 +11,12 @@ import CurrentContentHighlightItemsHeader from './CurrentContentHighlightItemsHe
 import { useHighlightSet } from './data/hooks';
 import useContentHighlightSetEditing from './data/useContentHighlightSetEditing';
 
-const ContentHighlightSet = () => {
+const ContentHighlightSet = ({ editHighlightsEnabled }) => {
   const { highlightSetUUID } = useParams();
   const {
-    highlightSet, isLoading, updateHighlightSet, refetch,
+    highlightSet, isLoading, updateHighlightSet, refetch, updateHighlightTitle,
   } = useHighlightSet(highlightSetUUID);
+  const onSaveTitle = editHighlightsEnabled ? updateHighlightTitle : null;
   const location = useLocation();
   const intl = useIntl();
   const [isToastOpen, openToast, closeToast] = useToggle(false);
@@ -56,6 +59,7 @@ const ContentHighlightSet = () => {
         onAddContentClick={handleAddContentClick}
         selectedCount={selectedContentKeys.size}
         isRemoving={isRemoving}
+        onSaveTitle={onSaveTitle}
       />
       {removeError && (
         <Alert variant="danger" data-testid="remove-error-alert" className="mb-3">
@@ -125,4 +129,12 @@ const ContentHighlightSet = () => {
   );
 };
 
-export default ContentHighlightSet;
+const mapStateToProps = (state) => ({
+  editHighlightsEnabled: state.portalConfiguration.enterpriseFeatures?.enterpriseEditHighlightsEnabled ?? false,
+});
+
+ContentHighlightSet.propTypes = {
+  editHighlightsEnabled: PropTypes.bool,
+};
+
+export default connect(mapStateToProps)(ContentHighlightSet);
