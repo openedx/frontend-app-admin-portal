@@ -162,6 +162,23 @@ const HighlightStepperSelectContent: React.FC<HighlightStepperSelectContentProps
     ContentHighlightsContext,
     v => v[0].algolia.isLoading,
   );
+  const isEditMode = useContextSelector(
+    ContentHighlightsContext,
+    v => v[0].stepperModal.isEditMode,
+  );
+  const existingContentKeys = useContextSelector(
+    ContentHighlightsContext,
+    v => v[0].stepperModal.existingContentKeys,
+  );
+
+  // In edit mode, boost existing content to appear first in results
+  const optionalFilters = useMemo(() => {
+    if (!isEditMode || !existingContentKeys || existingContentKeys.length === 0) {
+      return undefined;
+    }
+    // Algolia optionalFilters boost matching records to the top without excluding others
+    return existingContentKeys.map(key => `aggregation_key:${key}`);
+  }, [isEditMode, existingContentKeys]);
 
   if (isLoadingSecuredAlgoliaApiKey) {
     return (
@@ -197,6 +214,7 @@ const HighlightStepperSelectContent: React.FC<HighlightStepperSelectContentProps
         <Configure
           filters={searchFilters}
           hitsPerPage={MAX_PAGE_SIZE}
+          {...(optionalFilters ? { optionalFilters } : {})}
         />
         <SearchHeader variant="default" />
         <HighlightStepperSelectContentDataTable

@@ -79,6 +79,16 @@ class EnterpriseCatalogApiService {
     );
   }
 
+  static updateHighlightSet(highlightSetUUID, options = {}) {
+    const payload = {
+      ...snakeCaseObject(options),
+    };
+    return EnterpriseCatalogApiService.apiClient().patch(
+      `${EnterpriseCatalogApiService.highlightSetUrl}${highlightSetUUID}/`,
+      payload,
+    );
+  }
+
   static deleteHighlightSet(highlightSetUUID) {
     return EnterpriseCatalogApiService.apiClient().delete(`${EnterpriseCatalogApiService.highlightSetUrl}${highlightSetUUID}/`);
   }

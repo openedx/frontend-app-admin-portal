@@ -58,6 +58,11 @@ export function useHighlightSet(highlightSetUUID) {
     }));
   };
 
+  const refetch = useCallback(() => {
+    setIsLoading(true);
+    getHighlightSet();
+  }, [getHighlightSet]);
+
   useEffect(() => {
     getHighlightSet();
   }, [getHighlightSet]);
@@ -67,6 +72,7 @@ export function useHighlightSet(highlightSetUUID) {
     highlightSet,
     isLoading,
     error,
+    refetch,
   };
 }
 
@@ -83,6 +89,32 @@ export function useContentHighlightsContext() {
       stepperModal: {
         ...s.stepperModal,
         isOpen: true,
+        isEditMode: false,
+        highlightSetUuid: null,
+        existingContentKeys: [],
+      },
+    }));
+  }, [setState]);
+
+  const openEditStepperModal = useCallback(({ highlightTitle, highlightSetUuid, existingContent }) => {
+    // Pre-select existing content using aggregationKey as the row ID
+    const preSelectedRowIds = {};
+    (existingContent || []).forEach((item) => {
+      const aggregationKey = item.aggregationKey || `course:${item.contentKey}`;
+      preSelectedRowIds[aggregationKey] = true;
+    });
+    setState(s => ({
+      ...s,
+      stepperModal: {
+        ...s.stepperModal,
+        isOpen: true,
+        isEditMode: true,
+        highlightTitle,
+        highlightSetUuid,
+        existingContentKeys: (existingContent || []).map(
+          (item) => item.aggregationKey || `course:${item.contentKey}`,
+        ),
+        currentSelectedRowIds: preSelectedRowIds,
       },
     }));
   }, [setState]);
@@ -96,6 +128,9 @@ export function useContentHighlightsContext() {
         highlightTitle: null,
         titleStepValidationError: null,
         currentSelectedRowIds: {},
+        isEditMode: false,
+        highlightSetUuid: null,
+        existingContentKeys: [],
       },
     }));
   }, [setState]);
@@ -144,6 +179,7 @@ export function useContentHighlightsContext() {
 
   return {
     openStepperModal,
+    openEditStepperModal,
     resetStepperModal,
     deleteSelectedRowId,
     setCurrentSelectedRowIds,

@@ -48,6 +48,9 @@ export const MAX_HIGHLIGHT_SETS_PER_ENTERPRISE_CURATION = 16;
 // Max number of content items per highlight set
 export const MAX_CONTENT_ITEMS_PER_HIGHLIGHT_SET = 24;
 
+// Max number of starred (featured) content items per highlight set
+export const MAX_STARRED_CONTENT_ITEMS_PER_HIGHLIGHT_SET = 4;
+
 // Max number of content items displayed from search results
 export const MAX_PAGE_SIZE = 24;
 
@@ -58,12 +61,20 @@ export const STEPPER_STEP_LABELS = {
   CONFIRM_PUBLISH: 'Confirm and publish',
 };
 
+// Edit mode Stepper Step Labels
+export const EDIT_STEPPER_STEP_LABELS = {
+  SELECT_CONTENT: 'Select content',
+  CONFIRM_SAVE: 'Confirm and save',
+};
+
 // Stepper Step Text that match testing components
 export const STEPPER_STEP_TEXT = {
   HEADER_TEXT: {
     createTitle: 'Create a title for your highlight',
     selectContent: 'Add content to your highlight',
     confirmContent: 'Confirm your selections',
+    editSelectContent: 'Add courses to your highlight',
+    editConfirmContent: 'Review your selections',
   },
   SUB_TEXT: {
     createTitle: `Create a unique title for your highlight. This title is visible
@@ -71,6 +82,8 @@ export const STEPPER_STEP_TEXT = {
     selectContent: (highlightTitle) => sanitizeAndParseHTML(`Select up to <strong>${MAX_CONTENT_ITEMS_PER_HIGHLIGHT_SET}</strong> items for "${highlightTitle}".
                                               Courses in learners&apos; portal appear in the order of selection.`),
     confirmContent: (highlightTitle) => `Review content selections for "${highlightTitle}"`,
+    editSelectContent: (highlightTitle) => sanitizeAndParseHTML(`Select up to <strong>${MAX_CONTENT_ITEMS_PER_HIGHLIGHT_SET}</strong> courses for "${highlightTitle}". Courses in Learner's Portal appear in the order of most recent selection first.`),
+    editConfirmContent: (highlightTitle) => `Review course selections for "${highlightTitle}".`,
   },
   PRO_TIP_TEXT: {
     createTitle: `Pro tip: we recommend naming your highlight collection to reflect skills

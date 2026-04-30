@@ -135,4 +135,65 @@ describe('<ContentHighlightsCardItemsContainer>', () => {
     />);
     expect(screen.queryByText('Delete archived courses')).not.toBeInTheDocument();
   });
+
+  describe('edit mode', () => {
+    it('renders card grid with checkboxes when isEditing is true', () => {
+      renderWithRouter(<ContentHighlightsCardItemsContainerWrapper
+        isLoading={false}
+        highlightedContent={testHighlightSet}
+        isEditing
+        selectedContentKeys={new Set()}
+      />);
+      expect(screen.getByTestId('edit-mode-card-grid')).toBeInTheDocument();
+      testHighlightSet.forEach((item) => {
+        expect(screen.getByTestId(`select-checkbox-${item.uuid}`)).toBeInTheDocument();
+      });
+    });
+
+    it('calls onToggleSelect with contentKey when checkbox is clicked', async () => {
+      const onToggleSelect = jest.fn();
+      const user = userEvent.setup();
+      renderWithRouter(<ContentHighlightsCardItemsContainerWrapper
+        isLoading={false}
+        highlightedContent={testHighlightSet}
+        isEditing
+        selectedContentKeys={new Set()}
+        onToggleSelect={onToggleSelect}
+      />);
+      const firstItem = testHighlightSet[0];
+      await user.click(screen.getByTestId(`select-checkbox-${firstItem.uuid}`));
+      expect(onToggleSelect).toHaveBeenCalledWith(firstItem.contentKey);
+    });
+
+    it('checkbox is checked when item is in selectedContentKeys', () => {
+      const firstItem = testHighlightSet[0];
+      renderWithRouter(<ContentHighlightsCardItemsContainerWrapper
+        isLoading={false}
+        highlightedContent={testHighlightSet}
+        isEditing
+        selectedContentKeys={new Set([firstItem.contentKey])}
+      />);
+      expect(screen.getByTestId(`select-checkbox-${firstItem.uuid}`)).toBeChecked();
+    });
+
+    it('checkbox is unchecked when item is not in selectedContentKeys', () => {
+      renderWithRouter(<ContentHighlightsCardItemsContainerWrapper
+        isLoading={false}
+        highlightedContent={testHighlightSet}
+        isEditing
+        selectedContentKeys={new Set()}
+      />);
+      const firstItem = testHighlightSet[0];
+      expect(screen.getByTestId(`select-checkbox-${firstItem.uuid}`)).not.toBeChecked();
+    });
+
+    it('does not render edit mode card grid when isEditing is false', () => {
+      renderWithRouter(<ContentHighlightsCardItemsContainerWrapper
+        isLoading={false}
+        highlightedContent={testHighlightSet}
+        isEditing={false}
+      />);
+      expect(screen.queryByTestId('edit-mode-card-grid')).not.toBeInTheDocument();
+    });
+  });
 });

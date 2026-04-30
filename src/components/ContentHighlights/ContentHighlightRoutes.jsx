@@ -5,11 +5,13 @@ import PropTypes from 'prop-types';
 import ContentHighlightSet from './ContentHighlightSet';
 import ContentHighlightsDashboard from './ContentHighlightsDashboard';
 import ContentHighlightStepper from './HighlightStepper/ContentHighlightStepper';
+import EditHighlightStepper from './HighlightStepper/EditHighlightStepper';
 
 const BaseContentHighlightRoute = ({ children }) => (
   <>
     {children}
     <ContentHighlightStepper />
+    <EditHighlightStepper />
   </>
 );
 
