@@ -629,7 +629,7 @@ class EnterpriseAccessApiService {
    * @returns {Promise<SubPlanStripeEventResponse>}
    * A promise that resolves to an AxiosResponse with upcoming_invoice_amount_due, currency, and canceled_date
    */
-  static fetchStripeEvent(subPlanUuid: string) : Promise<SubPlanStripeEventResponse> {
+  static fetchStripeEvent(subPlanUuid: string): Promise<SubPlanStripeEventResponse> {
     const params = new URLSearchParams({
       subscription_plan_uuid: subPlanUuid,
     });

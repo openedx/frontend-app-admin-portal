@@ -1,20 +1,39 @@
-import { camelCaseObject } from '@edx/frontend-platform';
-import { logError } from '@edx/frontend-platform/logging';
-import { useCallback, useState, useEffect } from 'react';
+import { useQuery, useQueryClient } from '@tanstack/react-query';
+import { useCallback, useEffect, useState } from 'react';
 import { useContextSelector } from 'use-context-selector';
 import EnterpriseCatalogApiService from '../../../data/services/EnterpriseCatalogApiService';
+import type { HighlightSet, HighlightedContentItem } from '../../../data/services/types';
 import { ContentHighlightsContext } from '../ContentHighlightsContext';
 
-export function useHighlightSetsForCuration(enterpriseCuration) {
-  const [highlightSets, setHighlightSets] = useState({
+type HighlightSetForCuration = {
+  isPublished: boolean;
+  [key: string]: unknown;
+};
+
+type EnterpriseCurationWithHighlightSets = {
+  highlightSets?: HighlightSetForCuration[];
+};
+
+type ExistingContentItem = {
+  aggregationKey?: string;
+  contentKey: string;
+};
+
+const getHighlightSetQueryKey = (highlightSetUUID: string | undefined) => ['highlightSet', highlightSetUUID] as const;
+
+export function useHighlightSetsForCuration(enterpriseCuration?: EnterpriseCurationWithHighlightSets | null) {
+  const [highlightSets, setHighlightSets] = useState<{
+    draft: HighlightSetForCuration[];
+    published: HighlightSetForCuration[];
+  }>({
     draft: [],
     published: [],
   });
 
   useEffect(() => {
     const highlightSetsForCuration = enterpriseCuration?.highlightSets;
-    const draftHighlightSets = [];
-    const publishedHighlightSets = [];
+    const draftHighlightSets: HighlightSetForCuration[] = [];
+    const publishedHighlightSets: HighlightSetForCuration[] = [];
 
     highlightSetsForCuration?.forEach((highlightSet) => {
       if (highlightSet.isPublished) {
@@ -33,61 +52,73 @@ export function useHighlightSetsForCuration(enterpriseCuration) {
   return highlightSets;
 }
 
-export function useHighlightSet(highlightSetUUID) {
-  const [highlightSet, setHighlightSet] = useState([]);
-  const [isLoading, setIsLoading] = useState(true);
-  const [error, setError] = useState(null);
+export function useHighlightSet(highlightSetUUID: string | undefined) {
+  const queryClient = useQueryClient();
+  const [mutationError, setMutationError] = useState<Error | null>(null);
 
-  const getHighlightSet = useCallback(async () => {
-    try {
-      const { data } = await EnterpriseCatalogApiService.fetchHighlightSet(highlightSetUUID);
-      const result = camelCaseObject(data);
-      setHighlightSet(result);
-    } catch (e) {
-      setError(e);
-      logError(e);
-    } finally {
-      setIsLoading(false);
+  const {
+    data: highlightSet,
+    isLoading,
+    error: queryError,
+    refetch,
+  } = useQuery<HighlightSet | null>({
+    queryKey: getHighlightSetQueryKey(highlightSetUUID),
+    queryFn: () => EnterpriseCatalogApiService.fetchHighlightSet(highlightSetUUID as string),
+    enabled: !!highlightSetUUID,
+  });
+
+  const updateHighlightSet = useCallback((highlightSetContentItems: HighlightedContentItem[]) => {
+    if (!highlightSetUUID) {
+      return;
     }
-  }, [highlightSetUUID]);
 
-  const updateHighlightSet = (highlightSetContentItems) => {
-    setHighlightSet((prevHighlightSet) => ({
-      ...prevHighlightSet,
-      highlightedContent: highlightSetContentItems,
-    }));
-  };
+    queryClient.setQueryData<HighlightSet | null>(
+      getHighlightSetQueryKey(highlightSetUUID),
+      (previousHighlightSet) => {
+        if (!previousHighlightSet) {
+          return previousHighlightSet;
+        }
 
-  const refetch = useCallback(() => {
-    setIsLoading(true);
-    getHighlightSet();
-  }, [getHighlightSet]);
+        return {
+          ...previousHighlightSet,
+          highlightedContent: highlightSetContentItems,
+        };
+      },
+    );
+  }, [highlightSetUUID, queryClient]);
 
-  const updateHighlightTitle = useCallback(async (newTitle) => {
+  const updateHighlightTitle = useCallback(async (newTitle: string) => {
     try {
-      const { data } = await EnterpriseCatalogApiService.updateHighlightSet(highlightSetUUID, { title: newTitle });
-      const result = camelCaseObject(data);
-      setHighlightSet((prevHighlightSet) => ({
-        ...prevHighlightSet,
-        title: result.title,
-      }));
+      const result = await EnterpriseCatalogApiService.updateHighlightSet(
+        highlightSetUUID as string,
+        { title: newTitle },
+      );
+      const updatedTitle = (result as { title?: string })?.title ?? newTitle;
+      queryClient.setQueryData<HighlightSet | null>(
+        getHighlightSetQueryKey(highlightSetUUID),
+        (previousHighlightSet) => {
+          if (!previousHighlightSet) {
+            return previousHighlightSet;
+          }
+          return {
+            ...previousHighlightSet,
+            title: updatedTitle,
+          };
+        },
+      );
       return result;
     } catch (e) {
-      setError(e);
+      setMutationError(e as Error);
       throw e;
     }
-  }, [highlightSetUUID]);
-
-  useEffect(() => {
-    getHighlightSet();
-  }, [getHighlightSet]);
+  }, [highlightSetUUID, queryClient]);
 
   return {
     updateHighlightSet,
     updateHighlightTitle,
-    highlightSet,
+    highlightSet: highlightSet || [],
     isLoading,
-    error,
+    error: queryError || mutationError,
     refetch,
   };
 }
@@ -99,6 +130,7 @@ export function useContentHighlightsContext() {
   const setState = useContextSelector(ContentHighlightsContext, v => v[1]);
   // eslint-disable-next-line max-len
   const currentSelectedRowState = useContextSelector(ContentHighlightsContext, v => v[0].stepperModal.currentSelectedRowIds);
+
   const openStepperModal = useCallback(() => {
     setState(s => ({
       ...s,
@@ -112,9 +144,17 @@ export function useContentHighlightsContext() {
     }));
   }, [setState]);
 
-  const openEditStepperModal = useCallback(({ highlightTitle, highlightSetUuid, existingContent }) => {
+  const openEditStepperModal = useCallback(({
+    highlightTitle,
+    highlightSetUuid,
+    existingContent,
+  }: {
+    highlightTitle: string;
+    highlightSetUuid: string;
+    existingContent?: ExistingContentItem[] | null;
+  }) => {
     // Pre-select existing content using aggregationKey as the row ID
-    const preSelectedRowIds = {};
+    const preSelectedRowIds: Record<string, boolean> = {};
     (existingContent || []).forEach((item) => {
       const aggregationKey = item.aggregationKey || `course:${item.contentKey}`;
       preSelectedRowIds[aggregationKey] = true;
@@ -151,7 +191,7 @@ export function useContentHighlightsContext() {
     }));
   }, [setState]);
 
-  const setCurrentSelectedRowIds = useCallback((selectedRowIds) => {
+  const setCurrentSelectedRowIds = useCallback((selectedRowIds: Record<string, boolean>) => {
     setState(s => ({
       ...s,
       stepperModal: {
@@ -161,7 +201,7 @@ export function useContentHighlightsContext() {
     }));
   }, [setState]);
 
-  const deleteSelectedRowId = useCallback((rowId) => {
+  const deleteSelectedRowId = useCallback((rowId: string) => {
     setState(s => {
       const currentRowIds = { ...currentSelectedRowState };
       delete currentRowIds[rowId];
@@ -175,7 +215,13 @@ export function useContentHighlightsContext() {
     });
   }, [setState, currentSelectedRowState]);
 
-  const setHighlightTitle = useCallback(({ highlightTitle, titleStepValidationError }) => {
+  const setHighlightTitle = useCallback(({
+    highlightTitle,
+    titleStepValidationError,
+  }: {
+    highlightTitle: string | null;
+    titleStepValidationError: string | null;
+  }) => {
     setState(s => ({
       ...s,
       stepperModal: {
@@ -186,7 +232,7 @@ export function useContentHighlightsContext() {
     }));
   }, [setState]);
 
-  const setCatalogVisibilityAlert = useCallback(({ isOpen }) => {
+  const setCatalogVisibilityAlert = useCallback(({ isOpen }: { isOpen: boolean }) => {
     setState(s => ({
       ...s,
       catalogVisibilityAlertOpen: isOpen,

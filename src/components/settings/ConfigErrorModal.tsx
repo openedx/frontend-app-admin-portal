@@ -22,6 +22,7 @@ const ConfigErrorModal = ({
     title="Something went wrong"
     isOpen={isOpen}
     onClose={close}
+    isOverflowVisible={false}
     hasCloseButton
     footerNode={(
       <ActionRow>

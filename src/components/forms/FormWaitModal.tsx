@@ -22,7 +22,7 @@ const FormWaitModal = ({
   const isOpen = stateMap && stateMap[triggerState];
 
   return (
-    <AlertModal title={header} isOpen={isOpen} onClose={onClose} hasCloseButton>
+    <AlertModal title={header} isOpen={isOpen} onClose={onClose} isOverflowVisible={false} hasCloseButton>
       <div className="d-flex mt-2 justify-content-center">
         <Spinner
           screenReaderText={text}
