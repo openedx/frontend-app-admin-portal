@@ -662,6 +662,40 @@ describe('useSubscriptionData', () => {
     });
   });
 
+  test('does not suppress paid plan and does not crash when trial plan has null expirationDate', async () => {
+    // Guard: ownerPlan?.expirationDate prevents dayjs(null) crash.
+    // ownerStillActive is falsy when expirationDate is null, so the paid plan stays visible.
+    LicenseManagerApiService.fetchCustomerAgreementData.mockResolvedValue(
+      makeCustomerAgreementResponse({ expirationDate: null }),
+    );
+    EnterpriseAccessApiService.fetchStripeEvent.mockResolvedValue(
+      makeStripeResponse({ is_canceled: true }),
+    );
+
+    const { result } = renderHook(() => useSubscriptionData({ enterpriseId }));
+
+    await waitFor(() => {
+      expect(result.current.loading).toBe(false);
+      expect(result.current.suppressedSubscriptionUuids.has(renewedUuid)).toBe(false);
+    });
+  });
+
+  test('returns empty suppressedSubscriptionUuids and does not crash when subscriptions API fails', async () => {
+    // Guard: subscriptions?.results early-return keeps suppressedSubscriptionUuids empty
+    // when the subscriptions fetch errors and leaves results at the initial empty array.
+    LicenseManagerApiService.fetchCustomerAgreementData.mockRejectedValue(new Error('Network error'));
+    EnterpriseAccessApiService.fetchStripeEvent.mockResolvedValue(
+      makeStripeResponse({ is_canceled: true }),
+    );
+
+    const { result } = renderHook(() => useSubscriptionData({ enterpriseId }));
+
+    await waitFor(() => {
+      expect(result.current.loading).toBe(false);
+      expect(result.current.suppressedSubscriptionUuids.size).toBe(0);
+    });
+  });
+
   test('does not suppress paid plan when trial has expired and renewal record is_canceled=true', async () => {
     // Scenario: trial ended, paid plan was fully deleted. The paid plan should still be
     // visible (showing a cancelled state) rather than disappearing from the list.

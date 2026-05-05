@@ -317,10 +317,13 @@ export const useSubscriptionData = ({ enterpriseId }) => {
   // plan and must remain visible even if a cancellation has been scheduled on it.
   const suppressedSubscriptionUuids = useMemo(() => {
     const suppressed = new Set();
+    if (!subscriptions?.results) {
+      return suppressed;
+    }
     Object.entries(stripeInfoByUuid).forEach(([uuid, info]) => {
       if (info?.renewedSubscriptionPlanUuid) {
         const ownerPlan = subscriptions.results.find(s => s.uuid === uuid);
-        const ownerStillActive = ownerPlan && dayjs(ownerPlan.expirationDate).isAfter(dayjs());
+        const ownerStillActive = ownerPlan?.expirationDate && dayjs(ownerPlan.expirationDate).isAfter(dayjs());
         const futureCancellation = info.canceledDate && dayjs(info.canceledDate).isAfter(dayjs());
         if (ownerStillActive && (info.isCanceled || futureCancellation)) {
           suppressed.add(info.renewedSubscriptionPlanUuid);
