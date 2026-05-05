@@ -67,11 +67,12 @@ export function useHighlightSet(highlightSetUUID) {
     try {
       const { data } = await EnterpriseCatalogApiService.updateHighlightSet(highlightSetUUID, { title: newTitle });
       const result = camelCaseObject(data);
+      const updatedTitle = result.highlightSet?.title ?? result.title;
       setHighlightSet((prevHighlightSet) => ({
         ...prevHighlightSet,
-        title: result.title,
+        title: updatedTitle,
       }));
-      return result;
+      return result.highlightSet ?? result;
     } catch (e) {
       setError(e);
       throw e;

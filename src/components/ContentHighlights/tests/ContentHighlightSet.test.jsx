@@ -485,7 +485,7 @@ describe('useContentHighlightsContext', () => {
       existingContent: null,
     }))).not.toThrow();
   });
-  it('updateHighlightTitle patches the title and updates highlight set state', async () => {
+  it('updateHighlightTitle patches the title and updates highlight set state (flat response)', async () => {
     jest.spyOn(Router, 'useParams').mockReturnValue({ highlightSetUUID });
     const updatedData = { ...mockHighlightSetResponse, title: 'Updated Title' };
     EnterpriseCatalogApiService.fetchHighlightSet.mockResolvedValueOnce({ data: mockHighlightSetResponse });
@@ -502,6 +502,30 @@ describe('useContentHighlightsContext', () => {
     );
     await waitFor(() => expect(result.current.highlightSet.title).toBe('Updated Title'));
     expect(updateResult.title).toBe('Updated Title');
+  });
+
+  it('updateHighlightTitle handles nested highlight_set response format', async () => {
+    jest.spyOn(Router, 'useParams').mockReturnValue({ highlightSetUUID });
+    const nestedResponse = {
+      highlight_set: { ...mockHighlightSetResponse, title: 'Nested Title' },
+      added_content_keys: [],
+      removed_content_keys: [],
+      ignored_content_keys: [],
+    };
+    EnterpriseCatalogApiService.fetchHighlightSet.mockResolvedValueOnce({ data: mockHighlightSetResponse });
+    EnterpriseCatalogApiService.updateHighlightSet.mockResolvedValueOnce({ data: nestedResponse });
+
+    const { result } = renderHook(() => useHighlightSet(highlightSetUUID));
+    await waitFor(() => expect(result.current.isLoading).toBe(false));
+
+    const updateResult = await result.current.updateHighlightTitle('Nested Title');
+
+    expect(EnterpriseCatalogApiService.updateHighlightSet).toHaveBeenCalledWith(
+      highlightSetUUID,
+      { title: 'Nested Title' },
+    );
+    await waitFor(() => expect(result.current.highlightSet.title).toBe('Nested Title'));
+    expect(updateResult.title).toBe('Nested Title');
   });
 
   it('updateHighlightTitle sets error state and rethrows on failure', async () => {
