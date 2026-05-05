@@ -312,21 +312,23 @@ export const useSubscriptionData = ({ enterpriseId }) => {
   });
 
   // Builds the set of subscription UUIDs that should be hidden from the UI.
-  // A renewed subscription's predecessor is suppressed when Stripe reports it as
-  // canceled (or scheduled for future cancellation), preventing duplicate rows
-  // for the same logical plan during a renewal transition.
+  // A renewed (paid) plan is suppressed only while the trial plan that points to it is
+  // still within its active window. Once the trial has expired the paid plan is the live
+  // plan and must remain visible even if a cancellation has been scheduled on it.
   const suppressedSubscriptionUuids = useMemo(() => {
     const suppressed = new Set();
-    Object.values(stripeInfoByUuid).forEach(info => {
+    Object.entries(stripeInfoByUuid).forEach(([uuid, info]) => {
       if (info?.renewedSubscriptionPlanUuid) {
+        const ownerPlan = subscriptions.results.find(s => s.uuid === uuid);
+        const ownerStillActive = ownerPlan && dayjs(ownerPlan.expirationDate).isAfter(dayjs());
         const futureCancellation = info.canceledDate && dayjs(info.canceledDate).isAfter(dayjs());
-        if (info.isCanceled || futureCancellation) {
+        if (ownerStillActive && (info.isCanceled || futureCancellation)) {
           suppressed.add(info.renewedSubscriptionPlanUuid);
         }
       }
     });
     return suppressed;
-  }, [stripeInfoByUuid]);
+  }, [stripeInfoByUuid, subscriptions]);
 
   return {
     subscriptions,

@@ -553,11 +553,16 @@ describe('useSubscriptionData', () => {
   const trialUuid = 'trial-sub-uuid';
   const renewedUuid = 'renewed-sub-uuid';
 
-  const makeCustomerAgreementResponse = () => ({
+  // expirationDate in the future so the trial plan is still "active" in these tests.
+  // Tests that cover post-expiry behaviour override this with a past date.
+  const TRIAL_EXPIRATION_FUTURE = '2099-01-01T00:00:00Z';
+  const TRIAL_EXPIRATION_PAST = '2020-01-01T00:00:00Z';
+
+  const makeCustomerAgreementResponse = ({ expirationDate = TRIAL_EXPIRATION_FUTURE } = {}) => ({
     data: {
       results: [
         {
-          subscriptions: [{ uuid: trialUuid }],
+          subscriptions: [{ uuid: trialUuid, expiration_date: expirationDate }],
           disable_expiration_notifications: false,
           net_days_until_expiration: 10,
         },
@@ -628,6 +633,43 @@ describe('useSubscriptionData', () => {
   test('suppressedSubscriptionUuids excludes uuid when canceledDate is in the past and not isCanceled', async () => {
     EnterpriseAccessApiService.fetchStripeEvent.mockResolvedValue(
       makeStripeResponse({ canceled_date: '2020-01-01T00:00:00Z', is_canceled: false }),
+    );
+
+    const { result } = renderHook(() => useSubscriptionData({ enterpriseId }));
+
+    await waitFor(() => {
+      expect(result.current.loading).toBe(false);
+      expect(result.current.suppressedSubscriptionUuids.has(renewedUuid)).toBe(false);
+    });
+  });
+
+  test('does not suppress paid plan when trial has expired and paid cancellation is scheduled (futureCancellation)', async () => {
+    // Scenario: trial ended naturally, customer is on paid plan, then schedules cancellation.
+    // The shared renewal record reflects the paid plan's cancel_at, but the trial has already
+    // expired — the paid plan is the live plan and must remain visible.
+    LicenseManagerApiService.fetchCustomerAgreementData.mockResolvedValue(
+      makeCustomerAgreementResponse({ expirationDate: TRIAL_EXPIRATION_PAST }),
+    );
+    EnterpriseAccessApiService.fetchStripeEvent.mockResolvedValue(
+      makeStripeResponse({ canceled_date: '2099-01-01T00:00:00Z', is_canceled: false }),
+    );
+
+    const { result } = renderHook(() => useSubscriptionData({ enterpriseId }));
+
+    await waitFor(() => {
+      expect(result.current.loading).toBe(false);
+      expect(result.current.suppressedSubscriptionUuids.has(renewedUuid)).toBe(false);
+    });
+  });
+
+  test('does not suppress paid plan when trial has expired and renewal record is_canceled=true', async () => {
+    // Scenario: trial ended, paid plan was fully deleted. The paid plan should still be
+    // visible (showing a cancelled state) rather than disappearing from the list.
+    LicenseManagerApiService.fetchCustomerAgreementData.mockResolvedValue(
+      makeCustomerAgreementResponse({ expirationDate: TRIAL_EXPIRATION_PAST }),
+    );
+    EnterpriseAccessApiService.fetchStripeEvent.mockResolvedValue(
+      makeStripeResponse({ is_canceled: true }),
     );
 
     const { result } = renderHook(() => useSubscriptionData({ enterpriseId }));
