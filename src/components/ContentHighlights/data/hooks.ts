@@ -61,6 +61,18 @@ export function useHighlightSetsForCuration(enterpriseCuration?: EnterpriseCurat
   return highlightSets;
 }
 
+type ApiResponse<T> = T | { data: T } | null | undefined;
+
+function getApiPayload<T>(response: ApiResponse<T>): T | null {
+  if (response == null) {
+    return null;
+  }
+  if (typeof response === 'object' && 'data' in response) {
+    return (response as { data: T }).data ?? null;
+  }
+  return response as T;
+}
+
 export function useHighlightSet(highlightSetUUID: string | undefined) {
   const queryClient = useQueryClient();
   const [mutationError, setMutationError] = useState<Error | null>(null);
@@ -73,8 +85,12 @@ export function useHighlightSet(highlightSetUUID: string | undefined) {
   } = useQuery<HighlightSet | null>({
     queryKey: getHighlightSetQueryKey(highlightSetUUID),
     queryFn: async () => {
-      const { data } = await EnterpriseCatalogApiService.fetchHighlightSet(highlightSetUUID as string);
-      return camelCaseObject(data) as HighlightSet;
+      const response = await EnterpriseCatalogApiService.fetchHighlightSet(highlightSetUUID as string);
+      const payload = getApiPayload<unknown>(response as ApiResponse<unknown>);
+      if (!payload) {
+        return null;
+      }
+      return camelCaseObject(payload) as HighlightSet;
     },
     enabled: !!highlightSetUUID,
   });
@@ -113,11 +129,12 @@ export function useHighlightSet(highlightSetUUID: string | undefined) {
     setMutationError(null);
 
     try {
-      const { data } = await EnterpriseCatalogApiService.updateHighlightSet(
+      const response = await EnterpriseCatalogApiService.updateHighlightSet(
         highlightSetUUID,
         { title: newTitle },
       );
-      const result = camelCaseObject(data) as UpdateHighlightSetResponse;
+      const payload = getApiPayload<unknown>(response as ApiResponse<unknown>);
+      const result = camelCaseObject(payload || {}) as UpdateHighlightSetResponse;
       const updatedTitle = result.highlightSet?.title ?? result.title ?? newTitle;
 
       queryClient.setQueryData<HighlightSet | null>(
