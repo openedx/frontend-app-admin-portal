@@ -1,3 +1,5 @@
+import { camelCaseObject } from '@edx/frontend-platform';
+import { logError } from '@edx/frontend-platform/logging';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { useCallback, useEffect, useState } from 'react';
 import { useContextSelector } from 'use-context-selector';
@@ -17,6 +19,13 @@ type EnterpriseCurationWithHighlightSets = {
 type ExistingContentItem = {
   aggregationKey?: string;
   contentKey: string;
+};
+
+type UpdateHighlightSetResponse = {
+  title?: string;
+  highlightSet?: {
+    title?: string;
+  };
 };
 
 const getHighlightSetQueryKey = (highlightSetUUID: string | undefined) => ['highlightSet', highlightSetUUID] as const;
@@ -63,9 +72,18 @@ export function useHighlightSet(highlightSetUUID: string | undefined) {
     refetch,
   } = useQuery<HighlightSet | null>({
     queryKey: getHighlightSetQueryKey(highlightSetUUID),
-    queryFn: () => EnterpriseCatalogApiService.fetchHighlightSet(highlightSetUUID as string),
+    queryFn: async () => {
+      const { data } = await EnterpriseCatalogApiService.fetchHighlightSet(highlightSetUUID as string);
+      return camelCaseObject(data) as HighlightSet;
+    },
     enabled: !!highlightSetUUID,
   });
+
+  useEffect(() => {
+    if (queryError) {
+      logError(queryError);
+    }
+  }, [queryError]);
 
   const updateHighlightSet = useCallback((highlightSetContentItems: HighlightedContentItem[]) => {
     if (!highlightSetUUID) {
@@ -88,35 +106,47 @@ export function useHighlightSet(highlightSetUUID: string | undefined) {
   }, [highlightSetUUID, queryClient]);
 
   const updateHighlightTitle = useCallback(async (newTitle: string) => {
+    if (!highlightSetUUID) {
+      return null;
+    }
+
+    setMutationError(null);
+
     try {
-      const result = await EnterpriseCatalogApiService.updateHighlightSet(
-        highlightSetUUID as string,
+      const { data } = await EnterpriseCatalogApiService.updateHighlightSet(
+        highlightSetUUID,
         { title: newTitle },
       );
-      const updatedTitle = (result as { title?: string })?.title ?? newTitle;
+      const result = camelCaseObject(data) as UpdateHighlightSetResponse;
+      const updatedTitle = result.highlightSet?.title ?? result.title ?? newTitle;
+
       queryClient.setQueryData<HighlightSet | null>(
         getHighlightSetQueryKey(highlightSetUUID),
         (previousHighlightSet) => {
           if (!previousHighlightSet) {
             return previousHighlightSet;
           }
+
           return {
             ...previousHighlightSet,
             title: updatedTitle,
           };
         },
       );
-      return result;
+
+      return result.highlightSet ?? result;
     } catch (e) {
-      setMutationError(e as Error);
-      throw e;
+      const error = e as Error;
+      setMutationError(error);
+      logError(error);
+      throw error;
     }
   }, [highlightSetUUID, queryClient]);
 
   return {
     updateHighlightSet,
     updateHighlightTitle,
-    highlightSet: highlightSet || [],
+    highlightSet: highlightSet || null,
     isLoading,
     error: queryError || mutationError,
     refetch,
@@ -128,8 +158,6 @@ export function useHighlightSet(highlightSetUUID: string | undefined) {
  */
 export function useContentHighlightsContext() {
   const setState = useContextSelector(ContentHighlightsContext, v => v[1]);
-  // eslint-disable-next-line max-len
-  const currentSelectedRowState = useContextSelector(ContentHighlightsContext, v => v[0].stepperModal.currentSelectedRowIds);
 
   const openStepperModal = useCallback(() => {
     setState(s => ({
@@ -153,12 +181,12 @@ export function useContentHighlightsContext() {
     highlightSetUuid: string;
     existingContent?: ExistingContentItem[] | null;
   }) => {
-    // Pre-select existing content using aggregationKey as the row ID
     const preSelectedRowIds: Record<string, boolean> = {};
     (existingContent || []).forEach((item) => {
       const aggregationKey = item.aggregationKey || `course:${item.contentKey}`;
       preSelectedRowIds[aggregationKey] = true;
     });
+
     setState(s => ({
       ...s,
       stepperModal: {
@@ -203,8 +231,9 @@ export function useContentHighlightsContext() {
 
   const deleteSelectedRowId = useCallback((rowId: string) => {
     setState(s => {
-      const currentRowIds = { ...currentSelectedRowState };
+      const currentRowIds = { ...s.stepperModal.currentSelectedRowIds };
       delete currentRowIds[rowId];
+
       return {
         ...s,
         stepperModal: {
@@ -213,7 +242,7 @@ export function useContentHighlightsContext() {
         },
       };
     });
-  }, [setState, currentSelectedRowState]);
+  }, [setState]);
 
   const setHighlightTitle = useCallback(({
     highlightTitle,

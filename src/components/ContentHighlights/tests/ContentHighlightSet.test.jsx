@@ -36,9 +36,10 @@ jest.mock('../data/hooks', () => ({
   useHighlightSet: jest.fn(),
 }));
 
+const actualHooks = jest.requireActual('../data/hooks');
+
 const mockOpenEditStepperModal = jest.fn();
 
-const mockHighlightSetResponse = camelCaseObject(TEST_COURSE_HIGHLIGHTS_DATA);
 const mockStore = configureMockStore([thunk]);
 const highlightSetUUID = 'fake-uuid';
 const searchClient = algoliasearch(
@@ -86,6 +87,17 @@ const initialContextState = {
 const createQueryClient = () => new QueryClient({
   defaultOptions: { queries: { retry: false } },
 });
+
+const createHookQueryWrapper = () => {
+  const queryClient = createQueryClient();
+  return function Wrapper({ children }) {
+    return (
+      <QueryClientProvider client={queryClient}>
+        {children}
+      </QueryClientProvider>
+    );
+  };
+};
 
 const ContentHighlightSetWrapper = ({ children, ...props }) => {
   const contextValue = useState(initialContextState);
@@ -166,9 +178,8 @@ describe('<ContentHighlightSet>', () => {
   beforeEach(() => {
     jest.clearAllMocks();
     jest.spyOn(Router, 'useParams').mockReturnValue({ highlightSetUUID });
-    // Default state: no highlight set loaded, not loading
     useHighlightSet.mockReturnValue({
-      highlightSet: [],
+      highlightSet: null,
       isLoading: false,
       error: null,
       updateHighlightSet: mockUpdateHighlightSet,
@@ -181,20 +192,19 @@ describe('<ContentHighlightSet>', () => {
   });
 
   it('Displays the title of the highlight set', async () => {
-    EnterpriseCatalogApiService.fetchHighlightSet.mockResolvedValueOnce(mockHighlightSetResponse);
-    const queryClient = createQueryClient();
-    const Wrapper = ({ children }) => (
-      <QueryClientProvider client={queryClient}>{children}</QueryClientProvider>
-    );
-    // Test hook directly with real implementation
-    useHighlightSet.mockImplementation(
-      jest.requireActual('../data/hooks').useHighlightSet,
-    );
+    EnterpriseCatalogApiService.fetchHighlightSet.mockResolvedValueOnce({
+      data: TEST_COURSE_HIGHLIGHTS_DATA,
+    });
+
+    const Wrapper = createHookQueryWrapper();
+    useHighlightSet.mockImplementation(actualHooks.useHighlightSet);
+
     const { result } = renderHook(() => useHighlightSet(highlightSetUUID), { wrapper: Wrapper });
+
     expect(result.current).toEqual({
       isLoading: true,
       error: null,
-      highlightSet: [],
+      highlightSet: null,
       updateHighlightSet: expect.any(Function),
       updateHighlightTitle: expect.any(Function),
       refetch: expect.any(Function),
@@ -203,6 +213,7 @@ describe('<ContentHighlightSet>', () => {
     await waitFor(() => {
       expect(result.current.isLoading).toBe(false);
     });
+
     expect(result.current).toEqual({
       isLoading: false,
       error: null,
@@ -211,9 +222,8 @@ describe('<ContentHighlightSet>', () => {
       updateHighlightTitle: expect.any(Function),
       refetch: expect.any(Function),
     });
-    expect(
-      EnterpriseCatalogApiService.fetchHighlightSet,
-    ).toHaveBeenCalled();
+
+    expect(EnterpriseCatalogApiService.fetchHighlightSet).toHaveBeenCalledWith(highlightSetUUID);
   });
 
   describe('featured content removal confirmation modal', () => {
@@ -436,18 +446,14 @@ describe('<ContentHighlightSet>', () => {
 describe('useHighlightSet', () => {
   beforeEach(() => {
     jest.clearAllMocks();
-    // Restore real implementation for hook unit tests
-    useHighlightSet.mockImplementation(
-      jest.requireActual('../data/hooks').useHighlightSet,
-    );
+    useHighlightSet.mockImplementation(actualHooks.useHighlightSet);
   });
 
   it('sets error state when fetchHighlightSet fails — covers lines 62-63', async () => {
     const mockError = new Error('Fetch failed');
     EnterpriseCatalogApiService.fetchHighlightSet.mockRejectedValueOnce(mockError);
 
-    const queryClient = createQueryClient();
-    const Wrapper = ({ children }) => <QueryClientProvider client={queryClient}>{children}</QueryClientProvider>;
+    const Wrapper = createHookQueryWrapper();
     const { result } = renderHook(() => useHighlightSet(highlightSetUUID), { wrapper: Wrapper });
 
     expect(result.current.isLoading).toBe(true);
@@ -457,16 +463,16 @@ describe('useHighlightSet', () => {
     });
 
     expect(result.current.error).toEqual(mockError);
-    expect(result.current.highlightSet).toEqual([]);
+    expect(result.current.highlightSet).toBeNull();
+    expect(logError).toHaveBeenCalledWith(mockError);
   });
 
   it('refetch resets isLoading and re-fetches data — covers refetch lines', async () => {
     EnterpriseCatalogApiService.fetchHighlightSet
-      .mockResolvedValueOnce(mockHighlightSetWithFeatured)
-      .mockResolvedValueOnce(mockHighlightSetWithFeatured);
+      .mockResolvedValueOnce({ data: TEST_COURSE_HIGHLIGHTS_DATA })
+      .mockResolvedValueOnce({ data: TEST_COURSE_HIGHLIGHTS_DATA });
 
-    const queryClient = createQueryClient();
-    const Wrapper = ({ children }) => <QueryClientProvider client={queryClient}>{children}</QueryClientProvider>;
+    const Wrapper = createHookQueryWrapper();
     const { result } = renderHook(() => useHighlightSet(highlightSetUUID), { wrapper: Wrapper });
 
     await waitFor(() => {
@@ -489,10 +495,8 @@ describe('useHighlightSet', () => {
 describe('useContentHighlightsContext', () => {
   beforeEach(() => {
     jest.clearAllMocks();
-    // Restore real implementation for hook unit tests
-    useContentHighlightsContext.mockImplementation(
-      jest.requireActual('../data/hooks').useContentHighlightsContext,
-    );
+    useContentHighlightsContext.mockImplementation(actualHooks.useContentHighlightsContext);
+    useHighlightSet.mockImplementation(actualHooks.useHighlightSet);
   });
 
   it('openStepperModal sets isOpen to true and resets edit mode', () => {
@@ -554,23 +558,30 @@ describe('useContentHighlightsContext', () => {
       existingContent: null,
     }))).not.toThrow();
   });
-  it('updateHighlightTitle patches the title and updates highlight set state', async () => {
+  it('updateHighlightTitle patches the title and updates highlight set state (flat response)', async () => {
     jest.spyOn(Router, 'useParams').mockReturnValue({ highlightSetUUID });
-    const updatedData = { ...mockHighlightSetResponse, title: 'Updated Title' };
-    EnterpriseCatalogApiService.fetchHighlightSet.mockResolvedValueOnce(mockHighlightSetResponse);
-    EnterpriseCatalogApiService.updateHighlightSet.mockResolvedValueOnce(updatedData);
 
-    // Use real hook implementation for this test
-    useHighlightSet.mockImplementation(
-      jest.requireActual('../data/hooks').useHighlightSet,
-    );
+    const updatedData = {
+      ...camelCaseObject(TEST_COURSE_HIGHLIGHTS_DATA),
+      title: 'Updated Title',
+    };
 
-    const queryClient = createQueryClient();
-    const Wrapper = ({ children }) => <QueryClientProvider client={queryClient}>{children}</QueryClientProvider>;
+    EnterpriseCatalogApiService.fetchHighlightSet.mockResolvedValueOnce({
+      data: TEST_COURSE_HIGHLIGHTS_DATA,
+    });
+    EnterpriseCatalogApiService.updateHighlightSet.mockResolvedValueOnce({
+      data: updatedData,
+    });
+
+    const Wrapper = createHookQueryWrapper();
     const { result } = renderHook(() => useHighlightSet(highlightSetUUID), { wrapper: Wrapper });
+
     await waitFor(() => expect(result.current.isLoading).toBe(false));
 
-    const updateResult = await result.current.updateHighlightTitle('Updated Title');
+    let updateResult;
+    await act(async () => {
+      updateResult = await result.current.updateHighlightTitle('Updated Title');
+    });
 
     expect(EnterpriseCatalogApiService.updateHighlightSet).toHaveBeenCalledWith(
       highlightSetUUID,
@@ -580,25 +591,61 @@ describe('useContentHighlightsContext', () => {
     expect(updateResult.title).toBe('Updated Title');
   });
 
+  it('updateHighlightTitle handles nested highlight_set response format', async () => {
+    jest.spyOn(Router, 'useParams').mockReturnValue({ highlightSetUUID });
+
+    const nestedResponse = {
+      highlight_set: {
+        ...TEST_COURSE_HIGHLIGHTS_DATA,
+        title: 'Nested Title',
+      },
+      added_content_keys: [],
+      removed_content_keys: [],
+      ignored_content_keys: [],
+    };
+
+    EnterpriseCatalogApiService.fetchHighlightSet.mockResolvedValueOnce({
+      data: TEST_COURSE_HIGHLIGHTS_DATA,
+    });
+    EnterpriseCatalogApiService.updateHighlightSet.mockResolvedValueOnce({
+      data: nestedResponse,
+    });
+
+    const Wrapper = createHookQueryWrapper();
+    const { result } = renderHook(() => useHighlightSet(highlightSetUUID), { wrapper: Wrapper });
+
+    await waitFor(() => expect(result.current.isLoading).toBe(false));
+
+    let updateResult;
+    await act(async () => {
+      updateResult = await result.current.updateHighlightTitle('Nested Title');
+    });
+
+    expect(EnterpriseCatalogApiService.updateHighlightSet).toHaveBeenCalledWith(
+      highlightSetUUID,
+      { title: 'Nested Title' },
+    );
+    await waitFor(() => expect(result.current.highlightSet.title).toBe('Nested Title'));
+    expect(updateResult.title).toBe('Nested Title');
+  });
+
   it('updateHighlightTitle sets error state and rethrows on failure', async () => {
     jest.spyOn(Router, 'useParams').mockReturnValue({ highlightSetUUID });
+
     const updateError = new Error('Update failed');
-    EnterpriseCatalogApiService.fetchHighlightSet.mockResolvedValueOnce(mockHighlightSetResponse);
+    EnterpriseCatalogApiService.fetchHighlightSet.mockResolvedValueOnce({
+      data: TEST_COURSE_HIGHLIGHTS_DATA,
+    });
     EnterpriseCatalogApiService.updateHighlightSet.mockRejectedValueOnce(updateError);
 
-    // Use real hook implementation for this test
-    useHighlightSet.mockImplementation(
-      jest.requireActual('../data/hooks').useHighlightSet,
-    );
-
-    const queryClient = createQueryClient();
-    const Wrapper = ({ children }) => <QueryClientProvider client={queryClient}>{children}</QueryClientProvider>;
+    const Wrapper = createHookQueryWrapper();
     const { result } = renderHook(() => useHighlightSet(highlightSetUUID), { wrapper: Wrapper });
+
     await waitFor(() => expect(result.current.isLoading).toBe(false));
 
     await expect(result.current.updateHighlightTitle('New Title')).rejects.toThrow(updateError);
     await waitFor(() => expect(result.current.error).toBe(updateError));
-    expect(logError).not.toHaveBeenCalled();
+    expect(logError).toHaveBeenCalledWith(updateError);
   });
 
   it('passes editHighlightsEnabled=true when feature flag is enabled in Redux state', () => {

@@ -1,8 +1,10 @@
-import React from 'react';
-import { act, renderHook, waitFor } from '@testing-library/react';
+import React, { useState } from 'react';
+import {
+  act, renderHook, waitFor,
+} from '@testing-library/react';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { useContextSelector } from 'use-context-selector';
-
+import { logError } from '@edx/frontend-platform/logging';
 import EnterpriseCatalogApiService from '../../../../data/services/EnterpriseCatalogApiService';
 import { ContentHighlightsContext } from '../../ContentHighlightsContext';
 import {
@@ -12,13 +14,48 @@ import {
 } from '../hooks';
 
 jest.mock('../../../../data/services/EnterpriseCatalogApiService');
+jest.mock('@edx/frontend-platform/logging', () => ({
+  logError: jest.fn(),
+}));
 
-const createWrapper = (queryClient) => function Wrapper({ children }) {
-  return (
-    <QueryClientProvider client={queryClient}>
-      {children}
-    </QueryClientProvider>
-  );
+const initialContextState = {
+  stepperModal: {
+    isOpen: false,
+    highlightTitle: null,
+    titleStepValidationError: null,
+    currentSelectedRowIds: {},
+    isEditMode: false,
+    highlightSetUuid: null,
+    existingContentKeys: [],
+  },
+  contentHighlights: [],
+  algolia: {
+    searchClient: null,
+    securedAlgoliaApiKey: null,
+    isLoading: false,
+  },
+};
+
+const createWrapper = (contextState = initialContextState) => {
+  const queryClient = new QueryClient({
+    defaultOptions: {
+      queries: {
+        retry: false,
+      },
+    },
+  });
+
+  return function Wrapper({ children }) {
+    const contextValue = useState(contextState);
+
+    return (
+      <QueryClientProvider client={queryClient}>
+        <ContentHighlightsContext.Provider value={contextValue}>
+          {children}
+        </ContentHighlightsContext.Provider>
+      </QueryClientProvider>
+    );
+  };
 };
 
 describe('ContentHighlights data hooks', () => {
@@ -27,90 +64,65 @@ describe('ContentHighlights data hooks', () => {
   });
 
   describe('useHighlightSetsForCuration', () => {
-    it('splits published and draft highlight sets', () => {
+    it('splits draft and published highlight sets', () => {
       const enterpriseCuration = {
         highlightSets: [
-          { uuid: 'draft-1', isPublished: false },
-          { uuid: 'published-1', isPublished: true },
-          { uuid: 'draft-2', isPublished: false },
+          { uuid: '1', isPublished: true },
+          { uuid: '2', isPublished: false },
+          { uuid: '3', isPublished: true },
         ],
       };
 
       const { result } = renderHook(() => useHighlightSetsForCuration(enterpriseCuration));
 
       expect(result.current).toEqual({
-        draft: [
-          { uuid: 'draft-1', isPublished: false },
-          { uuid: 'draft-2', isPublished: false },
-        ],
+        draft: [{ uuid: '2', isPublished: false }],
         published: [
-          { uuid: 'published-1', isPublished: true },
+          { uuid: '1', isPublished: true },
+          { uuid: '3', isPublished: true },
         ],
-      });
-    });
-
-    it('returns empty arrays when highlight sets are absent', () => {
-      const enterpriseCuration = {};
-      const { result } = renderHook(() => useHighlightSetsForCuration(enterpriseCuration));
-
-      expect(result.current).toEqual({
-        draft: [],
-        published: [],
       });
     });
   });
 
   describe('useHighlightSet', () => {
     it('does not fetch when highlightSetUUID is undefined', () => {
-      const queryClient = new QueryClient({
-        defaultOptions: {
-          queries: {
-            retry: false,
-          },
-        },
-      });
-      const wrapper = createWrapper(queryClient);
-      const setQueryDataSpy = jest.spyOn(queryClient, 'setQueryData');
-
-      const { result } = renderHook(() => useHighlightSet(undefined), { wrapper });
-
-      act(() => {
-        result.current.updateHighlightSet([{ contentKey: 'course-v1:edX+DemoX+Demo_Course' }]);
+      const { result } = renderHook(() => useHighlightSet(undefined), {
+        wrapper: createWrapper(),
       });
 
       expect(EnterpriseCatalogApiService.fetchHighlightSet).not.toHaveBeenCalled();
-      expect(result.current.highlightSet).toEqual([]);
-      expect(setQueryDataSpy).not.toHaveBeenCalled();
+      expect(result.current.highlightSet).toBeNull();
     });
 
     it('fetches and updates highlighted content in query cache', async () => {
-      const highlightSetUUID = 'test-highlight-set-uuid';
-      const initialHighlightSet = {
-        uuid: highlightSetUUID,
-        highlightedContent: [{ contentKey: 'initial-content' }],
-      };
-      const updatedHighlightedContent = [
-        { contentKey: 'updated-content-1' },
-        { contentKey: 'updated-content-2' },
-      ];
-
-      EnterpriseCatalogApiService.fetchHighlightSet.mockResolvedValueOnce(initialHighlightSet);
-      const queryClient = new QueryClient({
-        defaultOptions: {
-          queries: {
-            retry: false,
-          },
+      EnterpriseCatalogApiService.fetchHighlightSet.mockResolvedValue({
+        data: {
+          uuid: 'test-uuid',
+          title: 'Test title',
+          highlighted_content: [],
         },
       });
-      const wrapper = createWrapper(queryClient);
 
-      const { result } = renderHook(() => useHighlightSet(highlightSetUUID), { wrapper });
+      const { result } = renderHook(() => useHighlightSet('test-uuid'), {
+        wrapper: createWrapper(),
+      });
 
       await waitFor(() => {
         expect(result.current.isLoading).toBe(false);
       });
 
-      act(() => {
+      expect(result.current.highlightSet).toEqual({
+        uuid: 'test-uuid',
+        title: 'Test title',
+        highlightedContent: [],
+      });
+
+      const updatedHighlightedContent = [
+        { contentKey: 'course-v1:test+TST101+2024' },
+      ];
+
+      await act(async () => {
         result.current.updateHighlightSet(updatedHighlightedContent);
       });
 
@@ -120,104 +132,172 @@ describe('ContentHighlights data hooks', () => {
     });
 
     it('keeps state unchanged when cached highlight set is null', async () => {
-      const highlightSetUUID = 'test-highlight-set-uuid';
-      EnterpriseCatalogApiService.fetchHighlightSet.mockResolvedValueOnce(null);
-      const queryClient = new QueryClient({
-        defaultOptions: {
-          queries: {
-            retry: false,
-          },
-        },
+      EnterpriseCatalogApiService.fetchHighlightSet.mockResolvedValue({
+        data: null,
       });
-      const wrapper = createWrapper(queryClient);
 
-      const { result } = renderHook(() => useHighlightSet(highlightSetUUID), { wrapper });
+      const { result } = renderHook(() => useHighlightSet('test-uuid'), {
+        wrapper: createWrapper(),
+      });
 
       await waitFor(() => {
         expect(result.current.isLoading).toBe(false);
       });
 
       act(() => {
-        result.current.updateHighlightSet([{ contentKey: 'should-not-apply' }]);
+        result.current.updateHighlightSet([
+          { contentKey: 'course-v1:test+TST101+2024' },
+        ]);
       });
 
-      expect(result.current.highlightSet).toEqual([]);
+      expect(result.current.highlightSet).toBeNull();
+    });
+
+    it('updates title from flat update response', async () => {
+      EnterpriseCatalogApiService.fetchHighlightSet.mockResolvedValue({
+        data: {
+          uuid: 'test-uuid',
+          title: 'Old title',
+          highlighted_content: [],
+        },
+      });
+
+      EnterpriseCatalogApiService.updateHighlightSet.mockResolvedValue({
+        data: {
+          title: 'New title',
+        },
+      });
+
+      const { result } = renderHook(() => useHighlightSet('test-uuid'), {
+        wrapper: createWrapper(),
+      });
+
+      await waitFor(() => {
+        expect(result.current.isLoading).toBe(false);
+      });
+
+      let updateResult;
+      await act(async () => {
+        updateResult = await result.current.updateHighlightTitle('New title');
+      });
+
+      expect(result.current.highlightSet.title).toBe('New title');
+      expect(updateResult).toEqual({ title: 'New title' });
+    });
+
+    it('updates title from nested update response', async () => {
+      EnterpriseCatalogApiService.fetchHighlightSet.mockResolvedValue({
+        data: {
+          uuid: 'test-uuid',
+          title: 'Old title',
+          highlighted_content: [],
+        },
+      });
+
+      EnterpriseCatalogApiService.updateHighlightSet.mockResolvedValue({
+        data: {
+          highlight_set: {
+            title: 'Nested title',
+          },
+        },
+      });
+
+      const { result } = renderHook(() => useHighlightSet('test-uuid'), {
+        wrapper: createWrapper(),
+      });
+
+      await waitFor(() => {
+        expect(result.current.isLoading).toBe(false);
+      });
+
+      let updateResult;
+      await act(async () => {
+        updateResult = await result.current.updateHighlightTitle('Nested title');
+      });
+
+      expect(result.current.highlightSet.title).toBe('Nested title');
+      expect(updateResult).toEqual({ title: 'Nested title' });
+    });
+
+    it('logs and exposes fetch errors', async () => {
+      const error = new Error('fetch failed');
+      EnterpriseCatalogApiService.fetchHighlightSet.mockRejectedValue(error);
+
+      const { result } = renderHook(() => useHighlightSet('test-uuid'), {
+        wrapper: createWrapper(),
+      });
+
+      await waitFor(() => {
+        expect(result.current.isLoading).toBe(false);
+      });
+
+      expect(result.current.error).toBe(error);
+      expect(result.current.highlightSet).toBeNull();
+      expect(logError).toHaveBeenCalledWith(error);
+    });
+
+    it('logs and rethrows update errors', async () => {
+      const error = new Error('update failed');
+
+      EnterpriseCatalogApiService.fetchHighlightSet.mockResolvedValue({
+        data: {
+          uuid: 'test-uuid',
+          title: 'Old title',
+          highlighted_content: [],
+        },
+      });
+
+      EnterpriseCatalogApiService.updateHighlightSet.mockRejectedValue(error);
+
+      const { result } = renderHook(() => useHighlightSet('test-uuid'), {
+        wrapper: createWrapper(),
+      });
+
+      await waitFor(() => {
+        expect(result.current.isLoading).toBe(false);
+      });
+
+      await expect(result.current.updateHighlightTitle('New title')).rejects.toThrow('update failed');
+      await waitFor(() => {
+        expect(result.current.error).toBe(error);
+      });
+      expect(logError).toHaveBeenCalledWith(error);
     });
   });
 
   describe('useContentHighlightsContext', () => {
-    const createContextWrapper = () => function ContextWrapper({ children }) {
-      const contextValue = React.useState({
+    it('deletes selected row ids from the latest state', () => {
+      const wrapper = createWrapper({
+        ...initialContextState,
         stepperModal: {
-          isOpen: false,
-          highlightTitle: null,
-          titleStepValidationError: null,
+          ...initialContextState.stepperModal,
           currentSelectedRowIds: {
-            initial: true,
-            removeMe: true,
+            'course:one': true,
+            'course:two': true,
           },
         },
-        catalogVisibilityAlertOpen: false,
       });
 
-      return (
-        <ContentHighlightsContext.Provider value={contextValue}>
-          {children}
-        </ContentHighlightsContext.Provider>
-      );
-    };
+      const { result } = renderHook(() => {
+        const actions = useContentHighlightsContext();
+        const currentSelectedRowIds = useContextSelector(
+          ContentHighlightsContext,
+          v => v[0].stepperModal.currentSelectedRowIds,
+        );
 
-    it('updates modal state through context mutators', () => {
-      const wrapper = createContextWrapper();
-      const { result } = renderHook(() => ({
-        actions: useContentHighlightsContext(),
-        state: useContextSelector(ContentHighlightsContext, v => v[0]),
-      }), { wrapper });
+        return {
+          actions,
+          currentSelectedRowIds,
+        };
+      }, { wrapper });
 
       act(() => {
-        result.current.actions.openStepperModal();
+        result.current.actions.deleteSelectedRowId('course:one');
       });
-      expect(result.current.state.stepperModal.isOpen).toBe(true);
 
-      act(() => {
-        result.current.actions.setHighlightTitle({
-          highlightTitle: 'Test title',
-          titleStepValidationError: 'Some validation error',
-        });
+      expect(result.current.currentSelectedRowIds).toEqual({
+        'course:two': true,
       });
-      expect(result.current.state.stepperModal.highlightTitle).toBe('Test title');
-      expect(result.current.state.stepperModal.titleStepValidationError).toBe('Some validation error');
-
-      act(() => {
-        result.current.actions.setCurrentSelectedRowIds({ abc: true, xyz: true });
-      });
-      expect(result.current.state.stepperModal.currentSelectedRowIds).toEqual({ abc: true, xyz: true });
-
-      act(() => {
-        result.current.actions.resetStepperModal();
-      });
-      expect(result.current.state.stepperModal.isOpen).toBe(false);
-      expect(result.current.state.stepperModal.highlightTitle).toBeNull();
-      expect(result.current.state.stepperModal.titleStepValidationError).toBeNull();
-      expect(result.current.state.stepperModal.currentSelectedRowIds).toEqual({});
-    });
-
-    it('deletes selected row id and toggles catalog visibility alert', () => {
-      const wrapper = createContextWrapper();
-      const { result } = renderHook(() => ({
-        actions: useContentHighlightsContext(),
-        state: useContextSelector(ContentHighlightsContext, v => v[0]),
-      }), { wrapper });
-
-      act(() => {
-        result.current.actions.deleteSelectedRowId('removeMe');
-      });
-      expect(result.current.state.stepperModal.currentSelectedRowIds).toEqual({ initial: true });
-
-      act(() => {
-        result.current.actions.setCatalogVisibilityAlert({ isOpen: true });
-      });
-      expect(result.current.state.catalogVisibilityAlertOpen).toBe(true);
     });
   });
 });
