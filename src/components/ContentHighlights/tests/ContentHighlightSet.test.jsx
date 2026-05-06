@@ -469,8 +469,13 @@ describe('useHighlightSet', () => {
 
   it('refetch resets isLoading and re-fetches data — covers refetch lines', async () => {
     EnterpriseCatalogApiService.fetchHighlightSet
-      .mockResolvedValueOnce({ data: TEST_COURSE_HIGHLIGHTS_DATA })
-      .mockResolvedValueOnce({ data: TEST_COURSE_HIGHLIGHTS_DATA });
+      .mockResolvedValueOnce({ data: TEST_COURSE_HIGHLIGHTS_DATA[0] })
+      .mockResolvedValueOnce({
+        data: {
+          ...TEST_COURSE_HIGHLIGHTS_DATA[0],
+          title: 'Updated Title',
+        },
+      });
 
     const Wrapper = createHookQueryWrapper();
     const { result } = renderHook(() => useHighlightSet(highlightSetUUID), { wrapper: Wrapper });
@@ -561,16 +566,19 @@ describe('useContentHighlightsContext', () => {
   it('updateHighlightTitle patches the title and updates highlight set state (flat response)', async () => {
     jest.spyOn(Router, 'useParams').mockReturnValue({ highlightSetUUID });
 
-    const updatedData = {
-      ...camelCaseObject(TEST_COURSE_HIGHLIGHTS_DATA),
-      title: 'Updated Title',
-    };
+    EnterpriseCatalogApiService.fetchHighlightSet
+      .mockResolvedValueOnce({
+        data: TEST_COURSE_HIGHLIGHTS_DATA[0],
+      })
+      .mockResolvedValueOnce({
+        data: {
+          ...TEST_COURSE_HIGHLIGHTS_DATA[0],
+          title: 'Updated Title',
+        },
+      });
 
-    EnterpriseCatalogApiService.fetchHighlightSet.mockResolvedValueOnce({
-      data: TEST_COURSE_HIGHLIGHTS_DATA,
-    });
     EnterpriseCatalogApiService.updateHighlightSet.mockResolvedValueOnce({
-      data: updatedData,
+      data: { title: 'Updated Title' },
     });
 
     const Wrapper = createHookQueryWrapper();
@@ -587,28 +595,34 @@ describe('useContentHighlightsContext', () => {
       highlightSetUUID,
       { title: 'Updated Title' },
     );
-    await waitFor(() => expect(result.current.highlightSet.title).toBe('Updated Title'));
+    await waitFor(() => expect(result.current.highlightSet?.title).toBe('Updated Title'));
     expect(updateResult.title).toBe('Updated Title');
   });
 
   it('updateHighlightTitle handles nested highlight_set response format', async () => {
     jest.spyOn(Router, 'useParams').mockReturnValue({ highlightSetUUID });
 
-    const nestedResponse = {
-      highlight_set: {
-        ...TEST_COURSE_HIGHLIGHTS_DATA,
-        title: 'Nested Title',
-      },
-      added_content_keys: [],
-      removed_content_keys: [],
-      ignored_content_keys: [],
-    };
+    EnterpriseCatalogApiService.fetchHighlightSet
+      .mockResolvedValueOnce({
+        data: TEST_COURSE_HIGHLIGHTS_DATA[0],
+      })
+      .mockResolvedValueOnce({
+        data: {
+          ...TEST_COURSE_HIGHLIGHTS_DATA[0],
+          title: 'Nested Title',
+        },
+      });
 
-    EnterpriseCatalogApiService.fetchHighlightSet.mockResolvedValueOnce({
-      data: TEST_COURSE_HIGHLIGHTS_DATA,
-    });
     EnterpriseCatalogApiService.updateHighlightSet.mockResolvedValueOnce({
-      data: nestedResponse,
+      data: {
+        highlight_set: {
+          ...TEST_COURSE_HIGHLIGHTS_DATA[0],
+          title: 'Nested Title',
+        },
+        added_content_keys: [],
+        removed_content_keys: [],
+        ignored_content_keys: [],
+      },
     });
 
     const Wrapper = createHookQueryWrapper();
@@ -625,7 +639,7 @@ describe('useContentHighlightsContext', () => {
       highlightSetUUID,
       { title: 'Nested Title' },
     );
-    await waitFor(() => expect(result.current.highlightSet.title).toBe('Nested Title'));
+    await waitFor(() => expect(result.current.highlightSet?.title).toBe('Nested Title'));
     expect(updateResult.title).toBe('Nested Title');
   });
 

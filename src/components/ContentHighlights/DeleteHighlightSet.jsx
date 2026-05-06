@@ -8,8 +8,10 @@ import { Info } from '@openedx/paragon/icons';
 import { useNavigate, useParams } from 'react-router-dom';
 import { logError } from '@edx/frontend-platform/logging';
 import { connect } from 'react-redux';
-
+import { useQueryClient } from '@tanstack/react-query';
 import { sendEnterpriseTrackEvent } from '@2uinc/frontend-enterprise-utils';
+import { getHighlightSetQueryKey } from './data/hooks';
+
 import EnterpriseCatalogApiService from '../../data/services/EnterpriseCatalogApiService';
 import { ROUTE_NAMES } from '../EnterpriseApp/data/constants';
 import { EnterpriseAppContext } from '../EnterpriseApp/EnterpriseAppContextProvider';
@@ -25,6 +27,7 @@ const DeleteHighlightSet = ({ enterpriseId, enterpriseSlug }) => {
   const [isDeleted, setIsDeleted] = useState(false);
   const [deletionError, setDeletionError] = useState(null);
   const intl = useIntl();
+  const queryClient = useQueryClient();
 
   const trackEventOpenDelete = () => {
     const trackInfo = {
@@ -70,12 +73,21 @@ const DeleteHighlightSet = ({ enterpriseId, enterpriseSlug }) => {
     close();
     trackEventCloseDelete();
   };
-  const handleDeleteClick = () => {
+  const handleDeleteClick = async () => {
     const deleteHighlightSet = async () => {
       setDeletionState('pending');
       try {
         dispatch(enterpriseCurationActions.setHighlightSetToast(highlightSetUUID));
         await EnterpriseCatalogApiService.deleteHighlightSet(highlightSetUUID);
+        queryClient.removeQueries({
+          queryKey: getHighlightSetQueryKey(highlightSetUUID),
+          exact: true,
+        });
+        await queryClient.invalidateQueries({
+          queryKey: getHighlightSetQueryKey(highlightSetUUID),
+          exact: true,
+        });
+
         dispatch(enterpriseCurationActions.deleteHighlightSet(highlightSetUUID));
         setIsDeleted(true);
         trackEventConfirmDelete();

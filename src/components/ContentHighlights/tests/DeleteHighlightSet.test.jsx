@@ -17,6 +17,7 @@ import { EnterpriseAppContext } from '../../EnterpriseApp/EnterpriseAppContextPr
 import { enterpriseCurationActions } from '../../EnterpriseApp/data/enterpriseCurationReducer';
 import EnterpriseCatalogApiService from '../../../data/services/EnterpriseCatalogApiService';
 import { accessibilitySettings } from '../../../../tests/accessibility-settings';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 
 jest.mock('../../../data/services/EnterpriseCatalogApiService');
 
@@ -73,6 +74,22 @@ const DeleteHighlightSetWrapper = ({
   </IntlProvider>
 );
 
+const createTestQueryClient = () => new QueryClient({
+  defaultOptions: {
+    queries: { retry: false },
+    mutations: { retry: false },
+  },
+});
+
+const renderWithProviders = (ui) => {
+  const queryClient = createTestQueryClient();
+  return render(
+    <QueryClientProvider client={queryClient}>
+      {ui}
+    </QueryClientProvider>,
+  );
+};
+
 describe('<DeleteHighlightSet />', () => {
   const getDeleteHighlightBtn = () => {
     const deleteBtn = screen.getByText('Delete highlight');
@@ -91,26 +108,26 @@ describe('<DeleteHighlightSet />', () => {
   });
 
   it('has no accessibility violations', async () => {
-    const { container } = render(<DeleteHighlightSetWrapper />);
+    const { container } = renderWithProviders(<DeleteHighlightSetWrapper />);
     const results = await axe(container, accessibilitySettings);
     expect(results).toHaveNoViolations();
   });
 
   it('has delete highlight button', () => {
-    render(<DeleteHighlightSetWrapper />);
+    renderWithProviders(<DeleteHighlightSetWrapper />);
     const deleteBtn = getDeleteHighlightBtn();
     expect(deleteBtn).toBeInTheDocument();
   });
 
   it('clicking delete highlight button opens confirmation modal', async () => {
-    render(<DeleteHighlightSetWrapper />);
+    renderWithProviders(<DeleteHighlightSetWrapper />);
     await clickDeleteHighlightBtn();
     expect(sendEnterpriseTrackEvent).toHaveBeenCalledTimes(1);
   });
 
   it('cancelling confirmation modal closes modal', async () => {
     const user = userEvent.setup();
-    render(<DeleteHighlightSetWrapper />);
+    renderWithProviders(<DeleteHighlightSetWrapper />);
     await clickDeleteHighlightBtn();
     expect(sendEnterpriseTrackEvent).toHaveBeenCalledTimes(1);
     await user.click(screen.getByText('Cancel'));
@@ -122,7 +139,7 @@ describe('<DeleteHighlightSet />', () => {
     const user = userEvent.setup();
     EnterpriseCatalogApiService.deleteHighlightSet.mockResolvedValueOnce();
 
-    render(<DeleteHighlightSetWrapper />);
+    renderWithProviders(<DeleteHighlightSetWrapper />);
     await clickDeleteHighlightBtn();
     expect(sendEnterpriseTrackEvent).toHaveBeenCalledTimes(1);
     await user.click(screen.getByTestId('delete-confirmation-button'));
@@ -146,7 +163,7 @@ describe('<DeleteHighlightSet />', () => {
     const user = userEvent.setup();
     EnterpriseCatalogApiService.deleteHighlightSet.mockRejectedValueOnce(new Error('oh noes!'));
 
-    render(<DeleteHighlightSetWrapper />);
+    renderWithProviders(<DeleteHighlightSetWrapper />);
     await clickDeleteHighlightBtn();
     await user.click(screen.getByTestId('delete-confirmation-button'));
 

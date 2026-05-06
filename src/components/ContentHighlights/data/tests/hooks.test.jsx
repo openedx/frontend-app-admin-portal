@@ -154,18 +154,24 @@ describe('ContentHighlights data hooks', () => {
     });
 
     it('updates title from flat update response', async () => {
-      EnterpriseCatalogApiService.fetchHighlightSet.mockResolvedValue({
-        data: {
-          uuid: 'test-uuid',
-          title: 'Old title',
-          highlighted_content: [],
-        },
-      });
+      EnterpriseCatalogApiService.fetchHighlightSet
+        .mockResolvedValueOnce({
+          data: {
+            uuid: 'test-uuid',
+            title: 'Old title',
+            highlighted_content: [],
+          },
+        })
+        .mockResolvedValueOnce({
+          data: {
+            uuid: 'test-uuid',
+            title: 'New title',
+            highlighted_content: [],
+          },
+        });
 
       EnterpriseCatalogApiService.updateHighlightSet.mockResolvedValue({
-        data: {
-          title: 'New title',
-        },
+        data: { title: 'New title' },
       });
 
       const { result } = renderHook(() => useHighlightSet('test-uuid'), {
@@ -186,19 +192,25 @@ describe('ContentHighlights data hooks', () => {
     });
 
     it('updates title from nested update response', async () => {
-      EnterpriseCatalogApiService.fetchHighlightSet.mockResolvedValue({
-        data: {
-          uuid: 'test-uuid',
-          title: 'Old title',
-          highlighted_content: [],
-        },
-      });
+      EnterpriseCatalogApiService.fetchHighlightSet
+        .mockResolvedValueOnce({
+          data: {
+            uuid: 'test-uuid',
+            title: 'Old title',
+            highlighted_content: [],
+          },
+        })
+        .mockResolvedValueOnce({
+          data: {
+            uuid: 'test-uuid',
+            title: 'Nested title',
+            highlighted_content: [],
+          },
+        });
 
       EnterpriseCatalogApiService.updateHighlightSet.mockResolvedValue({
         data: {
-          highlight_set: {
-            title: 'Nested title',
-          },
+          highlight_set: { title: 'Nested title' },
         },
       });
 

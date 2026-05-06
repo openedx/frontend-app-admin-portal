@@ -28,7 +28,7 @@ type UpdateHighlightSetResponse = {
   };
 };
 
-const getHighlightSetQueryKey = (highlightSetUUID: string | undefined) => ['highlightSet', highlightSetUUID] as const;
+export const getHighlightSetQueryKey = (highlightSetUUID: string | undefined) => ['highlightSet', highlightSetUUID] as const;
 
 export function useHighlightSetsForCuration(enterpriseCuration?: EnterpriseCurationWithHighlightSets | null) {
   const [highlightSets, setHighlightSets] = useState<{
@@ -150,6 +150,11 @@ export function useHighlightSet(highlightSetUUID: string | undefined) {
           };
         },
       );
+
+      await queryClient.invalidateQueries({
+        queryKey: getHighlightSetQueryKey(highlightSetUUID),
+        exact: true,
+      });
 
       return result.highlightSet ?? result;
     } catch (e) {
