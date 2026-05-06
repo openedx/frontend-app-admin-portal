@@ -80,10 +80,14 @@ const createTestQueryClient = () => new QueryClient({
   },
 });
 
+let mockQueryClient;
+let invalidateQueriesSpy;
+
 const renderWithProviders = (ui) => {
-  const queryClient = createTestQueryClient();
+  mockQueryClient = createTestQueryClient();
+  invalidateQueriesSpy = jest.spyOn(mockQueryClient, 'invalidateQueries');
   return render(
-    <QueryClientProvider client={queryClient}>
+    <QueryClientProvider client={mockQueryClient}>
       {ui}
     </QueryClientProvider>,
   );
@@ -104,6 +108,8 @@ describe('<DeleteHighlightSet />', () => {
 
   beforeEach(() => {
     jest.resetAllMocks();
+    mockQueryClient = null;
+    invalidateQueriesSpy = null;
   });
 
   it('has no accessibility violations', async () => {
@@ -186,5 +192,15 @@ describe('<DeleteHighlightSet />', () => {
     await waitFor(() => {
       expect(screen.queryByRole('alert')).not.toBeInTheDocument();
     });
+  });
+
+  it('cancelling confirmation modal does not invalidate the list', async () => {
+    const user = userEvent.setup();
+    renderWithProviders(<DeleteHighlightSetWrapper />);
+    await clickDeleteHighlightBtn();
+    expect(sendEnterpriseTrackEvent).toHaveBeenCalledTimes(1);
+    await user.click(screen.getByText('Cancel'));
+    expect(sendEnterpriseTrackEvent).toHaveBeenCalledTimes(2);
+    expect(invalidateQueriesSpy).not.toHaveBeenCalled();
   });
 });

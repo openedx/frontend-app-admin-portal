@@ -98,7 +98,7 @@ const mockTabledata = {
 const AddMembersModalWrapper = () => {
   const store = getMockStore({ ...initialStoreState });
   const initialContextOverride = {
-    groupEnterpriseLearners: mockTabledata.results.map((user) => user.email),
+    groupEnterpriseLearners: mockTabledata.results.map((learner) => learner.enterpriseCustomerUser.email),
   };
   return (
     <IntlProvider locale="en">
@@ -181,7 +181,7 @@ describe('<AddMembersModal />', () => {
           <QueryClientProvider client={queryClient()}>
             <ValidatedEmailsContextProvider
               initialContextOverride={{
-                groupEnterpriseLearners: mockTabledata.results.map((learner) => learner.email),
+                groupEnterpriseLearners: mockTabledata.results.map((learner) => learner.enterpriseCustomerUser.email),
               }}
             >
               <AddMembersModal {...defaultProps} />
