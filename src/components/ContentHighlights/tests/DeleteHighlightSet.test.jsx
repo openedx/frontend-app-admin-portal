@@ -1,7 +1,6 @@
 import { render, screen, waitFor } from '@testing-library/react';
 import '@testing-library/jest-dom/extend-expect';
 import userEvent from '@testing-library/user-event';
-
 import { logError } from '@edx/frontend-platform/logging';
 import { IntlProvider } from '@edx/frontend-platform/i18n';
 import { Provider } from 'react-redux';
@@ -9,15 +8,15 @@ import { Routes, Route, MemoryRouter } from 'react-router-dom';
 import configureMockStore from 'redux-mock-store';
 import thunk from 'redux-thunk';
 import { sendEnterpriseTrackEvent } from '@2uinc/frontend-enterprise-utils';
-
+import React from 'react';
 import { axe } from 'jest-axe';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import DeleteHighlightSet from '../DeleteHighlightSet';
 import { ROUTE_NAMES } from '../../EnterpriseApp/data/constants';
 import { EnterpriseAppContext } from '../../EnterpriseApp/EnterpriseAppContextProvider';
 import { enterpriseCurationActions } from '../../EnterpriseApp/data/enterpriseCurationReducer';
 import EnterpriseCatalogApiService from '../../../data/services/EnterpriseCatalogApiService';
 import { accessibilitySettings } from '../../../../tests/accessibility-settings';
-import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 
 jest.mock('../../../data/services/EnterpriseCatalogApiService');
 
@@ -38,9 +37,9 @@ jest.mock('react-router-dom', () => ({
 const mockStore = configureMockStore([thunk]);
 const initialState = {
   portalConfiguration:
-    {
-      enterpriseSlug: 'test-enterprise',
-    },
+  {
+    enterpriseSlug: 'test-enterprise',
+  },
 };
 
 const highlightSetUUID = 'fake-uuid';
@@ -57,7 +56,7 @@ const DeleteHighlightSetWrapper = ({
   enterpriseAppContextValue = initialEnterpriseAppContextValue,
   ...props
 }) => (
-/* eslint-enable react/prop-types */
+  /* eslint-enable react/prop-types */
   <IntlProvider locale="en">
     <Provider store={mockStore(initialState)}>
       <EnterpriseAppContext.Provider value={enterpriseAppContextValue}>

@@ -3,8 +3,7 @@ import {
   fireEvent, render, screen, waitFor,
 } from '@testing-library/react';
 import { Provider } from 'react-redux';
-import thunk from 'redux-thunk';
-import configureMockStore from 'redux-mock-store';
+import configureStore from 'redux-mock-store';
 import userEvent from '@testing-library/user-event';
 import '@testing-library/jest-dom/extend-expect';
 import { QueryClientProvider, useQueryClient } from '@tanstack/react-query';
@@ -38,14 +37,16 @@ jest.mock('../../learner-credit-management/data', () => ({
   useEnterpriseLearners: jest.fn(),
 }));
 
-const mockStore = configureMockStore([thunk]);
-const store = mockStore({
+const enterpriseUUID = 'test-enterprise-uuid';
+const TEST_GROUP = 'test-group-uuid';
+const initialStoreState = {
   portalConfiguration: {
-    enterpriseId: 'test-enterprise-id',
-    enterpriseSlug: 'test-enterprise',
+    enterpriseId: enterpriseUUID,
   },
-});
+};
 
+const mockStore = configureStore([]);
+const getMockStore = (state = initialStoreState) => mockStore(state);
 
 const defaultProps = {
   isModalOpen: true,
@@ -172,10 +173,22 @@ describe('<AddMembersModal />', () => {
     const mockInvite = jest.spyOn(LmsApiService, 'inviteEnterpriseLearnersToGroup')
       .mockResolvedValue({ data: {} });
 
+    const store = getMockStore({ ...initialStoreState });
+
     render(
-      <Provider store={store}>
-        <AddMembersModal {...defaultProps} />
-      </Provider>,
+      <IntlProvider locale="en">
+        <Provider store={store}>
+          <QueryClientProvider client={queryClient()}>
+            <ValidatedEmailsContextProvider
+              initialContextOverride={{
+                groupEnterpriseLearners: mockTabledata.results.map((learner) => learner.email),
+              }}
+            >
+              <AddMembersModal {...defaultProps} />
+            </ValidatedEmailsContextProvider>
+          </QueryClientProvider>
+        </Provider>
+      </IntlProvider>,
     );
 
     expect(screen.getByText('You haven\'t uploaded any members yet.')).toBeInTheDocument();
