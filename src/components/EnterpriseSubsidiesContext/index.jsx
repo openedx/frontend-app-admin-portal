@@ -7,7 +7,14 @@ import {
   useEnterpriseBudgets,
 } from './data/hooks';
 
-export const EnterpriseSubsidiesContext = createContext();
+export const EnterpriseSubsidiesContext = createContext({
+  customerAgreement: undefined,
+  coupons: [],
+  canManageLearnerCredit: false,
+  enterpriseSubsidyTypes: [],
+  hasBillingSubscription: false,
+  isLoading: false,
+});
 
 export const useEnterpriseSubsidiesContext = ({
   enablePortalLearnerCreditManagementScreen,
