@@ -48,6 +48,9 @@ const initialState = {
   portalConfiguration: {
     enterpriseSlug: 'test-enterprise',
     enterpriseId: 'test-enterprise-id',
+    enterpriseFeatures: {
+      enterpriseEditHighlightsEnabled: true,
+    },
   },
   highlightSetUUID,
 };
@@ -419,7 +422,10 @@ describe('useHighlightSet', () => {
 // ─── useContentHighlightsContext hook tests ───────────────────────────────────
 describe('useContentHighlightsContext', () => {
   beforeEach(() => {
-    jest.clearAllMocks();
+    // resetAllMocks clears mock call history AND the one-time return value queues
+    // (mockResolvedValueOnce / mockRejectedValueOnce) so stale values from a
+    // failed test can never bleed into the next test.
+    jest.resetAllMocks();
     // Restore real implementation for hook unit tests
     useContentHighlightsContext.mockImplementation(
       jest.requireActual('../data/hooks').useContentHighlightsContext,
@@ -571,11 +577,12 @@ describe('useContentHighlightsContext', () => {
   });
 
   it('defaults editHighlightsEnabled to false when feature flag is missing', () => {
+    // Use a completely independent state without enterpriseFeatures to test the default
     const stateWithoutFeatureFlag = {
-      ...initialState,
       portalConfiguration: {
-        ...initialState.portalConfiguration,
-
+        enterpriseSlug: 'test-enterprise',
+        enterpriseId: 'test-enterprise-id',
+        // no enterpriseFeatures key — tests the ?? false fallback
       },
     };
     const store = mockStore(stateWithoutFeatureFlag);

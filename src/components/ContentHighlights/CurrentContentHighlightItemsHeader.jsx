@@ -20,6 +20,7 @@ const CurrentContentHighlightItemsHeader = ({
   onAddContentClick,
   selectedCount,
   isRemoving,
+  editHighlightsEnabled,
 }) => {
   const intl = useIntl();
   const [isEditModalOpen, openEditModal, closeEditModal] = useToggle(false);
@@ -113,6 +114,7 @@ const CurrentContentHighlightItemsHeader = ({
         />
         )}
         <ActionRow.Spacer />
+        {editHighlightsEnabled && (
         <Button
           variant="outline-primary"
           onClick={onEditClick}
@@ -124,6 +126,7 @@ const CurrentContentHighlightItemsHeader = ({
             description="Button to enter edit mode for a highlight."
           />
         </Button>
+        )}
         <DeleteHighlightSet />
       </ActionRow>
       {onSaveTitle && (
@@ -149,6 +152,7 @@ CurrentContentHighlightItemsHeader.propTypes = {
   selectedCount: PropTypes.number,
   isRemoving: PropTypes.bool,
   onSaveTitle: PropTypes.func,
+  editHighlightsEnabled: PropTypes.bool,
 };
 
 CurrentContentHighlightItemsHeader.defaultProps = {
@@ -160,6 +164,7 @@ CurrentContentHighlightItemsHeader.defaultProps = {
   onAddContentClick: () => {},
   selectedCount: 0,
   isRemoving: false,
+  editHighlightsEnabled: false,
   onSaveTitle: null,
 };
 
