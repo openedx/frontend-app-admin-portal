@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useContext, useState } from 'react';
 import PropTypes from 'prop-types';
 import {
   ActionRow, Alert, AlertModal, Button, StatefulButton, useToggle,
@@ -24,7 +24,6 @@ const DeleteHighlightSet = ({ enterpriseId, enterpriseSlug }) => {
   const [deletionState, setDeletionState] = useState('default');
   const navigate = useNavigate();
   const { enterpriseCuration: { dispatch } } = useContext(EnterpriseAppContext);
-  const [isDeleted, setIsDeleted] = useState(false);
   const [deletionError, setDeletionError] = useState(null);
   const intl = useIntl();
   const queryClient = useQueryClient();
@@ -89,7 +88,11 @@ const DeleteHighlightSet = ({ enterpriseId, enterpriseSlug }) => {
         });
 
         dispatch(enterpriseCurationActions.deleteHighlightSet(highlightSetUUID));
-        setIsDeleted(true);
+        close();
+        navigate(`/${enterpriseSlug}/admin/${ROUTE_NAMES.contentHighlights}`, {
+          state: { deletedHighlightSet: true },
+          replace: true,
+        });
         trackEventConfirmDelete();
       } catch (error) {
         logError(error);
@@ -100,14 +103,6 @@ const DeleteHighlightSet = ({ enterpriseId, enterpriseSlug }) => {
     };
     deleteHighlightSet();
   };
-  useEffect(() => {
-    if (isDeleted) {
-      close();
-      navigate(`/${enterpriseSlug}/admin/${ROUTE_NAMES.contentHighlights}`, {
-        state: { deletedHighlightSet: true },
-      });
-    }
-  }, [isDeleted, close, highlightSetUUID, enterpriseSlug, navigate]);
 
   return (
     <>

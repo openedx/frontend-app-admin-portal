@@ -155,7 +155,10 @@ describe('<DeleteHighlightSet />', () => {
     });
     expect(sendEnterpriseTrackEvent).toHaveBeenCalledTimes(2);
     expect(screen.queryByText('Delete highlight?')).not.toBeInTheDocument();
-    expect(mockNavigate).toHaveBeenCalledWith(`/test-enterprise/admin/${ROUTE_NAMES.contentHighlights}`, { state: { deletedHighlightSet: true } });
+    expect(mockNavigate).toHaveBeenCalledWith(`/test-enterprise/admin/${ROUTE_NAMES.contentHighlights}`, {
+      state: { deletedHighlightSet: true },
+      replace: true,
+    });
   });
 
   it('confirming deletion in confirmation modal handles error via API', async () => {
