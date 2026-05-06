@@ -14,6 +14,7 @@ import EnterpriseDataApiService from '../../../data/services/EnterpriseDataApiSe
 import Admin from '../index';
 import { CSV_CLICK_SEGMENT_EVENT_NAME } from '../../DownloadCsvButton';
 import { useEnterpriseBudgets } from '../../EnterpriseSubsidiesContext/data/hooks';
+import { EnterpriseSubsidiesContext } from '../../EnterpriseSubsidiesContext';
 import { accessibilitySettings } from '../../../../tests/accessibility-settings';
 
 const dndKitCore = require('@dnd-kit/core');
@@ -62,6 +63,10 @@ jest.mock('../../EnterpriseSubsidiesContext/data/hooks', () => ({
   }),
 }));
 
+jest.mock('../../subscriptions', () => ({
+  SubscriptionData: ({ children }) => <div data-testid="subscription-data">{children}</div>,
+}));
+
 const mockModuleActivityReportResponse = {
   results: [
     {
@@ -108,43 +113,56 @@ const store = mockStore({
   },
 });
 
-const AdminWrapper = props => (
+const defaultEnterpriseSubsidiesContextValue = {
+  customerAgreement: undefined,
+  coupons: [],
+  canManageLearnerCredit: false,
+  enterpriseSubsidyTypes: [],
+  hasBillingSubscription: false,
+  isLoading: false,
+};
+
+const AdminWrapper = ({ enterpriseSubsidiesContextValue, ...props }) => (
   <MemoryRouter>
     <Provider store={store}>
       <IntlProvider locale="en">
-        <Admin
-          enterpriseId="test-enterprise"
-          enterpriseSlug="test-enterprise"
-          clearDashboardAnalytics={() => {}}
-          fetchDashboardAnalytics={() => {}}
-          fetchPortalConfiguration={() => {}}
-          fetchCsv={() => {}}
-          searchEnrollmentsList={() => {}}
-          tableData={[
-            {
-              course_title: 'Bears 101',
-              course_start: Date.now(),
-            },
-          ]}
-          location={{
-            pathname: '/',
-          }}
-          budgets={[{
-            subsidy_access_policy_uuid: '8d6503dd-e40d-42b8-442b-37dd4c5450e3',
-            subsidy_access_policy_display_name: 'Everything',
-          }]}
-          groups={[{
-            enterprise_group_uuid: '7d6503dd-e40d-42b8-442b-37dd4c5450e3',
-            enterprise_group_name: 'Test Group',
-          }]}
-          fetchDashboardInsights={() => {}}
-          clearDashboardInsights={() => {}}
-          fetchEnterpriseBudgets={() => {}}
-          clearEnterpriseBudgets={() => {}}
-          fetchEnterpriseGroups={() => {}}
-          clearEnterpriseGroups={() => {}}
-          {...props}
-        />
+        <EnterpriseSubsidiesContext.Provider
+          value={enterpriseSubsidiesContextValue || defaultEnterpriseSubsidiesContextValue}
+        >
+          <Admin
+            enterpriseId="test-enterprise"
+            enterpriseSlug="test-enterprise"
+            clearDashboardAnalytics={() => { }}
+            fetchDashboardAnalytics={() => { }}
+            fetchPortalConfiguration={() => { }}
+            fetchCsv={() => { }}
+            searchEnrollmentsList={() => { }}
+            tableData={[
+              {
+                course_title: 'Bears 101',
+                course_start: Date.now(),
+              },
+            ]}
+            location={{
+              pathname: '/',
+            }}
+            budgets={[{
+              subsidy_access_policy_uuid: '8d6503dd-e40d-42b8-442b-37dd4c5450e3',
+              subsidy_access_policy_display_name: 'Everything',
+            }]}
+            groups={[{
+              enterprise_group_uuid: '7d6503dd-e40d-42b8-442b-37dd4c5450e3',
+              enterprise_group_name: 'Test Group',
+            }]}
+            fetchDashboardInsights={() => { }}
+            clearDashboardInsights={() => { }}
+            fetchEnterpriseBudgets={() => { }}
+            clearEnterpriseBudgets={() => { }}
+            fetchEnterpriseGroups={() => { }}
+            clearEnterpriseGroups={() => { }}
+            {...props}
+          />
+        </EnterpriseSubsidiesContext.Provider>
       </IntlProvider>
     </Provider>
   </MemoryRouter>
@@ -765,6 +783,26 @@ describe('<Admin />', () => {
       capturedOnDragEnd(mockDragEvent);
       expect(dndKitSortable.arrayMove).not.toHaveBeenCalled();
       expect(localStorage.setItem).not.toHaveBeenCalled();
+    });
+  });
+
+  describe('SubscriptionData gating', () => {
+    it('does not render SubscriptionData when customerAgreement is undefined', () => {
+      render(<AdminWrapper {...baseProps} />);
+      expect(screen.queryByTestId('subscription-data')).not.toBeInTheDocument();
+    });
+
+    it('renders SubscriptionData when customerAgreement is defined', () => {
+      render(
+        <AdminWrapper
+          {...baseProps}
+          enterpriseSubsidiesContextValue={{
+            ...defaultEnterpriseSubsidiesContextValue,
+            customerAgreement: { uuid: 'test-agreement-uuid', subscriptions: [] },
+          }}
+        />,
+      );
+      expect(screen.getByTestId('subscription-data')).toBeInTheDocument();
     });
   });
 });
