@@ -115,6 +115,7 @@ const store = mockStore({
 
 const defaultEnterpriseSubsidiesContextValue = {
   customerAgreement: undefined,
+  isLoadingCustomerAgreement: false,
   coupons: [],
   canManageLearnerCredit: false,
   enterpriseSubsidyTypes: [],
@@ -787,9 +788,23 @@ describe('<Admin />', () => {
   });
 
   describe('SubscriptionData gating', () => {
-    it('does not render SubscriptionData when customerAgreement is undefined', () => {
+    it('does not render SubscriptionData when customerAgreement is undefined and not loading', () => {
       render(<AdminWrapper {...baseProps} />);
       expect(screen.queryByTestId('subscription-data')).not.toBeInTheDocument();
+    });
+
+    it('renders SubscriptionData while customer agreement is loading', () => {
+      render(
+        <AdminWrapper
+          {...baseProps}
+          enterpriseSubsidiesContextValue={{
+            ...defaultEnterpriseSubsidiesContextValue,
+            customerAgreement: undefined,
+            isLoadingCustomerAgreement: true,
+          }}
+        />,
+      );
+      expect(screen.getByTestId('subscription-data')).toBeInTheDocument();
     });
 
     it('renders SubscriptionData when customerAgreement is defined', () => {

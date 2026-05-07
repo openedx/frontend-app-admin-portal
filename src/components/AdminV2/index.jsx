@@ -77,7 +77,7 @@ const Admin = ({
   const LPR_COMPONENTS_KEY = 'lpr-components-order';
 
   const intl = useIntl();
-  const { customerAgreement } = useContext(EnterpriseSubsidiesContext);
+  const { customerAgreement, isLoadingCustomerAgreement } = useContext(EnterpriseSubsidiesContext);
 
   const [lprComponents, setLPRComponents] = useState(
     getFromLocalStorage(LPR_COMPONENTS_KEY) || DEFAULT_LPR_COMPONENTS,
@@ -494,8 +494,12 @@ const Admin = ({
           <Helmet title="Learner Progress Report" />
           <Hero title="Learner Progress Report" />
           <BudgetExpiryAlertAndModal />
-          {customerAgreement && (
-            <SubscriptionData enterpriseId={enterpriseId}>
+          {(isLoadingCustomerAgreement || customerAgreement) && (
+            <SubscriptionData
+              enterpriseId={enterpriseId}
+              customerAgreement={customerAgreement}
+              isLoadingCustomerAgreement={isLoadingCustomerAgreement}
+            >
               <SubscriptionModal />
             </SubscriptionData>
           )}
