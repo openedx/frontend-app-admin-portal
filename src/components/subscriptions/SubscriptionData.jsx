@@ -1,15 +1,17 @@
-import React, { createContext, useMemo } from 'react';
+import React, { createContext, useContext, useMemo } from 'react';
 import PropTypes from 'prop-types';
 import { Alert } from '@openedx/paragon';
 import { useIntl } from '@edx/frontend-platform/i18n';
 
 import { useSubscriptionData } from './data/hooks';
+import { EnterpriseSubsidiesContext } from '../EnterpriseSubsidiesContext';
 
 export const SubscriptionContext = createContext({});
 
 const SubscriptionData = ({
-  children, enterpriseId, suppressAlertWhenNoAgreement,
+  children, enterpriseId,
 }) => {
+  const { customerAgreement, isLoadingCustomerAgreement } = useContext(EnterpriseSubsidiesContext);
   const {
     subscriptions,
     errors,
@@ -32,16 +34,16 @@ const SubscriptionData = ({
     suppressedSubscriptionUuids,
   }), [subscriptions, errors, loading, forceRefresh, setErrors, stripeInfoByUuid, suppressedSubscriptionUuids]);
 
+  if (isLoadingCustomerAgreement || !customerAgreement) {
+    return null;
+  }
+
   if (loading || hasSubscription) {
     return (
       <SubscriptionContext.Provider value={context}>
         {children}
       </SubscriptionContext.Provider>
     );
-  }
-
-  if (suppressAlertWhenNoAgreement) {
-    return null;
   }
 
   return (
@@ -60,11 +62,6 @@ const SubscriptionData = ({
 SubscriptionData.propTypes = {
   children: PropTypes.node.isRequired,
   enterpriseId: PropTypes.string.isRequired,
-  suppressAlertWhenNoAgreement: PropTypes.bool,
-};
-
-SubscriptionData.defaultProps = {
-  suppressAlertWhenNoAgreement: false,
 };
 
 export default SubscriptionData;

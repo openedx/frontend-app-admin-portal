@@ -17,6 +17,7 @@ import * as hooks from '../data/hooks';
 import { SubsidyRequestsContext } from '../../subsidy-requests';
 import { SUBSIDY_REQUESTS_TYPES } from '../../SubsidyRequestManagementTable/data/constants';
 import { accessibilitySettings } from '../../../../tests/accessibility-settings';
+import { EnterpriseSubsidiesContext } from '../../EnterpriseSubsidiesContext';
 
 describe('SubscriptionManagementPage', () => {
   describe('multiple subscriptions', () => {
@@ -79,16 +80,22 @@ describe('SubscriptionManagementPage', () => {
       return (
         <Provider store={mockStore}>
           <IntlProvider locale="en">
-            <SubsidyRequestsContext.Provider value={subsidyRequestsState}>
-              <MemoryRouter initialEntries={[`/${TEST_ENTERPRISE_CUSTOMER_SLUG}/admin/${ROUTE_NAMES.subscriptionManagement}`]}>
-                <Routes>
-                  <Route
-                    path={`/:enterpriseSlug/admin/${ROUTE_NAMES.subscriptionManagement}/*`}
-                    element={<SubscriptionManagementPage />}
-                  />
-                </Routes>
-              </MemoryRouter>
-            </SubsidyRequestsContext.Provider>
+            <EnterpriseSubsidiesContext.Provider value={{
+              customerAgreement: { uuid: 'test-agreement-uuid', subscriptions: [] },
+              isLoadingCustomerAgreement: false,
+            }}
+            >
+              <SubsidyRequestsContext.Provider value={subsidyRequestsState}>
+                <MemoryRouter initialEntries={[`/${TEST_ENTERPRISE_CUSTOMER_SLUG}/admin/${ROUTE_NAMES.subscriptionManagement}`]}>
+                  <Routes>
+                    <Route
+                      path={`/:enterpriseSlug/admin/${ROUTE_NAMES.subscriptionManagement}/*`}
+                      element={<SubscriptionManagementPage />}
+                    />
+                  </Routes>
+                </MemoryRouter>
+              </SubsidyRequestsContext.Provider>
+            </EnterpriseSubsidiesContext.Provider>
           </IntlProvider>
         </Provider>
       );

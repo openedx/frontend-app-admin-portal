@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import { BrowserRouter as Router } from 'react-router-dom';
 import { Provider } from 'react-redux';
 import configureMockStore from 'redux-mock-store';
@@ -11,6 +11,7 @@ import SubscriptionData from '../SubscriptionData';
 import { ASSIGNED } from '../data/constants';
 import SubscriptionDetailContextProvider from '../SubscriptionDetailContextProvider';
 import * as hooks from '../data/hooks';
+import { EnterpriseSubsidiesContext } from '../../EnterpriseSubsidiesContext';
 
 export const TEST_ENTERPRISE_CUSTOMER_SLUG = 'test-enterprise';
 export const TEST_ENTERPRISE_CUSTOMER_UUID = 'b5f07fee-1b34-458f-b672-19b55fc1bd10';
@@ -140,8 +141,8 @@ export const mockUseSubscriptionData = (state) => ({
     results: [testSubscriptionPlanGenerator(state)],
   },
   errors: {},
-  setErrors: () => {},
-  forceRefresh: () => {},
+  setErrors: () => { },
+  forceRefresh: () => { },
 });
 
 export const mockUseSubscriptionUsers = (state) => [
@@ -152,25 +153,31 @@ export const mockUseSubscriptionUsers = (state) => [
     numPages: 1,
     results: state.users,
   },
-  () => {},
+  () => { },
   false,
 ];
 
 export const SubscriptionManagementContext = ({ children, detailState, store }) => {
   jest.spyOn(hooks, 'useSubscriptionData').mockImplementation(() => mockUseSubscriptionData(detailState));
-  jest.spyOn(hooks, 'useSubscriptionUsersOverview').mockImplementation(() => [detailState.overview, () => {}]);
+  jest.spyOn(hooks, 'useSubscriptionUsersOverview').mockImplementation(() => [detailState.overview, () => { }]);
   jest.spyOn(hooks, 'useSubscriptionUsers').mockImplementation(() => mockUseSubscriptionUsers(detailState));
+  const enterpriseSubsidiesContextValue = useMemo(() => ({
+    customerAgreement: { uuid: 'test-agreement-uuid', subscriptions: [] },
+    isLoadingCustomerAgreement: false,
+  }), []);
   return (
     <Router history={initialHistory}>
       <Provider store={store}>
-        <SubscriptionData enterpriseId={TEST_ENTERPRISE_CUSTOMER_UUID}>
-          <SubscriptionDetailContextProvider
-            subscription={testSubscriptionPlanGenerator(detailState)}
-            hasMultipleSubscriptions={false}
-          >
-            {children}
-          </SubscriptionDetailContextProvider>
-        </SubscriptionData>
+        <EnterpriseSubsidiesContext.Provider value={enterpriseSubsidiesContextValue}>
+          <SubscriptionData enterpriseId={TEST_ENTERPRISE_CUSTOMER_UUID}>
+            <SubscriptionDetailContextProvider
+              subscription={testSubscriptionPlanGenerator(detailState)}
+              hasMultipleSubscriptions={false}
+            >
+              {children}
+            </SubscriptionDetailContextProvider>
+          </SubscriptionData>
+        </EnterpriseSubsidiesContext.Provider>
       </Provider>
     </Router>
   );
@@ -279,7 +286,7 @@ export const generateSubscriptionUser = ({
  */
 const generateUseSubscriptionData = (
   subscriptionPlan,
-  forceRefresh = () => {},
+  forceRefresh = () => { },
   isLoading = false,
 ) => ({
   subscriptions: {
@@ -289,7 +296,7 @@ const generateUseSubscriptionData = (
     results: [subscriptionPlan],
   },
   errors: {},
-  setErrors: () => {},
+  setErrors: () => { },
   forceRefresh,
   loading: isLoading,
 });
@@ -358,20 +365,28 @@ export const MockSubscriptionContext = ({
   subscriptionPlan,
   store = createMockStore(),
   children,
-}) => (
-  <Router history={initialHistory}>
-    <Provider store={store}>
-      <SubscriptionData enterpriseId={TEST_ENTERPRISE_CUSTOMER_UUID}>
-        <SubscriptionDetailContextProvider
-          subscription={subscriptionPlan}
-          hasMultipleSubscriptions={false}
-        >
-          {children}
-        </SubscriptionDetailContextProvider>
-      </SubscriptionData>
-    </Provider>
-  </Router>
-);
+}) => {
+  const enterpriseSubsidiesContextValue = useMemo(() => ({
+    customerAgreement: { uuid: 'test-agreement-uuid', subscriptions: [] },
+    isLoadingCustomerAgreement: false,
+  }), []);
+  return (
+    <Router history={initialHistory}>
+      <Provider store={store}>
+        <EnterpriseSubsidiesContext.Provider value={enterpriseSubsidiesContextValue}>
+          <SubscriptionData enterpriseId={TEST_ENTERPRISE_CUSTOMER_UUID}>
+            <SubscriptionDetailContextProvider
+              subscription={subscriptionPlan}
+              hasMultipleSubscriptions={false}
+            >
+              {children}
+            </SubscriptionDetailContextProvider>
+          </SubscriptionData>
+        </EnterpriseSubsidiesContext.Provider>
+      </Provider>
+    </Router>
+  );
+};
 
 MockSubscriptionContext.propTypes = {
   children: PropTypes.node.isRequired,

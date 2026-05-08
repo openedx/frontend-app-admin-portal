@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useContext } from 'react';
+import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { Helmet } from 'react-helmet';
 import { isEmpty } from 'lodash-es';
@@ -42,7 +42,6 @@ import SortableItem from './SortableItem';
 import { getFromLocalStorage, saveToLocalStorage, getFilteredQueryParams } from '../../utils';
 import SubscriptionModal from './SubscriptionModal';
 import { SubscriptionData } from '../subscriptions';
-import { EnterpriseSubsidiesContext } from '../EnterpriseSubsidiesContext';
 
 import { features } from '../../config';
 
@@ -77,7 +76,6 @@ const Admin = ({
   const LPR_COMPONENTS_KEY = 'lpr-components-order';
 
   const intl = useIntl();
-  const { customerAgreement, isLoadingCustomerAgreement } = useContext(EnterpriseSubsidiesContext);
 
   const [lprComponents, setLPRComponents] = useState(
     getFromLocalStorage(LPR_COMPONENTS_KEY) || DEFAULT_LPR_COMPONENTS,
@@ -494,14 +492,9 @@ const Admin = ({
           <Helmet title="Learner Progress Report" />
           <Hero title="Learner Progress Report" />
           <BudgetExpiryAlertAndModal />
-          {(isLoadingCustomerAgreement || customerAgreement) && (
-            <SubscriptionData
-              enterpriseId={enterpriseId}
-              suppressAlertWhenNoAgreement
-            >
-              <SubscriptionModal />
-            </SubscriptionData>
-          )}
+          <SubscriptionData enterpriseId={enterpriseId}>
+            <SubscriptionModal />
+          </SubscriptionData>
           <div className="container-fluid mt-4">
             <DndContext
               sensors={sensors}
