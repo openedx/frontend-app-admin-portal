@@ -14,15 +14,32 @@ import EnterpriseAppSkeleton from '../EnterpriseApp/EnterpriseAppSkeleton';
 const USER_ACCOUNT_POLLING_TIMEOUT = 5000;
 
 const UserActivationPage = () => {
-  const user = getAuthenticatedUser();
+  const [user, setUser] = useState(() => getAuthenticatedUser());
   const [showToast, setShowToast] = useState(false);
 
   const { enterpriseSlug } = useParams();
-  const { roles, isActive } = user || {};
+  const { isActive, roles } = user || {};
+
+  const refreshUser = async () => {
+    await hydrateAuthenticatedUser();
+    setUser(getAuthenticatedUser());
+  };
+
+  // Hydrate once on mount to refresh stale cached user data (roles/isActive)
+  // for users who land here directly after registration. Without this, an
+  // empty `roles` would bounce to /admin/register, which can loop back here
+  // when its loginRefresh+reload path doesn't run (e.g. localStorage flag
+  // already set).
+  useEffect(() => {
+    if (user && (!user.isActive || !user.roles?.length)) {
+      refreshUser();
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   useInterval(() => {
-    if (user && !user.isActive) {
-      hydrateAuthenticatedUser();
+    if (user && (!user.isActive || !user.roles?.length)) {
+      refreshUser();
     }
   }, USER_ACCOUNT_POLLING_TIMEOUT);
 
@@ -41,22 +58,11 @@ const UserActivationPage = () => {
     );
   }
 
-  if (!roles?.length) {
-    // user is authenticated but doesn't have any JWT roles so redirect the user to
-    // `:enterpriseSlug/admin/register` to force a log out in an attempt to refresh JWT roles.
-    return (
-      <Navigate to={`/${enterpriseSlug}/admin/register`} replace />
-    );
-  }
-
-  if (isActive === undefined) {
-    // user hydration is still pending when ``isActive`` is undefined, so display app skeleton state
-    return <EnterpriseAppSkeleton />;
-  }
-
-  // user data is hydrated with a verified email address, so redirect the user
-  // to the default page in the Admin Portal.
-  if (isActive) {
+  // user data is hydrated with a verified email address and an enterprise_admin
+  // JWT role, so redirect the user to the default page in the Admin Portal.
+  // Without the roles guard, a verified user without admin roles would be sent
+  // to /admin/learners, where they have no access.
+  if (isActive && roles?.length) {
     return (
       <>
         <Navigate to={`/${enterpriseSlug}/admin/learners`} replace />
@@ -82,7 +88,7 @@ const UserActivationPage = () => {
           <Alert variant="warning">
             <p>
               <FormattedMessage
-                defaultMessage="In order to continue, you must verify your email address to activate your {platform_name} account. Please once your account is activated."
+                defaultMessage="In order to continue, you must verify your email address to activate your {platform_name} account. Please return once your account is activated."
                 id="adminPortal.account.activation.required"
                 values={{ platform_name: configuration.PLATFORM_NAME }}
               />
