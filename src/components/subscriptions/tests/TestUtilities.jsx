@@ -284,7 +284,7 @@ export const generateSubscriptionUser = ({
  * @param {function} forceRefresh override force refresh function
  * @returns subscription data hook output
  */
-const generateUseSubscriptionData = (
+export const generateUseSubscriptionData = (
   subscriptionPlan,
   forceRefresh = () => { },
   isLoading = false,
@@ -394,6 +394,4 @@ MockSubscriptionContext.propTypes = {
   store: PropTypes.shape(),
 };
 
-MockSubscriptionContext.defaultProps = {
-  store: createMockStore(),
-};
+MockSubscriptionContext.defaultProps = {};
