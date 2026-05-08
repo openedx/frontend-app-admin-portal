@@ -106,5 +106,11 @@ describe('SubscriptionManagementPage', () => {
       expect(screen.getByText('Manage learners'));
       expect(screen.getByText('View learners'));
     });
+
+    it('shows the no active subscriptions alert when there are no subscriptions', () => {
+      render(<SubscriptionManagementPageWrapper subscriptions={[]} />);
+      expect(screen.getByRole('alert')).toBeInTheDocument();
+      expect(screen.getByText(/does not have any active subscriptions/i)).toBeInTheDocument();
+    });
   });
 });

@@ -8,7 +8,7 @@ import { useSubscriptionData } from './data/hooks';
 export const SubscriptionContext = createContext({});
 
 const SubscriptionData = ({
-  children, enterpriseId, customerAgreement, isLoadingCustomerAgreement,
+  children, enterpriseId, suppressAlertWhenNoAgreement,
 }) => {
   const {
     subscriptions,
@@ -40,10 +40,7 @@ const SubscriptionData = ({
     );
   }
 
-  // Suppress the "no active subscriptions" alert while the customer agreement is still
-  // loading or when it is confirmed absent — only show it when the agreement is known
-  // to exist but the subscription fetch returned no results.
-  if (isLoadingCustomerAgreement || !customerAgreement) {
+  if (suppressAlertWhenNoAgreement) {
     return null;
   }
 
@@ -63,13 +60,11 @@ const SubscriptionData = ({
 SubscriptionData.propTypes = {
   children: PropTypes.node.isRequired,
   enterpriseId: PropTypes.string.isRequired,
-  customerAgreement: PropTypes.shape({}),
-  isLoadingCustomerAgreement: PropTypes.bool,
+  suppressAlertWhenNoAgreement: PropTypes.bool,
 };
 
 SubscriptionData.defaultProps = {
-  customerAgreement: undefined,
-  isLoadingCustomerAgreement: false,
+  suppressAlertWhenNoAgreement: false,
 };
 
 export default SubscriptionData;

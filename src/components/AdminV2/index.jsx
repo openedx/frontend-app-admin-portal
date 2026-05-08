@@ -497,8 +497,7 @@ const Admin = ({
           {(isLoadingCustomerAgreement || customerAgreement) && (
             <SubscriptionData
               enterpriseId={enterpriseId}
-              customerAgreement={customerAgreement}
-              isLoadingCustomerAgreement={isLoadingCustomerAgreement}
+              suppressAlertWhenNoAgreement
             >
               <SubscriptionModal />
             </SubscriptionData>
