@@ -93,11 +93,20 @@ const mockStripeInfoCanceled = {
 
 const responsiveContextValue = { width: breakpoints.extraSmall.maxWidth };
 
-jest.mock('dayjs', () => (date) => {
-  if (date) {
-    return jest.requireActual('dayjs')(date);
-  }
-  return jest.requireActual('dayjs')('2020-01-01T00:00:00.000Z');
+// Pin "now" to a fixed date so tests don't silently break as real time passes
+// (e.g. trial expiration dates in fixtures becoming stale) and so relative-date
+// assertions are exact. Specific date strings still parse via real dayjs.
+jest.mock('dayjs', () => {
+  const actualDayjs = jest.requireActual('dayjs');
+  const mock = (date) => {
+    if (date) {
+      return actualDayjs(date);
+    }
+    return actualDayjs('2020-01-01T00:00:00.000Z');
+  };
+  // Forward extend so dayjs plugins loaded at module init don't throw.
+  mock.extend = actualDayjs.extend.bind(actualDayjs);
+  return mock;
 });
 
 jest.mock('@edx/frontend-platform/i18n', () => ({
