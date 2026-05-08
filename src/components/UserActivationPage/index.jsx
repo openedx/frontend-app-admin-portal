@@ -1,10 +1,11 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { FormattedMessage } from '@edx/frontend-platform/i18n';
 import { Navigate, useParams } from 'react-router-dom';
 import {
   Container, Row, Col, Alert, MailtoLink, Toast,
 } from '@openedx/paragon';
 import { getAuthenticatedUser, hydrateAuthenticatedUser } from '@edx/frontend-platform/auth';
+import { logError } from '@edx/frontend-platform/logging';
 import { LoginRedirect } from '@2uinc/frontend-enterprise-logistration';
 import { configuration } from '../../config';
 
@@ -16,13 +17,24 @@ const USER_ACCOUNT_POLLING_TIMEOUT = 5000;
 const UserActivationPage = () => {
   const [user, setUser] = useState(() => getAuthenticatedUser());
   const [showToast, setShowToast] = useState(false);
+  const isRefreshingRef = useRef(false);
 
   const { enterpriseSlug } = useParams();
   const { isActive, roles } = user || {};
 
   const refreshUser = async () => {
-    await hydrateAuthenticatedUser();
-    setUser(getAuthenticatedUser());
+    if (isRefreshingRef.current) {
+      return;
+    }
+    isRefreshingRef.current = true;
+    try {
+      await hydrateAuthenticatedUser();
+      setUser(getAuthenticatedUser());
+    } catch (error) {
+      logError(error);
+    } finally {
+      isRefreshingRef.current = false;
+    }
   };
 
   // Hydrate once on mount to refresh stale cached user data (roles/isActive)
