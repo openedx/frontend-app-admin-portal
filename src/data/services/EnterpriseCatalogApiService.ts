@@ -1,7 +1,10 @@
 import { snakeCaseObject } from '@edx/frontend-platform';
 import { getAuthenticatedHttpClient } from '@edx/frontend-platform/auth';
+import { camelCaseObject } from '@edx/frontend-platform/utils';
+import type { AxiosResponse } from 'axios';
 
 import { configuration } from '../../config';
+import type { BackendHighlightSetResponse, HighlightSet } from './types';
 
 class EnterpriseCatalogApiService {
   static baseUrl = `${configuration.ENTERPRISE_CATALOG_BASE_URL}/api/v1`;
@@ -14,40 +17,49 @@ class EnterpriseCatalogApiService {
 
   static highlightSetUrl = `${EnterpriseCatalogApiService.baseUrl}/highlight-sets-admin/`;
 
-  static fetchEnterpriseCatalogMetadata({ catalogUuid }) {
+  static fetchEnterpriseCatalogMetadata({ catalogUuid }: { catalogUuid: string }) {
     const url = `${EnterpriseCatalogApiService.baseUrl}/enterprise-catalogs/${catalogUuid}/get_content_metadata/`;
     return EnterpriseCatalogApiService.apiClient().get(url);
   }
 
-  static fetchApplicableCatalogs({ enterpriseId, courseRunIds }) {
+  static fetchApplicableCatalogs({
+    enterpriseId,
+    courseRunIds,
+  }: {
+    enterpriseId: string;
+    courseRunIds?: string[];
+  }) {
     // This API call will *only* obtain the enterprise's catalogs whose
     // catalog queries return/contain the specified courseRunIds.
     const queryParams = new URLSearchParams({
-      get_catalogs_containing_specified_content_ids: true,
+      get_catalogs_containing_specified_content_ids: 'true',
     });
-    if (courseRunIds?.length > 0) {
+    if (Array.isArray(courseRunIds) && courseRunIds.length > 0) {
       queryParams.set('course_run_ids', courseRunIds.join(','));
     }
     const url = `${EnterpriseCatalogApiService.baseUrl}/enterprise-customer/${enterpriseId}/contains_content_items/?${queryParams.toString()}`;
     return EnterpriseCatalogApiService.apiClient().get(url);
   }
 
-  static fetchEnterpriseCustomerCatalogs(enterpriseId) {
+  static fetchEnterpriseCustomerCatalogs(enterpriseId: string) {
     return EnterpriseCatalogApiService.apiClient().get(`${EnterpriseCatalogApiService.enterpriseCustomerCatalogsUrl}?enterprise_customer=${enterpriseId}`);
   }
 
-  static getEnterpriseCurationConfig(enterpriseId) {
+  static getEnterpriseCurationConfig(enterpriseId: string) {
     const queryParams = new URLSearchParams({
       enterprise_customer: enterpriseId,
     });
     return EnterpriseCatalogApiService.apiClient().get(`${EnterpriseCatalogApiService.enterpriseCurationUrl}?${queryParams.toString()}`);
   }
 
-  static fetchHighlightSet(highlightSetUUID) {
-    return EnterpriseCatalogApiService.apiClient().get(`${EnterpriseCatalogApiService.highlightSetUrl}${highlightSetUUID}`);
+  static async fetchHighlightSet(highlightSetUUID: string): Promise<HighlightSet> {
+    const response: AxiosResponse<BackendHighlightSetResponse> = await EnterpriseCatalogApiService.apiClient().get(
+      `${EnterpriseCatalogApiService.highlightSetUrl}${highlightSetUUID}`,
+    );
+    return camelCaseObject(response.data) as HighlightSet;
   }
 
-  static createEnterpriseCurationConfig(enterpriseId, options = {}) {
+  static createEnterpriseCurationConfig(enterpriseId: string, options = {}) {
     const payload = {
       enterprise_customer: enterpriseId,
       ...snakeCaseObject(options),
@@ -58,7 +70,7 @@ class EnterpriseCatalogApiService {
     );
   }
 
-  static updateEnterpriseCurationConfig(enterpriseCurationUUID, options = {}) {
+  static updateEnterpriseCurationConfig(enterpriseCurationUUID: string, options = {}) {
     const payload = {
       ...snakeCaseObject(options),
     };
@@ -68,7 +80,7 @@ class EnterpriseCatalogApiService {
     );
   }
 
-  static createHighlightSet(enterpriseId, options = {}) {
+  static createHighlightSet(enterpriseId: string, options = {}) {
     const payload = {
       enterprise_customer: enterpriseId,
       ...snakeCaseObject(options),
@@ -79,7 +91,7 @@ class EnterpriseCatalogApiService {
     );
   }
 
-  static updateHighlightSet(highlightSetUUID, options = {}) {
+  static updateHighlightSet(highlightSetUUID: string, options = {}) {
     const payload = {
       ...snakeCaseObject(options),
     };
@@ -89,11 +101,11 @@ class EnterpriseCatalogApiService {
     );
   }
 
-  static deleteHighlightSet(highlightSetUUID) {
+  static deleteHighlightSet(highlightSetUUID: string) {
     return EnterpriseCatalogApiService.apiClient().delete(`${EnterpriseCatalogApiService.highlightSetUrl}${highlightSetUUID}/`);
   }
 
-  static deleteHighlightSetContent(highlightSetUUID, contentKeys) {
+  static deleteHighlightSetContent(highlightSetUUID: string, contentKeys: string[]) {
     const payload = {
       content_keys: contentKeys,
     };

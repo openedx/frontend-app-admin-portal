@@ -82,29 +82,28 @@ describe('<UserActivationPage />', () => {
     expect(enterpriseAppSkeleton).toBeInTheDocument();
   });
 
-  it('redirects to /admin/register when user is authenticated but has no JWT roles', () => {
+  it('renders activation warning when authenticated user has no JWT roles (instead of redirecting, which can loop)', async () => {
     getAuthenticatedUser.mockReturnValue({
       username: 'edx',
       roles: [],
-    });
-    const history = createMemoryHistory({
-      initialEntries: [`/${TEST_ENTERPRISE_SLUG}/admin/register/activate`],
+      isActive: false,
     });
 
-    render(<UserActivationPageWrapper history={history} />);
-    const expectedRedirectRoute = `/${TEST_ENTERPRISE_SLUG}/admin/register`;
-    expect(mockNavigate).toHaveBeenCalledWith(expectedRedirectRoute);
+    render(<UserActivationPageWrapper />);
+    const alert = await screen.findByRole('alert');
+    expect(alert).toBeInTheDocument();
+    expect(mockNavigate).not.toHaveBeenCalled();
   });
 
-  it('displays loading skeleton when user is authenticated, has "enterprise_admin" JWT role, and is pending user hydration', async () => {
+  it('displays activation warning when user is authenticated, has "enterprise_admin" JWT role, and is pending user hydration', async () => {
     getAuthenticatedUser.mockReturnValue({
       username: 'edx',
       roles: ['enterprise_admin:*'],
     });
 
     render(<UserActivationPageWrapper />);
-    const enterpriseAppSkeleton = await screen.findByTestId('enterprise-app-skeleton');
-    expect(enterpriseAppSkeleton).toBeInTheDocument();
+    const alert = await screen.findByRole('alert');
+    expect(alert).toBeInTheDocument();
   });
 
   it('displays an alert when user with unverified email is authenticated and has "enterprise_admin" JWT role', async () => {
@@ -117,6 +116,19 @@ describe('<UserActivationPage />', () => {
     render(<UserActivationPageWrapper />);
     const alert = await screen.findByRole('alert');
     expect(alert).toBeInTheDocument();
+  });
+
+  it('does not redirect to /admin/learners when verified user has no JWT roles', async () => {
+    getAuthenticatedUser.mockReturnValue({
+      username: 'edx',
+      roles: [],
+      isActive: true,
+    });
+
+    render(<UserActivationPageWrapper />);
+    const alert = await screen.findByRole('alert');
+    expect(alert).toBeInTheDocument();
+    expect(mockNavigate).not.toHaveBeenCalled();
   });
 
   it('redirects to /admin/learners route when user with verified email is authenticated and has "enterprise_admin" JWT role', () => {

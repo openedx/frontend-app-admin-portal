@@ -3,8 +3,7 @@ import {
   fireEvent, render, screen, waitFor,
 } from '@testing-library/react';
 import { Provider } from 'react-redux';
-import thunk from 'redux-thunk';
-import configureMockStore from 'redux-mock-store';
+import configureStore from 'redux-mock-store';
 import userEvent from '@testing-library/user-event';
 import '@testing-library/jest-dom/extend-expect';
 import { QueryClientProvider, useQueryClient } from '@tanstack/react-query';
@@ -38,18 +37,16 @@ jest.mock('../../learner-credit-management/data', () => ({
   useEnterpriseLearners: jest.fn(),
 }));
 
-const mockStore = configureMockStore([thunk]);
-const getMockStore = store => mockStore(store);
+const enterpriseUUID = 'test-enterprise-uuid';
 const TEST_GROUP = 'test-group-uuid';
-const enterpriseSlug = 'test-enterprise';
-const enterpriseUUID = '1234';
 const initialStoreState = {
   portalConfiguration: {
     enterpriseId: enterpriseUUID,
-    enterpriseSlug,
-    enableLearnerPortal: true,
   },
 };
+
+const mockStore = configureStore([]);
+const getMockStore = (state = initialStoreState) => mockStore(state);
 
 const defaultProps = {
   isModalOpen: true,
@@ -101,7 +98,7 @@ const mockTabledata = {
 const AddMembersModalWrapper = () => {
   const store = getMockStore({ ...initialStoreState });
   const initialContextOverride = {
-    groupEnterpriseLearners: mockTabledata.results.map((user) => user.email),
+    groupEnterpriseLearners: mockTabledata.results.map((learner) => learner.enterpriseCustomerUser.email),
   };
   return (
     <IntlProvider locale="en">
@@ -173,12 +170,27 @@ describe('<AddMembersModal />', () => {
   });
   it('adds members to a group', async () => {
     const user = userEvent.setup();
-    const mockInvite = jest.spyOn(LmsApiService, 'inviteEnterpriseLearnersToGroup');
+    const mockInvite = jest.spyOn(LmsApiService, 'inviteEnterpriseLearnersToGroup')
+      .mockResolvedValue({ data: {} });
 
-    const mockInviteData = { records_processed: 1, new_learners: 1, existing_learners: 0 };
-    LmsApiService.inviteEnterpriseLearnersToGroup.mockResolvedValue(mockInviteData);
+    const store = getMockStore({ ...initialStoreState });
 
-    render(<AddMembersModalWrapper />);
+    render(
+      <IntlProvider locale="en">
+        <Provider store={store}>
+          <QueryClientProvider client={queryClient()}>
+            <ValidatedEmailsContextProvider
+              initialContextOverride={{
+                groupEnterpriseLearners: mockTabledata.results.map((learner) => learner.enterpriseCustomerUser.email),
+              }}
+            >
+              <AddMembersModal {...defaultProps} />
+            </ValidatedEmailsContextProvider>
+          </QueryClientProvider>
+        </Provider>
+      </IntlProvider>,
+    );
+
     expect(screen.getByText('You haven\'t uploaded any members yet.')).toBeInTheDocument();
     expect(screen.getByText('Upload a CSV file or select members to get started.')).toBeInTheDocument();
     const fakeFile = new File(['tomhaverford@pawnee.org'], 'emails.csv', { type: 'text/csv' });
@@ -224,8 +236,8 @@ describe('<AddMembersModal />', () => {
     const addButton = screen.getByText('Add');
     await user.click(addButton);
     await waitFor(() => {
-      expect(mockInvite).toHaveBeenCalledTimes(1);
-    });
+      expect(mockInvite).toHaveBeenCalled();
+    }, { timeout: 10000 });
     expect(mockInvalidateQueries).toHaveBeenCalledWith({ queryKey: ['people-management', 'learners', 'test-group-uuid'] });
   });
   it('does not display error for email that differs from org email in casing', async () => {

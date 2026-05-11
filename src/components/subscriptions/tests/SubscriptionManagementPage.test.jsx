@@ -17,6 +17,7 @@ import * as hooks from '../data/hooks';
 import { SubsidyRequestsContext } from '../../subsidy-requests';
 import { SUBSIDY_REQUESTS_TYPES } from '../../SubsidyRequestManagementTable/data/constants';
 import { accessibilitySettings } from '../../../../tests/accessibility-settings';
+import { EnterpriseSubsidiesContext } from '../../EnterpriseSubsidiesContext';
 
 describe('SubscriptionManagementPage', () => {
   describe('multiple subscriptions', () => {
@@ -79,16 +80,22 @@ describe('SubscriptionManagementPage', () => {
       return (
         <Provider store={mockStore}>
           <IntlProvider locale="en">
-            <SubsidyRequestsContext.Provider value={subsidyRequestsState}>
-              <MemoryRouter initialEntries={[`/${TEST_ENTERPRISE_CUSTOMER_SLUG}/admin/${ROUTE_NAMES.subscriptionManagement}`]}>
-                <Routes>
-                  <Route
-                    path={`/:enterpriseSlug/admin/${ROUTE_NAMES.subscriptionManagement}/*`}
-                    element={<SubscriptionManagementPage />}
-                  />
-                </Routes>
-              </MemoryRouter>
-            </SubsidyRequestsContext.Provider>
+            <EnterpriseSubsidiesContext.Provider value={{
+              customerAgreement: { uuid: 'test-agreement-uuid', subscriptions: [] },
+              isLoadingCustomerAgreement: false,
+            }}
+            >
+              <SubsidyRequestsContext.Provider value={subsidyRequestsState}>
+                <MemoryRouter initialEntries={[`/${TEST_ENTERPRISE_CUSTOMER_SLUG}/admin/${ROUTE_NAMES.subscriptionManagement}`]}>
+                  <Routes>
+                    <Route
+                      path={`/:enterpriseSlug/admin/${ROUTE_NAMES.subscriptionManagement}/*`}
+                      element={<SubscriptionManagementPage />}
+                    />
+                  </Routes>
+                </MemoryRouter>
+              </SubsidyRequestsContext.Provider>
+            </EnterpriseSubsidiesContext.Provider>
           </IntlProvider>
         </Provider>
       );
@@ -105,6 +112,12 @@ describe('SubscriptionManagementPage', () => {
       render(<SubscriptionManagementPageWrapper />);
       expect(screen.getByText('Manage learners'));
       expect(screen.getByText('View learners'));
+    });
+
+    it('shows the no active subscriptions alert when there are no subscriptions', () => {
+      render(<SubscriptionManagementPageWrapper subscriptions={[]} />);
+      expect(screen.getByRole('alert')).toBeInTheDocument();
+      expect(screen.getByText(/does not have any active subscriptions/i)).toBeInTheDocument();
     });
   });
 });

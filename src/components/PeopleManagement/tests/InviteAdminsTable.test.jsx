@@ -1,5 +1,7 @@
 import React from 'react';
-import { render, screen, waitFor } from '@testing-library/react';
+import {
+  act, render, screen, waitFor,
+} from '@testing-library/react';
 import '@testing-library/jest-dom';
 import userEvent from '@testing-library/user-event';
 
@@ -374,13 +376,9 @@ describe('InviteAdminsTable', () => {
       },
     });
 
+    let resolveRemoval;
     LmsApiService.removeEnterpriseAdmin.mockImplementation(
-      () => {
-        const promise = new Promise((resolve) => {
-          setTimeout(resolve, 100);
-        });
-        return promise;
-      },
+      () => new Promise((resolve) => { resolveRemoval = resolve; }),
     );
 
     renderWithIntl(<InviteAdminsTable enterpriseId="test-enterprise-id" />);
@@ -394,6 +392,9 @@ describe('InviteAdminsTable', () => {
     await waitFor(() => {
       expect(LmsApiService.removeEnterpriseAdmin).toHaveBeenCalled();
     });
+
+    // Resolve the pending promise so no async operations leak into subsequent tests.
+    await act(async () => { resolveRemoval(); });
   });
 
   it('handles remove admin error and logs it', async () => {

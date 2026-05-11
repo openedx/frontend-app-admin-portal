@@ -41,6 +41,7 @@ const ValidatedFormRadio = (props: ValidatedFormRadioProps) => {
     value: formFields && formFields[props.formId],
   };
 
+  const { isInvalid, ...safeProps } = formRadioProps;
   const createOptions = (options: [string, string][]) => {
     const optionList: ReactElement[] = [];
     options?.forEach(option => {
@@ -57,19 +58,19 @@ const ValidatedFormRadio = (props: ValidatedFormRadioProps) => {
 
   return (
     <>
-      <Form.Label {...formRadioProps}>{formRadioProps.label}</Form.Label>
+      <Form.Label {...safeProps}>{safeProps.label}</Form.Label>
       <Form.RadioSet
-        name={formRadioProps.id}
-        onChange={formRadioProps.onChange}
-        isInline={formRadioProps.isInline}
+        name={safeProps.id}
+        onChange={safeProps.onChange}
+        isInline={safeProps.isInline}
         value={value}
       >
         <Stack gap={3.5}>
-          {createOptions(formRadioProps.options)}
+          {createOptions(safeProps.options)}
         </Stack>
       </Form.RadioSet>
-      {formRadioProps.fieldInstructions && (
-        <Form.Text>{formRadioProps.fieldInstructions}</Form.Text>
+      {safeProps.fieldInstructions && (
+        <Form.Text>{safeProps.fieldInstructions}</Form.Text>
       )}
       {showErrors && showError && (
         <Form.Control.Feedback type="invalid">{showError}</Form.Control.Feedback>
