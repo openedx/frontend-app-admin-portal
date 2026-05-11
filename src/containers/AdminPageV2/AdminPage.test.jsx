@@ -9,6 +9,7 @@ import { IntlProvider } from '@edx/frontend-platform/i18n';
 import { axe } from 'jest-axe';
 import AdminPage from '.';
 import { accessibilitySettings } from '../../../tests/accessibility-settings';
+import { EnterpriseSubsidiesContext } from '../../components/EnterpriseSubsidiesContext';
 
 jest.mock('../../components/EnterpriseSubsidiesContext/data/hooks', () => ({
   ...jest.requireActual('../../components/EnterpriseSubsidiesContext/data/hooks'),
@@ -51,11 +52,22 @@ const store = mockStore({
   },
 });
 
+const defaultEnterpriseSubsidiesContextValue = {
+  customerAgreement: undefined,
+  coupons: [],
+  canManageLearnerCredit: false,
+  enterpriseSubsidyTypes: [],
+  hasBillingSubscription: false,
+  isLoading: false,
+};
+
 const AdminPageWrapper = () => (
   <MemoryRouter>
     <Provider store={store}>
       <IntlProvider locale="en">
-        <AdminPage enterpriseSlug="test-enterprise" />
+        <EnterpriseSubsidiesContext.Provider value={defaultEnterpriseSubsidiesContextValue}>
+          <AdminPage enterpriseSlug="test-enterprise" />
+        </EnterpriseSubsidiesContext.Provider>
       </IntlProvider>
     </Provider>
   </MemoryRouter>

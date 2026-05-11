@@ -7,7 +7,28 @@ import {
   useEnterpriseBudgets,
 } from './data/hooks';
 
-export const EnterpriseSubsidiesContext = createContext();
+/**
+ * @typedef {{ subscriptions: unknown[] } & Record<string, unknown>} CustomerAgreement
+ *
+ * @type {import('react').Context<{
+ *   customerAgreement: CustomerAgreement | undefined;
+ *   coupons: unknown[];
+ *   canManageLearnerCredit: boolean;
+ *   enterpriseSubsidyTypes: string[];
+ *   hasBillingSubscription: boolean;
+ *   isLoading: boolean;
+ *   isLoadingCustomerAgreement: boolean;
+ * }>}
+ */
+export const EnterpriseSubsidiesContext = createContext({
+  customerAgreement: undefined,
+  coupons: [],
+  canManageLearnerCredit: false,
+  enterpriseSubsidyTypes: [],
+  hasBillingSubscription: false,
+  isLoading: false,
+  isLoadingCustomerAgreement: false,
+});
 
 export const useEnterpriseSubsidiesContext = ({
   enablePortalLearnerCreditManagementScreen,
@@ -67,6 +88,7 @@ export const useEnterpriseSubsidiesContext = ({
     enterpriseSubsidyTypes,
     hasBillingSubscription,
     isLoading,
+    isLoadingCustomerAgreement,
   }), [
     customerAgreement,
     coupons,
@@ -74,6 +96,7 @@ export const useEnterpriseSubsidiesContext = ({
     enterpriseSubsidyTypes,
     hasBillingSubscription,
     isLoading,
+    isLoadingCustomerAgreement,
   ]);
 
   return context;

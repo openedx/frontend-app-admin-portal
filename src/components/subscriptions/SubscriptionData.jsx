@@ -1,13 +1,17 @@
-import React, { createContext, useMemo } from 'react';
+import React, { createContext, useContext, useMemo } from 'react';
 import PropTypes from 'prop-types';
 import { Alert } from '@openedx/paragon';
 import { useIntl } from '@edx/frontend-platform/i18n';
 
 import { useSubscriptionData } from './data/hooks';
+import { EnterpriseSubsidiesContext } from '../EnterpriseSubsidiesContext';
 
 export const SubscriptionContext = createContext({});
 
-const SubscriptionData = ({ children, enterpriseId }) => {
+const SubscriptionData = ({
+  children, enterpriseId,
+}) => {
+  const { customerAgreement, isLoadingCustomerAgreement } = useContext(EnterpriseSubsidiesContext);
   const {
     subscriptions,
     errors,
@@ -30,6 +34,10 @@ const SubscriptionData = ({ children, enterpriseId }) => {
     suppressedSubscriptionUuids,
   }), [subscriptions, errors, loading, forceRefresh, setErrors, stripeInfoByUuid, suppressedSubscriptionUuids]);
 
+  if (isLoadingCustomerAgreement || !customerAgreement) {
+    return null;
+  }
+
   if (loading || hasSubscription) {
     return (
       <SubscriptionContext.Provider value={context}>
@@ -39,16 +47,14 @@ const SubscriptionData = ({ children, enterpriseId }) => {
   }
 
   return (
-    <Alert variant={!hasSubscription ? 'danger' : undefined}>
-      {!hasSubscription && (
-        intl.formatMessage({
-          id: 'admin.portal.no.subscriptions.alert',
-          defaultMessage: `Your organization does not have any active subscriptions to manage.
+    <Alert variant="danger">
+      {intl.formatMessage({
+        id: 'admin.portal.no.subscriptions.alert',
+        defaultMessage: `Your organization does not have any active subscriptions to manage.
         If you believe you are seeing this message in error,
         please reach out to the edX Customer Success team at customersuccess@edx.org.`,
-          description: 'Alert message when there are no active subscriptions in the admin portal.',
-        })
-      )}
+        description: 'Alert message when there are no active subscriptions in the admin portal.',
+      })}
     </Alert>
   );
 };
