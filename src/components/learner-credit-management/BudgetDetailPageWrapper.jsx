@@ -10,6 +10,7 @@ import {
   useSuccessfulCancellationToastContextValue,
   useSuccessfulReminderToastContextValue,
   useSuccessfulBulkApprovalToastContextValue,
+  useSuccessfulBulkDeclineToastContextValue,
 } from './data';
 import useSuccessfulInvitationToastContextValue from './data/hooks/useSuccessfulInvitationToastContextValue';
 import useSuccessfulRemovalToastContextValue from './data/hooks/useSuccessfulRemovalToastContextValue';
@@ -53,6 +54,7 @@ const BudgetDetailPageWrapper = ({
   const successfulInvitationToast = useSuccessfulInvitationToastContextValue();
   const successfulRemovalToast = useSuccessfulRemovalToastContextValue();
   const successfulBulkApprovalToast = useSuccessfulBulkApprovalToastContextValue();
+  const successfulBulkDeclineToast = useSuccessfulBulkDeclineToastContextValue();
 
   const {
     isSuccessfulAssignmentAllocationToastOpen,
@@ -90,6 +92,12 @@ const BudgetDetailPageWrapper = ({
     closeToastForBulkApproval,
   } = successfulBulkApprovalToast;
 
+  const {
+    isSuccessfulBulkDeclineToastOpen,
+    successfulBulkDeclineToastMessage,
+    closeToastForBulkDecline,
+  } = successfulBulkDeclineToast;
+
   const [inviteModalIsOpen, openInviteModal, closeInviteModal] = useToggle(false);
 
   const values = useMemo(() => ({
@@ -99,6 +107,7 @@ const BudgetDetailPageWrapper = ({
     successfulInvitationToast,
     successfulRemovalToast,
     successfulBulkApprovalToast,
+    successfulBulkDeclineToast,
     inviteModalIsOpen,
     openInviteModal,
     closeInviteModal,
@@ -107,7 +116,8 @@ const BudgetDetailPageWrapper = ({
     successfulReminderToast, successfulInvitationToast,
     inviteModalIsOpen, openInviteModal, closeInviteModal,
     successfulRemovalToast,
-    successfulBulkApprovalToast]);
+    successfulBulkApprovalToast,
+    successfulBulkDeclineToast]);
 
   return (
     <BudgetDetailPageContext.Provider value={values}>
@@ -161,6 +171,12 @@ const BudgetDetailPageWrapper = ({
         show={isSuccessfulBulkApprovalToastOpen}
       >
         {successfulBulkApprovalToastMessage}
+      </Toast>
+      <Toast
+        onClose={closeToastForBulkDecline}
+        show={isSuccessfulBulkDeclineToastOpen}
+      >
+        {successfulBulkDeclineToastMessage}
       </Toast>
     </BudgetDetailPageContext.Provider>
   );
