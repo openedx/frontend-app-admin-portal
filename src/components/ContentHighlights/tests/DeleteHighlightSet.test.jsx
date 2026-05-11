@@ -1,7 +1,6 @@
 import { render, screen, waitFor } from '@testing-library/react';
 import '@testing-library/jest-dom/extend-expect';
 import userEvent from '@testing-library/user-event';
-
 import { logError } from '@edx/frontend-platform/logging';
 import { IntlProvider } from '@edx/frontend-platform/i18n';
 import { Provider } from 'react-redux';
@@ -9,8 +8,9 @@ import { Routes, Route, MemoryRouter } from 'react-router-dom';
 import configureMockStore from 'redux-mock-store';
 import thunk from 'redux-thunk';
 import { sendEnterpriseTrackEvent } from '@2uinc/frontend-enterprise-utils';
-
+import React from 'react';
 import { axe } from 'jest-axe';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import DeleteHighlightSet from '../DeleteHighlightSet';
 import { ROUTE_NAMES } from '../../EnterpriseApp/data/constants';
 import { EnterpriseAppContext } from '../../EnterpriseApp/EnterpriseAppContextProvider';
@@ -37,9 +37,9 @@ jest.mock('react-router-dom', () => ({
 const mockStore = configureMockStore([thunk]);
 const initialState = {
   portalConfiguration:
-    {
-      enterpriseSlug: 'test-enterprise',
-    },
+  {
+    enterpriseSlug: 'test-enterprise',
+  },
 };
 
 const highlightSetUUID = 'fake-uuid';
@@ -56,7 +56,7 @@ const DeleteHighlightSetWrapper = ({
   enterpriseAppContextValue = initialEnterpriseAppContextValue,
   ...props
 }) => (
-/* eslint-enable react/prop-types */
+  /* eslint-enable react/prop-types */
   <IntlProvider locale="en">
     <Provider store={mockStore(initialState)}>
       <EnterpriseAppContext.Provider value={enterpriseAppContextValue}>
@@ -73,6 +73,26 @@ const DeleteHighlightSetWrapper = ({
   </IntlProvider>
 );
 
+const createTestQueryClient = () => new QueryClient({
+  defaultOptions: {
+    queries: { retry: false },
+    mutations: { retry: false },
+  },
+});
+
+let mockQueryClient;
+let invalidateQueriesSpy;
+
+const renderWithProviders = (ui) => {
+  mockQueryClient = createTestQueryClient();
+  invalidateQueriesSpy = jest.spyOn(mockQueryClient, 'invalidateQueries');
+  return render(
+    <QueryClientProvider client={mockQueryClient}>
+      {ui}
+    </QueryClientProvider>,
+  );
+};
+
 describe('<DeleteHighlightSet />', () => {
   const getDeleteHighlightBtn = () => {
     const deleteBtn = screen.getByText('Delete highlight');
@@ -88,29 +108,31 @@ describe('<DeleteHighlightSet />', () => {
 
   beforeEach(() => {
     jest.resetAllMocks();
+    mockQueryClient = null;
+    invalidateQueriesSpy = null;
   });
 
   it('has no accessibility violations', async () => {
-    const { container } = render(<DeleteHighlightSetWrapper />);
+    const { container } = renderWithProviders(<DeleteHighlightSetWrapper />);
     const results = await axe(container, accessibilitySettings);
     expect(results).toHaveNoViolations();
   });
 
   it('has delete highlight button', () => {
-    render(<DeleteHighlightSetWrapper />);
+    renderWithProviders(<DeleteHighlightSetWrapper />);
     const deleteBtn = getDeleteHighlightBtn();
     expect(deleteBtn).toBeInTheDocument();
   });
 
   it('clicking delete highlight button opens confirmation modal', async () => {
-    render(<DeleteHighlightSetWrapper />);
+    renderWithProviders(<DeleteHighlightSetWrapper />);
     await clickDeleteHighlightBtn();
     expect(sendEnterpriseTrackEvent).toHaveBeenCalledTimes(1);
   });
 
   it('cancelling confirmation modal closes modal', async () => {
     const user = userEvent.setup();
-    render(<DeleteHighlightSetWrapper />);
+    renderWithProviders(<DeleteHighlightSetWrapper />);
     await clickDeleteHighlightBtn();
     expect(sendEnterpriseTrackEvent).toHaveBeenCalledTimes(1);
     await user.click(screen.getByText('Cancel'));
@@ -122,7 +144,7 @@ describe('<DeleteHighlightSet />', () => {
     const user = userEvent.setup();
     EnterpriseCatalogApiService.deleteHighlightSet.mockResolvedValueOnce();
 
-    render(<DeleteHighlightSetWrapper />);
+    renderWithProviders(<DeleteHighlightSetWrapper />);
     await clickDeleteHighlightBtn();
     expect(sendEnterpriseTrackEvent).toHaveBeenCalledTimes(1);
     await user.click(screen.getByTestId('delete-confirmation-button'));
@@ -139,14 +161,17 @@ describe('<DeleteHighlightSet />', () => {
     });
     expect(sendEnterpriseTrackEvent).toHaveBeenCalledTimes(2);
     expect(screen.queryByText('Delete highlight?')).not.toBeInTheDocument();
-    expect(mockNavigate).toHaveBeenCalledWith(`/test-enterprise/admin/${ROUTE_NAMES.contentHighlights}`, { state: { deletedHighlightSet: true } });
+    expect(mockNavigate).toHaveBeenCalledWith(`/test-enterprise/admin/${ROUTE_NAMES.contentHighlights}`, {
+      state: { deletedHighlightSet: true },
+      replace: true,
+    });
   });
 
   it('confirming deletion in confirmation modal handles error via API', async () => {
     const user = userEvent.setup();
     EnterpriseCatalogApiService.deleteHighlightSet.mockRejectedValueOnce(new Error('oh noes!'));
 
-    render(<DeleteHighlightSetWrapper />);
+    renderWithProviders(<DeleteHighlightSetWrapper />);
     await clickDeleteHighlightBtn();
     await user.click(screen.getByTestId('delete-confirmation-button'));
 
@@ -167,5 +192,15 @@ describe('<DeleteHighlightSet />', () => {
     await waitFor(() => {
       expect(screen.queryByRole('alert')).not.toBeInTheDocument();
     });
+  });
+
+  it('cancelling confirmation modal does not invalidate the list', async () => {
+    const user = userEvent.setup();
+    renderWithProviders(<DeleteHighlightSetWrapper />);
+    await clickDeleteHighlightBtn();
+    expect(sendEnterpriseTrackEvent).toHaveBeenCalledTimes(1);
+    await user.click(screen.getByText('Cancel'));
+    expect(sendEnterpriseTrackEvent).toHaveBeenCalledTimes(2);
+    expect(invalidateQueriesSpy).not.toHaveBeenCalled();
   });
 });

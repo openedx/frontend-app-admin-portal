@@ -9,9 +9,7 @@ import EnterpriseCatalogApiService from '../../../../data/services/EnterpriseCat
 
 const getHighlightSet = async (highlightSetUUID) => {
   try {
-    const { data } = await EnterpriseCatalogApiService.fetchHighlightSet(highlightSetUUID);
-    const result = camelCaseObject(data);
-    return result;
+    return await EnterpriseCatalogApiService.fetchHighlightSet(highlightSetUUID);
   } catch (e) {
     logError(e);
   }

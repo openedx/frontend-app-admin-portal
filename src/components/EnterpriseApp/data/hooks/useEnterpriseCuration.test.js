@@ -1,6 +1,5 @@
 import { renderHook, act, waitFor } from '@testing-library/react';
 import { mergeConfig } from '@edx/frontend-platform/config';
-import { camelCaseObject } from '@edx/frontend-platform';
 import useEnterpriseCuration from './useEnterpriseCuration';
 import EnterpriseCatalogApiService from '../../../../data/services/EnterpriseCatalogApiService';
 
@@ -26,19 +25,19 @@ const mockEnterpriseCurationConfigResponse = {
   results: [mockEnterpriseCurationConfig],
 };
 
-const mockEnterpriseHighlightedSetsResponse = [{
+const mockEnterpriseHighlightedSetResponse = {
   uuid: 'test-uuid',
-  is_published: true,
-  highlighted_content: [
+  isPublished: true,
+  highlightedContent: [
     {
       uuid: 'test-content-uuid',
-      content_key: 'test-content-key',
-      course_run_statuses: [
+      contentKey: 'test-content-key',
+      courseRunStatuses: [
         'archived',
       ],
     },
   ],
-}];
+};
 
 describe('useEnterpriseCuration', () => {
   describe('without feature flag', () => {
@@ -49,7 +48,7 @@ describe('useEnterpriseCuration', () => {
 
     it('should do nothing', () => {
       EnterpriseCatalogApiService.getEnterpriseCurationConfig.mockResolvedValueOnce({ data: {} });
-      EnterpriseCatalogApiService.fetchHighlightSet.mockResolvedValueOnce({ data: {} });
+      EnterpriseCatalogApiService.fetchHighlightSet.mockResolvedValueOnce({});
 
       const args = {};
       const { result } = renderHook(() => useEnterpriseCuration(args));
@@ -73,7 +72,7 @@ describe('useEnterpriseCuration', () => {
 
     it('should do nothing without an enterprise id', async () => {
       EnterpriseCatalogApiService.getEnterpriseCurationConfig.mockResolvedValueOnce({ data: {} });
-      EnterpriseCatalogApiService.fetchHighlightSet.mockResolvedValueOnce({ data: {} });
+      EnterpriseCatalogApiService.fetchHighlightSet.mockResolvedValueOnce({});
 
       const args = {};
       const { result } = renderHook(() => useEnterpriseCuration(args));
@@ -92,9 +91,7 @@ describe('useEnterpriseCuration', () => {
       EnterpriseCatalogApiService.getEnterpriseCurationConfig.mockResolvedValueOnce({
         data: mockEnterpriseCurationConfigResponse,
       });
-      EnterpriseCatalogApiService.fetchHighlightSet.mockResolvedValueOnce({
-        data: mockEnterpriseHighlightedSetsResponse,
-      });
+      EnterpriseCatalogApiService.fetchHighlightSet.mockResolvedValueOnce(mockEnterpriseHighlightedSetResponse);
 
       const args = {
         enterpriseId: TEST_ENTERPRISE_UUID,
@@ -127,7 +124,7 @@ describe('useEnterpriseCuration', () => {
       expect(result.current).toEqual({
         isLoading: false,
         fetchError: null,
-        enterpriseHighlightedSets: [camelCaseObject(mockEnterpriseHighlightedSetsResponse)],
+        enterpriseHighlightedSets: [mockEnterpriseHighlightedSetResponse],
         enterpriseCuration: expect.objectContaining(mockEnterpriseCurationConfig),
         updateEnterpriseCuration: expect.any(Function),
       });
