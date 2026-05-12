@@ -48,16 +48,15 @@ Entry point. Runs a single sequential async `init()` on mount:
 | Unauthenticated                                      | `LoginRedirect` → enterprise proxy login                |
 | Pending/rendering (`init()` running)                 | `EnterpriseAppSkeleton`                                 |
 | Has admin or operator role                           | `<Navigate replace>` to `/<slug>/admin/register/activate` |
-| No qualifying role + `?pending-invited-admin=true` + no session flag | One-shot logout-then-proxy-login bounce via `getLogoutRedirectUrl(getProxyLoginUrl(slug))`; session flag set |
+| No qualifying role + `?pending-invited-admin=true` + no session flag | One-shot logout-and-return bounce via `getEnterpriseAdminRegisterLogoutUrl(slug, { 'pending-invited-admin': 'true' })`; session flag set |
 | No qualifying role + (param absent OR session flag set) | Terminal warning alert (no bounce)                  |
-| Network/lookup failure                               | Terminal error alert with a logout-then-proxy-login remediation link |
+| Network/lookup failure                               | Terminal error alert with a "sign in again" link built from the same helper |
 
 The terminal alerts are important: earlier versions of this page bounced
 *every* non-admin authenticated user back to `getProxyLoginUrl(slug)`. When the
-proxy round-trip didn't grant the role, the user looped indefinitely. (Note
-that those earlier versions also used the plain proxy redirect, not the
-logout-then-proxy chain — the latter is what's required to actually trigger
-the admin promotion server-side; see "Pending invited admin bounce" below.)
+proxy round-trip didn't grant the role, the user looped indefinitely. (Those
+versions also skipped the logout step, which is what actually triggers the
+admin promotion server-side; see "Pending invited admin bounce" below.)
 
 ### Pending invited admin bounce
 
@@ -70,11 +69,17 @@ because `login()` writes `last_login` on the User model.
 
 For a pending invited admin clicking an onboarding email link, the
 `?pending-invited-admin=true` query param tells this page to do a one-shot
-redirect to `getLogoutRedirectUrl(getProxyLoginUrl(slug))`. The logout
-clears the LMS session so the subsequent proxy-login forces a real
-`login()` — a plain `getProxyLoginUrl` redirect short-circuits when the
-session is still valid and doesn't trigger the save. See ADR 0013 for
-the full reasoning. After re-login, the user comes back here, init()
+redirect to `getEnterpriseAdminRegisterLogoutUrl(slug, { 'pending-invited-admin': 'true' })`
+(see `src/utils.js`). The helper builds the URL via the WHATWG `URL` API:
+`${LOGOUT_URL}?next=<URL-encoded BASE_URL/<slug>/admin/register?pending-invited-admin=true>`.
+The logout clears the LMS session; on return, `AdminRegisterPage` runs while
+unauthenticated, `LoginRedirect` triggers a fresh login, `last_login`
+updates, and the User `post_save` signal handler grants the admin role.
+A plain proxy-login redirect (without the logout step) short-circuits when
+the session is still valid and doesn't trigger the save; the older
+`getLogoutRedirectUrl(getProxyLoginUrl(...))` wrapper produced nested URL
+encoding that 404'd on the logout view's redirect target. See ADR 0013
+for the full reasoning. After re-login, the user comes back here, init()
 re-runs, the role is now present, and they continue into
 `/admin/register/activate`.
 

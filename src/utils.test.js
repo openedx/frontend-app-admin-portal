@@ -7,6 +7,7 @@ import {
   camelCaseDictArray,
   defaultQueryClientRetryHandler,
   downloadCsv,
+  getEnterpriseAdminRegisterLogoutUrl,
   getFromLocalStorage,
   getTimeStampedFilename,
   i18nFormatPassedTimestamp,
@@ -22,6 +23,7 @@ import {
   snakeCaseObjectToForm,
   splitAndTrim,
 } from './utils';
+import { configuration } from './config';
 
 jest.mock('@edx/frontend-platform/logging', () => ({
   ...jest.requireActual('@edx/frontend-platform/logging'),
@@ -281,6 +283,57 @@ describe('utils', () => {
 
         expect(result).toBeNull();
       });
+    });
+  });
+
+  describe('getEnterpriseAdminRegisterLogoutUrl', () => {
+    const ORIGINAL_BASE_URL = configuration.BASE_URL;
+    const ORIGINAL_LOGOUT_URL = configuration.LOGOUT_URL;
+
+    beforeEach(() => {
+      configuration.BASE_URL = 'https://portal.example.com';
+      configuration.LOGOUT_URL = 'https://courses.example.com/logout';
+    });
+
+    afterEach(() => {
+      configuration.BASE_URL = ORIGINAL_BASE_URL;
+      configuration.LOGOUT_URL = ORIGINAL_LOGOUT_URL;
+    });
+
+    // Decoding `next` back to the original target is the property we actually
+    // care about server-side, so most assertions extract and decode the param
+    // rather than pinning the exact escape sequence the URL ctor produces.
+    const decodeNext = (logoutUrl) => new URL(logoutUrl).searchParams.get('next');
+
+    it('builds a logout URL with next pointing at /admin/register on the configured BASE_URL', () => {
+      const url = getEnterpriseAdminRegisterLogoutUrl('acme');
+      expect(new URL(url).origin + new URL(url).pathname).toBe('https://courses.example.com/logout');
+      expect(decodeNext(url)).toBe('https://portal.example.com/acme/admin/register');
+    });
+
+    it('attaches params to the next URL as a query string', () => {
+      const url = getEnterpriseAdminRegisterLogoutUrl('acme', { 'pending-invited-admin': 'true' });
+      expect(decodeNext(url)).toBe(
+        'https://portal.example.com/acme/admin/register?pending-invited-admin=true',
+      );
+    });
+
+    it('preserves multiple params on the next URL', () => {
+      const url = getEnterpriseAdminRegisterLogoutUrl('acme', { a: '1', b: '2' });
+      expect(decodeNext(url)).toBe('https://portal.example.com/acme/admin/register?a=1&b=2');
+    });
+
+    it('safely encodes values containing reserved characters', () => {
+      const url = getEnterpriseAdminRegisterLogoutUrl('acme', { redirect: 'https://x.test/y?z=1' });
+      expect(decodeNext(url)).toBe(
+        'https://portal.example.com/acme/admin/register?redirect=https%3A%2F%2Fx.test%2Fy%3Fz%3D1',
+      );
+    });
+
+    it('strips a trailing slash from BASE_URL to avoid // in the next URL', () => {
+      configuration.BASE_URL = 'https://portal.example.com/';
+      const url = getEnterpriseAdminRegisterLogoutUrl('acme');
+      expect(decodeNext(url)).toBe('https://portal.example.com/acme/admin/register');
     });
   });
 });

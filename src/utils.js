@@ -10,7 +10,7 @@ import isNumeric from 'validator/lib/isNumeric';
 import { logError } from '@edx/frontend-platform/logging';
 import { snakeCaseObject } from '@edx/frontend-platform/utils';
 
-import { features } from './config';
+import { configuration, features } from './config';
 
 import {
   BLACKBOARD_TYPE,
@@ -765,6 +765,38 @@ function getFilteredQueryParams(queryString, expectedParams) {
   return filteredOptions;
 }
 
+/**
+ * Build a logout URL that returns the user to `/<enterpriseSlug>/admin/register`
+ * on this app after logging out of edx-platform.
+ *
+ * Built via the WHATWG `URL` API so the `next` value is correctly encoded
+ * (handles `&`, `#`, multi-param values, and trailing-slash cleanup of
+ * `BASE_URL` without custom escaping). This avoids the nested-encoded URL
+ * that `getLogoutRedirectUrl(getProxyLoginUrl(...))` produced, which the LMS
+ * logout view's redirect target then 404'd on.
+ *
+ * @param {string} enterpriseSlug
+ * @param {Record<string, string>} [params] Optional query params to attach to
+ *   the next URL (e.g. `{ 'pending-invited-admin': 'true' }`).
+ */
+const getEnterpriseAdminRegisterLogoutUrl = (enterpriseSlug, params) => {
+  // Fall back to the current origin so the URL ctor accepts a relative path
+  // when BASE_URL isn't configured (e.g. in tests). Production always sets
+  // BASE_URL.
+  const base = removeTrailingSlash(
+    configuration.BASE_URL || global.location?.origin || 'http://localhost',
+  );
+  const nextUrl = new URL(`/${enterpriseSlug}/admin/register`, base);
+  if (params) {
+    Object.entries(params).forEach(([key, value]) => {
+      nextUrl.searchParams.set(key, value);
+    });
+  }
+  const logoutUrl = new URL(configuration.LOGOUT_URL || `${base}/logout`);
+  logoutUrl.searchParams.set('next', nextUrl.toString());
+  return logoutUrl.toString();
+};
+
 export {
   camelCaseDict,
   camelCaseDictArray,
@@ -821,4 +853,5 @@ export {
   saveToLocalStorage,
   getFromLocalStorage,
   getFilteredQueryParams,
+  getEnterpriseAdminRegisterLogoutUrl,
 };

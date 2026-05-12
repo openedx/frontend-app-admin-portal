@@ -3,15 +3,13 @@ import PropTypes from 'prop-types';
 import {
   Dropdown, Navbar, AvatarButton, Nav,
 } from '@openedx/paragon';
-import { getProxyLoginUrl } from '@2uinc/frontend-enterprise-logistration';
 
-import {
-  getAuthenticatedUser, getLogoutRedirectUrl,
-} from '@edx/frontend-platform/auth';
+import { getAuthenticatedUser } from '@edx/frontend-platform/auth';
 import SidebarToggle from '../../containers/SidebarToggle';
 import Img from '../Img';
 
 import { configuration } from '../../config';
+import { getEnterpriseAdminRegisterLogoutUrl } from '../../utils';
 
 import './Header.scss';
 
@@ -56,7 +54,7 @@ export const HeaderDropdown = ({ user, enterpriseSlug }) => {
       </Dropdown.Toggle>
       <Dropdown.Menu>
         <Dropdown.Item
-          href={getLogoutRedirectUrl(getProxyLoginUrl(enterpriseSlug))}
+          href={getEnterpriseAdminRegisterLogoutUrl(enterpriseSlug)}
         >
           Logout
         </Dropdown.Item>

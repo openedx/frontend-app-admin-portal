@@ -48,19 +48,37 @@ Decision
 ********
 
 For the pending-invited-admin bounce, swap the redirect target from
-``getProxyLoginUrl(slug)`` to
-``getLogoutRedirectUrl(getProxyLoginUrl(slug))``. ``getLogoutRedirectUrl``
-from ``@edx/frontend-platform/auth`` builds an LMS logout URL with the
-proxy-login URL as the post-logout ``next`` target. Logging out clears
-the session cookie, so the subsequent hit on
-``/enterprise/proxy-login/`` lands the user on a real login flow,
-``login()`` runs, ``last_login`` updates, the signal fires, and the
+``getProxyLoginUrl(slug)`` to a logout URL whose ``next`` value is the
+same admin/register URL with any required query params preserved. The
+helper ``getEnterpriseAdminRegisterLogoutUrl(slug, params)`` in
+``src/utils.js`` builds it via the WHATWG ``URL`` API: it constructs
+``<BASE_URL>/<slug>/admin/register`` (with each param applied via
+``URL.searchParams.set``), then attaches that to ``LOGOUT_URL`` as the
+``next`` query param. Using the ``URL`` API ensures every reserved
+character (``?``, ``&``, ``#``, ``=``, ``/``, ``:``) is encoded once
+and the result decodes back to the intended URL server-side. Logging out clears the session cookie,
+so the subsequent navigation re-renders ``AdminRegisterPage`` while
+unauthenticated, ``LoginRedirect`` kicks in, ``login()`` runs,
+``last_login`` updates, the signal fires, and the
 ``activate_admin_permissions`` path runs.
 
-The same chain is used as the ``destination`` for the "signing in again"
-remediation link in the ``STATUS.ERROR`` alert on
-``AdminRegisterPage``, for the same reason: a user we couldn't gate
-through a fresh login may not have the role yet.
+An earlier implementation used
+``getLogoutRedirectUrl(getProxyLoginUrl(slug))`` from
+``@edx/frontend-platform/auth`` and
+``@2uinc/frontend-enterprise-logistration`` respectively. That wrapper
+fully URL-encodes its argument, producing a nested-encoded ``next``
+value (the proxy login URL's own query string got double-encoded). The
+LMS logout view forwarded the encoded blob to ``LOGOUT_REDIRECT_URL``
+unchanged, and the destination then 404'd because the doubly-encoded
+``?`` no longer separated the path from the query string. The
+hand-built single-encoding pattern (also used by the learner portal's
+``AvatarDropdown``) avoids the nested encoding.
+
+The same helper is used as the ``destination`` for the "signing in
+again" remediation link in the ``STATUS.ERROR`` alert on
+``AdminRegisterPage``, and as the ``href`` of the Logout dropdown item
+in the global ``Header`` (replacing its prior
+``getLogoutRedirectUrl(getProxyLoginUrl(slug))`` chain).
 
 A per-tab, per-enterprise ``sessionStorage`` flag
 (``admin_register_proxy_login_attempted_<slug>``) gates the bounce to

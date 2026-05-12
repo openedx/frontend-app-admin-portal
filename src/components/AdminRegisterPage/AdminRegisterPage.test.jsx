@@ -3,16 +3,16 @@ import { render, screen, waitFor } from '@testing-library/react';
 import {
   MemoryRouter, Routes, Route, mockNavigate,
 } from 'react-router-dom';
-import { getAuthenticatedUser, getLogoutRedirectUrl, hydrateAuthenticatedUser } from '@edx/frontend-platform/auth';
+import { getAuthenticatedUser, hydrateAuthenticatedUser } from '@edx/frontend-platform/auth';
 import {
   isEnterpriseUser, ENTERPRISE_ADMIN, ENTERPRISE_OPENEDX_OPERATOR,
 } from '@2uinc/frontend-enterprise-utils';
-import { getProxyLoginUrl } from '@2uinc/frontend-enterprise-logistration';
 import { IntlProvider } from '@edx/frontend-platform/i18n';
 import '@testing-library/jest-dom';
 import { axe } from 'jest-axe';
 import AdminRegisterPage from './index';
 import LmsApiService from '../../data/services/LmsApiService';
+import { getEnterpriseAdminRegisterLogoutUrl } from '../../utils';
 import { accessibilitySettings } from '../../../tests/accessibility-settings';
 
 jest.mock('../../data/services/LmsApiService');
@@ -20,12 +20,17 @@ jest.mock('@2uinc/frontend-enterprise-utils', () => ({
   ...jest.requireActual('@2uinc/frontend-enterprise-utils'),
   isEnterpriseUser: jest.fn(),
 }));
-jest.mock('@2uinc/frontend-enterprise-logistration', () => ({
-  ...jest.requireActual('@2uinc/frontend-enterprise-logistration'),
-  getProxyLoginUrl: jest.fn(),
+jest.mock('../../utils', () => ({
+  ...jest.requireActual('../../utils'),
+  getEnterpriseAdminRegisterLogoutUrl: jest.fn(),
 }));
 
-const FAKE_PROXY_LOGIN_URL = (slug) => `https://lms.example.com/proxy-login?slug=${slug}`;
+const FAKE_LOGOUT_URL = (slug, params) => {
+  const search = params
+    ? `?${Object.entries(params).map(([k, v]) => `${k}=${v}`).join('&')}`
+    : '';
+  return `https://lms.example.com/logout?next=https%3A%2F%2Fportal.example.com%2F${slug}%2Fadmin%2Fregister${encodeURIComponent(search)}`;
+};
 
 const TEST_ENTERPRISE_SLUG = 'test-enterprise';
 const TEST_ENTERPRISE_UUID = 'dc3bfcf8-c61f-11ec-9d64-0242ac120002';
@@ -68,8 +73,7 @@ describe('<AdminRegisterPage />', () => {
     jest.clearAllMocks();
     LmsApiService.loginRefresh.mockResolvedValue({ data: { userId: 1 } });
     hydrateAuthenticatedUser.mockResolvedValue();
-    getProxyLoginUrl.mockImplementation(FAKE_PROXY_LOGIN_URL);
-    getLogoutRedirectUrl.mockImplementation((next) => `https://lms.example.com/logout?next=${encodeURIComponent(next)}`);
+    getEnterpriseAdminRegisterLogoutUrl.mockImplementation(FAKE_LOGOUT_URL);
     sessionStorage.clear();
   });
 
@@ -182,45 +186,55 @@ describe('<AdminRegisterPage />', () => {
     expect(mockNavigate).not.toHaveBeenCalled();
   });
 
-  it('error alert offers a sign-in-again link pointing at the proxy login URL', async () => {
+  it('error alert offers a sign-in-again link pointing at the enterprise logout URL', async () => {
     getAuthenticatedUser.mockReturnValue({ username: 'edx', roles: [] });
     LmsApiService.fetchEnterpriseBySlug.mockRejectedValue(new Error('network'));
     render(<AdminRegisterPageWrapper />);
     await screen.findByRole('alert');
     const signInLink = screen.getByRole('link', { name: /signing in again/i });
-    expect(signInLink).toHaveAttribute('href', expect.stringContaining(TEST_ENTERPRISE_SLUG));
+    expect(getEnterpriseAdminRegisterLogoutUrl).toHaveBeenCalledWith(TEST_ENTERPRISE_SLUG);
+    expect(signInLink).toHaveAttribute('href', FAKE_LOGOUT_URL(TEST_ENTERPRISE_SLUG));
   });
 
   // Note: jsdom doesn't actually navigate when global.location.href is set,
-  // so these tests assert the intent (getLogoutRedirectUrl call wrapping
-  // getProxyLoginUrl, plus the session flag) rather than the navigation itself.
-  it('bounces a pending invited admin via logout->proxy-login when fetchEnterpriseBySlug returns no uuid', async () => {
+  // so these tests assert the intent (the logout URL builder is invoked with
+  // the pending-invited-admin param, plus the session flag is set) rather
+  // than the navigation itself.
+  it('bounces a pending invited admin via the logout URL when fetchEnterpriseBySlug returns no uuid', async () => {
     getAuthenticatedUser.mockReturnValue({ username: 'edx', roles: [] });
     isEnterpriseUser.mockReturnValue(false);
     LmsApiService.fetchEnterpriseBySlug.mockResolvedValue({ data: {} });
     render(<AdminRegisterPageWrapper search="?pending-invited-admin=true" />);
-    await waitFor(() => expect(getLogoutRedirectUrl).toHaveBeenCalledWith(FAKE_PROXY_LOGIN_URL(TEST_ENTERPRISE_SLUG)));
-    expect(getProxyLoginUrl).toHaveBeenCalledWith(TEST_ENTERPRISE_SLUG);
+    await waitFor(() => expect(getEnterpriseAdminRegisterLogoutUrl).toHaveBeenCalledWith(
+      TEST_ENTERPRISE_SLUG,
+      { 'pending-invited-admin': 'true' },
+    ));
     expect(sessionStorage.getItem(`admin_register_proxy_login_attempted_${TEST_ENTERPRISE_SLUG}`)).toBe('true');
   });
 
-  it('bounces a pending invited admin via logout->proxy-login when fetchEnterpriseBySlug throws', async () => {
+  it('bounces a pending invited admin via the logout URL when fetchEnterpriseBySlug throws', async () => {
     getAuthenticatedUser.mockReturnValue({ username: 'edx', roles: [] });
     isEnterpriseUser.mockReturnValue(false);
     LmsApiService.fetchEnterpriseBySlug.mockRejectedValue(new Error('network'));
     render(<AdminRegisterPageWrapper search="?pending-invited-admin=true" />);
-    await waitFor(() => expect(getLogoutRedirectUrl).toHaveBeenCalledWith(FAKE_PROXY_LOGIN_URL(TEST_ENTERPRISE_SLUG)));
+    await waitFor(() => expect(getEnterpriseAdminRegisterLogoutUrl).toHaveBeenCalledWith(
+      TEST_ENTERPRISE_SLUG,
+      { 'pending-invited-admin': 'true' },
+    ));
     expect(sessionStorage.getItem(`admin_register_proxy_login_attempted_${TEST_ENTERPRISE_SLUG}`)).toBe('true');
   });
 
-  it('bounces a pending invited admin via logout->proxy-login when authenticated user has no role', async () => {
+  it('bounces a pending invited admin via the logout URL when authenticated user has no role', async () => {
     getAuthenticatedUser.mockReturnValue({ username: 'edx', roles: [] });
     isEnterpriseUser.mockReturnValue(false);
     LmsApiService.fetchEnterpriseBySlug.mockResolvedValue({
       data: { uuid: TEST_ENTERPRISE_UUID },
     });
     render(<AdminRegisterPageWrapper search="?pending-invited-admin=true" />);
-    await waitFor(() => expect(getLogoutRedirectUrl).toHaveBeenCalledWith(FAKE_PROXY_LOGIN_URL(TEST_ENTERPRISE_SLUG)));
+    await waitFor(() => expect(getEnterpriseAdminRegisterLogoutUrl).toHaveBeenCalledWith(
+      TEST_ENTERPRISE_SLUG,
+      { 'pending-invited-admin': 'true' },
+    ));
     expect(sessionStorage.getItem(`admin_register_proxy_login_attempted_${TEST_ENTERPRISE_SLUG}`)).toBe('true');
     expect(mockNavigate).not.toHaveBeenCalled();
   });
@@ -235,7 +249,9 @@ describe('<AdminRegisterPage />', () => {
     render(<AdminRegisterPageWrapper search="?pending-invited-admin=true" />);
     const alert = await screen.findByRole('alert');
     expect(alert.textContent).toMatch(/administrator access/i);
-    expect(getLogoutRedirectUrl).not.toHaveBeenCalled();
+    // No-admin-access branch doesn't render the error sign-in link, so the
+    // helper should not be invoked at all in this path.
+    expect(getEnterpriseAdminRegisterLogoutUrl).not.toHaveBeenCalled();
   });
 
   it('does not bounce when the pending-invited-admin param is absent', async () => {
@@ -247,7 +263,7 @@ describe('<AdminRegisterPage />', () => {
     render(<AdminRegisterPageWrapper />);
     const alert = await screen.findByRole('alert');
     expect(alert.textContent).toMatch(/administrator access/i);
-    expect(getLogoutRedirectUrl).not.toHaveBeenCalled();
+    expect(getEnterpriseAdminRegisterLogoutUrl).not.toHaveBeenCalled();
     expect(sessionStorage.getItem(`admin_register_proxy_login_attempted_${TEST_ENTERPRISE_SLUG}`)).toBeNull();
   });
 });

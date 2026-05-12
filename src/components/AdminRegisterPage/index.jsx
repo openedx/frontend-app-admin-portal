@@ -5,10 +5,8 @@ import {
   Container, Row, Col, Alert, MailtoLink, Hyperlink,
 } from '@openedx/paragon';
 import { logError } from '@edx/frontend-platform/logging';
-import {
-  getAuthenticatedUser, getLogoutRedirectUrl, hydrateAuthenticatedUser,
-} from '@edx/frontend-platform/auth';
-import { LoginRedirect, getProxyLoginUrl } from '@2uinc/frontend-enterprise-logistration';
+import { getAuthenticatedUser, hydrateAuthenticatedUser } from '@edx/frontend-platform/auth';
+import { LoginRedirect } from '@2uinc/frontend-enterprise-logistration';
 import {
   isEnterpriseUser, ENTERPRISE_ADMIN, ENTERPRISE_OPENEDX_OPERATOR,
 } from '@2uinc/frontend-enterprise-utils';
@@ -16,6 +14,7 @@ import {
 import EnterpriseAppSkeleton from '../EnterpriseApp/EnterpriseAppSkeleton';
 import LmsApiService from '../../data/services/LmsApiService';
 import { configuration } from '../../config';
+import { getEnterpriseAdminRegisterLogoutUrl } from '../../utils';
 
 const STATUS = {
   PENDING: 'pending',
@@ -26,11 +25,10 @@ const STATUS = {
 
 // Query param included in pending-admin onboarding email links. When present
 // on /admin/register and the authenticated user lacks the role (e.g. a new
-// pending admin whose edx-platform user record hasn't been saved yet),
-// we first redirect through logout and then to the enterprise proxy login URL.
-// That logout-then-force-login flow triggers the user save in edx-platform,
-// which promotes the pending invite to a full admin role on the
-// customer.
+// pending admin whose edx-platform user record hasn't been saved yet), we
+// log the user out and return them to this page with the param preserved.
+// The post-logout re-auth triggers the user save in edx-platform, which
+// promotes the pending invite to a full admin role on the customer.
 const PENDING_INVITED_ADMIN_PARAM = 'pending-invited-admin';
 const proxyLoginAttemptedSessionKey = (slug) => `admin_register_proxy_login_attempted_${slug}`;
 
@@ -61,14 +59,14 @@ const AdminRegisterPage = () => {
     setStatus(STATUS.PENDING);
     let cancelled = false;
 
-    // Pending invited admin: one-shot logout-then-proxy-login bounce to force
-    // a fresh Django login() on edx-platform, which updates last_login on the
+    // Pending invited admin: one-shot logout-and-return bounce to force a
+    // fresh Django login() on edx-platform, which updates last_login on the
     // User model. The User post_save signal handler then runs
     // activate_admin_permissions, which promotes the matching
     // PendingEnterpriseCustomerAdminUser to a real EnterpriseCustomerAdmin and
-    // grants the enterprise_admin role. A plain proxy-login redirect is not
-    // sufficient: if the LMS session is still valid, no login() fires and no
-    // promotion happens. See ADR 0013.
+    // grants the enterprise_admin role. Just hitting the enterprise proxy
+    // login URL while the LMS session is still valid is not sufficient: no
+    // login() fires and no promotion happens. See ADR 0013.
     //
     // Applies whenever we can't grant access from the current JWT — including
     // when the enterprise lookup returns no UUID or fails outright, because
@@ -79,7 +77,10 @@ const AdminRegisterPage = () => {
       const proxyAttemptKey = proxyLoginAttemptedSessionKey(enterpriseSlug);
       if (isPendingInvitedAdmin && !sessionStorage.getItem(proxyAttemptKey)) {
         sessionStorage.setItem(proxyAttemptKey, 'true');
-        global.location.href = getLogoutRedirectUrl(getProxyLoginUrl(enterpriseSlug));
+        global.location.href = getEnterpriseAdminRegisterLogoutUrl(
+          enterpriseSlug,
+          { [PENDING_INVITED_ADMIN_PARAM]: 'true' },
+        );
         return true;
       }
       return false;
@@ -182,7 +183,7 @@ const AdminRegisterPage = () => {
                   id="adminPortal.register.error"
                   values={{
                     sign_in_again_link: (
-                      <Hyperlink className="alert-link" destination={getLogoutRedirectUrl(getProxyLoginUrl(enterpriseSlug))}>
+                      <Hyperlink className="alert-link" destination={getEnterpriseAdminRegisterLogoutUrl(enterpriseSlug)}>
                         <FormattedMessage
                           defaultMessage="signing in again"
                           id="adminPortal.register.error.signInAgain"
