@@ -43,18 +43,48 @@ Entry point. Runs a single sequential async `init()` on mount:
 
 ### Outcomes
 
-| State                      | Render                                                  |
-| -------------------------- | ------------------------------------------------------- |
-| Unauthenticated            | `LoginRedirect` → enterprise proxy login                |
-| Pending (`init()` running) | `EnterpriseAppSkeleton`                                 |
-| Has admin or operator role | `<Navigate replace>` to `/<slug>/admin/register/activate` |
-| No qualifying role         | Terminal warning alert (no redirect, no proxy bounce)   |
-| Network/lookup failure     | Terminal error alert                                    |
+| State                                                | Render                                                  |
+| ---------------------------------------------------- | ------------------------------------------------------- |
+| Unauthenticated                                      | `LoginRedirect` → enterprise proxy login                |
+| Pending/rendering (`init()` running)                 | `EnterpriseAppSkeleton`                                 |
+| Has admin or operator role                           | `<Navigate replace>` to `/<slug>/admin/register/activate` |
+| No qualifying role + `?pending-invited-admin=true` + no session flag | One-shot logout-then-proxy-login bounce via `getLogoutRedirectUrl(getProxyLoginUrl(slug))`; session flag set |
+| No qualifying role + (param absent OR session flag set) | Terminal warning alert (no bounce)                  |
+| Network/lookup failure                               | Terminal error alert with a logout-then-proxy-login remediation link |
 
 The terminal alerts are important: earlier versions of this page bounced
-non-admin authenticated users back to `getProxyLoginUrl(slug)`. When the proxy
-round-trip didn't grant the role (e.g. the user genuinely isn't an admin), the
-user looped indefinitely between this page and the proxy.
+*every* non-admin authenticated user back to `getProxyLoginUrl(slug)`. When the
+proxy round-trip didn't grant the role, the user looped indefinitely. (Note
+that those earlier versions also used the plain proxy redirect, not the
+logout-then-proxy chain — the latter is what's required to actually trigger
+the admin promotion server-side; see "Pending invited admin bounce" below.)
+
+### Pending invited admin bounce
+
+The admin invite flow in edx-platform doesn't promote an invited user to a
+full admin until the User model's `post_save` signal fires, which runs
+`enterprise/api/__init__.py::activate_admin_permissions` and creates the
+matching `EnterpriseCustomerAdmin` + role assignment from a
+`PendingEnterpriseCustomerAdminUser`. The signal fires on Django `login()`
+because `login()` writes `last_login` on the User model.
+
+For a pending invited admin clicking an onboarding email link, the
+`?pending-invited-admin=true` query param tells this page to do a one-shot
+redirect to `getLogoutRedirectUrl(getProxyLoginUrl(slug))`. The logout
+clears the LMS session so the subsequent proxy-login forces a real
+`login()` — a plain `getProxyLoginUrl` redirect short-circuits when the
+session is still valid and doesn't trigger the save. See ADR 0013 for
+the full reasoning. After re-login, the user comes back here, init()
+re-runs, the role is now present, and they continue into
+`/admin/register/activate`.
+
+To prevent looping when the proxy round-trip *doesn't* grant the role (bad
+invite, race condition, edx-platform error), we set a sessionStorage flag
+(`admin_register_proxy_login_attempted_<slug>`) before redirecting. If the
+user comes back still without the role, we fall through to the terminal
+warning alert. The flag is scoped per-enterprise and per-tab (sessionStorage
+clears on tab close), so the next legitimate visit from a new tab can retry
+the bounce if needed.
 
 ## UserActivationPage
 
@@ -87,33 +117,67 @@ they have no access.
                   │ /<slug>/admin/register                │
                   │ (AdminRegisterPage)                   │
                   └──────────────────────────────────────┘
-                            │
-              ┌─────────────┼─────────────────────────────┐
-              │             │                             │
-              ▼             ▼                             ▼
-       not authed      authed, init() runs            init() errors
-              │             │                             │
-              ▼             ▼                             ▼
-       proxy login    role check after hydrate      error alert
-                            │
-                ┌───────────┼──────────────┐
-                ▼                          ▼
-       admin/operator               no qualifying role
-                │                          │
-                ▼                          ▼
-      /<slug>/admin/register/activate     warning alert
-      (UserActivationPage)                (terminal)
-                │
-        ┌───────┼────────────────┐
-        ▼       ▼                ▼
-   not authed   isActive &&      pending hydration
-        │       roles.length     (5s polling)
-        ▼       │                │
-  proxy login   ▼                ▼
-                /<slug>/         warning alert
-                admin/learners   (re-renders to
-                + Toast          redirect once
-                                 hydration completes)
+                                │
+              ┌─────────────────┼─────────────────────────┐
+              │                 │                         │
+              ▼                 ▼                         ▼
+       not authed          authed, init() runs       init() errors
+              │                 │              (loginRefresh, hydrate,
+              ▼                 ▼               or fetchEnterpriseBySlug
+       proxy login        loginRefresh →                  throws)
+       (LoginRedirect)    hydrate →                       │
+                          fetchEnterpriseBySlug           │
+                                │                         │
+                ┌───────────────┼─────────────┐           │
+                ▼               ▼             ▼           │
+       admin/operator      no qualifying     no UUID      │
+       role for slug       role for slug     returned     │
+                │               │             │           │
+                ▼               └──────┬──────┴───────────┘
+        /<slug>/admin/                 │
+        register/activate              ▼
+        (UserActivationPage)   ┌──────────────────────┐
+                               │ unauthorized branch  │
+                               │ checks bounce gate   │
+                               └──────────────────────┘
+                                  │              │
+                                  ▼              ▼
+                          ?pending-invited-   else
+                          admin=true AND      │
+                          no session flag     ▼
+                                  │           terminal alert:
+                                  ▼           - no role → warning
+                          set session flag;   - no UUID/error → danger
+                          window.location =   (danger alert includes a
+                            getLogoutRedirect-  logout-then-proxy
+                            Url(getProxyLogin-  "sign in again" link)
+                            Url(slug))
+                          → logout → proxy
+                            login → fresh
+                            Django login() →
+                            User.post_save →
+                            admin role granted
+                          → returns here, role
+                            check now passes →
+                            navigate to /activate
+
+----
+
+                  ┌──────────────────────────────────────┐
+                  │ /<slug>/admin/register/activate       │
+                  │ (UserActivationPage)                  │
+                  └──────────────────────────────────────┘
+                                │
+        ┌───────────────────────┼────────────────────────┐
+        ▼                       ▼                        ▼
+   not authed             isActive &&             pending hydration
+        │                 roles.length            (5s polling)
+        ▼                       │                        │
+  proxy login                   ▼                        ▼
+  (LoginRedirect)        /<slug>/admin/learners    warning alert
+                         + success Toast           (re-renders to
+                                                   redirect once
+                                                   hydration completes)
 ```
 
 ## Why two pages instead of one
@@ -136,3 +200,7 @@ strategy (init vs. poll) without a single component juggling both.
 - **Operator role scoping.** `enterprise_openedx_operator:*` does not match a
   specific UUID via `isEnterpriseUser(user, role, uuid)`. Pass `undefined` for
   the UUID when checking the operator role.
+- **Pending invited admin loops.** If you ever re-introduce a proxy-login
+  bounce on `/admin/register`, gate it behind the `?pending-invited-admin=true`
+  query param *and* a per-tab session flag. Without both, a user who genuinely
+  lacks the role (or whose post-bounce JWT still lacks it) will loop.
