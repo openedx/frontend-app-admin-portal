@@ -60,6 +60,7 @@ const ContentHighlightSet = ({ editHighlightsEnabled }) => {
         selectedCount={selectedContentKeys.size}
         isRemoving={isRemoving}
         onSaveTitle={onSaveTitle}
+        editHighlightsEnabled={editHighlightsEnabled}
       />
       {removeError && (
         <Alert variant="danger" data-testid="remove-error-alert" className="mb-3">
