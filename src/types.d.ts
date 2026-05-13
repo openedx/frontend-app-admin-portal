@@ -201,7 +201,8 @@ declare global {
       inProgress: LearnerProfileEnrollmentType[],
       upcoming: LearnerProfileEnrollmentType[],
       completed: LearnerProfileEnrollmentType[],
-      savedForLater: LearnerProfileEnrollmentType[]
+      savedForLater: LearnerProfileEnrollmentType[],
+      unenrolled: LearnerProfileEnrollmentType[],
     },
   };
 

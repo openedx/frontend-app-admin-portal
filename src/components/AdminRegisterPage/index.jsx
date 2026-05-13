@@ -1,103 +1,146 @@
-import React, { useEffect } from 'react';
-import { useNavigate, useParams } from 'react-router-dom';
+import React, { useEffect, useMemo, useState } from 'react';
+import { FormattedMessage } from '@edx/frontend-platform/i18n';
+import { Navigate, useParams } from 'react-router-dom';
+import {
+  Container, Row, Col, Alert, MailtoLink,
+} from '@openedx/paragon';
 import { logError } from '@edx/frontend-platform/logging';
-import { getAuthenticatedUser } from '@edx/frontend-platform/auth';
-import { LoginRedirect, getProxyLoginUrl } from '@2uinc/frontend-enterprise-logistration';
-import { isEnterpriseUser, ENTERPRISE_ADMIN } from '@2uinc/frontend-enterprise-utils';
-import { v5 as uuidv5 } from 'uuid';
+import { getAuthenticatedUser, hydrateAuthenticatedUser } from '@edx/frontend-platform/auth';
+import { LoginRedirect } from '@2uinc/frontend-enterprise-logistration';
+import {
+  isEnterpriseUser, ENTERPRISE_ADMIN, ENTERPRISE_OPENEDX_OPERATOR,
+} from '@2uinc/frontend-enterprise-utils';
 
 import EnterpriseAppSkeleton from '../EnterpriseApp/EnterpriseAppSkeleton';
 import LmsApiService from '../../data/services/LmsApiService';
+import { configuration } from '../../config';
 
-/**
- * AdminRegisterPage is a React component that manages the registration process for enterprise administrators.
- *
- * The component:
- * - Redirects unauthenticated users to the enterprise proxy login flow.
- * - For authenticated users:
- *   - Checks if they have the `enterprise_admin` JWT role associated with the specified enterprise.
- *   - Redirects users with the `enterprise_admin` role to the account activation page.
- *   - Redirects other authenticated users to the proxy login URL to refresh their JWT cookie
- *     and retrieve updated role assignments.
- * - Fetches enterprise information by slug and processes the authenticated enterprise admin state.
- * - Ensures that users visiting the register page for the first time will have the page reloaded
- *   for proper initialization.
- *
- * Dependencies:
- * - `getAuthenticatedUser`: Retrieves the currently authenticated user.
- * - `useParams`: React Router hook used to extract route parameters.
- * - `useNavigate`: React Router hook for programmatically navigating to different routes.
- * - `LmsApiService.fetchEnterpriseBySlug`: Fetches enterprise details by their slug.
- * - `LmsApiService.loginRefresh`: Refreshes user login session and retrieves user details.
- * - `isEnterpriseUser`: Validates if a user has a specific role within an enterprise.
- * - `getProxyLoginUrl`: Constructs a URL for redirecting to the enterprise proxy login flow.
- * - `uuidv5`: Used to generate a unique identifier for storage purposes.
- * - `EnterpriseAppSkeleton`: Component displayed as a loading or placeholder state.
- * - `LoginRedirect`: Component to handle login redirection with a loading display.
- *
- * Side Effects:
- * - Utilizes `useEffect` to handle asynchronous data fetching, user authentication validation, and navigation.
- * - Stores a flag in `localStorage` to identify if a user is visiting the register page for the first time.
- * - Logs errors encountered during the asynchronous operations.
- *
- * Returns:
- * - If the user is not authenticated, renders the `LoginRedirect` component for managing redirection
- *   to the proxy login flow.
- * - If the user is authenticated, renders the `EnterpriseAppSkeleton` as a placeholder or loading
- *   state during processing.
- */
+const STATUS = {
+  PENDING: 'pending',
+  REDIRECTING: 'redirecting',
+  NO_ADMIN_ACCESS: 'no-admin-access',
+  ERROR: 'error',
+};
+
+// Entry point of the admin registration+activation flow. Refreshes the JWT,
+// hydrates the auth cache, and gates entry to UserActivationPage based on
+// whether the user has an enterprise_admin role for this enterprise or an
+// enterprise_openedx_operator role (wildcard).
+// See docs/references/admin-registration-and-activation.md.
 const AdminRegisterPage = () => {
-  const user = getAuthenticatedUser();
+  // Pin the authed-user reference for the lifetime of this mount so the
+  // init() effect can't accidentally re-run if frontend-platform ever returns
+  // a new object reference from getAuthenticatedUser() between renders. We
+  // only care whether a user is authed at mount; the hydrated user is read
+  // freshly inside init() after hydrateAuthenticatedUser() resolves.
+  const user = useMemo(() => getAuthenticatedUser(), []);
   const { enterpriseSlug } = useParams();
-  const navigate = useNavigate();
+  const [status, setStatus] = useState(STATUS.PENDING);
+
   useEffect(() => {
     if (!user) {
-      return;
+      return undefined;
     }
-    const processEnterpriseAdmin = (enterpriseUUID) => {
-      const authenticatedUser = getAuthenticatedUser();
-      const isEnterpriseAdmin = isEnterpriseUser(authenticatedUser, ENTERPRISE_ADMIN, enterpriseUUID);
-      if (isEnterpriseAdmin) {
-        // user is authenticated and has the ``enterprise_admin`` JWT role, so redirect user to
-        // account activation page to ensure they verify their email address.
-        navigate(`/${enterpriseSlug}/admin/register/activate`);
-      } else {
-        // user is authenticated but doesn't have the `enterprise_admin` JWT role; redirect to
-        // proxy login to refresh JWT cookie and pick up any new role assignments.
-        global.location.href = getProxyLoginUrl(enterpriseSlug);
-      }
-    };
-
-    const getEnterpriseBySlug = async () => {
+    // Reset status when enterpriseSlug changes so the previous enterprise's
+    // terminal state (alert/redirect) doesn't remain visible while init() reruns.
+    setStatus(STATUS.PENDING);
+    let cancelled = false;
+    const init = async () => {
       try {
+        // Known tradeoff: loginRefresh + hydrate run on every mount, including
+        // for returning admins whose JWT is already correct. The extra two
+        // network calls are an acceptable cost for guaranteeing fresh roles
+        // before the access check; these pages are entered rarely.
+        await LmsApiService.loginRefresh();
+        await hydrateAuthenticatedUser();
         const response = await LmsApiService.fetchEnterpriseBySlug(enterpriseSlug);
-        if (response.data && response.data.uuid) {
-          processEnterpriseAdmin(response.data.uuid);
+        const enterpriseUUID = response?.data?.uuid;
+        if (cancelled) { return; }
+        if (!enterpriseUUID) {
+          setStatus(STATUS.ERROR);
+          return;
         }
+        const hydratedUser = getAuthenticatedUser();
+        // Operators have wildcard roles (e.g. `enterprise_openedx_operator:*`) that aren't
+        // scoped to a specific enterprise UUID, so check that role without the UUID filter.
+        const hasAccess = (
+          isEnterpriseUser(hydratedUser, ENTERPRISE_ADMIN, enterpriseUUID)
+          || isEnterpriseUser(hydratedUser, ENTERPRISE_OPENEDX_OPERATOR)
+        );
+        setStatus(hasAccess ? STATUS.REDIRECTING : STATUS.NO_ADMIN_ACCESS);
       } catch (error) {
         logError(error);
+        if (!cancelled) {
+          setStatus(STATUS.ERROR);
+        }
       }
     };
-    // Force a fetch of a new JWT token and reload the page prior to any redirects.
-    // Importantly, only reload the page on first visit, or else risk infinite reloads.
-    LmsApiService.loginRefresh().then(data => {
-      const obfuscatedId = uuidv5(String(data.userId), uuidv5.DNS);
-      const storageKey = `first_visit_register_page_${obfuscatedId}`;
-      if (!localStorage.getItem(storageKey)) {
-        localStorage.setItem(storageKey, 'true');
-        window.location.reload();
-      }
-      return data;
-    }).catch(error => logError(error));
-    getEnterpriseBySlug().catch(error => logError(error));
-  }, [user, navigate, enterpriseSlug]);
+    init();
+    return () => { cancelled = true; };
+  }, [user, enterpriseSlug]);
 
   if (!user) {
-    // user is not authenticated, so redirect to enterprise proxy login flow
     return (
       <LoginRedirect
         loadingDisplay={<EnterpriseAppSkeleton />}
       />
+    );
+  }
+
+  if (status === STATUS.REDIRECTING) {
+    return <Navigate to={`/${enterpriseSlug}/admin/register/activate`} replace />;
+  }
+
+  if (status === STATUS.NO_ADMIN_ACCESS) {
+    return (
+      <Container style={{ flex: 1 }} fluid>
+        <Row className="my-3 justify-content-md-center">
+          <Col xs lg={8} offset={1}>
+            <Alert variant="warning">
+              <p>
+                <FormattedMessage
+                  defaultMessage="This account does not have administrator access to {enterpriseSlug} on {platform_name}. If you believe this is an error, please contact your organization's administrator."
+                  id="adminPortal.register.noAdminAccess"
+                  values={{
+                    enterpriseSlug,
+                    platform_name: configuration.PLATFORM_NAME,
+                  }}
+                />
+              </p>
+              <p className="mb-0">
+                <FormattedMessage
+                  defaultMessage="If you run into further issues, please contact the {support_name} at {support_link}."
+                  id="adminPortal.register.support"
+                  values={{
+                    support_name: configuration.CUSTOMER_SUPPORT_NAME,
+                    support_link: <MailtoLink className="alert-link" to={configuration.CUSTOMER_SUPPORT_EMAIL}>{configuration.CUSTOMER_SUPPORT_EMAIL}</MailtoLink>,
+                  }}
+                />
+              </p>
+            </Alert>
+          </Col>
+        </Row>
+      </Container>
+    );
+  }
+
+  if (status === STATUS.ERROR) {
+    return (
+      <Container style={{ flex: 1 }} fluid>
+        <Row className="my-3 justify-content-md-center">
+          <Col xs lg={8} offset={1}>
+            <Alert variant="danger">
+              <FormattedMessage
+                defaultMessage="Something went wrong loading the registration page. Please try again, or contact {support_link} if the problem persists."
+                id="adminPortal.register.error"
+                values={{
+                  support_link: <MailtoLink className="alert-link" to={configuration.CUSTOMER_SUPPORT_EMAIL}>{configuration.CUSTOMER_SUPPORT_EMAIL}</MailtoLink>,
+                }}
+              />
+            </Alert>
+          </Col>
+        </Row>
+      </Container>
     );
   }
 
