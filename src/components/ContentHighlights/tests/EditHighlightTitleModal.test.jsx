@@ -15,13 +15,6 @@ jest.mock('@edx/frontend-platform/logging', () => ({
   logError: jest.fn(),
 }));
 
-jest.mock('../../PeopleManagement/GeneralErrorModal', () => function GeneralErrorModal({ isOpen }) {
-  if (!isOpen) {
-    return null;
-  }
-  return <div data-testid="general-error-modal">Error Modal</div>;
-});
-
 const CURRENT_TITLE = 'Current Highlight Title';
 
 const renderComponent = (props = {}) => {
@@ -37,6 +30,12 @@ const renderComponent = (props = {}) => {
       <EditHighlightTitleModal {...defaultProps} {...props} />
     </IntlProvider>,
   );
+};
+
+const expectDuplicateNameError = () => {
+  expect(screen.getByText('Something went wrong')).toBeInTheDocument();
+  expect(screen.getByText(/A highlight with this name already exists/)).toBeInTheDocument();
+  expect(screen.getByText(/Please enter a unique name/)).toBeInTheDocument();
 };
 
 describe('<EditHighlightTitleModal />', () => {
@@ -104,9 +103,102 @@ describe('<EditHighlightTitleModal />', () => {
 
     await waitFor(() => {
       expect(logError).toHaveBeenCalledWith(saveError);
-      expect(screen.getByTestId('general-error-modal')).toBeInTheDocument();
+      expect(screen.getByText('Something went wrong')).toBeInTheDocument();
+      expect(screen.getByText(/Something went wrong behind the scenes/)).toBeInTheDocument();
     });
     expect(onClose).not.toHaveBeenCalled();
+  });
+
+  it('shows duplicate name error when API returns title already exists', async () => {
+    const user = userEvent.setup();
+    const duplicateError = {
+      response: { data: { title: ['A highlight set with this title already exists for this enterprise.'] } },
+    };
+    const onSave = jest.fn().mockRejectedValue(duplicateError);
+    const onClose = jest.fn();
+    renderComponent({ onSave, onClose });
+
+    await user.click(screen.getByTestId('edit-highlight-title-save-button'));
+
+    await waitFor(() => {
+      expectDuplicateNameError();
+    });
+    expect(onClose).not.toHaveBeenCalled();
+  });
+
+  it('shows duplicate name error when API returns non_field_errors already exists', async () => {
+    const user = userEvent.setup();
+    const duplicateError = {
+      response: { data: { non_field_errors: ['A highlight with this title already exists.'] } },
+    };
+    const onSave = jest.fn().mockRejectedValue(duplicateError);
+    const onClose = jest.fn();
+    renderComponent({ onSave, onClose });
+
+    await user.click(screen.getByTestId('edit-highlight-title-save-button'));
+
+    await waitFor(() => {
+      expectDuplicateNameError();
+    });
+    expect(onClose).not.toHaveBeenCalled();
+  });
+
+  it('shows duplicate name error and does not call onSave for client-side duplicate title', async () => {
+    const user = userEvent.setup();
+    const onSave = jest.fn().mockResolvedValue(undefined);
+    const onClose = jest.fn();
+    renderComponent({
+      onSave,
+      onClose,
+      existingHighlightTitles: ['Recommended for Marketing'],
+    });
+
+    const input = screen.getByTestId('edit-highlight-title-input');
+    await user.clear(input);
+    await user.type(input, 'recommended for marketing');
+    await user.click(screen.getByTestId('edit-highlight-title-save-button'));
+
+    await waitFor(() => {
+      expect(onSave).not.toHaveBeenCalled();
+      expectDuplicateNameError();
+    });
+    expect(onClose).not.toHaveBeenCalled();
+  });
+
+  it('closes modal when "Exit and discard changes" is clicked on error modal', async () => {
+    const user = userEvent.setup();
+    const saveError = new Error('save failed');
+    const onSave = jest.fn().mockRejectedValue(saveError);
+    const onClose = jest.fn();
+    renderComponent({ onSave, onClose });
+
+    await user.click(screen.getByTestId('edit-highlight-title-save-button'));
+
+    await waitFor(() => {
+      expect(screen.getByText('Exit and discard changes')).toBeInTheDocument();
+    });
+
+    await user.click(screen.getByText('Exit and discard changes'));
+    expect(onClose).toHaveBeenCalled();
+  });
+
+  it('returns to form when "Try Again" is clicked on error modal', async () => {
+    const user = userEvent.setup();
+    const saveError = new Error('save failed');
+    const onSave = jest.fn().mockRejectedValue(saveError);
+    const onClose = jest.fn();
+    renderComponent({ onSave, onClose });
+
+    await user.click(screen.getByTestId('edit-highlight-title-save-button'));
+
+    await waitFor(() => {
+      expect(screen.getByText('Try again')).toBeInTheDocument();
+    });
+
+    await user.click(screen.getByText('Try again'));
+    expect(onClose).not.toHaveBeenCalled();
+    // The edit modal should still be open with the input visible
+    expect(screen.getByTestId('edit-highlight-title-input')).toBeInTheDocument();
   });
 
   it('resets title to currentTitle when modal is reopened after typing without saving', async () => {

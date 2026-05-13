@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useContext, useEffect } from 'react';
 import { connect } from 'react-redux';
 import {
   ActionRow, Alert, AlertModal, Button, Container, Toast, useToggle,
@@ -9,7 +9,9 @@ import { FormattedMessage, useIntl } from '@edx/frontend-platform/i18n';
 import ContentHighlightsCardItemContainer from './ContentHighlightsCardItemsContainer';
 import CurrentContentHighlightItemsHeader from './CurrentContentHighlightItemsHeader';
 import { useHighlightSet } from './data/hooks';
+import { getExistingHighlightTitles } from './data/utils';
 import useContentHighlightSetEditing from './data/useContentHighlightSetEditing';
+import { EnterpriseAppContext } from '../EnterpriseApp/EnterpriseAppContextProvider';
 
 const ContentHighlightSet = ({ editHighlightsEnabled }) => {
   const { highlightSetUUID } = useParams();
@@ -20,6 +22,8 @@ const ContentHighlightSet = ({ editHighlightsEnabled }) => {
   const location = useLocation();
   const intl = useIntl();
   const [isToastOpen, openToast, closeToast] = useToggle(false);
+  const { enterpriseCuration: { enterpriseCuration } } = useContext(EnterpriseAppContext);
+  const existingHighlightTitles = getExistingHighlightTitles(enterpriseCuration);
 
   const {
     isEditing,
@@ -61,6 +65,7 @@ const ContentHighlightSet = ({ editHighlightsEnabled }) => {
         isRemoving={isRemoving}
         onSaveTitle={onSaveTitle}
         editHighlightsEnabled={editHighlightsEnabled}
+        existingHighlightTitles={existingHighlightTitles}
       />
       {removeError && (
         <Alert variant="danger" data-testid="remove-error-alert" className="mb-3">
