@@ -29,7 +29,7 @@ const STATUS = {
 // log the user out and return them to this page with the param preserved.
 // The post-logout re-auth triggers the user save in edx-platform, which
 // promotes the pending invite to a full admin role on the customer.
-const PENDING_INVITED_ADMIN_PARAM = 'pending-invited-admin';
+export const PENDING_INVITED_ADMIN_PARAM = 'pending-invited-admin';
 const proxyLoginAttemptedSessionKey = (slug) => `admin_register_proxy_login_attempted_${slug}`;
 
 // Entry point of the admin registration+activation flow. Refreshes the JWT,

@@ -10,7 +10,9 @@ import { logError } from '@edx/frontend-platform/logging';
 import { FormattedMessage } from '@edx/frontend-platform/i18n';
 import AdminActionsMenu from './AdminActionsMenu';
 import LinkCopiedToast from '../settings/SettingsAccessTab/LinkCopiedToast';
+import { PENDING_INVITED_ADMIN_PARAM } from '../AdminRegisterPage';
 import { configuration } from '../../config';
+import { removeTrailingSlash } from '../../utils';
 
 const renderAdminStatus = (status) => (
   status === 'Pending' ? <Chip iconBefore={Timelapse}>{status}</Chip> : status
@@ -25,8 +27,16 @@ const OrgInviteAdminCard = ({
   } = original;
   const [isCopyLinkToastOpen, setIsCopyLinkToastOpen] = useState(false);
   const joinedOrg = joinedDate || invitedDate;
-  const lmsBaseUrl = `${configuration.BASE_URL}`;
-  const inviteLink = `${lmsBaseUrl}/${enterpriseSlug}/admin/register`;
+  // The `?pending-invited-admin=true` flag tells AdminRegisterPage to bounce
+  // a still-pending invited admin through a logout-then-proxy-login flow
+  // that triggers the LMS user save and promotes their pending invite to a
+  // real admin role. See docs/decisions/0013-pending-invited-admin-bounce-via-logout.rst.
+  const inviteLinkUrl = new URL(
+    `/${enterpriseSlug}/admin/register`,
+    removeTrailingSlash(configuration.BASE_URL || ''),
+  );
+  inviteLinkUrl.searchParams.set(PENDING_INVITED_ADMIN_PARAM, 'true');
+  const inviteLink = inviteLinkUrl.toString();
   const hasClipboard = !!navigator.clipboard;
 
   const handleCopyInviteLink = () => {
