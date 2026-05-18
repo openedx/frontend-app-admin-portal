@@ -27,3 +27,5 @@ export { default as useEnterpriseLearners } from './useEnterpriseLearners';
 export { default as useCatalogContainsContentItemsMultipleQueries } from './useCatalogContainsContentItemsMultipleQueries';
 export { default as useApproveBnrRequests } from './useApproveBnrRequests';
 export { default as useSuccessfulBulkApprovalToastContextValue } from './useSuccessfulBulkApprovalToastContextValue';
+export { default as useBulkDeclineBnrRequests } from './useBulkDeclineBnrRequests';
+export { default as useSuccessfulBulkDeclineToastContextValue } from './useSuccessfulBulkDeclineToastContextValue';

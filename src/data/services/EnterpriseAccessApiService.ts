@@ -53,6 +53,12 @@ type ApproveBnrSubsidyRequestParams = {
   subsidyRequestUUIDs: string[];
 };
 
+type DeclineBnrSubsidyRequestsParams = {
+  enterpriseId: string;
+  subsidyAccessPolicyId: string;
+  subsidyRequestUUIDs: string[];
+};
+
 type ApproveAllBnrSubsidyRequestsParams = {
   enterpriseId: string;
   subsidyAccessPolicyId: string;
@@ -449,6 +455,29 @@ class EnterpriseAccessApiService {
     };
 
     const url = `${EnterpriseAccessApiService.baseUrl}/learner-credit-requests/approve/`;
+    return EnterpriseAccessApiService.apiClient().post(url, options);
+  }
+
+  /**
+   * Declines a list of BNR (Browse and Request) subsidy requests for an enterprise.
+   *
+   * @param params.enterpriseId - The UUID of the enterprise customer
+   * @param params.subsidyAccessPolicyId - The UUID of the subsidy policy
+   * @param params.subsidyRequestUUIDs - The UUIDs of the subsidy requests to decline
+   * @returns A promise that resolves to the API response for the decline operation
+   */
+  static bulkDeclineBnrSubsidyRequests({
+    enterpriseId,
+    subsidyAccessPolicyId,
+    subsidyRequestUUIDs,
+  }: DeclineBnrSubsidyRequestsParams): Promise<DeclineBnrSubsidyRequestResponse> {
+    const options = {
+      subsidy_request_uuids: subsidyRequestUUIDs,
+      enterprise_customer_uuid: enterpriseId,
+      policy_uuid: subsidyAccessPolicyId,
+    };
+
+    const url = `${EnterpriseAccessApiService.baseUrl}/learner-credit-requests/decline/`;
     return EnterpriseAccessApiService.apiClient().post(url, options);
   }
 

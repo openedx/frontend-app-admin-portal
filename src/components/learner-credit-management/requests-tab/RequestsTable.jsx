@@ -13,6 +13,7 @@ import BnrRequestStatusCell from './BnrRequestStatusCell';
 import TableTextFilter from '../TableTextFilter';
 import { transformLearnerRequestStateCounts } from '../data/utils';
 import RequestsTableApproveAction from './RequestsTableApproveAction';
+import RequestsTableDeclineAction from './RequestsTableDeclineAction';
 import RequestsTableRefreshAction from './RequestsTableRefreshAction';
 
 const selectColumn = {
@@ -120,6 +121,10 @@ const RequestsTable = ({
       }]}
       bulkActions={[
         <RequestsTableApproveAction
+          onRefresh={onRefresh}
+          requestStatusCounts={tableData?.requestStatusCounts || []}
+        />,
+        <RequestsTableDeclineAction
           onRefresh={onRefresh}
           requestStatusCounts={tableData?.requestStatusCounts || []}
         />,
