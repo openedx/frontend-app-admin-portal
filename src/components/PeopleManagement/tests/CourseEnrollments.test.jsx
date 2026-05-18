@@ -59,6 +59,14 @@ const mockEnrollments = {
       courseRunStatus: 'assigned',
     },
   ],
+  unenrolled: [
+    {
+      uuid: '6',
+      courseKey: 'course-6',
+      displayName: 'Course 6',
+      courseRunStatus: 'unenrolled',
+    },
+  ],
 };
 
 const TestWrapper = ({ children, store }) => (
@@ -104,36 +112,43 @@ describe('CourseEnrollments', () => {
   it('renders in-progress enrollments', () => {
     renderComponent({ enrollments: mockEnrollments, isLoading: false });
     const enrollmentCards = screen.getAllByTestId('enrollment-card');
-    expect(enrollmentCards).toHaveLength(5);
+    expect(enrollmentCards).toHaveLength(6);
     expect(screen.getByText('Course 1')).toBeInTheDocument();
   });
 
   it('renders upcoming enrollments', () => {
     renderComponent({ enrollments: mockEnrollments, isLoading: false });
     const enrollmentCards = screen.getAllByTestId('enrollment-card');
-    expect(enrollmentCards).toHaveLength(5);
+    expect(enrollmentCards).toHaveLength(6);
     expect(screen.getByText('Course 2')).toBeInTheDocument();
   });
 
   it('renders completed enrollments', () => {
     renderComponent({ enrollments: mockEnrollments, isLoading: false });
     const enrollmentCards = screen.getAllByTestId('enrollment-card');
-    expect(enrollmentCards).toHaveLength(5);
+    expect(enrollmentCards).toHaveLength(6);
     expect(screen.getByText('Course 3')).toBeInTheDocument();
   });
 
   it('renders assigned enrollments', () => {
     renderComponent({ enrollments: mockEnrollments, isLoading: false });
     const enrollmentCards = screen.getAllByTestId('enrollment-card');
-    expect(enrollmentCards).toHaveLength(5);
+    expect(enrollmentCards).toHaveLength(6);
     expect(screen.getByText('Course 4')).toBeInTheDocument();
   });
 
   it('renders saved for later enrollments', () => {
     renderComponent({ enrollments: mockEnrollments, isLoading: false });
     const enrollmentCards = screen.getAllByTestId('enrollment-card');
-    expect(enrollmentCards).toHaveLength(5);
+    expect(enrollmentCards).toHaveLength(6);
     expect(screen.getByText('Course 5')).toBeInTheDocument();
+  });
+
+  it('renders unenrolled enrollments', () => {
+    renderComponent({ enrollments: mockEnrollments, isLoading: false });
+    const enrollmentCards = screen.getAllByTestId('enrollment-card');
+    expect(enrollmentCards).toHaveLength(6);
+    expect(screen.getByText('Course 6')).toBeInTheDocument();
   });
 
   it('renders enrollments header', () => {

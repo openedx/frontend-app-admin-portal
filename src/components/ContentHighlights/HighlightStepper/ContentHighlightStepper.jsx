@@ -24,6 +24,13 @@ import { enterpriseCurationActions } from '../../EnterpriseApp/data/enterpriseCu
 import { useContentHighlightsContext } from '../data/hooks';
 import EVENT_NAMES from '../../../eventTracking';
 import { STEPPER_STEP_LABELS } from '../data/constants';
+import SystemErrorAlertModal from '../../learner-credit-management/cards/assignment-allocation-status-modals/SystemErrorAlertModal';
+import {
+  getExistingHighlightTitles,
+  highlightMessages,
+  isDuplicateNameApiError,
+  hasDuplicateTitle,
+} from '../data/utils';
 
 const steps = [
   STEPPER_STEP_LABELS.CREATE_TITLE,
@@ -34,10 +41,11 @@ const steps = [
 /**
  * Stepper to support create user flow for a highlight set.
  */
-const ContentHighlightStepper = ({ enterpriseId }) => {
+const ContentHighlightStepper = ({ enterpriseId, editHighlightsEnabled }) => {
   const intl = useIntl();
   const {
     enterpriseCuration: {
+      enterpriseCuration,
       dispatch: dispatchEnterpriseCuration,
     },
   } = useContext(EnterpriseAppContext);
@@ -46,6 +54,8 @@ const ContentHighlightStepper = ({ enterpriseId }) => {
   const [currentStep, setCurrentStep] = useState(steps[0]);
   const [isPublishing, setIsPublishing] = useState(false);
   const [isCloseAlertOpen, openCloseAlert, closeCloseAlert] = useToggle(false);
+  const [isErrorModalOpen, openErrorModal, closeErrorModal] = useToggle(false);
+  const [publishErrorMessage, setPublishErrorMessage] = useState(null);
   const { resetStepperModal } = useContentHighlightsContext();
   const isStepperModalOpen = useContextSelector(
     ContentHighlightsContext,
@@ -79,6 +89,18 @@ const ContentHighlightStepper = ({ enterpriseId }) => {
 
   const handlePublish = async () => {
     setIsPublishing(true);
+    const duplicateErrorMsg = intl.formatMessage(highlightMessages.duplicateNameError);
+
+    // Client-side duplicate name check (only when feature flag is enabled)
+    if (editHighlightsEnabled) {
+      const existingTitles = getExistingHighlightTitles(enterpriseCuration);
+      if (hasDuplicateTitle(highlightTitle.trim(), existingTitles)) {
+        setPublishErrorMessage(duplicateErrorMsg);
+        openErrorModal();
+        setIsPublishing(false);
+        return;
+      }
+    }
     try {
       const newHighlightSet = {
         title: highlightTitle,
@@ -118,6 +140,12 @@ const ContentHighlightStepper = ({ enterpriseId }) => {
       handlePublishTrackEvent();
     } catch (error) {
       logError(error);
+      setPublishErrorMessage(
+        editHighlightsEnabled && isDuplicateNameApiError(error)
+          ? duplicateErrorMsg
+          : intl.formatMessage(highlightMessages.genericError),
+      );
+      openErrorModal();
     } finally {
       setIsPublishing(false);
     }
@@ -399,16 +427,30 @@ const ContentHighlightStepper = ({ enterpriseId }) => {
           </Button>
         </ActionRow>
       </AlertModal>
+      {/* Error Modal for duplicate name or system errors */}
+      <SystemErrorAlertModal
+        isErrorModalOpen={isErrorModalOpen}
+        closeErrorModal={closeErrorModal}
+        closeAssignmentModal={closeStepperModal}
+        retry={closeErrorModal}
+        message={publishErrorMessage}
+      />
     </>
   );
 };
 
 ContentHighlightStepper.propTypes = {
   enterpriseId: PropTypes.string.isRequired,
+  editHighlightsEnabled: PropTypes.bool,
+};
+
+ContentHighlightStepper.defaultProps = {
+  editHighlightsEnabled: false,
 };
 
 const mapStateToProps = state => ({
   enterpriseId: state.portalConfiguration.enterpriseId,
+  editHighlightsEnabled: state.portalConfiguration.enterpriseFeatures?.enterpriseEditHighlightsEnabled ?? false,
 });
 
 export default connect(mapStateToProps)(ContentHighlightStepper);

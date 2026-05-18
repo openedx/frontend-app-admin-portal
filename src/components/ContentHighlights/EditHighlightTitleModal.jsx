@@ -12,16 +12,23 @@ import { FormattedMessage, useIntl } from '@edx/frontend-platform/i18n';
 import { logError } from '@edx/frontend-platform/logging';
 
 import { MAX_HIGHLIGHT_TITLE_LENGTH } from './data/constants';
-import GeneralErrorModal from '../PeopleManagement/GeneralErrorModal';
+import SystemErrorAlertModal from '../learner-credit-management/cards/assignment-allocation-status-modals/SystemErrorAlertModal';
+import {
+  highlightMessages,
+  isDuplicateNameApiError,
+  hasDuplicateTitle,
+} from './data/utils';
 
 const EditHighlightTitleModal = ({
   isOpen,
   onClose,
   currentTitle,
   onSave,
+  existingHighlightTitles,
 }) => {
   const intl = useIntl();
   const [isErrorOpen, openError, closeError] = useToggle(false);
+  const [errorMessage, setErrorMessage] = useState(null);
   const [title, setTitle] = useState(currentTitle);
   const [titleLength, setTitleLength] = useState(currentTitle.length);
   const [saveState, setSaveState] = useState('default');
@@ -45,8 +52,18 @@ const EditHighlightTitleModal = ({
 
   const handleSave = async () => {
     setSaveState('pending');
+    const trimmedTitle = title.trim();
+    const duplicateErrorMsg = intl.formatMessage(highlightMessages.duplicateNameError);
+
+    // Client-side duplicate name check (exclude current title)
+    if (hasDuplicateTitle(trimmedTitle, existingHighlightTitles, currentTitle)) {
+      setErrorMessage(duplicateErrorMsg);
+      openError();
+      setSaveState('default');
+      return;
+    }
     try {
-      await onSave(title.trim());
+      await onSave(trimmedTitle);
       setSaveState('complete');
       setTimeout(() => {
         setSaveState('default');
@@ -54,6 +71,11 @@ const EditHighlightTitleModal = ({
       }, 800);
     } catch (error) {
       logError(error);
+      setErrorMessage(
+        isDuplicateNameApiError(error)
+          ? duplicateErrorMsg
+          : intl.formatMessage(highlightMessages.genericError),
+      );
       openError();
       setSaveState('default');
     }
@@ -61,7 +83,16 @@ const EditHighlightTitleModal = ({
 
   return (
     <>
-      <GeneralErrorModal isOpen={isErrorOpen} close={closeError} />
+      <SystemErrorAlertModal
+        isErrorModalOpen={isErrorOpen}
+        closeErrorModal={closeError}
+        closeAssignmentModal={onClose}
+        retry={() => {
+          closeError();
+          setSaveState('default');
+        }}
+        message={errorMessage}
+      />
       <ModalDialog
         title="Edit highlight name"
         isOpen={isOpen}
@@ -141,6 +172,11 @@ EditHighlightTitleModal.propTypes = {
   onClose: PropTypes.func.isRequired,
   currentTitle: PropTypes.string.isRequired,
   onSave: PropTypes.func.isRequired,
+  existingHighlightTitles: PropTypes.arrayOf(PropTypes.string),
+};
+
+EditHighlightTitleModal.defaultProps = {
+  existingHighlightTitles: [],
 };
 
 export default EditHighlightTitleModal;

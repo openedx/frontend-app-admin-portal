@@ -91,15 +91,38 @@ describe('<CurrentContentHighlightItemsHeader>', () => {
     expect(screen.getByTestId('edit-highlight-title-input')).toBeInTheDocument();
   });
 
-  it('shows Edit content button and Delete in view mode', () => {
+  it('shows Edit content button and Delete in view mode when editHighlightsEnabled is true', () => {
     render(
-      <CurrentContentHighlightItemsHeaderWrapper isLoading={false} highlightTitle={highlightTitle} />,
+      <CurrentContentHighlightItemsHeaderWrapper
+        isLoading={false}
+        highlightTitle={highlightTitle}
+        editHighlightsEnabled
+      />,
     );
     expect(screen.getByTestId('edit-content-button')).toBeInTheDocument();
     expect(screen.getByTestId('deleteHighlightSet')).toBeInTheDocument();
     expect(screen.queryByTestId('remove-content-button')).not.toBeInTheDocument();
     expect(screen.queryByTestId('add-content-button')).not.toBeInTheDocument();
     expect(screen.queryByTestId('cancel-edit-button')).not.toBeInTheDocument();
+  });
+
+  it('hides Edit content button when editHighlightsEnabled is false', () => {
+    render(
+      <CurrentContentHighlightItemsHeaderWrapper
+        isLoading={false}
+        highlightTitle={highlightTitle}
+        editHighlightsEnabled={false}
+      />,
+    );
+    expect(screen.queryByTestId('edit-content-button')).not.toBeInTheDocument();
+    expect(screen.getByTestId('deleteHighlightSet')).toBeInTheDocument();
+  });
+
+  it('hides Edit content button when editHighlightsEnabled is not provided (default false)', () => {
+    render(
+      <CurrentContentHighlightItemsHeaderWrapper isLoading={false} highlightTitle={highlightTitle} />,
+    );
+    expect(screen.queryByTestId('edit-content-button')).not.toBeInTheDocument();
   });
 
   it('calls onEditClick when Edit content button is clicked', () => {
@@ -109,6 +132,7 @@ describe('<CurrentContentHighlightItemsHeader>', () => {
         isLoading={false}
         highlightTitle={highlightTitle}
         onEditClick={onEditClick}
+        editHighlightsEnabled
       />,
     );
     fireEvent.click(screen.getByTestId('edit-content-button'));

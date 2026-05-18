@@ -10,6 +10,7 @@ import configureMockStore from 'redux-mock-store';
 import { Provider } from 'react-redux';
 import { axe } from 'jest-axe';
 import { ContentHighlightsContext } from '../../ContentHighlightsContext';
+import EnterpriseCatalogApiService from '../../../../data/services/EnterpriseCatalogApiService';
 import {
   BUTTON_TEXT,
   DEFAULT_ERROR_MESSAGE,
@@ -57,6 +58,7 @@ jest.mock('@2uinc/frontend-enterprise-utils', () => {
 
 const ContentHighlightStepperWrapper = ({
   enterpriseAppContextValue = initialEnterpriseAppContextValue,
+  storeState = initialState,
   ...props
 }) => {
   const contextValue = useState({
@@ -75,7 +77,7 @@ const ContentHighlightStepperWrapper = ({
   });
   return (
     <IntlProvider locale="en">
-      <Provider store={mockStore(initialState)}>
+      <Provider store={mockStore(storeState)}>
         <EnterpriseAppContext.Provider value={enterpriseAppContextValue}>
           <ContentHighlightsContext.Provider value={contextValue}>
             <ContentHighlightsDashboard {...props} />
@@ -110,9 +112,34 @@ jest.mock('react-instantsearch-dom', () => ({
   },
 }));
 
+jest.mock('../../../../data/services/EnterpriseCatalogApiService');
+
+const mockCreateHighlightSetSuccess = {
+  data: {
+    card_image_url: null,
+    is_published: true,
+    title: 'test-title',
+    uuid: 'test-highlight-uuid',
+    highlighted_content: [],
+  },
+};
+
+const navigateStepperToConfirmContent = async (user) => {
+  const stepper = screen.getByTestId(`zero-state-card-${BUTTON_TEXT.zeroStateCreateNewHighlight}`);
+  await user.click(stepper);
+
+  const input = screen.getByTestId('stepper-title-input');
+  await user.type(input, 'test-title');
+  await user.click(screen.getByText('Next'));
+  await user.click(screen.getByText('Next'));
+
+  expect(screen.getByText(STEPPER_STEP_TEXT.HEADER_TEXT.confirmContent)).toBeInTheDocument();
+};
+
 describe('<ContentHighlightStepper>', () => {
   beforeEach(() => {
     jest.clearAllMocks();
+    EnterpriseCatalogApiService.createHighlightSet.mockResolvedValue(mockCreateHighlightSetSuccess);
   });
 
   // Skipped because this test fails a11y checks; to be addressed in ENT-11719
@@ -361,6 +388,49 @@ describe('<ContentHighlightStepper>', () => {
     });
     await waitFor(() => {
       expect(screen.queryByText(DEFAULT_ERROR_MESSAGE.EXCEEDS_HIGHLIGHT_TITLE_LENGTH)).not.toBeInTheDocument();
+    });
+  });
+
+  it('shows generic publish error modal when create highlight fails and edit feature is disabled', async () => {
+    const user = userEvent.setup();
+    EnterpriseCatalogApiService.createHighlightSet.mockRejectedValueOnce(new Error('publish failed'));
+
+    renderWithRouter(<ContentHighlightStepperWrapper />);
+    await navigateStepperToConfirmContent(user);
+    await user.click(screen.getByText('Publish'));
+
+    await waitFor(() => {
+      expect(screen.getByText('Something went wrong')).toBeInTheDocument();
+      expect(screen.getByText(/Something went wrong behind the scenes/)).toBeInTheDocument();
+    });
+  });
+
+  it('shows duplicate error modal when API returns duplicate title with edit feature enabled', async () => {
+    const user = userEvent.setup();
+    const storeState = {
+      portalConfiguration: {
+        ...initialState.portalConfiguration,
+        enterpriseFeatures: {
+          enterpriseEditHighlightsEnabled: true,
+        },
+      },
+    };
+    EnterpriseCatalogApiService.createHighlightSet.mockRejectedValueOnce({
+      response: {
+        data: {
+          non_field_errors: ['A highlight with this title already exists.'],
+        },
+      },
+    });
+
+    renderWithRouter(<ContentHighlightStepperWrapper storeState={storeState} />);
+    await navigateStepperToConfirmContent(user);
+    await user.click(screen.getByText('Publish'));
+
+    await waitFor(() => {
+      expect(screen.getByText('Something went wrong')).toBeInTheDocument();
+      expect(screen.getByText(/A highlight with this name already exists/)).toBeInTheDocument();
+      expect(screen.getByText(/Please enter a unique name/)).toBeInTheDocument();
     });
   });
 });

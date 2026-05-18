@@ -14,6 +14,8 @@ import EnterpriseAppSkeleton from '../EnterpriseApp/EnterpriseAppSkeleton';
 
 const USER_ACCOUNT_POLLING_TIMEOUT = 5000;
 
+// See docs/references/admin-registration-and-activation.md for the broader
+// registration+activation flow this page is part of.
 const UserActivationPage = () => {
   const [user, setUser] = useState(() => getAuthenticatedUser());
   const [showToast, setShowToast] = useState(false);
@@ -37,11 +39,9 @@ const UserActivationPage = () => {
     }
   };
 
-  // Hydrate once on mount to refresh stale cached user data (roles/isActive)
-  // for users who land here directly after registration. Without this, an
-  // empty `roles` would bounce to /admin/register, which can loop back here
-  // when its loginRefresh+reload path doesn't run (e.g. localStorage flag
-  // already set).
+  // Hydrate once on mount in case the cached user data is stale (e.g. when
+  // landing here from somewhere other than AdminRegisterPage). The interval
+  // below keeps polling while the user remains unverified or role-less.
   useEffect(() => {
     if (user && (!user.isActive || !user.roles?.length)) {
       refreshUser();

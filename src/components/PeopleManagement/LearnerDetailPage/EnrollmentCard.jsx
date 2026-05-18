@@ -14,6 +14,9 @@ import EVENT_NAMES from '../../../eventTracking';
 const EnrollmentCard = ({ enrollment, enterpriseSlug }) => {
   const renderBadge = () => {
     switch (enrollment.courseRunStatus) {
+      case 'unenrolled': {
+        return (<Badge variant="secondary">Unenrolled</Badge>);
+      }
       case 'completed': {
         return (<Badge variant="light">Completed</Badge>);
       }

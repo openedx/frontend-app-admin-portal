@@ -8,6 +8,7 @@ import { useParams } from 'react-router';
 
 import { axe } from 'jest-axe';
 import OrgInviteAdminCard from '../OrgInviteAdminCard';
+import { PENDING_INVITED_ADMIN_PARAM } from '../../AdminRegisterPage';
 import { accessibilitySettings } from '../../../../tests/accessibility-settings';
 
 /* ---------------- MOCKS ---------------- */
@@ -145,7 +146,7 @@ describe('OrgInviteAdminCard', () => {
 
     await waitFor(() => {
       expect(mockWriteText).toHaveBeenCalledWith(
-        'http://localhost:18000/test-enterprise/admin/register',
+        `http://localhost:18000/test-enterprise/admin/register?${PENDING_INVITED_ADMIN_PARAM}=true`,
       );
     });
   });
