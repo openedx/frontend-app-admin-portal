@@ -95,7 +95,7 @@ const renderWithProviders = (ui) => {
 
 describe('<DeleteHighlightSet />', () => {
   const getDeleteHighlightBtn = () => {
-    const deleteBtn = screen.getByText('Delete highlight');
+    const deleteBtn = screen.getByRole('button', { name: 'Delete highlight' });
     return deleteBtn;
   };
 
@@ -122,6 +122,15 @@ describe('<DeleteHighlightSet />', () => {
     renderWithProviders(<DeleteHighlightSetWrapper />);
     const deleteBtn = getDeleteHighlightBtn();
     expect(deleteBtn).toBeInTheDocument();
+  });
+
+  it('shows delete highlight tooltip on hover', async () => {
+    const user = userEvent.setup();
+    renderWithProviders(<DeleteHighlightSetWrapper />);
+
+    await user.hover(getDeleteHighlightBtn());
+
+    expect(await screen.findByText('Delete highlight')).toBeInTheDocument();
   });
 
   it('clicking delete highlight button opens confirmation modal', async () => {

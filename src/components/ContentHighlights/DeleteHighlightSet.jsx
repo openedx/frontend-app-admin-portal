@@ -1,10 +1,10 @@
 import React, { useContext, useState } from 'react';
 import PropTypes from 'prop-types';
 import {
-  ActionRow, Alert, AlertModal, Button, StatefulButton, useToggle,
+  ActionRow, Alert, AlertModal, Button, Icon, IconButtonWithTooltip, StatefulButton, useToggle,
 } from '@openedx/paragon';
 import { FormattedMessage, useIntl } from '@edx/frontend-platform/i18n';
-import { Info } from '@openedx/paragon/icons';
+import { Delete, Info } from '@openedx/paragon/icons';
 import { useNavigate, useParams } from 'react-router-dom';
 import { logError } from '@edx/frontend-platform/logging';
 import { connect } from 'react-redux';
@@ -27,6 +27,11 @@ const DeleteHighlightSet = ({ enterpriseId, enterpriseSlug }) => {
   const [deletionError, setDeletionError] = useState(null);
   const intl = useIntl();
   const queryClient = useQueryClient();
+  const deleteHighlightLabel = intl.formatMessage({
+    id: 'highlights.delete.highlight.button.text',
+    defaultMessage: 'Delete highlight',
+    description: 'Button text to delete a highlight set.',
+  });
 
   const trackEventOpenDelete = () => {
     const trackInfo = {
@@ -106,13 +111,15 @@ const DeleteHighlightSet = ({ enterpriseId, enterpriseSlug }) => {
 
   return (
     <>
-      <Button variant="outline-primary" onClick={openDeleteConfirmation}>
-        <FormattedMessage
-          id="highlights.delete.highlight.button.text"
-          defaultMessage="Delete highlight"
-          description="Button text to delete a highlight set."
-        />
-      </Button>
+      <IconButtonWithTooltip
+        src={Delete}
+        iconAs={Icon}
+        alt={deleteHighlightLabel}
+        tooltipContent={deleteHighlightLabel}
+        tooltipPlacement="top"
+        onClick={openDeleteConfirmation}
+        data-testid="delete-highlight-button"
+      />
       <AlertModal
         title={intl.formatMessage({
           id: 'highlights.modal.delete.highlight.confirm.title',
