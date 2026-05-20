@@ -6,6 +6,7 @@ import {
   Navigate,
   useLocation, generatePath,
 } from 'react-router-dom';
+import { useIntl } from '@edx/frontend-platform/i18n';
 
 import Hero from '../Hero';
 import NotFoundPage from '../NotFoundPage';
@@ -16,20 +17,24 @@ import {
 import SettingsTabs from './SettingsTabs';
 import SyncHistory from './SettingsLMSTab/ErrorReporting/SyncHistory';
 
-const PAGE_TILE = 'Settings';
-
 /**
  * Behaves as the router for settings page
  * When browsing to {path} (../admin/settings) redirect to default tab
  */
 const SettingsPage = () => {
   const { pathname } = useLocation();
+  const intl = useIntl();
   const tabRoute = generatePath(`${pathname}/${DEFAULT_TAB}`);
+  const pageTitle = intl.formatMessage({
+    id: 'admin.portal.settings.page.title',
+    defaultMessage: 'Settings',
+    description: 'Title for the Settings page.',
+  });
 
   return (
     <>
-      <Helmet title={PAGE_TILE} />
-      <Hero title={PAGE_TILE} />
+      <Helmet title={pageTitle} />
+      <Hero title={pageTitle} />
       <Routes>
         <Route
           path="/"

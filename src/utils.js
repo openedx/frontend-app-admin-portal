@@ -342,10 +342,21 @@ const mergeErrors = (object, other) => {
   return mergeWith(object, other, customizer);
 };
 
-const getSubscriptionContactText = (contactEmail) => {
-  let contactText = 'To learn more about your unlimited subscription and edX, contact your edX administrator';
+const getSubscriptionContactText = (contactEmail, intl = null) => {
+  if (contactEmail && intl) {
+    return `${intl.formatMessage({
+      id: 'admin.portal.subscription.contact.with.email.text',
+      defaultMessage: 'To learn more about your unlimited subscription and edX, contact your edX administrator at {contactEmail}.',
+      description: 'Closing text for subscription-related emails when a contact email is provided.',
+    }, { contactEmail })}`;
+  }
+  const contactText = intl ? intl.formatMessage({
+    id: 'admin.portal.subscription.contact.text',
+    defaultMessage: 'To learn more about your unlimited subscription and edX, contact your edX administrator',
+    description: 'Default closing text for subscription-related emails.',
+  }) : 'To learn more about your unlimited subscription and edX, contact your edX administrator';
   if (contactEmail) {
-    contactText = `${contactText} at ${contactEmail}`;
+    return `${contactText} at ${contactEmail}.`;
   }
   return `${contactText}.`;
 };

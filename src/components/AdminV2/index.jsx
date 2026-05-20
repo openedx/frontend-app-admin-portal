@@ -489,8 +489,18 @@ const Admin = ({
     <main data-enterprise-id={enterpriseId} data-testid="learner-progress-report" role="main" className="learner-progress-report">
       {!loading && !error && !hasAnalyticsData() ? <EnterpriseAppSkeleton /> : (
         <>
-          <Helmet title="Learner Progress Report" />
-          <Hero title="Learner Progress Report" />
+          <Helmet title={intl.formatMessage({
+            id: 'adminPortal.lpr.page.title',
+            defaultMessage: 'Learner Progress Report',
+            description: 'Page title for the learner progress report in the admin portal.',
+          })}
+          />
+          <Hero title={intl.formatMessage({
+            id: 'adminPortal.lpr.page.title',
+            defaultMessage: 'Learner Progress Report',
+            description: 'Page title for the learner progress report in the admin portal.',
+          })}
+          />
           <BudgetExpiryAlertAndModal />
           <SubscriptionData enterpriseId={enterpriseId}>
             <SubscriptionModal />
