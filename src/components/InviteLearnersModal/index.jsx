@@ -5,7 +5,7 @@ import {
   ActionRow, Alert, Button, ModalDialog, Spinner,
 } from '@openedx/paragon';
 import { Cancel as ErrorIcon } from '@openedx/paragon/icons';
-import { FormattedMessage } from '@edx/frontend-platform/i18n';
+import { FormattedMessage, injectIntl, intlShape } from '@edx/frontend-platform/i18n';
 
 import { camelCaseObject } from '@edx/frontend-platform/utils';
 import emailTemplate from './emailTemplate';
@@ -24,12 +24,13 @@ class InviteLearnersModal extends React.Component {
   }
 
   componentDidMount() {
-    const { contactEmail } = this.props;
+    const { contactEmail, intl } = this.props;
+    const template = emailTemplate(intl, contactEmail);
 
     this.props.initialize({
-      'email-template-greeting': emailTemplate.greeting,
-      'email-template-body': emailTemplate.body,
-      'email-template-closing': emailTemplate.closing(contactEmail),
+      'email-template-greeting': template.greeting,
+      'email-template-body': template.body,
+      'email-template-closing': template.closing,
     });
   }
 
@@ -303,8 +304,9 @@ InviteLearnersModal.propTypes = {
 
   availableSubscriptionCount: PropTypes.number.isRequired,
   contactEmail: PropTypes.string,
+  intl: intlShape.isRequired,
 };
 
 export default reduxForm({
   form: 'license-assignment-modal-form',
-})(InviteLearnersModal);
+})(injectIntl(InviteLearnersModal));

@@ -48,11 +48,11 @@ jest.mock('@edx/frontend-platform/utils', () => ({
 
 jest.mock('./emailTemplate', () => ({
   __esModule: true,
-  default: {
+  default: jest.fn(() => ({
     greeting: 'Test Greeting',
     body: 'Test Body',
-    closing: jest.fn(() => 'Test Closing'),
-  },
+    closing: 'Test Closing',
+  })),
 }));
 
 const defaultProps = {

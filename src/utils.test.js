@@ -9,6 +9,7 @@ import {
   downloadCsv,
   getEnterpriseAdminRegisterLogoutUrl,
   getFromLocalStorage,
+  getSubscriptionContactText,
   getTimeStampedFilename,
   i18nFormatPassedTimestamp,
   i18nFormatProgressStatus,
@@ -174,6 +175,20 @@ describe('utils', () => {
     });
   });
   describe('i18nFormatProgressStatus', () => {
+    const testIntl = createIntl({
+      locale: 'en',
+      messages: {
+        'admin.portal.lpr.progress.status.in.progress': 'IN_PROGRESS_TRANSLATED',
+        'admin.portal.lpr.progress.status.passed': 'PASSED_TRANSLATED',
+        'admin.portal.lpr.progress.status.audit.access.expired': 'AUDIT_ACCESS_EXPIRED_TRANSLATED',
+        'admin.portal.lpr.progress.status.failed': 'FAILED_TRANSLATED',
+        'admin.portal.lpr.progress.status.cancelled': 'CANCELLED_TRANSLATED',
+        'admin.portal.lpr.progress.status.enrolled': 'ENROLLED_TRANSLATED',
+        'admin.portal.lpr.progress.status.pass': 'PASS_TRANSLATED',
+        'admin.portal.lpr.progress.status.pending': 'PENDING_TRANSLATED',
+      },
+    });
+
     it('returns correct progress status', () => {
       const allProgressStatuses = [
         'In Progress', 'Passed', 'Audit Access Expired',
@@ -183,6 +198,34 @@ describe('utils', () => {
         const formattedProgressStatus = i18nFormatProgressStatus({ intl, progressStatus });
         expect(formattedProgressStatus).toEqual(progressStatus);
       });
+    });
+
+    it('returns translated message for "In Progress" status', () => {
+      const result = i18nFormatProgressStatus({ intl: testIntl, progressStatus: 'In Progress' });
+      expect(result).toEqual('IN_PROGRESS_TRANSLATED');
+      expect(typeof result).toBe('string');
+    });
+
+    it('returns translated message for "Passed" status', () => {
+      const result = i18nFormatProgressStatus({ intl: testIntl, progressStatus: 'Passed' });
+      expect(result).toEqual('PASSED_TRANSLATED');
+      expect(typeof result).toBe('string');
+    });
+
+    it('returns original status for unknown progress status', () => {
+      const unknownStatus = 'Unknown Status';
+      const result = i18nFormatProgressStatus({ intl, progressStatus: unknownStatus });
+      expect(result).toEqual(unknownStatus);
+    });
+
+    it('returns null for null progress status', () => {
+      const result = i18nFormatProgressStatus({ intl, progressStatus: null });
+      expect(result).toEqual(null);
+    });
+
+    it('returns undefined for undefined progress status', () => {
+      const result = i18nFormatProgressStatus({ intl, progressStatus: undefined });
+      expect(result).toEqual(undefined);
     });
   });
   describe('getTimeStampedFilename', () => {
@@ -283,6 +326,20 @@ describe('utils', () => {
 
         expect(result).toBeNull();
       });
+    });
+  });
+
+  describe('getSubscriptionContactText', () => {
+    it('returns text with email when intl is not provided', () => {
+      expect(getSubscriptionContactText('help@example.com')).toEqual(
+        'To learn more about your unlimited subscription and edX, contact your edX administrator at help@example.com.',
+      );
+    });
+
+    it('returns default text with period when no contactEmail is provided', () => {
+      expect(getSubscriptionContactText(null)).toEqual(
+        'To learn more about your unlimited subscription and edX, contact your edX administrator.',
+      );
     });
   });
 

@@ -1,4 +1,5 @@
 import React from 'react';
+import '@testing-library/jest-dom';
 import PropTypes from 'prop-types';
 import { Provider } from 'react-redux';
 import thunk from 'redux-thunk';
@@ -6,10 +7,12 @@ import {
   screen,
   render,
 } from '@testing-library/react';
+import { IntlProvider } from '@edx/frontend-platform/i18n';
 import configureMockStore from 'redux-mock-store';
 import { MemoryRouter, Route, Routes } from 'react-router-dom';
 
 import { axe } from 'jest-axe';
+import CodeManagement from '../index';
 import CodeManagementRoutes from '../CodeManagementRoutes';
 import { accessibilitySettings } from '../../../../tests/accessibility-settings';
 
@@ -66,7 +69,29 @@ const CodeManagementRoutesWithRouter = ({
   </MemoryRouter>
 );
 
+const CodeManagementWithRouter = ({
+  store: storeProp,
+  initialEntries,
+  routePath,
+}) => (
+  <IntlProvider locale="en">
+    <MemoryRouter initialEntries={initialEntries}>
+      <Provider store={storeProp}>
+        <Routes>
+          <Route path={`${routePath}*`} element={<CodeManagement />} />
+        </Routes>
+      </Provider>
+    </MemoryRouter>
+  </IntlProvider>
+);
+
 CodeManagementRoutesWithRouter.propTypes = {
+  store: PropTypes.shape(),
+  initialEntries: PropTypes.arrayOf(PropTypes.string),
+  routePath: PropTypes.string,
+};
+
+CodeManagementWithRouter.propTypes = {
   store: PropTypes.shape(),
   initialEntries: PropTypes.arrayOf(PropTypes.string),
   routePath: PropTypes.string,
@@ -75,6 +100,12 @@ CodeManagementRoutesWithRouter.propTypes = {
 CodeManagementRoutesWithRouter.defaultProps = {
   store,
   initialEntries: [`/${enterpriseSlug}/admin/coupons`],
+  routePath: '/',
+};
+
+CodeManagementWithRouter.defaultProps = {
+  store,
+  initialEntries: ['/*'],
   routePath: '/',
 };
 
@@ -90,5 +121,28 @@ describe('<CodeManagementRoutes />', () => {
 
     render(<CodeManagementRoutesWithRouter store={newStore} />);
     expect(screen.getByText(COUPON_CODE_TABS_MOCK_CONTENT));
+  });
+});
+
+describe('<CodeManagement />', () => {
+  it('renders the hero component with localized page title', () => {
+    render(<CodeManagementWithRouter initialEntries={[`/${enterpriseSlug}/admin/coupons`]} />);
+
+    expect(screen.getByRole('heading', { name: 'Code Management' })).toBeInTheDocument();
+  });
+
+  it('renders the code management routes content', () => {
+    render(<CodeManagementWithRouter initialEntries={[`/${enterpriseSlug}/admin/coupons`]} />);
+
+    expect(screen.getByText(COUPON_CODE_TABS_MOCK_CONTENT)).toBeInTheDocument();
+  });
+
+  it('renders main element and container spacing class', () => {
+    const { container } = render(
+      <CodeManagementWithRouter initialEntries={[`/${enterpriseSlug}/admin/coupons`]} />,
+    );
+
+    expect(screen.getByRole('main')).toBeInTheDocument();
+    expect(container.querySelector('.py-3')).toBeInTheDocument();
   });
 });

@@ -6,6 +6,7 @@ import {
   ActionRow, Alert, Hyperlink, Icon, ModalDialog, Spinner, StatefulButton,
 } from '@openedx/paragon';
 import { RemoveCircle } from '@openedx/paragon/icons';
+import { useIntl } from '@edx/frontend-platform/i18n';
 import { logError } from '@edx/frontend-platform/logging';
 import { useRequestState } from './LicenseManagementModalHook';
 import { configuration } from '../../../../config';
@@ -29,26 +30,6 @@ const showRevocationCapAlert = (revocationCapEnabled, revocations) => {
   return revocations.applied > revocationCapLimit;
 };
 
-/**
- * Returns StatefulButton labels
- * @param {number} totalToRevoke
- * @returns {Object}
- */
-const generateRevokeModalSubmitLabel = (totalToRevoke) => {
-  let buttonNumberLabel = 'all';
-
-  if (Number.isFinite(totalToRevoke)) {
-    buttonNumberLabel = `(${totalToRevoke})`;
-  }
-
-  return {
-    default: `Revoke ${buttonNumberLabel}`,
-    pending: `Revoking ${buttonNumberLabel}`,
-    complete: 'Done',
-    error: `Retry revoke ${buttonNumberLabel}`,
-  };
-};
-
 const LicenseManagementRevokeModal = ({
   isOpen,
   onClose,
@@ -61,10 +42,48 @@ const LicenseManagementRevokeModal = ({
   activeFilters,
 }) => {
   const [requestState, setRequestState, initialRequestState] = useRequestState(isOpen);
+  const intl = useIntl();
 
-  const buttonLabels = generateRevokeModalSubmitLabel(totalToRevoke);
+  const buttonNumberLabel = Number.isFinite(totalToRevoke) ? `(${totalToRevoke})` : intl.formatMessage({
+    id: 'admin.portal.subscription.revoke.modal.button.all.label',
+    defaultMessage: 'all',
+    description: 'Label for revoking all licenses.',
+  });
 
-  const title = `Revoke License${revokeAllUsers || totalToRevoke > 1 ? 's' : ''}`;
+  const buttonLabels = {
+    default: intl.formatMessage({
+      id: 'admin.portal.subscription.revoke.modal.button.default.label',
+      defaultMessage: 'Revoke {count}',
+      description: 'Default revoke button label.',
+    }, { count: buttonNumberLabel }),
+    pending: intl.formatMessage({
+      id: 'admin.portal.subscription.revoke.modal.button.pending.label',
+      defaultMessage: 'Revoking {count}',
+      description: 'Pending revoke button label.',
+    }, { count: buttonNumberLabel }),
+    complete: intl.formatMessage({
+      id: 'admin.portal.subscription.revoke.modal.button.complete.label',
+      defaultMessage: 'Done',
+      description: 'Completed revoke button label.',
+    }),
+    error: intl.formatMessage({
+      id: 'admin.portal.subscription.revoke.modal.button.error.label',
+      defaultMessage: 'Retry revoke {count}',
+      description: 'Error revoke button label.',
+    }, { count: buttonNumberLabel }),
+  };
+
+  const title = revokeAllUsers || totalToRevoke > 1
+    ? intl.formatMessage({
+      id: 'admin.portal.subscription.revoke.modal.title.plural',
+      defaultMessage: 'Revoke Licenses',
+      description: 'Title for the revoke modal when revoking multiple licenses.',
+    })
+    : intl.formatMessage({
+      id: 'admin.portal.subscription.revoke.modal.title.singular',
+      defaultMessage: 'Revoke License',
+      description: 'Title for the revoke modal when revoking a single license.',
+    });
 
   const isExpired = dayjs().isAfter(subscription.expirationDate);
   const LICENSE_NOT_FOUND_ERROR_CODE = 404;
@@ -195,11 +214,24 @@ const LicenseManagementRevokeModal = ({
         {requestState.error
             && (
             <Alert variant="danger">
-              <p>There was an error with your request. Please try again.</p>
+              <p>{intl.formatMessage({
+                id: 'admin.portal.subscription.revoke.modal.error.message',
+                defaultMessage: 'There was an error with your request. Please try again.',
+                description: 'Error message shown when revoke request fails.',
+              })}
+              </p>
               <p>
-                If the error persists,{' '}
+                {intl.formatMessage({
+                  id: 'admin.portal.subscription.revoke.modal.error.persist.message',
+                  defaultMessage: 'If the error persists, ',
+                  description: 'Text before contact support link in revoke modal.',
+                })}
                 <Hyperlink destination={configuration.ENTERPRISE_SUPPORT_URL}>
-                  contact customer support.
+                  {intl.formatMessage({
+                    id: 'admin.portal.subscription.revoke.modal.error.contact.support',
+                    defaultMessage: 'contact customer support.',
+                    description: 'Contact support link text in revoke modal.',
+                  })}
                 </Hyperlink>
               </p>
               {requestState.error?.map?.((err, index) => (
@@ -210,24 +242,43 @@ const LicenseManagementRevokeModal = ({
         {showRevocationCapAlert(subscription.isRevocationCapEnabled, subscription.revocations)
             && (
             <Alert variant="warning">
-              You have already revoked {subscription.revocations.applied} licenses. You
-              have {subscription.revocations.remaining} revocations left on your plan.
+              {intl.formatMessage({
+                id: 'admin.portal.subscription.revoke.modal.revocation.cap.alert',
+                defaultMessage: 'You have already revoked {applied} licenses. You have {remaining} revocations left on your plan.',
+                description: 'Warning shown when revocation cap is almost reached.',
+              }, {
+                applied: subscription.revocations.applied,
+                remaining: subscription.revocations.remaining,
+              })}
             </Alert>
             )}
-        <p>This action cannot be undone. Learners with revoked licenses must be reinvited.</p>
+        <p>{intl.formatMessage({
+          id: 'admin.portal.subscription.revoke.modal.body.warning',
+          defaultMessage: 'This action cannot be undone. Learners with revoked licenses must be reinvited.',
+          description: 'Warning text in revoke modal body.',
+        })}
+        </p>
         <p>
           <Hyperlink
             variant="muted"
             destination={configuration.ENTERPRISE_SUPPORT_REVOKE_LICENSE_URL}
           >
-            Learn more about revoking subscription licenses.
+            {intl.formatMessage({
+              id: 'admin.portal.subscription.revoke.modal.learn.more.link',
+              defaultMessage: 'Learn more about revoking subscription licenses.',
+              description: 'Learn more link text in revoke modal.',
+            })}
           </Hyperlink>
         </p>
       </ModalDialog.Body>
       <ModalDialog.Footer>
         <ActionRow>
           <ModalDialog.CloseButton variant="tertiary">
-            Cancel
+            {intl.formatMessage({
+              id: 'admin.portal.subscription.revoke.modal.cancel.button',
+              defaultMessage: 'Cancel',
+              description: 'Cancel button text in revoke modal.',
+            })}
           </ModalDialog.CloseButton>
           <StatefulButton
             state={getRevokeButtonState()}

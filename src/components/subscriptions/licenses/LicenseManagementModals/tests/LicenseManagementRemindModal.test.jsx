@@ -11,7 +11,7 @@ import { logError } from '@edx/frontend-platform/logging';
 import { IntlProvider } from '@edx/frontend-platform/i18n';
 import { axe } from 'jest-axe';
 import LicenseManagerApiService from '../../../../../data/services/LicenseManagerAPIService';
-import LicenseManagementRemindModal from '../LicenseManagementRemindModal';
+import LicenseManagementRemindModal, { getUserEmailsToRemind } from '../LicenseManagementRemindModal';
 import { ASSIGNED } from '../../../data/constants';
 import { accessibilitySettings } from '../../../../../../tests/accessibility-settings';
 
@@ -210,6 +210,25 @@ describe('<LicenseManagementRemindModal />', () => {
             filter_value: [ASSIGNED],
           }],
         },
+      );
+    });
+  });
+
+  describe('getUserEmailsToRemind', () => {
+    const testIntl = {
+      formatMessage: ({ defaultMessage }) => defaultMessage,
+    };
+
+    it('returns user email list when users are selected', () => {
+      expect(getUserEmailsToRemind([sampleUser], testIntl)).toEqual([sampleUser.email]);
+    });
+
+    it('logs and throws when no users are selected', () => {
+      expect(() => getUserEmailsToRemind([], testIntl)).toThrow(
+        'Unable to remind license(s) based on table state',
+      );
+      expect(logError).toHaveBeenCalledWith(
+        'Unable to remind license(s) based on table state. No licenses selected for reminder',
       );
     });
   });

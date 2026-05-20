@@ -125,27 +125,43 @@ const Sidebar = ({
 
   const getMenuItems = () => [
     {
-      title: 'Learner Progress Report',
+      title: intl.formatMessage({
+        id: 'sidebar.menu.item.learner.progress.report.title',
+        defaultMessage: 'Learner Progress Report',
+        description: 'Sidebar menu item title for learner progress report.',
+      }),
       to: `${baseUrl}/admin/${ROUTE_NAMES.learners}`,
       icon: <Icon src={TrendingUp} />,
       id: TRACK_LEARNER_PROGRESS_TARGETS.LEARNER_PROGRESS_SIDEBAR,
     },
     {
-      title: 'Analytics',
+      title: intl.formatMessage({
+        id: 'sidebar.menu.item.analytics.title',
+        defaultMessage: 'Analytics',
+        description: 'Sidebar menu item title for analytics.',
+      }),
       to: `${baseUrl}/admin/${ROUTE_NAMES.analytics}`,
       icon: <Icon src={InsertChartOutlined} />,
       hidden: !features.ANALYTICS || !enableAnalyticsScreen,
       id: ANALYTICS_INSIGHTS_TARGETS.SIDEBAR,
     },
     {
-      title: 'Code Management',
+      title: intl.formatMessage({
+        id: 'sidebar.menu.item.code.management.title',
+        defaultMessage: 'Code Management',
+        description: 'Sidebar menu item title for code management.',
+      }),
       to: `${baseUrl}/admin/${ROUTE_NAMES.codeManagement}`,
       icon: <Icon src={Tag} />,
       hidden: !features.CODE_MANAGEMENT || !enableCodeManagementScreen,
       notification: !!subsidyRequestsCounts.couponCodes,
     },
     {
-      title: 'Subscription Management',
+      title: intl.formatMessage({
+        id: 'sidebar.menu.item.subscription.management.title',
+        defaultMessage: 'Subscription Management',
+        description: 'Sidebar menu item title for subscription management.',
+      }),
       to: `${baseUrl}/admin/${ROUTE_NAMES.subscriptionManagement}`,
       icon: <Icon src={CreditCard} />,
       hidden: !enableSubscriptionManagementScreen,
@@ -163,14 +179,22 @@ const Sidebar = ({
       id: TOUR_TARGETS.BILLING,
     },
     {
-      title: 'Learner Credit Management',
+      title: intl.formatMessage({
+        id: 'sidebar.menu.item.learner.credit.management.title',
+        defaultMessage: 'Learner Credit Management',
+        description: 'Sidebar menu item title for learner credit management.',
+      }),
       id: TOUR_TARGETS.LEARNER_CREDIT,
       to: `${baseUrl}/admin/${ROUTE_NAMES.learnerCredit}`,
       icon: <Icon src={MoneyOutline} />,
       hidden: !canManageLearnerCredit,
     },
     {
-      title: 'People Management',
+      title: intl.formatMessage({
+        id: 'sidebar.menu.item.people.management.title',
+        defaultMessage: 'People Management',
+        description: 'Sidebar menu item title for people management.',
+      }),
       id: TOUR_TARGETS.PEOPLE_MANAGEMENT,
       to: `${baseUrl}/admin/${ROUTE_NAMES.peopleManagement}`,
       icon: <Icon src={Person} />,
@@ -188,21 +212,33 @@ const Sidebar = ({
       notification: isNewArchivedContent,
     },
     {
-      title: 'Reporting Configurations',
+      title: intl.formatMessage({
+        id: 'sidebar.menu.item.reporting.configurations.title',
+        defaultMessage: 'Reporting Configurations',
+        description: 'Sidebar menu item title for reporting configurations.',
+      }),
       to: `${baseUrl}/admin/${ROUTE_NAMES.reporting}`,
       icon: <Icon src={Description} />,
       hidden: !features.REPORTING_CONFIGURATIONS || !enableReportingConfigScreen,
       id: CUSTOMIZE_REPORTS_SIDEBAR,
     },
     {
-      title: 'Settings',
+      title: intl.formatMessage({
+        id: 'sidebar.menu.item.settings.title',
+        defaultMessage: 'Settings',
+        description: 'Sidebar menu item title for settings.',
+      }),
       id: TOUR_TARGETS.SETTINGS_SIDEBAR,
       to: `${baseUrl}/admin/${ROUTE_NAMES.settings}`,
       icon: <Icon src={Settings} />,
     },
     // NOTE: keep "Support" link the last nav item
     {
-      title: 'Support',
+      title: intl.formatMessage({
+        id: 'sidebar.menu.item.support.title',
+        defaultMessage: 'Support',
+        description: 'Sidebar menu item title for support.',
+      }),
       to: configuration.ENTERPRISE_SUPPORT_URL,
       icon: <Icon src={Support} />,
       hidden: !features.SUPPORT,

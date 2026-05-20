@@ -8,6 +8,7 @@ import {
   Routes,
   useParams,
 } from 'react-router-dom';
+import { FormattedMessage } from '@edx/frontend-platform/i18n';
 
 import { SubsidyRequestsContext } from '../subsidy-requests';
 import ManageCodesTab from './ManageCodesTab';
@@ -17,7 +18,6 @@ import {
   MANAGE_CODES_TAB,
   MANAGE_REQUESTS_TAB,
   COUPON_CODE_TABS_VALUES,
-  COUPON_CODE_TABS_LABELS,
   COUPON_CODE_TAB_PARAM,
 } from './data/constants';
 import { SUPPORTED_SUBSIDY_TYPES } from '../../data/constants/subsidyRequests';
@@ -62,7 +62,13 @@ const CouponCodeTabs = ({ enterpriseSlug }) => {
       <Tab
         key={COUPON_CODE_TABS_VALUES[MANAGE_CODES_TAB]}
         eventKey={COUPON_CODE_TABS_VALUES[MANAGE_CODES_TAB]}
-        title={COUPON_CODE_TABS_LABELS[MANAGE_CODES_TAB]}
+        title={(
+          <FormattedMessage
+            id="admin.portal.code.management.tabs.manage.codes"
+            defaultMessage="Manage Codes"
+            description="Label for the Manage Codes tab in Code Management."
+          />
+        )}
         className="pt-4"
       >
         {COUPON_CODE_TABS_VALUES[MANAGE_CODES_TAB] === couponCodesTab && (
@@ -80,7 +86,13 @@ const CouponCodeTabs = ({ enterpriseSlug }) => {
         <Tab
           key={COUPON_CODE_TABS_VALUES[MANAGE_REQUESTS_TAB]}
           eventKey={COUPON_CODE_TABS_VALUES[MANAGE_REQUESTS_TAB]}
-          title={COUPON_CODE_TABS_LABELS[MANAGE_REQUESTS_TAB]}
+          title={(
+            <FormattedMessage
+              id="admin.portal.code.management.tabs.manage.requests"
+              defaultMessage="Manage Requests"
+              description="Label for the Manage Requests tab in Code Management."
+            />
+          )}
           className="pt-4"
           notification={requestsTabNotification}
         >
