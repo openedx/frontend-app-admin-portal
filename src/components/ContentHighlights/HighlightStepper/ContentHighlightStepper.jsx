@@ -284,7 +284,11 @@ const ContentHighlightStepper = ({ enterpriseId, editHighlightsEnabled }) => {
     <>
       <Stepper activeKey={currentStep}>
         <FullscreenModal
-          title="New highlight"
+          title={intl.formatMessage({
+            id: 'highlights.catalog.visibility.tab.create.new.highlight.button.text',
+            defaultMessage: 'New highlight',
+            description: 'Modal title for creating a new highlight',
+          })}
           className="stepper-modal bg-light-200"
           isOpen={isStepperModalOpen}
           onClose={openCloseConfirmationModal}
@@ -300,14 +304,22 @@ const ContentHighlightStepper = ({ enterpriseId, editHighlightsEnabled }) => {
                   variant="tertiary"
                   onClick={openCloseConfirmationModal}
                 >
-                  Back
+                  {intl.formatMessage({
+                    id: 'highlights.new.highlights.stepper.action.button.back',
+                    defaultMessage: 'Back',
+                    description: 'Back button label in highlight creation stepper',
+                  })}
                 </Button>
                 <Button
                   variant="primary"
                   onClick={handleNavigateToSelectContent}
                   disabled={!!titleStepValidationError || !highlightTitle}
                 >
-                  Next
+                  {intl.formatMessage({
+                    id: 'highlights.new.highlights.stepper.action.button.next',
+                    defaultMessage: 'Next',
+                    description: 'Next button label in highlight creation stepper',
+                  })}
                 </Button>
               </Stepper.ActionRow>
 
@@ -318,14 +330,22 @@ const ContentHighlightStepper = ({ enterpriseId, editHighlightsEnabled }) => {
                   variant="tertiary"
                   onClick={handleNavigateFromSelectContent}
                 >
-                  Back
+                  {intl.formatMessage({
+                    id: 'highlights.new.highlights.stepper.action.button.back',
+                    defaultMessage: 'Back',
+                    description: 'Back button label in highlight creation stepper',
+                  })}
                 </Button>
                 <Button
                   variant="primary"
                   onClick={handleNavigateToConfirmContent}
                   disabled={Object.keys(currentSelectedRowIds).length === 0}
                 >
-                  Next
+                  {intl.formatMessage({
+                    id: 'highlights.new.highlights.stepper.action.button.next',
+                    defaultMessage: 'Next',
+                    description: 'Next button label in highlight creation stepper',
+                  })}
                 </Button>
               </Stepper.ActionRow>
 
@@ -336,12 +356,24 @@ const ContentHighlightStepper = ({ enterpriseId, editHighlightsEnabled }) => {
                   variant="tertiary"
                   onClick={handleNavigateFromConfirmContent}
                 >
-                  Back
+                  {intl.formatMessage({
+                    id: 'highlights.new.highlights.stepper.action.button.back',
+                    defaultMessage: 'Back',
+                    description: 'Back button label in highlight creation stepper',
+                  })}
                 </Button>
                 <StatefulButton
                   labels={{
-                    default: 'Publish',
-                    pending: 'Publishing...',
+                    default: intl.formatMessage({
+                      id: 'highlights.new.highlights.stepper.action.button.publish',
+                      defaultMessage: 'Publish',
+                      description: 'Publish button label in highlight creation stepper',
+                    }),
+                    pending: intl.formatMessage({
+                      id: 'highlights.new.highlights.stepper.action.button.publishing',
+                      defaultMessage: 'Publishing...',
+                      description: 'Pending publish button label in highlight creation stepper',
+                    }),
                   }}
                   variant="primary"
                   onClick={handlePublish}
