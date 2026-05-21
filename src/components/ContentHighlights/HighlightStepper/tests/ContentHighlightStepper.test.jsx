@@ -59,6 +59,7 @@ jest.mock('@2uinc/frontend-enterprise-utils', () => {
 const ContentHighlightStepperWrapper = ({
   enterpriseAppContextValue = initialEnterpriseAppContextValue,
   storeState = initialState,
+  stepperModalOverrides = {},
   ...props
 }) => {
   const contextValue = useState({
@@ -67,6 +68,7 @@ const ContentHighlightStepperWrapper = ({
       highlightTitle: null,
       titleStepValidationError: null,
       currentSelectedRowIds: testCourseAggregation,
+      ...stepperModalOverrides,
     },
     contentHighlights: [],
     algolia: {
@@ -432,5 +434,105 @@ describe('<ContentHighlightStepper>', () => {
       expect(screen.getByText(/A highlight with this name already exists/)).toBeInTheDocument();
       expect(screen.getByText(/Please enter a unique name/)).toBeInTheDocument();
     });
+  });
+
+  it('blocks publish on client-side duplicate title when edit feature is enabled', async () => {
+    const user = userEvent.setup();
+    const storeState = {
+      portalConfiguration: {
+        ...initialState.portalConfiguration,
+        enterpriseFeatures: {
+          enterpriseEditHighlightsEnabled: true,
+        },
+      },
+    };
+    const enterpriseAppContextValue = {
+      enterpriseCuration: {
+        enterpriseCuration: {
+          highlightSets: [{
+            title: 'Existing Title',
+            uuid: 'existing-highlight-set-uuid',
+            isPublished: true,
+            cardImageUrl: null,
+            highlightedContentUuids: [],
+          }],
+        },
+      },
+    };
+
+    renderWithRouter(
+      <ContentHighlightStepperWrapper
+        storeState={storeState}
+        enterpriseAppContextValue={enterpriseAppContextValue}
+      />,
+    );
+
+    await user.click(screen.getByRole('button', { name: BUTTON_TEXT.createNewHighlight }));
+    const input = screen.getByTestId('stepper-title-input');
+    await user.type(input, 'existing title');
+    await user.click(screen.getByText('Next'));
+    await user.click(screen.getByText('Next'));
+    await user.click(screen.getByText('Publish'));
+
+    await waitFor(() => {
+      expect(screen.getByText('Something went wrong')).toBeInTheDocument();
+      expect(screen.getByText(/A highlight with this name already exists/)).toBeInTheDocument();
+      expect(screen.getByText(/Please enter a unique name/)).toBeInTheDocument();
+    });
+    expect(EnterpriseCatalogApiService.createHighlightSet).not.toHaveBeenCalled();
+  });
+
+  it('registers beforeunload protection while stepper is open', async () => {
+    const user = userEvent.setup();
+    renderWithRouter(<ContentHighlightStepperWrapper />);
+
+    await user.click(screen.getByTestId(`zero-state-card-${BUTTON_TEXT.zeroStateCreateNewHighlight}`));
+    const beforeUnloadEvent = new Event('beforeunload', { cancelable: true });
+    const preventDefaultSpy = jest.spyOn(beforeUnloadEvent, 'preventDefault');
+    global.dispatchEvent(beforeUnloadEvent);
+
+    expect(preventDefaultSpy).toHaveBeenCalledTimes(1);
+  });
+
+  it('tracks highlighted content metadata after successful publish', async () => {
+    const user = userEvent.setup();
+    const dispatch = jest.fn();
+    const enterpriseAppContextValue = {
+      enterpriseCuration: {
+        enterpriseCuration: {
+          highlightSets: [],
+        },
+        dispatch,
+      },
+    };
+    EnterpriseCatalogApiService.createHighlightSet.mockResolvedValueOnce({
+      data: {
+        card_image_url: null,
+        is_published: true,
+        title: 'test-title',
+        uuid: 'test-highlight-uuid-2',
+        highlighted_content: [{ uuid: 'course-uuid-1', aggregation_key: 'course:HarvardX+CS50x' }],
+      },
+    });
+
+    renderWithRouter(
+      <ContentHighlightStepperWrapper
+        enterpriseAppContextValue={enterpriseAppContextValue}
+      />,
+    );
+
+    await navigateStepperToConfirmContent(user);
+    await user.click(screen.getByText('Publish'));
+
+    await waitFor(() => {
+      expect(dispatch).toHaveBeenCalled();
+    });
+    const latestTrackCall = sendEnterpriseTrackEvent.mock.calls[sendEnterpriseTrackEvent.mock.calls.length - 1];
+    expect(latestTrackCall[2].highlighted_content_uuids).toEqual([
+      {
+        uuid: 'course-uuid-1',
+        aggregationKey: 'course:HarvardX+CS50x',
+      },
+    ]);
   });
 });

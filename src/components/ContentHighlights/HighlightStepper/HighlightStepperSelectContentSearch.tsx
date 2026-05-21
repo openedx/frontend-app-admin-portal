@@ -4,6 +4,7 @@ import { useContextSelector } from 'use-context-selector';
 import { Configure, connectStateResults, InstantSearch } from 'react-instantsearch-dom';
 import { CardView, DataTable, Skeleton } from '@openedx/paragon';
 import { camelCaseObject } from '@edx/frontend-platform';
+import { useIntl } from '@edx/frontend-platform/i18n';
 import { SearchData, SearchHeader } from '@2uinc/frontend-enterprise-catalog-search';
 import { connect } from 'react-redux';
 
@@ -51,6 +52,7 @@ const BaseHighlightStepperSelectContentDataTable = ({
   isSearchStalled,
   searchResults,
 }) => {
+  const intl = useIntl();
   const [currentView, setCurrentView] = useState(defaultActiveStateValue);
   const tableData = useMemo(() => camelCaseObject(searchResults?.hits || []), [searchResults]);
   const searchResultsItemCount = searchResults?.nbHits || 0;
@@ -84,19 +86,35 @@ const BaseHighlightStepperSelectContentDataTable = ({
       SelectionStatusComponent={SelectContentSelectionStatus}
       columns={[
         {
-          Header: 'Content name',
+          Header: intl.formatMessage({
+            id: 'highlights.new.highlights.stepper.select.content.table.header.content.name',
+            defaultMessage: 'Content name',
+            description: 'Table header for content title in highlight content selection step',
+          }),
           accessor: 'title',
         },
         {
-          Header: 'Partner',
+          Header: intl.formatMessage({
+            id: 'highlights.new.highlights.stepper.select.content.table.header.partner',
+            defaultMessage: 'Partner',
+            description: 'Table header for partner in highlight content selection step',
+          }),
           accessor: 'partners[0].name',
         },
         {
-          Header: 'Content type',
+          Header: intl.formatMessage({
+            id: 'highlights.new.highlights.stepper.select.content.table.header.content.type',
+            defaultMessage: 'Content type',
+            description: 'Table header for content type in highlight content selection step',
+          }),
           Cell: ContentTypeTableCell,
         },
         {
-          Header: 'Price',
+          Header: intl.formatMessage({
+            id: 'highlights.new.highlights.stepper.select.content.table.header.price',
+            defaultMessage: 'Price',
+            description: 'Table header for price in highlight content selection step',
+          }),
           Cell: PriceTableCell,
         },
       ]}
@@ -115,7 +133,12 @@ const BaseHighlightStepperSelectContentDataTable = ({
         />
       )}
       {currentView === 'list' && <DataTable.Table /> }
-      <DataTable.EmptyTable content="No results found" />
+      <DataTable.EmptyTable content={intl.formatMessage({
+        id: 'highlights.new.highlights.stepper.select.content.table.empty.results',
+        defaultMessage: 'No results found',
+        description: 'Empty state text shown when content search returns no results',
+      })}
+      />
       <DataTable.TableFooter>
         <SelectContentSearchPagination />
       </DataTable.TableFooter>
@@ -145,6 +168,7 @@ type HighlightStepperSelectContentProps = {
 };
 
 const HighlightStepperSelectContent: React.FC<HighlightStepperSelectContentProps> = ({ enterpriseId }) => {
+  const intl = useIntl();
   const { setCurrentSelectedRowIds } = useContentHighlightsContext();
   const currentSelectedRowIds = useContextSelector(
     ContentHighlightsContext,
@@ -216,7 +240,14 @@ const HighlightStepperSelectContent: React.FC<HighlightStepperSelectContentProps
           hitsPerPage={MAX_PAGE_SIZE}
           {...(optionalFilters ? { optionalFilters } : {})}
         />
-        <SearchHeader variant="default" />
+        <SearchHeader
+          variant="default"
+          headerTitle={intl.formatMessage({
+            id: 'highlights.new.highlights.stepper.search.courses.label',
+            defaultMessage: 'Search courses',
+            description: 'Search input label in highlight content selection step',
+          })}
+        />
         <HighlightStepperSelectContentDataTable
           selectedRowIds={currentSelectedRowIds}
           onSelectedRowsChanged={setCurrentSelectedRowIds}

@@ -19,6 +19,7 @@ import HighlightStepperSelectContent from '../HighlightStepperSelectContentSearc
 import { accessibilitySettings } from '../../../../../tests/accessibility-settings';
 
 const mockStore = configureMockStore([thunk]);
+const mockConfigure = jest.fn();
 jest.mock('@2uinc/frontend-enterprise-utils', () => {
   const originalModule = jest.requireActual('@2uinc/frontend-enterprise-utils');
   return ({
@@ -75,6 +76,10 @@ const mockCourseData = [...testCourseData];
 
 jest.mock('react-instantsearch-dom', () => ({
   ...jest.requireActual('react-instantsearch-dom'),
+  Configure: props => {
+    mockConfigure(props);
+    return null;
+  },
   connectStateResults: Component => function connectStateResults(props) {
     return (
       <Component
@@ -96,6 +101,10 @@ jest.mock('react-instantsearch-dom', () => ({
 }));
 
 describe('HighlightStepperSelectContentSearch', () => {
+  beforeEach(() => {
+    mockConfigure.mockClear();
+  });
+
   it('has no accessibility violations', async () => {
     const { container } = renderWithRouter(<HighlightStepperSelectContentSearchWrapper />);
     const results = await axe(container, accessibilitySettings);
@@ -175,5 +184,82 @@ describe('HighlightStepperSelectContentSearch', () => {
     const hyperlinkTitle = screen.getAllByTestId('hyperlink-title')[0];
     await user.click(hyperlinkTitle);
     expect(sendEnterpriseTrackEvent).toHaveBeenCalledTimes(1);
+  });
+
+  test('renders search unavailable alert when search client is missing and not loading', () => {
+    const highlightStepperState = {
+      ...initialHighlightStepperState,
+      algolia: {
+        isLoading: false,
+        securedAlgoliaApiKey: null,
+        searchClient: null,
+      },
+    };
+    renderWithRouter(
+      <HighlightStepperSelectContentSearchWrapper initialStepperState={highlightStepperState}>
+        <HighlightStepperSelectContent />
+      </HighlightStepperSelectContentSearchWrapper>,
+    );
+
+    expect(screen.getByText('Search Unavailable')).toBeInTheDocument();
+  });
+
+  test('passes optional filters in edit mode when existing content keys are present', () => {
+    const highlightStepperState = {
+      ...initialHighlightStepperState,
+      stepperModal: {
+        ...initialHighlightStepperState.stepperModal,
+        isEditMode: true,
+        existingContentKeys: ['course:HarvardX+CS50x', 'course:HarvardX+CS50AI'],
+      },
+    };
+    renderWithRouter(
+      <HighlightStepperSelectContentSearchWrapper initialStepperState={highlightStepperState}>
+        <HighlightStepperSelectContent />
+      </HighlightStepperSelectContentSearchWrapper>,
+    );
+
+    expect(mockConfigure).toHaveBeenCalled();
+    const configureProps = mockConfigure.mock.calls[mockConfigure.mock.calls.length - 1][0];
+    expect(configureProps.optionalFilters).toEqual([
+      'aggregation_key:course:HarvardX+CS50x',
+      'aggregation_key:course:HarvardX+CS50AI',
+    ]);
+  });
+
+  test('renders list view table cells including price values', async () => {
+    const user = userEvent.setup();
+    renderWithRouter(
+      <HighlightStepperSelectContentSearchWrapper>
+        <HighlightStepperSelectContent />
+      </HighlightStepperSelectContentSearchWrapper>,
+    );
+
+    await user.click(screen.getByRole('button', { name: 'List' }));
+    expect(screen.getByText('Content name')).toBeInTheDocument();
+    expect(screen.getByText('Partner')).toBeInTheDocument();
+    expect(screen.getByText('$149')).toBeInTheDocument();
+  });
+
+  test('renders list view when a row has no price', async () => {
+    const user = userEvent.setup();
+    const originalFirstCourse = mockCourseData[0];
+    try {
+      mockCourseData[0] = {
+        ...mockCourseData[0],
+        firstEnrollablePaidSeatPrice: null,
+      };
+
+      renderWithRouter(
+        <HighlightStepperSelectContentSearchWrapper>
+          <HighlightStepperSelectContent />
+        </HighlightStepperSelectContentSearchWrapper>,
+      );
+
+      await user.click(screen.getByRole('button', { name: 'List' }));
+      expect(screen.getByText('Content name')).toBeInTheDocument();
+    } finally {
+      mockCourseData[0] = originalFirstCourse;
+    }
   });
 });

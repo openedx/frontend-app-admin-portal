@@ -1,12 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import { useContextSelector } from 'use-context-selector';
 import { Form } from '@openedx/paragon';
+import { useIntl } from '@edx/frontend-platform/i18n';
 
 import { ContentHighlightsContext } from '../ContentHighlightsContext';
 import { DEFAULT_ERROR_MESSAGE, MAX_HIGHLIGHT_TITLE_LENGTH } from '../data/constants';
 import { useContentHighlightsContext } from '../data/hooks';
 
 const HighlightStepperTitleInput = () => {
+  const intl = useIntl();
   const { setHighlightTitle } = useContentHighlightsContext();
   const highlightTitle = useContextSelector(ContentHighlightsContext, v => v[0].stepperModal.highlightTitle);
   const [titleLength, setTitleLength] = useState(highlightTitle?.length || 0);
@@ -63,7 +65,11 @@ const HighlightStepperTitleInput = () => {
         data-testid="stepper-title-input"
         value={highlightValue.highlightTitle}
         onChange={handleChange}
-        floatingLabel="Highlight title"
+        floatingLabel={intl.formatMessage({
+          id: 'highlights.new.highlights.stepper.step.input.label.create.title',
+          defaultMessage: 'Highlight title',
+          description: 'Input label for highlight title during new highlights creation',
+        })}
         autoComplete="off"
       />
       <Form.Control.Feedback type={isInvalid ? 'invalid' : undefined}>
