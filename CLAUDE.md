@@ -10,21 +10,18 @@ configure organizational settings.
 ## Key Principles
 
 - Search the codebase before assuming something isn't implemented
-- Write comprehensive tests for new components using React Testing Library
+- Write comprehensive tests for new components
 - Follow existing code patterns and component structure
-- Use Paragon components and utility classes from `@openedx/paragon` - invoke `/paragon` for guidance
+- Use Paragon components from `@openedx/paragon` - invoke `/paragon` for guidance
 - Keep changes focused and minimal
-- Prefer `@tanstack/react-query` for new API integrations over Redux patterns
-- Follow TypeScript migration guidelines when adding new code
 
 ## Documentation & Institutional Memory
 
-- Document new functionality in `docs/` (see `docs/decisions/` for ADRs)
+- Document new functionality in `docs/` or a relevant location
 - When you learn something important about how this codebase works (gotchas, non-obvious
   patterns, integration quirks), capture it in the appropriate docs
 - These docs are institutional memory - future sessions (yours or others) will benefit
   from what you record here
-- See `docs/developing-with-ai.md` for AI-assisted development best practices
 
 ## Development Commands
 
@@ -145,3 +142,16 @@ The admin portal integrates with several Open edX backend services:
 - Feature flags in `src/config/index.js` control functionality
 - Environment-based configuration for different deployment targets
 - Enterprise customer data drives application behavior and permissions
+
+## Before opening a PR or pushing a branch
+
+Run a self-check on the diff before creating a PR or pushing:
+1. Compute effective LoC — exclude lockfiles, generated files, snapshots, and vendor code.
+2. Count effective touched files — exclude the above plus one-to-one test pairs.
+3. If effective LoC > 400 or effective files > 10, stop and propose a split before proceeding.
+4. Report the result inline before continuing.
+
+## Testing Notes
+
+- Uses Jest and React Testing Library
+- Test files co-located with components (`Component.test.jsx`)
