@@ -75,6 +75,7 @@ describe('useBulkDeclineBnrRequests', () => {
     ).toHaveBeenCalledWith({
       enterpriseId: TEST_ENTERPRISE_ID,
       subsidyAccessPolicyId: TEST_SUBSIDY_ACCESS_POLICY_ID,
+      declineReason: undefined,
     });
     expect(EnterpriseAccessApiService.bulkDeclineBnrSubsidyRequests).not.toHaveBeenCalled();
     expect(logError).toBeCalledTimes(0);
@@ -85,6 +86,27 @@ describe('useBulkDeclineBnrRequests', () => {
       close: expect.any(Function),
       isOpen: false,
       open: expect.any(Function),
+    });
+  });
+
+  it('should forward declineReason to declineAllBnrSubsidyRequests when entire table is selected', async () => {
+    EnterpriseAccessApiService.declineAllBnrSubsidyRequests.mockResolvedValueOnce({
+      status: 202,
+      data: { declined: ['uuid-1', 'uuid-2'], non_declinable: [] },
+    });
+    const { result } = renderHook(
+      () => useBulkDeclineBnrRequests(TEST_ENTERPRISE_ID, [], true),
+      { wrapper },
+    );
+
+    await waitFor(() => result.current.declineBnrRequests('Budget exhausted'));
+
+    expect(
+      EnterpriseAccessApiService.declineAllBnrSubsidyRequests,
+    ).toHaveBeenCalledWith({
+      enterpriseId: TEST_ENTERPRISE_ID,
+      subsidyAccessPolicyId: TEST_SUBSIDY_ACCESS_POLICY_ID,
+      declineReason: 'Budget exhausted',
     });
   });
 
@@ -106,6 +128,7 @@ describe('useBulkDeclineBnrRequests', () => {
       enterpriseId: TEST_ENTERPRISE_ID,
       subsidyAccessPolicyId: TEST_SUBSIDY_ACCESS_POLICY_ID,
       subsidyRequestUUIDs: TEST_REQUEST_UUIDS,
+      declineReason: undefined,
     });
     expect(EnterpriseAccessApiService.declineAllBnrSubsidyRequests).not.toHaveBeenCalled();
     expect(logError).toBeCalledTimes(0);
@@ -116,6 +139,28 @@ describe('useBulkDeclineBnrRequests', () => {
       close: expect.any(Function),
       isOpen: false,
       open: expect.any(Function),
+    });
+  });
+
+  it('should forward declineReason to bulkDeclineBnrSubsidyRequests for subset of rows', async () => {
+    EnterpriseAccessApiService.bulkDeclineBnrSubsidyRequests.mockResolvedValueOnce({
+      status: 200,
+      data: { declined: TEST_REQUEST_UUIDS, non_declinable: [] },
+    });
+    const { result } = renderHook(
+      () => useBulkDeclineBnrRequests(TEST_ENTERPRISE_ID, TEST_REQUEST_UUIDS, false),
+      { wrapper },
+    );
+
+    await waitFor(() => result.current.declineBnrRequests('Outside policy scope'));
+
+    expect(
+      EnterpriseAccessApiService.bulkDeclineBnrSubsidyRequests,
+    ).toHaveBeenCalledWith({
+      enterpriseId: TEST_ENTERPRISE_ID,
+      subsidyAccessPolicyId: TEST_SUBSIDY_ACCESS_POLICY_ID,
+      subsidyRequestUUIDs: TEST_REQUEST_UUIDS,
+      declineReason: 'Outside policy scope',
     });
   });
 

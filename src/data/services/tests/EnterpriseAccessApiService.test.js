@@ -312,6 +312,20 @@ describe('EnterpriseAccessApiService', () => {
     });
   });
 
+  test('declineAllBnrSubsidyRequests forwards declineReason when provided', () => {
+    EnterpriseAccessApiService.declineAllBnrSubsidyRequests({
+      enterpriseId: mockEnterpriseUUID,
+      subsidyAccessPolicyId: mockSubsidyAccessPolicyUUID,
+      declineReason: 'Budget exhausted',
+    });
+
+    expect(axios.post).toBeCalledWith(`${enterpriseAccessBaseUrl}/api/v1/learner-credit-requests/decline-all/`, {
+      enterprise_customer_uuid: mockEnterpriseUUID,
+      policy_uuid: mockSubsidyAccessPolicyUUID,
+      decline_reason: 'Budget exhausted',
+    });
+  });
+
   test('fetchBnrSubsidyRequests calls enterprise-access with enterpriseUUID and options', () => {
     const options = {
       page: 2,
@@ -369,6 +383,24 @@ describe('EnterpriseAccessApiService', () => {
       subsidy_request_uuids: mockBnrSubsidyRequestUUIDs,
       enterprise_customer_uuid: mockEnterpriseUUID,
       policy_uuid: mockSubsidyAccessPolicyUUID,
+    });
+  });
+
+  test('bulkDeclineBnrSubsidyRequests forwards declineReason when provided', () => {
+    const mockBnrSubsidyRequestUUIDs = ['test-bnr-subsidy-request-uuid-1', 'test-bnr-subsidy-request-uuid-2'];
+
+    EnterpriseAccessApiService.bulkDeclineBnrSubsidyRequests({
+      enterpriseId: mockEnterpriseUUID,
+      subsidyRequestUUIDs: mockBnrSubsidyRequestUUIDs,
+      subsidyAccessPolicyId: mockSubsidyAccessPolicyUUID,
+      declineReason: 'Outside policy scope',
+    });
+
+    expect(axios.post).toBeCalledWith(`${enterpriseAccessBaseUrl}/api/v1/learner-credit-requests/decline/`, {
+      subsidy_request_uuids: mockBnrSubsidyRequestUUIDs,
+      enterprise_customer_uuid: mockEnterpriseUUID,
+      policy_uuid: mockSubsidyAccessPolicyUUID,
+      decline_reason: 'Outside policy scope',
     });
   });
 

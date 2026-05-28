@@ -1,11 +1,13 @@
 import { useContext, useState } from 'react';
 import PropTypes from 'prop-types';
 import {
-  ActionRow, Alert, ModalDialog, StatefulButton,
+  ActionRow, Alert, Form, ModalDialog, StatefulButton,
 } from '@openedx/paragon';
 import { DoNotDisturbOn, Info } from '@openedx/paragon/icons';
 import { FormattedMessage, useIntl } from '@edx/frontend-platform/i18n';
 import { BudgetDetailPageContext } from '../BudgetDetailPageWrapper';
+
+const DECLINE_REASON_MAX_LENGTH = 250;
 
 const BulkDeclineBnrRequestModal = ({
   declineButtonState,
@@ -17,6 +19,7 @@ const BulkDeclineBnrRequestModal = ({
 }) => {
   const intl = useIntl();
   const [error, setError] = useState(null);
+  const [declineReason, setDeclineReason] = useState('');
   const {
     successfulBulkDeclineToast: { displayToastForBulkDecline },
   } = useContext(BudgetDetailPageContext);
@@ -24,19 +27,26 @@ const BulkDeclineBnrRequestModal = ({
   const handleOnClick = async () => {
     setError(null);
     try {
-      await declineBnrRequests();
+      await declineBnrRequests(declineReason);
       displayToastForBulkDecline(requestCount);
+      setDeclineReason('');
       if (onRefresh) {
         onRefresh();
       }
       close();
     } catch (err) {
       setError(err);
+      // Some requests may have been declined even on partial failure — refresh
+      // the table so successfully declined rows reflect their new state.
+      if (onRefresh) {
+        onRefresh();
+      }
     }
   };
 
   const handleClose = () => {
     setError(null);
+    setDeclineReason('');
     close();
   };
 
@@ -87,6 +97,25 @@ const BulkDeclineBnrRequestModal = ({
             values={{ requestCount }}
           />
         </p>
+        <Form.Group className="mt-3">
+          <Form.Control
+            as="textarea"
+            rows={2}
+            maxLength={DECLINE_REASON_MAX_LENGTH}
+            floatingLabel={intl.formatMessage({
+              id: 'lcm.budget.detail.page.requests.tab.bulk.decline.modal.reason.label',
+              defaultMessage: 'Reason for declining',
+              description: 'Label for the decline reason textarea',
+            })}
+            data-testid="bulk-decline-request-reason-input"
+            value={declineReason}
+            onChange={(e) => setDeclineReason(e.target.value)}
+            disabled={declineButtonState === 'pending'}
+          />
+          <div className="small text-right text-muted mt-1">
+            {declineReason.length}/{DECLINE_REASON_MAX_LENGTH} characters
+          </div>
+        </Form.Group>
       </ModalDialog.Body>
       <ModalDialog.Footer>
         <ActionRow>

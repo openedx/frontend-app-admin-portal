@@ -50,6 +50,7 @@ describe('BulkDeclineBnrRequestModal', () => {
 
     expect(screen.getByText(/decline enrollment request\?/i)).toBeInTheDocument();
     expect(screen.getByText(/declining an enrollment request cannot be undone/i)).toBeInTheDocument();
+    expect(screen.getByLabelText(/reason for declining/i)).toBeInTheDocument();
     expect(screen.getByRole('button', { name: /decline/i })).toBeInTheDocument();
     expect(screen.getByRole('button', { name: /cancel/i })).toBeInTheDocument();
   });
@@ -70,12 +71,14 @@ describe('BulkDeclineBnrRequestModal', () => {
   it('calls declineBnrRequests and displays toast on success', async () => {
     const mockDeclineBnrRequests = jest.fn().mockResolvedValue({});
     const mockClose = jest.fn();
+    const mockOnRefresh = jest.fn();
 
     renderWithProviders(
       <BulkDeclineBnrRequestModal
         {...defaultProps}
         declineBnrRequests={mockDeclineBnrRequests}
         close={mockClose}
+        onRefresh={mockOnRefresh}
         requestCount={3}
       />,
     );
@@ -86,9 +89,15 @@ describe('BulkDeclineBnrRequestModal', () => {
     await waitFor(() => {
       expect(mockDeclineBnrRequests).toHaveBeenCalledTimes(1);
     });
+    // Reason is passed even when empty
+    expect(mockDeclineBnrRequests).toHaveBeenCalledWith('');
 
     await waitFor(() => {
       expect(mockDisplayToastForBulkDecline).toHaveBeenCalledWith(3);
+    });
+
+    await waitFor(() => {
+      expect(mockOnRefresh).toHaveBeenCalledTimes(1);
     });
 
     await waitFor(() => {
@@ -96,13 +105,38 @@ describe('BulkDeclineBnrRequestModal', () => {
     });
   });
 
-  it('displays error alert when declineBnrRequests fails', async () => {
-    const mockDeclineBnrRequests = jest.fn().mockRejectedValue(new Error('API Error'));
+  it('forwards the user-entered decline reason to declineBnrRequests', async () => {
+    const mockDeclineBnrRequests = jest.fn().mockResolvedValue({});
 
     renderWithProviders(
       <BulkDeclineBnrRequestModal
         {...defaultProps}
         declineBnrRequests={mockDeclineBnrRequests}
+        requestCount={2}
+      />,
+    );
+
+    const reasonInput = screen.getByTestId('bulk-decline-request-reason-input');
+    fireEvent.change(reasonInput, { target: { value: 'Budget exhausted' } });
+    expect(screen.getByText(/16\/250 characters/i)).toBeInTheDocument();
+
+    const declineButton = screen.getByRole('button', { name: /decline \(2\)/i });
+    fireEvent.click(declineButton);
+
+    await waitFor(() => {
+      expect(mockDeclineBnrRequests).toHaveBeenCalledWith('Budget exhausted');
+    });
+  });
+
+  it('displays error alert and still triggers onRefresh when declineBnrRequests fails', async () => {
+    const mockDeclineBnrRequests = jest.fn().mockRejectedValue(new Error('API Error'));
+    const mockOnRefresh = jest.fn();
+
+    renderWithProviders(
+      <BulkDeclineBnrRequestModal
+        {...defaultProps}
+        declineBnrRequests={mockDeclineBnrRequests}
+        onRefresh={mockOnRefresh}
       />,
     );
 
@@ -115,6 +149,10 @@ describe('BulkDeclineBnrRequestModal', () => {
 
     expect(screen.getByText(/something went wrong/i)).toBeInTheDocument();
     expect(screen.getByText(/please try again/i)).toBeInTheDocument();
+    // Refresh is invoked even on failure so any partially-declined rows are reflected.
+    await waitFor(() => {
+      expect(mockOnRefresh).toHaveBeenCalledTimes(1);
+    });
   });
 
   it('clears error and closes modal when cancel is clicked after error', async () => {

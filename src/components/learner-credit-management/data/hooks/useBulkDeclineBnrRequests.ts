@@ -11,7 +11,7 @@ type DeclineButtonState = 'default' | 'pending' | 'complete' | 'error';
 
 interface UseBulkDeclineBnrRequestsReturn {
   declineButtonState: DeclineButtonState;
-  declineBnrRequests: () => Promise<void>;
+  declineBnrRequests: (declineReason?: string) => Promise<void>;
   close: () => void;
   isOpen: boolean;
   open: () => void;
@@ -27,7 +27,7 @@ const useBulkDeclineBnrRequests = (
   const queryClient = useQueryClient();
   const { subsidyAccessPolicyId } = useBudgetId();
 
-  const declineBnrRequests = useCallback(async () => {
+  const declineBnrRequests = useCallback(async (declineReason?: string) => {
     if (!subsidyAccessPolicyId) {
       throw new Error('subsidyAccessPolicyId is required to decline BNR requests');
     }
@@ -38,11 +38,13 @@ const useBulkDeclineBnrRequests = (
         ? await EnterpriseAccessApiService.declineAllBnrSubsidyRequests({
           enterpriseId,
           subsidyAccessPolicyId,
+          declineReason,
         })
         : await EnterpriseAccessApiService.bulkDeclineBnrSubsidyRequests({
           enterpriseId,
           subsidyAccessPolicyId,
           subsidyRequestUUIDs: requestUuids,
+          declineReason,
         });
       const nonDeclinable = response.data?.non_declinable;
       if (nonDeclinable && nonDeclinable.length > 0) {
