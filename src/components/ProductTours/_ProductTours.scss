@@ -20,6 +20,18 @@ $white: #FFFFFF;
 
 .pgn__checkpoint {
   border-top: 8px solid #D23228;
+  position: relative;
+
+  // Custom "Dismiss" button on the first step of the edit highlights tour.
+  // Paragon's checkpoint action row only renders Back/Next, so the dismiss
+  // button is injected into the body and positioned into the footer row,
+  // left-aligned opposite the "Next" button.
+  .edit-highlights-dismiss-button {
+    position: absolute;
+    right: 7rem;
+    bottom: 1.5rem;
+    margin: 0;
+  }
 }
 
 .pgn__checkpoint-overlay {

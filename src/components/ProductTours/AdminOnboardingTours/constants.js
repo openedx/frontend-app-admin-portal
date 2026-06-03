@@ -53,6 +53,19 @@ export const ADMINISTER_SUBSCRIPTIONS_TARGETS = {
   MANAGE_REQUESTS: 'tabs-subscription-management-tab-manage-requests',
 };
 
+// Knowledge base article for the "Learn more" link in the edit highlights tour
+export const EDIT_HIGHLIGHTS_LEARN_MORE_URL = 'https://enterprise-support.edx.org/s/article/Admin-Portal-How-to-create-Highlights';
+
+// Edit highlights flow
+export const EDIT_HIGHLIGHTS_TARGETS = {
+  HIGHLIGHTS_SIDEBAR: 'highlights-link',
+  HIGHLIGHTS_SECTION: 'highlights-section',
+  HIGHLIGHT_SET_CARD: 'highlight-set-card-tour-target',
+  HIGHLIGHTS_NEW_BUTTON: 'highlights-new-button',
+  HIGHLIGHTS_TAB: 'highlights-tab',
+  HIGHLIGHTS_CATALOG_VISIBILITY_TAB: 'highlights-catalog-visibility-tab',
+};
+
 export const ALLOCATE_LEARNING_BUDGETS_TARGETS = {
   SIDEBAR: 'learner-credit-link',
   VIEW_BUDGET: 'learner-credit-view-budget-button',
@@ -108,6 +121,10 @@ export const ADMIN_TOUR_EVENT_NAMES = {
   ANALYTICS_BACK_EVENT_NAME: 'edx.ui.enterprise.admin-portal.admin-onboarding-tours.analytics.back',
   ANALYTICS_COMPLETED_EVENT_NAME: 'edx.ui.enterprise.admin-portal.admin-onboarding-tours.analytics.completed',
   ANALYTICS_DISMISS_EVENT_NAME: 'edx.ui.enterprise.admin-portal.admin-onboarding-tours.analytics.dismiss',
+  EDIT_HIGHLIGHTS_ADVANCE_EVENT_NAME: 'edx.ui.enterprise.admin-portal.admin-onboarding-tours.edit-highlights.advance',
+  EDIT_HIGHLIGHTS_BACK_EVENT_NAME: 'edx.ui.enterprise.admin-portal.admin-onboarding-tours.edit-highlights.back',
+  EDIT_HIGHLIGHTS_COMPLETED_EVENT_NAME: 'edx.ui.enterprise.admin-portal.admin-onboarding-tours.edit-highlights.completed',
+  EDIT_HIGHLIGHTS_DISMISS_EVENT_NAME: 'edx.ui.enterprise.admin-portal.admin-onboarding-tours.edit-highlights.dismiss',
 };
 
 export const ONBOARDING_WELCOME_MODAL_COOKIE_NAME = 'seen-onboarding-welcome-modal';

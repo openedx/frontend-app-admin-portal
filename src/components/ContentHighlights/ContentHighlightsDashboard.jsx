@@ -11,9 +11,10 @@ import { TAB_TITLES } from './data/constants';
 import ContentHighlightCatalogVisibility from './CatalogVisibility/ContentHighlightCatalogVisibility';
 import ZeroStateHighlights from './ZeroState';
 import EVENT_NAMES from '../../eventTracking';
+import { EDIT_HIGHLIGHTS_TARGETS } from '../ProductTours/AdminOnboardingTours/constants';
 
 const ContentHighlightsDashboardBase = ({ children }) => (
-  <Container className="my-5">
+  <Container className="my-5" id={EDIT_HIGHLIGHTS_TARGETS.HIGHLIGHTS_SECTION}>
     <ContentHighlightHelmet title="Highlights" />
     {children}
   </Container>
@@ -56,6 +57,8 @@ const ContentHighlightsDashboard = () => {
       >
         <Tab
           eventKey={camelCaseObject(TAB_TITLES.highlights)}
+          id={EDIT_HIGHLIGHTS_TARGETS.HIGHLIGHTS_TAB}
+          tabClassName={EDIT_HIGHLIGHTS_TARGETS.HIGHLIGHTS_TAB}
           title={intl.formatMessage({
             id: 'highlights.highlights.tab.title',
             defaultMessage: 'Highlights',
@@ -66,6 +69,8 @@ const ContentHighlightsDashboard = () => {
         </Tab>
         <Tab
           eventKey={camelCaseObject(TAB_TITLES.catalogVisibility)}
+          id={EDIT_HIGHLIGHTS_TARGETS.HIGHLIGHTS_CATALOG_VISIBILITY_TAB}
+          tabClassName={EDIT_HIGHLIGHTS_TARGETS.HIGHLIGHTS_CATALOG_VISIBILITY_TAB}
           title={intl.formatMessage({
             id: 'highlights.catalog.visibiliy.tab.title',
             defaultMessage: 'Catalog Visibility',

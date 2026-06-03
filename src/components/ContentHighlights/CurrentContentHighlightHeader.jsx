@@ -16,6 +16,7 @@ import { EnterpriseAppContext } from '../EnterpriseApp/EnterpriseAppContextProvi
 import {
   BUTTON_TEXT, MAX_HIGHLIGHT_SETS_PER_ENTERPRISE_CURATION,
 } from './data/constants';
+import { EDIT_HIGHLIGHTS_TARGETS } from '../ProductTours/AdminOnboardingTours/constants';
 
 const CurrentContentHighlightHeader = ({ enterpriseId }) => {
   const {
@@ -84,6 +85,7 @@ const CurrentContentHighlightHeader = ({ enterpriseId }) => {
         <ActionRow.Spacer />
 
         <Button
+          id={EDIT_HIGHLIGHTS_TARGETS.HIGHLIGHTS_NEW_BUTTON}
           iconBefore={Add}
           onClick={createNewHighlight}
         >

@@ -6,7 +6,7 @@ import { sendEnterpriseTrackEvent } from '@2uinc/frontend-enterprise-utils';
 
 import { axe } from 'jest-axe';
 import AdminOnboardingTour from '../flows/AdminOnboardingTour';
-import { ADMIN_TOUR_EVENT_NAMES } from '../constants';
+import { ADMIN_TOUR_EVENT_NAMES, EDIT_HIGHLIGHTS_TARGETS } from '../constants';
 import useHydrateAdminOnboardingData from '../data/useHydrateAdminOnboardingData';
 import { queryClient } from '../../../test/testUtils';
 import { SubsidyRequestsContext } from '../../../subsidy-requests';
@@ -299,6 +299,50 @@ describe('AdminOnboardingTour', () => {
     expect(sendEnterpriseTrackEvent).toHaveBeenCalledWith(
       'test-enterprise',
       ADMIN_TOUR_EVENT_NAMES.LEARNER_PROGRESS_COMPLETED_EVENT_NAME,
+    );
+  });
+
+  it('completes the edit highlights flow without posting when the flow UUID is not configured', () => {
+    const props = { ...defaultProps, targetSelector: EDIT_HIGHLIGHTS_TARGETS.HIGHLIGHTS_SIDEBAR };
+    render(
+      <TestComponent
+        props={props}
+        onResult={(result) => { tourResult = result; }}
+      />,
+      { wrapper },
+    );
+    const lastStep = tourResult[tourResult.length - 1];
+
+    act(() => {
+      lastStep.onEnd();
+    });
+
+    expect(mockOnClose).toHaveBeenCalled();
+    expect(sendEnterpriseTrackEvent).toHaveBeenCalledWith(
+      'test-enterprise',
+      ADMIN_TOUR_EVENT_NAMES.EDIT_HIGHLIGHTS_COMPLETED_EVENT_NAME,
+    );
+  });
+
+  it('dismisses the edit highlights flow from the first step', () => {
+    const props = { ...defaultProps, targetSelector: EDIT_HIGHLIGHTS_TARGETS.HIGHLIGHTS_SIDEBAR };
+    render(
+      <TestComponent
+        props={props}
+        onResult={(result) => { tourResult = result; }}
+      />,
+      { wrapper },
+    );
+    const { getByText } = render(tourResult[0].body, { wrapper });
+
+    act(() => {
+      getByText('Dismiss').click();
+    });
+
+    expect(mockOnClose).toHaveBeenCalled();
+    expect(sendEnterpriseTrackEvent).toHaveBeenCalledWith(
+      'test-enterprise',
+      ADMIN_TOUR_EVENT_NAMES.EDIT_HIGHLIGHTS_DISMISS_EVENT_NAME,
     );
   });
 });

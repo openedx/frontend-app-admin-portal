@@ -17,6 +17,7 @@ const ContentHighlightSetCard = ({
   itemCount,
   archivedItemCount,
   onClick,
+  id,
 }) => {
   const intl = useIntl();
   const navigate = useNavigate();
@@ -56,6 +57,7 @@ const ContentHighlightSetCard = ({
 
   return (
     <Card
+      id={id}
       isClickable
       onClick={handleHighlightSetClick}
       data-testid="highlight-set-card"
@@ -80,6 +82,11 @@ ContentHighlightSetCard.propTypes = {
   archivedItemCount: PropTypes.number.isRequired,
   imageCapSrc: PropTypes.string.isRequired,
   onClick: PropTypes.func.isRequired,
+  id: PropTypes.string,
+};
+
+ContentHighlightSetCard.defaultProps = {
+  id: undefined,
 };
 
 const mapStateToProps = state => ({
