@@ -6,6 +6,7 @@ import { sendEnterpriseTrackEvent } from '@2uinc/frontend-enterprise-utils';
 import ContentHighlightSetCard from './ContentHighlightSetCard';
 import { HIGHLIGHTS_CARD_GRID_COLUMN_SIZES } from './data/constants';
 import EVENT_NAMES from '../../eventTracking';
+import { EDIT_HIGHLIGHTS_TARGETS } from '../ProductTours/AdminOnboardingTours/constants';
 
 const HighlightSetSection = ({
   enterpriseId,
@@ -41,9 +42,10 @@ const HighlightSetSection = ({
           highlightedContentUuids,
           cardImageUrl,
           archivedContentCount,
-        }) => (
+        }, index) => (
           <ContentHighlightSetCard
             key={uuid}
+            id={index === 0 ? EDIT_HIGHLIGHTS_TARGETS.HIGHLIGHT_SET_CARD : undefined}
             title={title}
             highlightSetUUID={uuid}
             isPublished={isPublished}

@@ -4,6 +4,7 @@ import { logError } from '@edx/frontend-platform/logging';
 import {
   ADMINISTER_SUBSCRIPTIONS_TARGETS,
   CUSTOMIZE_REPORTS_SIDEBAR,
+  EDIT_HIGHLIGHTS_TARGETS,
   ORGANIZE_LEARNER_TARGETS,
   TRACK_LEARNER_PROGRESS_TARGETS,
   ALLOCATE_LEARNING_BUDGETS_TARGETS,
@@ -14,6 +15,7 @@ import LmsApiService from '../../../../data/services/LmsApiService';
 import AdministerSubscriptionsFlow from './AdministerSubscriptionsFlow';
 import useAllocateLearningBudgetsFlow from './AllocateLearningBudgetsFlow';
 import CustomizeReportsFlow from './CustomizeReportsFlow';
+import EditHighlightsFlow from './EditHighlightsFlow';
 import LearnerProgressFlow from './LearnerProgressFlow';
 import AnalyticsV2Flow from './AnalyticsV2Flow';
 import OrganizeLearnersFlow from './OrganizeLearnersFlow';
@@ -61,11 +63,20 @@ const AdminOnboardingTour = (
     try {
       onClose();
       sendEnterpriseTrackEvent(enterpriseSlug, endEventName);
-      await LmsApiService.updateCompletedTourFlows(adminUuid, flowUuid);
-      refetch();
+      // Skip the completion POST when the flow UUID is not configured for this
+      // environment to avoid sending an empty `flow_uuid` to the LMS.
+      if (flowUuid) {
+        await LmsApiService.updateCompletedTourFlows(adminUuid, flowUuid);
+        refetch();
+      }
     } catch (error) {
       logError(error);
     }
+  }
+
+  function handleDismissTour(dismissEventName: string) {
+    sendEnterpriseTrackEvent(enterpriseSlug, dismissEventName);
+    onClose();
   }
 
   const administerSubscriptionsFlow = AdministerSubscriptionsFlow({
@@ -96,6 +107,9 @@ const AdminOnboardingTour = (
     targetSelector,
   });
   const setUpPreferencesFlow = SetUpPreferencesFlow({ handleEndTour });
+  const editHighlightsFlow = EditHighlightsFlow({
+    handleAdvanceTour, handleBackTour, handleEndTour, handleDismissTour,
+  });
 
   // Map target selectors to their respective flows
   const flowMapping = {
@@ -115,6 +129,10 @@ const AdminOnboardingTour = (
     ...Object.fromEntries(
       Object.values(ALLOCATE_LEARNING_BUDGETS_TARGETS)
         .map(target => [target, allocateLearningBudgetsFlow]),
+    ),
+    ...Object.fromEntries(
+      Object.values(EDIT_HIGHLIGHTS_TARGETS)
+        .map(target => [target, editHighlightsFlow]),
     ),
     // Customize reports flow target
     [CUSTOMIZE_REPORTS_SIDEBAR]: customizeReportsFlow,
