@@ -28,7 +28,7 @@ const EditHighlightsFlow = ({
   );
   const onEnd = () => handleEndTour(
     ADMIN_TOUR_EVENT_NAMES.EDIT_HIGHLIGHTS_COMPLETED_EVENT_NAME,
-    configuration.ADMIN_ONBOARDING_UUIDS.FLOW_EDIT_HIGHLIGHTS_UUID,
+    configuration.ADMIN_ONBOARDING_UUIDS.FLOW_SHOWCASE_COURSES_UUID,
   );
   const onDismiss = () => handleDismissTour(
     ADMIN_TOUR_EVENT_NAMES.EDIT_HIGHLIGHTS_DISMISS_EVENT_NAME,
