@@ -57,9 +57,9 @@ adminsTabNewFeatureTour.propTypes = {
   intl: intlShape.isRequired,
 };
 
-export const useAdminsTabNewFeatureTour = (enableInviteAdmins) => {
+export const useAdminsTabNewFeatureTour = () => {
   const alertCookieName = generateAdminsTabAlertCookieName();
-  return enableInviteAdmins && !global.localStorage.getItem(alertCookieName);
+  return !global.localStorage.getItem(alertCookieName);
 };
 
 export default adminsTabNewFeatureTour;

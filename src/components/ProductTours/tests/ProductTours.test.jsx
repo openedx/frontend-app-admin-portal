@@ -67,7 +67,6 @@ const ToursWithContext = ({
   subsidyRequestsEnabled = false,
   canManageLearnerCredit = false,
   enableLearnerPortal = false,
-  enableInviteAdmins = false,
   EnterpriseSubsidiesContextValue = {
     canManageLearnerCredit,
     enterpriseSubsidyTypes: [SUBSIDY_TYPES.coupon],
@@ -86,7 +85,6 @@ const ToursWithContext = ({
       enableLearnerPortal,
       enterpriseFeatures: {
         enterpriseAdminOnboardingEnabled: onboardingEnabled,
-        enterpriseInviteAdminsEnabled: enableInviteAdmins,
       },
     },
     enterpriseCustomerAdmin: {
@@ -211,7 +209,7 @@ describe('<ProductTours/>', () => {
     it('is not shown when feature is enabled and localStorage record found ', () => {
       global.localStorage.setItem(BROWSE_AND_REQUEST_TOUR_COOKIE_NAME, true);
       render(<ToursWithContext enableLearnerPortal />);
-      expect(screen.queryByText('New Feature')).toBeFalsy();
+      expect(screen.queryByText('browse for courses', { exact: false })).toBeFalsy();
     });
 
     it('it is shown in settings page', () => {
@@ -232,7 +230,7 @@ describe('<ProductTours/>', () => {
           }}
         />,
       );
-      expect(screen.queryByText('New Feature')).toBeFalsy();
+      expect(screen.queryByText('browse for courses', { exact: false })).toBeFalsy();
     });
   });
 
@@ -260,20 +258,15 @@ describe('<ProductTours/>', () => {
       expect(tourConfig).toHaveProperty('onEnd');
     });
 
-    it('is not shown when invite admins feature is disabled', () => {
+    it('is shown when invite admins alert cookie is not set', () => {
       render(<ToursWithContext />);
-      expect(screen.queryByText("We've recently added the ability for you to invite and manage your admins.", { exact: false })).toBeFalsy();
-    });
-
-    it('is shown when invite admins feature is enabled and alert cookie is not set', () => {
-      render(<ToursWithContext enableInviteAdmins />);
       expect(screen.queryByText("We've recently added the ability for you to invite and manage your admins.", { exact: false })).toBeTruthy();
     });
 
     it('is not shown when invite admins alert cookie is set for the user', () => {
       const alertCookie = generateAdminsTabAlertCookieName();
       global.localStorage.setItem(alertCookie, true);
-      render(<ToursWithContext enableInviteAdmins />);
+      render(<ToursWithContext />);
       expect(screen.queryByText("We've recently added the ability for you to invite and manage your admins.", { exact: false })).toBeFalsy();
     });
 
@@ -327,7 +320,7 @@ describe('<ProductTours/>', () => {
     it('is not shown if localStorage record is present', () => {
       global.localStorage.setItem(LEARNER_CREDIT_COOKIE_NAME, true);
       render(<ToursWithContext canManageLearnerCredit />);
-      expect(screen.queryByText('New Feature')).toBeFalsy();
+      expect(screen.queryByText('Learner Credit feature', { exact: false })).toBeFalsy();
     });
 
     it('is shown if in Learner Credit page', () => {

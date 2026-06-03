@@ -233,20 +233,15 @@ describe('<PeopleManagementPage >', () => {
       expect(screen.queryByText('Group deleted')).toBeInTheDocument();
     });
   });
-  describe('Learners Tab', () => {
-    it('does not render Learners tab when feature flag is disabled', () => {
+  describe('Tabs always visible', () => {
+    it('renders both Learners and Admins tabs', () => {
       useAllFlexEnterpriseGroups.mockReturnValue({ data: mockGroupsResponse });
-
       const store = getMockStore({
         portalConfiguration: {
           enterpriseId: enterpriseUUID,
           enterpriseSlug,
-          enterpriseFeatures: {
-            enterpriseInviteAdminsEnabled: false,
-          },
         },
       });
-
       render(
         <BrowserRouter>
           <IntlProvider locale="en">
@@ -258,66 +253,13 @@ describe('<PeopleManagementPage >', () => {
           </IntlProvider>
         </BrowserRouter>,
       );
-
-      // Learners tab should NOT be present
-      expect(
-        screen.queryByRole('tab', { name: /learners/i }),
-      ).not.toBeInTheDocument();
-
-      // Tabs wrapper should NOT be rendered
-      expect(
-        screen.queryByRole('tablist'),
-      ).not.toBeInTheDocument();
-
-      // Learners content should still be visible
-      expect(
-        screen.getByText("Your organization's groups"),
-      ).toBeInTheDocument();
-
-      expect(
-        screen.getByText("Your organization's learners"),
-      ).toBeInTheDocument();
-    });
-
-    it('renders Learners tab when feature flag is enabled', () => {
-      useAllFlexEnterpriseGroups.mockReturnValue({ data: mockGroupsResponse });
-
-      const store = getMockStore({
-        portalConfiguration: {
-          enterpriseId: enterpriseUUID,
-          enterpriseSlug,
-          enterpriseFeatures: {
-            enterpriseInviteAdminsEnabled: true,
-          },
-        },
-      });
-
-      render(
-        <BrowserRouter>
-          <IntlProvider locale="en">
-            <Provider store={store}>
-              <EnterpriseSubsidiesContext.Provider value={defaultEnterpriseSubsidiesContextValue}>
-                <PeopleManagementPage />
-              </EnterpriseSubsidiesContext.Provider>
-            </Provider>
-          </IntlProvider>
-        </BrowserRouter>,
-      );
-
-      const learnersTab = screen.getByRole('tab', { name: /learners/i });
-
-      expect(learnersTab).toBeInTheDocument();
-      expect(learnersTab).toHaveAttribute('aria-selected', 'true');
-
+      // Both tabs should be present
+      expect(screen.getByRole('tab', { name: /learners/i })).toBeInTheDocument();
+      expect(screen.getByRole('tab', { name: /admins/i })).toBeInTheDocument();
       // Tabs wrapper should be present
-      expect(
-        screen.getByRole('tablist'),
-      ).toBeInTheDocument();
-
+      expect(screen.getByRole('tablist')).toBeInTheDocument();
       // Learners content should be rendered inside the tab
-      expect(
-        screen.getByText("Your organization's groups"),
-      ).toBeInTheDocument();
+      expect(screen.getByText("Your organization's groups")).toBeInTheDocument();
     });
 
     it('shows red dot on Admins tab until clicked and persists hidden state', async () => {
@@ -328,12 +270,8 @@ describe('<PeopleManagementPage >', () => {
         portalConfiguration: {
           enterpriseId: enterpriseUUID,
           enterpriseSlug,
-          enterpriseFeatures: {
-            enterpriseInviteAdminsEnabled: true,
-          },
         },
       };
-
       const { unmount } = render(
         <PeopleManagementPageWrapper initialState={storeState} />,
       );
@@ -358,12 +296,8 @@ describe('<PeopleManagementPage >', () => {
         portalConfiguration: {
           enterpriseId: enterpriseUUID,
           enterpriseSlug,
-          enterpriseFeatures: {
-            enterpriseInviteAdminsEnabled: true,
-          },
         },
       };
-
       render(<PeopleManagementPageWrapper initialState={storeState} />);
 
       const learnersTab = screen.getByRole('tab', { name: /learners/i });
@@ -390,12 +324,8 @@ describe('<PeopleManagementPage >', () => {
         portalConfiguration: {
           enterpriseId: enterpriseUUID,
           enterpriseSlug,
-          enterpriseFeatures: {
-            enterpriseInviteAdminsEnabled: true,
-          },
         },
       };
-
       render(<PeopleManagementPageWrapper initialState={storeState} />);
 
       const learnersTab = screen.getByRole('tab', { name: /learners/i });

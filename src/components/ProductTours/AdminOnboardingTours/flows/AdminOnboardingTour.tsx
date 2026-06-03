@@ -9,7 +9,6 @@ import {
   ALLOCATE_LEARNING_BUDGETS_TARGETS,
   ANALYTICS_V2_TARGETS,
 } from '../constants';
-
 import { TourStep } from '../../types';
 import LmsApiService from '../../../../data/services/LmsApiService';
 import AdministerSubscriptionsFlow from './AdministerSubscriptionsFlow';
@@ -26,9 +25,6 @@ interface AdminOnboardingTourProps {
   adminUuid: string;
   currentStep: number;
   enablePortalLearnerCreditManagementScreen: boolean;
-  enterpriseFeatures: {
-    enterpriseInviteAdminsEnabled?: boolean;
-  }
   enterpriseId: string;
   enterpriseSlug: string;
   onClose: () => void;
@@ -41,7 +37,6 @@ const AdminOnboardingTour = (
     adminUuid,
     currentStep,
     enablePortalLearnerCreditManagementScreen,
-    enterpriseFeatures,
     enterpriseSlug,
     onClose,
     setCurrentStep,
@@ -85,7 +80,7 @@ const AdminOnboardingTour = (
   });
   const organizeLearnersFlow = OrganizeLearnersFlow({
     enterpriseId,
-    enableInviteAdmins: enterpriseFeatures?.enterpriseInviteAdminsEnabled ?? false,
+    enableInviteAdmins: true,
     handleAdvanceTour,
     handleBackTour,
     handleEndTour,
@@ -93,7 +88,6 @@ const AdminOnboardingTour = (
   const allocateLearningBudgetsFlow = useAllocateLearningBudgetsFlow({
     currentStep,
     enablePortalLearnerCreditManagementScreen,
-    enterpriseFeatures,
     enterpriseId,
     enterpriseSlug,
     handleBackTour,

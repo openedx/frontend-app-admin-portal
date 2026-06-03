@@ -31,7 +31,6 @@ export const setPeopleManagementTabFromTour = (tabKey) => {
     setTabFromTourHandler(tabKey);
   }
 };
-
 export const getPeopleManagementActiveTabForTour = () => {
   if (typeof getActiveTabFromTourHandler === 'function') {
     return getActiveTabFromTourHandler();
@@ -39,7 +38,7 @@ export const getPeopleManagementActiveTabForTour = () => {
   return null;
 };
 
-const PeopleManagementPage = ({ enterpriseId, learnersTabEnabled }) => {
+const PeopleManagementPage = ({ enterpriseId }) => {
   const intl = useIntl();
   const PAGE_TITLE = intl.formatMessage({
     id: 'admin.portal.people.management.page',
@@ -64,10 +63,9 @@ const PeopleManagementPage = ({ enterpriseId, learnersTabEnabled }) => {
   const hasOtherSubsidyTypes = enterpriseSubsidyTypes.includes(SUBSIDY_TYPES.license)
     || enterpriseSubsidyTypes.includes(SUBSIDY_TYPES.coupon);
 
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [isModalOpen, openModal, closeModal] = useToggle(false);
   const [groups, setGroups] = useState();
-  const [activeTab, setActiveTab] = useState(learnersTabEnabled ? 'learners' : null);
+  const [activeTab, setActiveTab] = useState('learners');
 
   const {
     adminsTabNotificationBubble,
@@ -154,66 +152,52 @@ const PeopleManagementPage = ({ enterpriseId, learnersTabEnabled }) => {
         closeToast={closeGroupInviteErrorModal}
       />
       <div className="mx-3 mt-4">
-        {learnersTabEnabled ? (
-        // NOTE:  this Tabs wrapper is intentional as we’ll be adding additional tabs soon.
-          <Tabs
-            activeKey={activeTab}
-            onSelect={handleTabSelect}
+        <Tabs
+          activeKey={activeTab}
+          onSelect={handleTabSelect}
+        >
+          <Tab
+            eventKey="learners"
+            title={(
+              <span id={ORGANIZE_LEARNER_TARGETS.LEARNERS_TAB}>
+                {intl.formatMessage({
+                  id: 'adminPortal.peopleManagement.tabs.learners',
+                  defaultMessage: 'Learners',
+                  description: 'Learners tab title for people management page.',
+                })}
+              </span>
+            )}
           >
-            <Tab
-              eventKey="learners"
-              title={(
-                <span id={ORGANIZE_LEARNER_TARGETS.LEARNERS_TAB}>
-                  {intl.formatMessage({
-                    id: 'adminPortal.peopleManagement.tabs.learners',
-                    defaultMessage: 'Learners',
-                    description: 'Learners tab title for people management page.',
-                  })}
-                </span>
-              )}
-            >
-              <div className="pt-4">
-                <LearnerTabContent
-                  hasLearnerCredit={hasLearnerCredit}
-                  hasOtherSubsidyTypes={hasOtherSubsidyTypes}
-                  handleOnClickCreateGroup={handleOnClickCreateGroup}
-                  isModalOpen={isModalOpen}
-                  openModal={openModal}
-                  closeModal={closeModal}
-                  handleInviteError={handleInviteError}
-                  groupsCardSection={groupsCardSection}
-                />
-              </div>
-            </Tab>
-            <Tab
-              id={ORGANIZE_LEARNER_TARGETS.ADMINS_TAB}
-              eventKey="admins"
-              tabClassName={ORGANIZE_LEARNER_TARGETS.ADMINS_TAB}
-              title={(
-                <span className="position-relative">
-                  {intl.formatMessage({
-                    id: 'adminPortal.peopleManagement.tabs.admins',
-                    defaultMessage: 'Admins',
-                  })}
-                  {adminsTabNotificationBubble}
-                </span>
-              )}
-            >
-              <InviteAdminsTable />
-            </Tab>
-          </Tabs>
-        ) : (
-          <LearnerTabContent
-            hasLearnerCredit={hasLearnerCredit}
-            hasOtherSubsidyTypes={hasOtherSubsidyTypes}
-            handleOnClickCreateGroup={handleOnClickCreateGroup}
-            isModalOpen={isModalOpen}
-            openModal={openModal}
-            closeModal={closeModal}
-            handleInviteError={handleInviteError}
-            groupsCardSection={groupsCardSection}
-          />
-        )}
+            <div className="pt-4">
+              <LearnerTabContent
+                hasLearnerCredit={hasLearnerCredit}
+                hasOtherSubsidyTypes={hasOtherSubsidyTypes}
+                handleOnClickCreateGroup={handleOnClickCreateGroup}
+                isModalOpen={isModalOpen}
+                openModal={openModal}
+                closeModal={closeModal}
+                handleInviteError={handleInviteError}
+                groupsCardSection={groupsCardSection}
+              />
+            </div>
+          </Tab>
+          <Tab
+            id={ORGANIZE_LEARNER_TARGETS.ADMINS_TAB}
+            eventKey="admins"
+            tabClassName={ORGANIZE_LEARNER_TARGETS.ADMINS_TAB}
+            title={(
+              <span className="position-relative">
+                {intl.formatMessage({
+                  id: 'adminPortal.peopleManagement.tabs.admins',
+                  defaultMessage: 'Admins',
+                })}
+                {adminsTabNotificationBubble}
+              </span>
+            )}
+          >
+            <InviteAdminsTable />
+          </Tab>
+        </Tabs>
       </div>
     </>
   );
@@ -221,16 +205,10 @@ const PeopleManagementPage = ({ enterpriseId, learnersTabEnabled }) => {
 
 const mapStateToProps = (state) => ({
   enterpriseId: state.portalConfiguration.enterpriseId,
-  learnersTabEnabled: state.portalConfiguration.enterpriseFeatures?.enterpriseInviteAdminsEnabled ?? false,
 });
 
 PeopleManagementPage.propTypes = {
   enterpriseId: PropTypes.string.isRequired,
-  learnersTabEnabled: PropTypes.bool,
-};
-
-PeopleManagementPage.defaultProps = {
-  learnersTabEnabled: false,
 };
 
 export default connect(mapStateToProps)(PeopleManagementPage);

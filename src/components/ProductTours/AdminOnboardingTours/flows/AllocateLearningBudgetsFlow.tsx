@@ -12,8 +12,6 @@ import { configuration } from '../../../../config';
 interface CreateTourFlowsProps {
   currentStep: number;
   enablePortalLearnerCreditManagementScreen: boolean;
-  enterpriseFeatures: {
-  };
   enterpriseId: string;
   enterpriseSlug: string;
   handleBackTour: (backEventName: string) => void;
