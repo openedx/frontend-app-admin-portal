@@ -11,8 +11,14 @@ import { axe } from 'jest-axe';
 import TourCollapsible from '../TourCollapsible';
 import { queryClient } from '../../test/testUtils';
 import { EnterpriseSubsidiesContext } from '../../EnterpriseSubsidiesContext';
+import { EnterpriseAppContext } from '../../EnterpriseApp/EnterpriseAppContextProvider';
 import { features } from '../../../config';
 import { accessibilitySettings } from '../../../../tests/accessibility-settings';
+
+jest.mock('@edx/frontend-platform', () => ({
+  ...jest.requireActual('@edx/frontend-platform'),
+  getConfig: jest.fn().mockReturnValue({ FEATURE_CONTENT_HIGHLIGHTS: true }),
+}));
 
 // Mock FloatingCollapsible component
 jest.mock('../../FloatingCollapsible', () => {
@@ -81,10 +87,17 @@ const defaultEnterpriseSubsidiesContextValue = {
 
 const mockSetShowCollapsible = jest.fn();
 
+const defaultEnterpriseAppContextValue = {
+  enterpriseCuration: {
+    enterpriseCuration: { isHighlightFeatureActive: false },
+  },
+};
+
 const setup = (
   storeState = defaultState,
   showCollapsible = false,
   subsidiesContextValue = defaultEnterpriseSubsidiesContextValue,
+  enterpriseAppContextValue = defaultEnterpriseAppContextValue,
 ) => {
   const store = mockStore(storeState);
   store.dispatch = jest.fn();
@@ -93,13 +106,15 @@ const setup = (
     <QueryClientProvider client={queryClient()}>
       <IntlProvider locale="en">
         <Provider store={store}>
-          <EnterpriseSubsidiesContext.Provider value={subsidiesContextValue}>
-            <TourCollapsible
-              onTourSelect={jest.fn()}
-              showCollapsible={showCollapsible}
-              setShowCollapsible={mockSetShowCollapsible}
-            />
-          </EnterpriseSubsidiesContext.Provider>
+          <EnterpriseAppContext.Provider value={enterpriseAppContextValue}>
+            <EnterpriseSubsidiesContext.Provider value={subsidiesContextValue}>
+              <TourCollapsible
+                onTourSelect={jest.fn()}
+                showCollapsible={showCollapsible}
+                setShowCollapsible={mockSetShowCollapsible}
+              />
+            </EnterpriseSubsidiesContext.Provider>
+          </EnterpriseAppContext.Provider>
         </Provider>
       </IntlProvider>,
     </QueryClientProvider>,
@@ -228,6 +243,44 @@ describe('TourCollapsible', () => {
     expect(screen.queryByText('Organize learners')).toBeInTheDocument();
     expect(screen.queryByText('Customize reports')).toBeInTheDocument();
     expect(screen.queryByText('Set up preferences')).toBeInTheDocument();
+  });
+
+  it('displays the Showcase courses step when the edit highlights flag is enabled and highlights are available', () => {
+    const state = {
+      enterpriseCustomerAdmin: {
+        onboardingTourCompleted: false,
+        onboardingTourDismissed: false,
+        uuid: 'test-uuid',
+      },
+      portalConfiguration: {
+        enableSubscriptionManagementScreen: true,
+        enterpriseFeatures: { enterpriseEditHighlightsEnabled: true },
+      },
+    };
+    const appContext = {
+      enterpriseCuration: { enterpriseCuration: { isHighlightFeatureActive: true } },
+    };
+    setup(state, true, defaultEnterpriseSubsidiesContextValue, appContext);
+    expect(screen.queryByText('Showcase courses')).toBeInTheDocument();
+  });
+
+  it('does not display the Showcase courses step when the edit highlights flag is disabled', () => {
+    const state = {
+      enterpriseCustomerAdmin: {
+        onboardingTourCompleted: false,
+        onboardingTourDismissed: false,
+        uuid: 'test-uuid',
+      },
+      portalConfiguration: {
+        enableSubscriptionManagementScreen: true,
+        enterpriseFeatures: { enterpriseEditHighlightsEnabled: false },
+      },
+    };
+    const appContext = {
+      enterpriseCuration: { enterpriseCuration: { isHighlightFeatureActive: true } },
+    };
+    setup(state, true, defaultEnterpriseSubsidiesContextValue, appContext);
+    expect(screen.queryByText('Showcase courses')).not.toBeInTheDocument();
   });
 
   it('does not display enrollment insights step when analytics is disabled', () => {

@@ -35,6 +35,7 @@ import { EnterpriseAppContext } from '../EnterpriseApp/EnterpriseAppContextProvi
 interface Props {
   adminUuid: string;
   dismissOnboardingTour: (adminUuid: string) => void;
+  editHighlightsEnabled: boolean;
   enableAnalyticsScreen: boolean;
   enableReportingConfigScreen: boolean;
   enableSubscriptionManagementScreen: boolean;
@@ -56,6 +57,7 @@ const TourCollapsible: FC<Props> = (
   {
     adminUuid,
     dismissOnboardingTour: dismissTour,
+    editHighlightsEnabled,
     enableAnalyticsScreen,
     enableReportingConfigScreen,
     enableSubscriptionManagementScreen,
@@ -72,7 +74,10 @@ const TourCollapsible: FC<Props> = (
   const { canManageLearnerCredit } = useContext(EnterpriseSubsidiesContext);
   const { isLoadingCustomerAgreement, customerAgreement } = useContext(EnterpriseSubsidiesContext);
   const { enterpriseCuration: { enterpriseCuration } } = useContext(EnterpriseAppContext);
-  const isHighlightsAvailable = !!getConfig().FEATURE_CONTENT_HIGHLIGHTS
+  // The "Showcase courses" tour is gated behind the edit highlights feature flag,
+  // and only shown when the Highlights feature is actually available to the admin.
+  const isHighlightsAvailable = editHighlightsEnabled
+    && !!getConfig().FEATURE_CONTENT_HIGHLIGHTS
     && !!enterpriseCuration?.isHighlightFeatureActive;
 
   const handleDismiss = () => {
@@ -147,7 +152,7 @@ const TourCollapsible: FC<Props> = (
         ADMIN_ONBOARDING_UUIDS.FLOW_ORGANIZE_LEARNERS_UUID?.toString(),
       ],
       [CUSTOMIZE_REPORTS_SIDEBAR, ADMIN_ONBOARDING_UUIDS.FLOW_CUSTOMIZE_REPORTS_UUID?.toString()],
-      [EDIT_HIGHLIGHTS_TARGETS.HIGHLIGHTS_SIDEBAR, ADMIN_ONBOARDING_UUIDS.FLOW_EDIT_HIGHLIGHTS_UUID?.toString()],
+      [EDIT_HIGHLIGHTS_TARGETS.HIGHLIGHTS_SIDEBAR, ADMIN_ONBOARDING_UUIDS.FLOW_SHOWCASE_COURSES_UUID?.toString()],
       [TOUR_TARGETS.SETTINGS_SIDEBAR, ADMIN_ONBOARDING_UUIDS.FLOW_PREFERENCES_UUID?.toString()],
     ]);
 
@@ -188,6 +193,7 @@ const TourCollapsible: FC<Props> = (
     canManageLearnerCredit,
     customerAgreement?.subscriptions,
     enableAnalyticsScreen,
+    editHighlightsEnabled,
     enableReportingConfigScreen,
     enableSubscriptionManagementScreen,
     isHighlightsAvailable,
@@ -249,6 +255,8 @@ const TourCollapsible: FC<Props> = (
 
 const mapStateToProps = state => ({
   adminUuid: state.enterpriseCustomerAdmin.uuid as string,
+  editHighlightsEnabled:
+    (state.portalConfiguration.enterpriseFeatures?.enterpriseEditHighlightsEnabled ?? false) as boolean,
   enableAnalyticsScreen: state.portalConfiguration.enableAnalyticsScreen as boolean,
   enableReportingConfigScreen: state.portalConfiguration.enableReportingConfigScreen as boolean,
   enableSubscriptionManagementScreen: state.portalConfiguration.enableSubscriptionManagementScreen as boolean,
