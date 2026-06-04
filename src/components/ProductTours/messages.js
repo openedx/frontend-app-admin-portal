@@ -61,6 +61,16 @@ const messages = defineMessages({
     defaultMessage: 'With the new Portal Appearance feature, you can now upload a logo or select custom or theme colors to align the look and feel of your Admin and Learner Portals with your brand. Continue to Portal Appearance under Settings to learn more.',
     description: 'Body text for the portal appearance new feature tour.',
   },
+  lprUpdateTourBody: {
+    id: 'adminPortal.productTours.lprUpdateTour.body',
+    defaultMessage: "We replaced {boldPassDate} and {boldProgressStatus} with {boldCourseProgress} and {boldCoursePassingGrade}. Don''t worry, you can still find that data in the CSV download.",
+    description: 'Body text for the LPR report update tour.',
+  },
+  lprUpdateTourTitle: {
+    id: 'adminPortal.productTours.lprUpdateTour.title',
+    defaultMessage: 'Learner Progress Report Update',
+    description: 'Title for the LPR report update tour.',
+  },
 });
 
 export default messages;

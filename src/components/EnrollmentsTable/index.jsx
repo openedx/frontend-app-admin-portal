@@ -4,7 +4,7 @@ import { useIntl } from '@edx/frontend-platform/i18n';
 
 import TableContainer from '../../containers/TableContainer';
 import {
-  i18nFormatTimestamp, i18nFormatPassedTimestamp, i18nFormatProgressStatus, formatPercentage,
+  i18nFormatTimestamp, formatPercentage,
 } from '../../utils';
 import EnterpriseDataApiService from '../../data/services/EnterpriseDataApiService';
 
@@ -85,10 +85,18 @@ const EnrollmentsTable = () => {
     },
     {
       label: intl.formatMessage({
-        id: 'adminPortal.enrollmentsTable.passedDate',
-        defaultMessage: 'Passed Date',
+        id: 'adminPortal.enrollmentsTable.courseProgress',
+        defaultMessage: 'Course Progress',
       }),
-      key: 'passed_date',
+      key: 'course_progress',
+      columnSortable: true,
+    },
+    {
+      label: intl.formatMessage({
+        id: 'adminPortal.enrollmentsTable.coursePassingGrade',
+        defaultMessage: 'Course Passing Grade',
+      }),
+      key: 'course_passing_grade',
       columnSortable: true,
     },
     {
@@ -97,14 +105,6 @@ const EnrollmentsTable = () => {
         defaultMessage: 'Current Grade',
       }),
       key: 'current_grade',
-      columnSortable: true,
-    },
-    {
-      label: intl.formatMessage({
-        id: 'adminPortal.enrollmentsTable.progressStatus',
-        defaultMessage: 'Progress Status',
-      }),
-      key: 'progress_status',
       columnSortable: true,
     },
     {
@@ -126,13 +126,13 @@ const EnrollmentsTable = () => {
     enrollment_date: i18nFormatTimestamp({
       intl, timestamp: enrollment.enrollment_date,
     }),
-    passed_date: i18nFormatPassedTimestamp({ intl, timestamp: enrollment.passed_date }),
     user_account_creation_date: i18nFormatTimestamp({
       intl, timestamp: enrollment.user_account_creation_date,
     }),
-    progress_status: i18nFormatProgressStatus({ intl, progressStatus: enrollment.progress_status }),
     course_list_price: enrollment.course_list_price ? `$${enrollment.course_list_price}` : '',
     current_grade: formatPercentage({ decimal: enrollment.current_grade }),
+    course_progress: formatPercentage({ decimal: enrollment.course_progress }),
+    course_passing_grade: formatPercentage({ decimal: enrollment.course_passing_grade }),
   }));
 
   return (
@@ -142,7 +142,7 @@ const EnrollmentsTable = () => {
       fetchMethod={EnterpriseDataApiService.fetchCourseEnrollments}
       columns={enrollmentTableColumns}
       formatData={formatEnrollmentData}
-      defaultSortIndex={8}
+      defaultSortIndex={9}
       defaultSortType="desc"
       tableSortable
       customEmptyMessage={customEmptyMessage()}

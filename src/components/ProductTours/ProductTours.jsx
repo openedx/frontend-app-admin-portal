@@ -14,6 +14,7 @@ import highlightsTour from './highlightsTour';
 import analyticsTour from './AnalyticsTour';
 import browseAndRequestTour from './browseAndRequestTour';
 import adminsTabNewFeatureTour, { useAdminsTabNewFeatureTour } from './adminsTabNewFeatureTour';
+
 import { disableAll, filterCheckpoints } from './data/utils';
 import AdminOnboardingTours from './AdminOnboardingTours/AdminOnboardingTours';
 import {
@@ -24,12 +25,14 @@ import {
   PORTAL_APPEARANCE_TOUR_COOKIE_NAME,
   ANALYTICS_COOKIE_NAME,
   ADMINS_TAB_NEW_FEATURE_COOKIE_NAME,
+  LPR_UPDATE_COOKIE_NAME,
 } from './constants';
 
 import {
   useBrowseAndRequestTour, usePortalAppearanceTour, useLearnerCreditTour, useHighlightsTour,
   useAnalyticsTour, useLearnerDetailPageTour,
 } from './data/hooks';
+import lprUpdateTour, { useLprUpdateTour } from './lprUpdateTour';
 import TourCollapsible from './TourCollapsible';
 import {
   ADMINISTER_SUBSCRIPTIONS_TARGETS,
@@ -73,6 +76,7 @@ const ProductTours = ({
     [LEARNER_DETAIL_PAGE_COOKIE_NAME]: useLearnerDetailPageTour(),
     [PORTAL_APPEARANCE_TOUR_COOKIE_NAME]: usePortalAppearanceTour(enablePortalAppearance),
     [ADMINS_TAB_NEW_FEATURE_COOKIE_NAME]: useAdminsTabNewFeatureTour(),
+    [LPR_UPDATE_COOKIE_NAME]: useLprUpdateTour(),
   };
   const newFeatureTourCheckpoints = {
     [BROWSE_AND_REQUEST_TOUR_COOKIE_NAME]: browseAndRequestTour({ enterpriseSlug, intl }),
@@ -82,6 +86,7 @@ const ProductTours = ({
     [LEARNER_DETAIL_PAGE_COOKIE_NAME]: learnerDetailPageTour({ enterpriseSlug, intl }),
     [PORTAL_APPEARANCE_TOUR_COOKIE_NAME]: portalAppearanceTour({ enterpriseSlug, intl }),
     [ADMINS_TAB_NEW_FEATURE_COOKIE_NAME]: adminsTabNewFeatureTour({ enterpriseId, enterpriseSlug, intl }),
+    [LPR_UPDATE_COOKIE_NAME]: lprUpdateTour({ enterpriseSlug, intl }),
   };
   const checkpointsArray = filterCheckpoints(newFeatureTourCheckpoints, enabledFeatures);
   const tours = [{

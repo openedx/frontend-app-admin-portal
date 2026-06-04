@@ -168,7 +168,34 @@ exports[`LearnerActivityTable renders active learners table correctly 1`] = `
                   type="button"
                 >
                   <span>
-                    Passed Date
+                    Course Progress
+                    <span
+                      className="sr-only"
+                      data-testid="table-heading-sr"
+                    >
+                       
+                      click to sort
+                    </span>
+                     
+                    <span
+                      aria-hidden={true}
+                      className="fa fa-sort"
+                    />
+                  </span>
+                </button>
+              </th>
+              <th
+                className="sortable"
+                scope="col"
+              >
+                <button
+                  className="btn btn-header"
+                  disabled={false}
+                  onClick={[Function]}
+                  type="button"
+                >
+                  <span>
+                    Course Passing Grade
                     <span
                       className="sr-only"
                       data-testid="table-heading-sr"
@@ -196,33 +223,6 @@ exports[`LearnerActivityTable renders active learners table correctly 1`] = `
                 >
                   <span>
                     Current Grade
-                    <span
-                      className="sr-only"
-                      data-testid="table-heading-sr"
-                    >
-                       
-                      click to sort
-                    </span>
-                     
-                    <span
-                      aria-hidden={true}
-                      className="fa fa-sort"
-                    />
-                  </span>
-                </button>
-              </th>
-              <th
-                className="sortable"
-                scope="col"
-              >
-                <button
-                  className="btn btn-header"
-                  disabled={false}
-                  onClick={[Function]}
-                  type="button"
-                >
-                  <span>
-                    Progress Status
                     <span
                       className="sr-only"
                       data-testid="table-heading-sr"
@@ -311,19 +311,19 @@ exports[`LearnerActivityTable renders active learners table correctly 1`] = `
                 className=""
                 scope={null}
               >
-                September 23, 2018
+                50%
+              </td>
+              <td
+                className=""
+                scope={null}
+              >
+                70%
               </td>
               <td
                 className=""
                 scope={null}
               >
                 66%
-              </td>
-              <td
-                className=""
-                scope={null}
-              >
-                Failed
               </td>
               <td
                 className=""
@@ -373,19 +373,19 @@ exports[`LearnerActivityTable renders active learners table correctly 1`] = `
                 className=""
                 scope={null}
               >
-                September 22, 2018
+                75%
+              </td>
+              <td
+                className=""
+                scope={null}
+              >
+                60%
               </td>
               <td
                 className=""
                 scope={null}
               >
                 80%
-              </td>
-              <td
-                className=""
-                scope={null}
-              >
-                Passed
               </td>
               <td
                 className=""
@@ -710,7 +710,7 @@ exports[`LearnerActivityTable renders inactive past month learners table correct
                   type="button"
                 >
                   <span>
-                    Current Grade
+                    Course Progress
                     <span
                       className="sr-only"
                       data-testid="table-heading-sr"
@@ -737,7 +737,34 @@ exports[`LearnerActivityTable renders inactive past month learners table correct
                   type="button"
                 >
                   <span>
-                    Progress Status
+                    Course Passing Grade
+                    <span
+                      className="sr-only"
+                      data-testid="table-heading-sr"
+                    >
+                       
+                      click to sort
+                    </span>
+                     
+                    <span
+                      aria-hidden={true}
+                      className="fa fa-sort"
+                    />
+                  </span>
+                </button>
+              </th>
+              <th
+                className="sortable"
+                scope="col"
+              >
+                <button
+                  className="btn btn-header"
+                  disabled={false}
+                  onClick={[Function]}
+                  type="button"
+                >
+                  <span>
+                    Current Grade
                     <span
                       className="sr-only"
                       data-testid="table-heading-sr"
@@ -826,13 +853,19 @@ exports[`LearnerActivityTable renders inactive past month learners table correct
                 className=""
                 scope={null}
               >
-                66%
+                50%
               </td>
               <td
                 className=""
                 scope={null}
               >
-                Failed
+                70%
+              </td>
+              <td
+                className=""
+                scope={null}
+              >
+                66%
               </td>
               <td
                 className=""
@@ -882,13 +915,19 @@ exports[`LearnerActivityTable renders inactive past month learners table correct
                 className=""
                 scope={null}
               >
-                80%
+                75%
               </td>
               <td
                 className=""
                 scope={null}
               >
-                Passed
+                60%
+              </td>
+              <td
+                className=""
+                scope={null}
+              >
+                80%
               </td>
               <td
                 className=""
@@ -1177,7 +1216,7 @@ exports[`LearnerActivityTable renders inactive past week learners table correctl
                   type="button"
                 >
                   <span>
-                    Current Grade
+                    Course Progress
                     <span
                       className="sr-only"
                       data-testid="table-heading-sr"
@@ -1204,7 +1243,34 @@ exports[`LearnerActivityTable renders inactive past week learners table correctl
                   type="button"
                 >
                   <span>
-                    Progress Status
+                    Course Passing Grade
+                    <span
+                      className="sr-only"
+                      data-testid="table-heading-sr"
+                    >
+                       
+                      click to sort
+                    </span>
+                     
+                    <span
+                      aria-hidden={true}
+                      className="fa fa-sort"
+                    />
+                  </span>
+                </button>
+              </th>
+              <th
+                className="sortable"
+                scope="col"
+              >
+                <button
+                  className="btn btn-header"
+                  disabled={false}
+                  onClick={[Function]}
+                  type="button"
+                >
+                  <span>
+                    Current Grade
                     <span
                       className="sr-only"
                       data-testid="table-heading-sr"
@@ -1293,13 +1359,19 @@ exports[`LearnerActivityTable renders inactive past week learners table correctl
                 className=""
                 scope={null}
               >
-                66%
+                50%
               </td>
               <td
                 className=""
                 scope={null}
               >
-                Failed
+                70%
+              </td>
+              <td
+                className=""
+                scope={null}
+              >
+                66%
               </td>
               <td
                 className=""
@@ -1349,13 +1421,19 @@ exports[`LearnerActivityTable renders inactive past week learners table correctl
                 className=""
                 scope={null}
               >
-                80%
+                75%
               </td>
               <td
                 className=""
                 scope={null}
               >
-                Passed
+                60%
+              </td>
+              <td
+                className=""
+                scope={null}
+              >
+                80%
               </td>
               <td
                 className=""
