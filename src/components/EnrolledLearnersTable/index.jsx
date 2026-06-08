@@ -1,62 +1,122 @@
 import React from 'react';
+import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
 
 import { useIntl } from '@edx/frontend-platform/i18n';
+import { Alert, DataTable } from '@openedx/paragon';
+import { Error } from '@openedx/paragon/icons';
 
-import TableContainer from '../../containers/TableContainer';
 import { i18nFormatTimestamp } from '../../utils';
 import EnterpriseDataApiService from '../../data/services/EnterpriseDataApiService';
 
-const EnrolledLearnersTable = () => {
+const EnrolledLearnersTable = ({ enterpriseId }) => {
   const intl = useIntl();
+  const [data, setData] = React.useState([]);
+  const [itemCount, setItemCount] = React.useState(0);
+  const [pageCount, setPageCount] = React.useState(0);
+  const [isLoading, setIsLoading] = React.useState(false);
+  const [error, setError] = React.useState(null);
 
-  const tableColumns = [
+  const tableColumns = React.useMemo(() => [
     {
-      label: intl.formatMessage({
+      Header: intl.formatMessage({
         id: 'admin.portal.lpr.enrolled.learners.table.user_email.column.heading',
         defaultMessage: 'Email',
         description: 'Column heading for the user email column in the enrolled learners table',
       }),
-      key: 'user_email',
-      columnSortable: true,
+      accessor: 'user_email',
+      Cell: ({ value }) => <span data-hj-suppress>{value}</span>,
     },
     {
-      label: intl.formatMessage({
+      Header: intl.formatMessage({
         id: 'admin.portal.lpr.enrolled.learners.table.lms_user_created.column.heading',
         defaultMessage: 'Account Created',
         description: 'Column heading for the lms user created column in the enrolled learners table',
       }),
-      key: 'lms_user_created',
-      columnSortable: true,
+      accessor: 'lms_user_created',
+      Cell: ({ value }) => i18nFormatTimestamp({
+        intl,
+        timestamp: value,
+      }),
     },
     {
-      label: intl.formatMessage({
+      Header: intl.formatMessage({
         id: 'admin.portal.lpr.enrolled.learners.table.enrollment_count.column.heading',
         defaultMessage: 'Total Course Enrollment Count',
         description: 'Column heading for the course enrollment count column in the enrolled learners table',
       }),
-      key: 'enrollment_count',
-      columnSortable: true,
+      accessor: 'enrollment_count',
     },
-  ];
+  ], [intl]);
 
-  const formatLearnerData = learners => learners.map(learner => ({
-    ...learner,
-    user_email: <span data-hj-suppress>{learner.user_email}</span>,
-    lms_user_created: i18nFormatTimestamp({
-      intl, timestamp: learner.lms_user_created,
-    }),
-  }));
+  const fetchData = React.useCallback(async ({ pageIndex = 0, pageSize = 50, sortBy = [] } = {}) => {
+    const latestSort = sortBy[sortBy.length - 1];
+    const options = {
+      page: pageIndex + 1,
+      page_size: pageSize,
+    };
+
+    if (latestSort?.id) {
+      options.ordering = `${latestSort.desc ? '-' : ''}${latestSort.id}`;
+    }
+
+    setIsLoading(true);
+    setError(null);
+
+    try {
+      const response = await EnterpriseDataApiService.fetchEnrolledLearners(enterpriseId, options);
+      const responseData = response?.data || {};
+      const results = responseData.results || [];
+
+      setData(results);
+      setItemCount(responseData.count ?? results.length);
+      setPageCount(responseData.num_pages ?? 1);
+    } catch (err) {
+      setError(err);
+    } finally {
+      setIsLoading(false);
+    }
+  }, [enterpriseId]);
 
   return (
-    <TableContainer
-      id="enrolled-learners"
-      className="enrolled-learners"
-      fetchMethod={EnterpriseDataApiService.fetchEnrolledLearners}
-      columns={tableColumns}
-      formatData={formatLearnerData}
-      tableSortable
-    />
+    <>
+      {error && (
+        <Alert variant="danger" icon={Error}>
+          <Alert.Heading>Unable to load data</Alert.Heading>
+          <p>Try refreshing your screen {error.message}</p>
+        </Alert>
+      )}
+      <DataTable
+        isLoading={isLoading}
+        isPaginated
+        manualPagination
+        isSortable
+        manualSortBy
+        initialState={{
+          pageSize: 50,
+          pageIndex: 0,
+        }}
+        data={data}
+        itemCount={itemCount}
+        pageCount={pageCount}
+        fetchData={fetchData}
+        columns={tableColumns}
+      >
+        <DataTable.TableControlBar />
+        <DataTable.Table />
+        <DataTable.EmptyTable content="There are no results." />
+        <DataTable.TableFooter />
+      </DataTable>
+    </>
   );
 };
 
-export default EnrolledLearnersTable;
+EnrolledLearnersTable.propTypes = {
+  enterpriseId: PropTypes.string.isRequired,
+};
+
+const mapStateToProps = state => ({
+  enterpriseId: state.portalConfiguration.enterpriseId,
+});
+
+export default connect(mapStateToProps)(EnrolledLearnersTable);
