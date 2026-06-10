@@ -12,11 +12,11 @@ import { logError } from '@edx/frontend-platform/logging';
 import { downloadCsv, getTimeStampedFilename } from '../../utils';
 import EVENT_NAMES from '../../eventTracking';
 
-const csvHeaders = ['Name', 'Email', 'Joined Organization', 'Enrollments'];
+const csvHeaders = ['Name', 'Email', 'Joined Organization'];
 
 const dataEntryToRow = (entry) => {
-  const { enterpriseCustomerUser: { name, email, joinedOrg }, enrollments } = entry;
-  return [name, email, joinedOrg, enrollments];
+  const { enterpriseCustomerUser: { name, email, joinedOrg } } = entry;
+  return [name, email, joinedOrg];
 };
 
 const DownloadCsvButton = ({

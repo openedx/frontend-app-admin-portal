@@ -140,14 +140,6 @@ describe('<GroupDetailPageWrapper >', () => {
       pageSize: 10,
       sortBy: [{ desc: true, id: 'memberDetails' }],
     }));
-
-    await user.click(screen.getByText('Enrollments'));
-    await waitFor(() => expect(mockFetchEnterpriseGroupLearnersTableData).toHaveBeenCalledWith({
-      filters: [],
-      pageIndex: 0,
-      pageSize: 10,
-      sortBy: [{ desc: false, id: 'enrollmentCount' }],
-    }));
   });
   it('renders the GroupDetailPage when adminPortalLearnerProfileViewEnabled is false', async () => {
     const initialState = {

@@ -102,7 +102,7 @@ describe('DownloadCSVButton', () => {
     );
     expect(DEFAULT_PROPS.fetchData).toHaveBeenCalled();
     const expectedFileName = '2024-01-20-people-report.csv';
-    const expectedHeaders = ['Name', 'Email', 'Joined Organization', 'Enrollments'];
+    const expectedHeaders = ['Name', 'Email', 'Joined Organization'];
     expect(downloadCsv).toHaveBeenCalledWith(expectedFileName, mockData.results, expectedHeaders, expect.any(Function));
   });
   it('download button should handle error returned by the API endpoint.', async () => {

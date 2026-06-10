@@ -130,16 +130,6 @@ const GroupMembersTable = ({
             Cell: RecentActionTableCell,
             disableFilters: true,
           },
-          {
-            Header: intl.formatMessage({
-              id: 'people.management.groups.detail.page.members.columns.enrollments',
-              defaultMessage: 'Enrollments',
-              description: 'Enrollments column header in the Members table in the People management Groups detail page',
-            }),
-            accessor: 'enrollmentCount',
-            Cell: ({ row }) => row.original.enrollments,
-            disableFilters: true,
-          },
         ]}
         initialTableOptions={{
           getRowId: row => row?.memberDetails.userEmail,

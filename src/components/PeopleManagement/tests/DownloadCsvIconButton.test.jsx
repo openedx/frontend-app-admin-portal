@@ -114,7 +114,7 @@ describe('DownloadCsvIconButton', () => {
     );
     expect(DEFAULT_PROPS.fetchAllData).toHaveBeenCalled();
     const expectedFileName = '2024-04-20-Enterprise.csv';
-    const expectedHeaders = ['Name', 'Email', 'Recent action', 'Enrollments'];
+    const expectedHeaders = ['Name', 'Email', 'Recent action'];
     expect(downloadCsv).toHaveBeenCalledWith(expectedFileName, mockData.results, expectedHeaders, expect.any(Function));
   });
   it('download button should handle error returned by the API endpoint.', async () => {
@@ -171,7 +171,7 @@ describe('DownloadCsvIconButton', () => {
 
     expect(DEFAULT_PROPS.fetchAllData).toHaveBeenCalled();
     const expectedFileName = '2024-04-20-Enterprise.csv';
-    const expectedHeaders = ['Name', 'Email', 'Recent action', 'Enrollments'];
+    const expectedHeaders = ['Name', 'Email', 'Recent action'];
     expect(downloadCsv).toHaveBeenCalledWith(
       expectedFileName,
       [mockData.results[0]],
@@ -209,7 +209,7 @@ describe('DownloadCsvIconButton', () => {
 
     expect(DEFAULT_PROPS.fetchAllData).toHaveBeenCalled();
     const expectedFileName = '2024-04-20-Enterprise.csv';
-    const expectedHeaders = ['Name', 'Email', 'Recent action', 'Enrollments'];
+    const expectedHeaders = ['Name', 'Email', 'Recent action'];
     expect(downloadCsv).toHaveBeenCalledWith(expectedFileName, mockData.results, expectedHeaders, expect.any(Function));
   });
 });

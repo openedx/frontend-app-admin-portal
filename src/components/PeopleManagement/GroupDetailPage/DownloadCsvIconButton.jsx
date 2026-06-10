@@ -13,7 +13,7 @@ import GeneralErrorModal from '../GeneralErrorModal';
 import { downloadCsv, getTimeStampedFilename } from '../../../utils';
 import EVENT_NAMES from '../../../eventTracking';
 
-const csvHeaders = ['Name', 'Email', 'Recent action', 'Enrollments'];
+const csvHeaders = ['Name', 'Email', 'Recent action'];
 
 const DownloadCsvIconButton = ({
   enterpriseUUID,
@@ -42,8 +42,8 @@ const DownloadCsvIconButton = ({
   });
 
   const dataEntryToRow = (entry) => {
-    const { memberDetails: { userEmail, userName }, recentAction, enrollments } = entry;
-    return [userName, userEmail, recentAction, enrollments];
+    const { memberDetails: { userEmail, userName }, recentAction } = entry;
+    return [userName, userEmail, recentAction];
   };
 
   const handleClick = async () => {

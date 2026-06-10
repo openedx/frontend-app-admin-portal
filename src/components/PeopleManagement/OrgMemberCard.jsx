@@ -10,7 +10,7 @@ import { ORGANIZE_LEARNER_TARGETS } from '../ProductTours/AdminOnboardingTours/c
 
 const OrgMemberCard = ({ original, learnerProfileViewEnabled }) => {
   const { enterpriseSlug } = useParams();
-  const { enterpriseCustomerUser, enrollments } = original;
+  const { enterpriseCustomerUser } = original;
   const {
     name, joinedOrg, email, userId,
   } = enterpriseCustomerUser;
@@ -36,10 +36,6 @@ const OrgMemberCard = ({ original, learnerProfileViewEnabled }) => {
             <Col>
               <h5 className="pt-2 text-uppercase">Joined org</h5>
               {joinedOrg}
-            </Col>
-            <Col>
-              <h5 className="pt-2 text-uppercase">Enrollments</h5>
-              {enrollments}
             </Col>
             {learnerProfileViewEnabled && (
               <Col>
@@ -67,7 +63,6 @@ OrgMemberCard.propTypes = {
       name: PropTypes.string.isRequired,
       joinedOrg: PropTypes.string.isRequired,
     }),
-    enrollments: PropTypes.number.isRequired,
   }),
   learnerProfileViewEnabled: PropTypes.bool,
 };
