@@ -75,7 +75,7 @@ describe('Leaderboard Component', () => {
       {
         className: '.leaderboard-datatable-container',
         title: 'Leaderboard',
-        subtitle: 'Explore the top learners ranked by engagement metrics. The list is sorted by learning hours by default. To dive deeper, download the full CSV to explore and sort by other metrics. *Only learners who have passed the course and completed at least one engagement activity (watching a video, submitting a problem, or posting in forums) are included.',
+        subtitle: 'Explore the top learners ranked by engagement metrics. The list is sorted by learning hours by default. To dive deeper, download the full CSV to explore and sort by other metrics',
       },
     ];
 
