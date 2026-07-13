@@ -8,11 +8,19 @@ import { useIntl } from '@edx/frontend-platform/i18n';
 import { connect } from 'react-redux';
 import ActionCell from '../../SubsidyRequestManagementTable/ActionCell';
 import RequestDetailsCell from './RequestDetailsCell';
-import CustomTableControlBar from './CustomTableControlBar';
+// CustomTableControlBar removed - using tableActions instead
 import AmountCell from './AmountCell';
 import BnrRequestStatusCell from './BnrRequestStatusCell';
 import TableTextFilter from '../TableTextFilter';
 import { transformLearnerRequestStateCounts } from '../data/utils';
+import RequestsTableApproveAction from './RequestsTableApproveAction';
+import RequestsTableRefreshAction from './RequestsTableRefreshAction';
+
+const selectColumn = {
+  id: 'selection',
+  Header: DataTable.ControlledSelectHeader,
+  Cell: DataTable.ControlledSelect,
+};
 
 const RequestsTable = ({
   onApprove,
@@ -88,6 +96,9 @@ const RequestsTable = ({
       manualSortBy
       isPaginated
       manualPagination
+      isSelectable
+      manualSelectColumn={selectColumn}
+      SelectionStatusComponent={DataTable.ControlledSelectionStatus}
       defaultColumnValues={{ Filter: TableTextFilter }}
       itemCount={itemCount}
       pageCount={pageCount}
@@ -108,26 +119,16 @@ const RequestsTable = ({
           />
         ),
       }]}
+      bulkActions={[
+        <RequestsTableApproveAction onRefresh={onRefresh} />,
+      ]}
+      tableActions={[
+        <RequestsTableRefreshAction refresh={onRefresh} />,
+      ]}
       initialTableOptions={initialTableOptions}
       initialState={initialState}
       {...rest}
-    >
-      <CustomTableControlBar
-        onRefresh={onRefresh}
-        isLoading={isLoading}
-        intl={intl}
-      />
-      <DataTable.Table />
-      {!isLoading && (
-        <DataTable.EmptyTable content={intl.formatMessage({
-          id: 'learnerCreditManagement.budgetDetail.requestsTab.noResults',
-          defaultMessage: 'No results found',
-          description: 'Message displayed when no results are found in the requests table.',
-        })}
-        />
-      )}
-      <DataTable.TableFooter />
-    </DataTable>
+    />
   );
 };
 
