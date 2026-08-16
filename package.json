@@ -83,7 +83,7 @@
     "timeago.js": "4.0.2",
     "universal-cookie": "4.0.4",
     "use-context-selector": "^1.4.1",
-    "uuid": "9.0.1",
+    "uuid": "14.0.0",
     "validator": "13.15.22"
   },
   "peerDependencies": {
