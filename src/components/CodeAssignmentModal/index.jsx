@@ -1,10 +1,12 @@
-import React from 'react';
+import React, {
+  useState, useRef, useEffect, useCallback,
+} from 'react';
 import PropTypes from 'prop-types';
 import { reduxForm, SubmissionError } from 'redux-form';
 import {
   Button, ModalDialog, ActionRow, Form, Spinner,
 } from '@openedx/paragon';
-import { injectIntl, intlShape } from '@edx/frontend-platform/i18n';
+import { useIntl } from '@edx/frontend-platform/i18n';
 
 import isEmail from 'validator/lib/isEmail';
 
@@ -35,166 +37,70 @@ import {
 } from './constants';
 import { getErrors } from './validation';
 
-export class BaseCodeAssignmentModal extends React.Component {
-  constructor(props) {
-    super(props);
+export const BaseCodeAssignmentModal = (props) => {
+  const {
+    submitFailed,
+    submitSucceeded,
+    onClose,
+    error,
+    setEmailAddress,
+    isBulkAssign,
+    couponId,
+    data = {},
+    sendCodeAssignment,
+    createPendingEnterpriseUsers,
+    enableLearnerPortal,
+    enterpriseSlug,
+    enterpriseUuid,
+    couponDetailsTable,
+    currentEmail,
+    handleSubmit,
+    submitting,
+    title,
+  } = props;
 
-    this.errorMessageRef = React.createRef();
+  const { formatMessage } = useIntl();
 
-    this.state = {
-      mode: MODAL_TYPES.assign,
-      notify: true,
-    };
+  const {
+    code,
+    selectedCodes,
+    hasAllCodesSelected,
+  } = data;
 
-    this.setMode = this.setMode.bind(this);
-    this.setNotify = this.setNotify.bind(this);
-    this.validateFormData = this.validateFormData.bind(this);
-    this.handleModalSubmit = this.handleModalSubmit.bind(this);
-    this.getNumberOfSelectedCodes = this.getNumberOfSelectedCodes.bind(this);
-  }
+  const errorMessageRef = useRef();
+  const [mode, setMode] = useState(MODAL_TYPES.assign);
+  const [notify, setNotify] = useState(true);
 
-  componentDidUpdate(prevProps) {
-    const {
-      submitFailed,
-      submitSucceeded,
-      onClose,
-      error,
-    } = this.props;
-    const {
-      mode,
-    } = this.state;
+  useEffect(() => {
+    const errorMessageElement = errorMessageRef.current;
 
-    const errorMessageRef = this.errorMessageRef && this.errorMessageRef.current;
-
-    if (mode === MODAL_TYPES.assign && submitSucceeded && submitSucceeded !== prevProps.submitSucceeded) {
+    if (mode === MODAL_TYPES.assign && submitSucceeded) {
       onClose();
     }
 
-    if (submitFailed && error !== prevProps.error && errorMessageRef) {
-      // When there is an new error, focus on the error message status alert
-      errorMessageRef.focus();
+    if (submitFailed && error && errorMessageElement) {
+      errorMessageElement.focus();
     }
-  }
+  }, [submitSucceeded, submitFailed, error, mode, onClose]);
 
-  componentWillUnmount() {
-    this.props.setEmailAddress('', MODAL_TYPES.assign);
-  }
+  useEffect(() => () => {
+    setEmailAddress('', MODAL_TYPES.assign);
+  }, [setEmailAddress]);
 
-  handleModalSubmit(formData) {
-    const {
-      isBulkAssign,
-      couponId,
-      data: {
-        code,
-        selectedCodes,
-        hasAllCodesSelected,
-      },
-      sendCodeAssignment,
-      createPendingEnterpriseUsers,
-      enableLearnerPortal,
-      enterpriseSlug,
-      enterpriseUuid,
-    } = this.props;
+  const handleModeSet = useCallback((newMode) => {
+    setMode(newMode);
+  }, []);
 
-    this.setMode(MODAL_TYPES.assign);
+  const handleNotifyToggle = useCallback(() => {
+    setNotify(prevNotify => !prevNotify);
+  }, []);
 
-    const { notify } = this.state;
-
-    // Validate form data
-    this.validateFormData(formData);
-    // Configure the options to send to the assignment API endpoint
-    const options = {
-      template: formData[EMAIL_TEMPLATE_BODY_ID],
-      template_subject: formData[EMAIL_TEMPLATE_SUBJECT_KEY],
-      template_greeting: formData[EMAIL_TEMPLATE_GREETING_ID],
-      template_closing: formData[EMAIL_TEMPLATE_CLOSING_ID],
-      ...(features.FILE_ATTACHMENT && {
-        template_files: formData[EMAIL_TEMPLATE_FILES_ID],
-      }),
-      enable_nudge_emails: formData[EMAIL_TEMPLATE_NUDGE_EMAIL_ID],
-      notify_learners: notify,
-    };
-    // If the enterprise has a learner portal, we should direct users to it in our assignment email
-    if (enableLearnerPortal && configuration.ENTERPRISE_LEARNER_PORTAL_URL) {
-      options.base_enterprise_url = `${configuration.ENTERPRISE_LEARNER_PORTAL_URL}/${enterpriseSlug}`;
-    }
-
-    if (formData['template-id']) {
-      options.template_id = formData['template-id'];
-    }
-
-    const hasTextAreaEmails = !!formData[EMAIL_ADDRESS_TEXT_FORM_DATA];
-    const emails = hasTextAreaEmails ? formData[EMAIL_ADDRESS_TEXT_FORM_DATA].split(/\r\n|\n/) : formData[EMAIL_ADDRESS_CSV_FORM_DATA];
-    const { validEmails } = this.validateEmailAddresses(emails, !hasTextAreaEmails);
-
-    if (isBulkAssign) {
-      // Only includes `codes` in `options` if not all codes are selected.
-      if (!hasAllCodesSelected) {
-        options.codes = selectedCodes.map(selectedCode => selectedCode.code);
-      }
-    } else {
-      options.codes = [code.code];
-    }
-
-    let pendingEnterpriseUserData;
-    if (validEmails.length) {
-      pendingEnterpriseUserData = validEmails.map((email) => ({
-        user_email: email,
-        enterprise_customer: enterpriseUuid,
-      }));
-    } else {
-      pendingEnterpriseUserData = {
-        user_email: formData['email-address'],
-        enterprise_customer: enterpriseUuid,
-      };
-    }
-    const assignmentEmails = isBulkAssign ? validEmails : [formData['email-address']];
-    options.users = this.usersEmail(assignmentEmails);
-
-    return createPendingEnterpriseUsers(pendingEnterpriseUserData, enterpriseUuid)
-      .then(() => sendCodeAssignment(couponId, options))
-      .then((response) => {
-        this.props.onSuccess(response);
-      })
-      .catch((error) => {
-        const { response, message } = error;
-        const nonFieldErrors = response && response.data && response.data.non_field_errors;
-
-        let errors = [message];
-
-        if (nonFieldErrors) {
-          errors = [errors, ...nonFieldErrors];
-        }
-
-        throw new SubmissionError({
-          _error: errors,
-        });
-      });
-  }
-
-  setMode(mode) {
-    this.setState({ mode });
-  }
-
-  setNotify() {
-    this.setState(prevState => ({ notify: !prevState.notify }));
-  }
-
-  getNumberOfSelectedCodes() {
-    const {
-      data: {
-        selectedCodes,
-        hasAllCodesSelected,
-      },
-      couponDetailsTable: { data: tableData },
-    } = this.props;
-
+  const getNumberOfSelectedCodes = useCallback(() => {
     const numberOfSelectedCodes = selectedCodes ? selectedCodes.length : 0;
+    return hasAllCodesSelected ? couponDetailsTable?.data?.count : numberOfSelectedCodes;
+  }, [selectedCodes, hasAllCodesSelected, couponDetailsTable]);
 
-    return hasAllCodesSelected ? tableData.count : numberOfSelectedCodes;
-  }
-
-  usersEmail(emails) {
+  const usersEmail = useCallback((emails) => {
     const users = [];
     emails.forEach((email) => {
       users.push({
@@ -202,9 +108,9 @@ export class BaseCodeAssignmentModal extends React.Component {
       });
     });
     return users;
-  }
+  }, []);
 
-  validateEmailAddresses(emails, isCSV = false) {
+  const validateEmailAddresses = useCallback((emails, isCSV = false) => {
     let learnerEmails = emails;
     const result = {
       validEmails: [],
@@ -233,23 +139,23 @@ export class BaseCodeAssignmentModal extends React.Component {
       }
     });
     return result;
-  }
+  }, []);
 
-  validateBulkAssign(formData) {
-    const { data: { unassignedCodes, couponType } } = this.props;
+  const validateBulkAssign = useCallback((formData) => {
+    const { unassignedCodes, couponType } = data;
 
     const textAreaEmails = formData[EMAIL_ADDRESS_TEXT_FORM_DATA] && formData[EMAIL_ADDRESS_TEXT_FORM_DATA].split(/\r\n|\n/);
     const csvEmails = formData[EMAIL_ADDRESS_CSV_FORM_DATA];
     const {
       validEmails: validTextAreaEmails,
       invalidEmailIndices: invalidTextAreaEmails,
-    } = this.validateEmailAddresses(textAreaEmails);
+    } = validateEmailAddresses(textAreaEmails);
     const {
       validEmails: validCsvEmails,
       invalidEmailIndices: invalidCsvEmails,
-    } = this.validateEmailAddresses(csvEmails, true);
+    } = validateEmailAddresses(csvEmails, true);
 
-    const numberOfSelectedCodes = this.getNumberOfSelectedCodes();
+    const numberOfSelectedCodes = getNumberOfSelectedCodes();
     const shouldValidateSelectedCodes = ![ONCE_PER_CUSTOMER, MULTI_USE].includes(couponType);
 
     const errors = getErrors({
@@ -264,9 +170,9 @@ export class BaseCodeAssignmentModal extends React.Component {
     /* eslint-enable no-underscore-dangle */
 
     return errors;
-  }
+  }, [data, validateEmailAddresses, getNumberOfSelectedCodes]);
 
-  validateIndividualAssign(formData) {
+  const validateIndividualAssign = useCallback((formData) => {
     const inputKey = 'email-address';
     const emailAddress = formData[inputKey];
 
@@ -287,17 +193,16 @@ export class BaseCodeAssignmentModal extends React.Component {
     /* eslint-enable no-underscore-dangle */
 
     return errors;
-  }
+  }, []);
 
-  validateFormData(formData) {
-    const { isBulkAssign } = this.props;
+  const validateFormData = useCallback((formData) => {
     const emailTemplateKey = EMAIL_TEMPLATE_BODY_ID;
     let errors;
 
     if (isBulkAssign) {
-      errors = this.validateBulkAssign(formData);
+      errors = validateBulkAssign(formData);
     } else {
-      errors = this.validateIndividualAssign(formData);
+      errors = validateIndividualAssign(formData);
     }
 
     /* eslint-disable no-underscore-dangle */
@@ -314,41 +219,122 @@ export class BaseCodeAssignmentModal extends React.Component {
       throw new SubmissionError(errors);
     }
     /* eslint-enable no-underscore-dangle */
-  }
+  }, [isBulkAssign, validateBulkAssign, validateIndividualAssign]);
 
-  hasBulkAssignData() {
-    const { data } = this.props;
-    return ['unassignedCodes', 'selectedCodes'].every(key => key in data);
-  }
+  const handleModalSubmit = useCallback((formData) => {
+    handleModeSet(MODAL_TYPES.assign);
 
-  hasIndividualAssignData() {
-    const { data } = this.props;
-    return ['code', 'remainingUses'].every(key => key in data);
-  }
+    // Validate form data
+    validateFormData(formData);
+    // Configure the options to send to the assignment API endpoint
+    const options = {
+      template: formData[EMAIL_TEMPLATE_BODY_ID],
+      template_subject: formData[EMAIL_TEMPLATE_SUBJECT_KEY],
+      template_greeting: formData[EMAIL_TEMPLATE_GREETING_ID],
+      template_closing: formData[EMAIL_TEMPLATE_CLOSING_ID],
+      ...(features.FILE_ATTACHMENT && {
+        template_files: formData[EMAIL_TEMPLATE_FILES_ID],
+      }),
+      enable_nudge_emails: formData[EMAIL_TEMPLATE_NUDGE_EMAIL_ID],
+      notify_learners: notify,
+    };
+    // If the enterprise has a learner portal, we should direct users to it in our assignment email
+    if (enableLearnerPortal && configuration.ENTERPRISE_LEARNER_PORTAL_URL) {
+      options.base_enterprise_url = `${configuration.ENTERPRISE_LEARNER_PORTAL_URL}/${enterpriseSlug}`;
+    }
 
-  renderBody() {
-    const {
-      data,
-      isBulkAssign,
-      submitFailed,
-      error,
-      intl: { formatMessage },
-    } = this.props;
+    if (formData['template-id']) {
+      options.template_id = formData['template-id'];
+    }
 
-    const { mode, notify } = this.state;
-    const numberOfSelectedCodes = this.getNumberOfSelectedCodes();
+    const hasTextAreaEmails = !!formData[EMAIL_ADDRESS_TEXT_FORM_DATA];
+    const emails = hasTextAreaEmails ? formData[EMAIL_ADDRESS_TEXT_FORM_DATA].split(/\r\n|\n/) : formData[EMAIL_ADDRESS_CSV_FORM_DATA];
+    const { validEmails } = validateEmailAddresses(emails, !hasTextAreaEmails);
+
+    if (isBulkAssign) {
+      // Only includes `codes` in `options` if not all codes are selected.
+      if (!hasAllCodesSelected) {
+        options.codes = selectedCodes.map(selectedCode => selectedCode.code);
+      }
+    } else {
+      options.codes = [code.code];
+    }
+
+    let pendingEnterpriseUserData;
+    if (validEmails.length) {
+      pendingEnterpriseUserData = validEmails.map((email) => ({
+        user_email: email,
+        enterprise_customer: enterpriseUuid,
+      }));
+    } else {
+      pendingEnterpriseUserData = {
+        user_email: formData['email-address'],
+        enterprise_customer: enterpriseUuid,
+      };
+    }
+    const assignmentEmails = isBulkAssign ? validEmails : [formData['email-address']];
+    options.users = usersEmail(assignmentEmails);
+
+    return createPendingEnterpriseUsers(pendingEnterpriseUserData, enterpriseUuid)
+      .then(() => sendCodeAssignment(couponId, options))
+      .then((response) => {
+        props.onSuccess(response);
+      })
+      .catch((errorResponse) => {
+        const { response, message } = errorResponse;
+        const nonFieldErrors = response && response.data && response.data.non_field_errors;
+
+        let errors = [message];
+
+        if (nonFieldErrors) {
+          errors = [errors, ...nonFieldErrors];
+        }
+
+        throw new SubmissionError({
+          _error: errors,
+        });
+      });
+  }, [
+    handleModeSet,
+    validateFormData,
+    notify,
+    enableLearnerPortal,
+    enterpriseSlug,
+    validateEmailAddresses,
+    isBulkAssign,
+    hasAllCodesSelected,
+    selectedCodes,
+    code,
+    usersEmail,
+    createPendingEnterpriseUsers,
+    enterpriseUuid,
+    sendCodeAssignment,
+    couponId,
+    props,
+  ]);
+
+  const hasBulkAssignData = useCallback(() => (
+    ['unassignedCodes', 'selectedCodes'].every(key => key in data)
+  ), [data]);
+
+  const hasIndividualAssignData = useCallback(() => (
+    ['code', 'remainingUses'].every(key => key in data)
+  ), [data]);
+
+  const renderBody = () => {
+    const numberOfSelectedCodes = getNumberOfSelectedCodes();
 
     return (
       <>
-        {submitFailed && <ModalError title={ASSIGNMENT_ERROR_TITLES[mode]} errors={error} ref={this.errorMessageRef} />}
+        {submitFailed && <ModalError title={ASSIGNMENT_ERROR_TITLES[mode]} errors={error} ref={errorMessageRef} />}
         <div className="assignment-details mb-4">
-          {isBulkAssign && this.hasBulkAssignData() && (
+          {isBulkAssign && hasBulkAssignData() && (
             <>
               <p>Unassigned codes: {data.unassignedCodes}</p>
               {numberOfSelectedCodes > 0 && <p>{displaySelectedCodes(numberOfSelectedCodes)}</p>}
             </>
           )}
-          {!isBulkAssign && this.hasIndividualAssignData() && (
+          {!isBulkAssign && hasIndividualAssignData() && (
             <>
               <p>{displayCode(data.code.code)}</p>
               <p className="code-remaining-uses">Remaining Uses: {data.remainingUses}</p>
@@ -362,7 +348,7 @@ export class BaseCodeAssignmentModal extends React.Component {
         <div className="mt-4">
           <Form.Checkbox
             checked={notify}
-            onChange={this.setNotify}
+            onChange={handleNotifyToggle}
             data-testid={NOTIFY_LEARNERS_CHECKBOX_TEST_ID}
           >
             Notify learners by email
@@ -371,75 +357,61 @@ export class BaseCodeAssignmentModal extends React.Component {
             <EmailTemplateForm
               emailTemplateType={MODAL_TYPES.assign}
               fields={getAssignmentModalFields(formatMessage)}
-              currentEmail={this.props.currentEmail}
+              currentEmail={currentEmail}
             />
           )}
         </div>
 
       </>
     );
-  }
+  };
 
-  renderTitle() {
-    return this.props.title;
-  }
+  const renderTitle = () => title;
 
-  render() {
-    const {
-      isBulkAssign,
-      onClose,
-      submitting,
-      handleSubmit,
-    } = this.props;
-    const {
-      mode,
-    } = this.state;
-
-    return (
-      <ModalDialog
-        isOpen
-        size="lg"
-        onClose={onClose}
-        className="code-assignment"
-        hasCloseButton
-        isOverflowVisible={false}
-      >
-        <ModalDialog.Header>
-          <ModalDialog.Title>
-            {this.renderTitle()}
-          </ModalDialog.Title>
-        </ModalDialog.Header>
-        <ModalDialog.Body>
-          {this.renderBody()}
-        </ModalDialog.Body>
-        <ModalDialog.Footer>
-          <ActionRow>
-            <ModalDialog.CloseButton variant="link">
-              Cancel
-            </ModalDialog.CloseButton>
-            <Button
-              key="assign-submit-btn"
-              disabled={submitting}
-              onClick={handleSubmit(this.handleModalSubmit)}
-              data-testid={SUBMIT_BUTTON_TEST_ID}
-            >
-              <>
-                {mode === MODAL_TYPES.assign && submitting && <Spinner animation="border" className="mr-2" variant="light" size="sm" />}
-                {`Assign ${isBulkAssign ? 'Codes' : 'Code'}`}
-              </>
-            </Button>,
-            <SaveTemplateButton
-              key="save-assign-template-btn"
-              templateType={MODAL_TYPES.assign}
-              setMode={this.setMode}
-              handleSubmit={handleSubmit}
-            />,
-          </ActionRow>
-        </ModalDialog.Footer>
-      </ModalDialog>
-    );
-  }
-}
+  return (
+    <ModalDialog
+      isOpen
+      size="lg"
+      onClose={onClose}
+      className="code-assignment"
+      hasCloseButton
+      isOverflowVisible={false}
+    >
+      <ModalDialog.Header>
+        <ModalDialog.Title>
+          {renderTitle()}
+        </ModalDialog.Title>
+      </ModalDialog.Header>
+      <ModalDialog.Body>
+        {renderBody()}
+      </ModalDialog.Body>
+      <ModalDialog.Footer>
+        <ActionRow>
+          <ModalDialog.CloseButton variant="link">
+            Cancel
+          </ModalDialog.CloseButton>
+          <Button
+            key="assign-submit-btn"
+            disabled={submitting}
+            onClick={handleSubmit(handleModalSubmit)}
+            data-testid={SUBMIT_BUTTON_TEST_ID}
+          >
+            <>
+              {mode === MODAL_TYPES.assign && submitting && <Spinner animation="border" className="mr-2" variant="light" size="sm" />}
+              {`Assign ${isBulkAssign ? 'Codes' : 'Code'}`}
+            </>
+          </Button>,
+          <SaveTemplateButton
+            key="save-assign-template-btn"
+            templateType={MODAL_TYPES.assign}
+            setMode={handleModeSet}
+            handleSubmit={handleSubmit}
+          />,
+        </ActionRow>
+      </ModalDialog.Footer>
+    </ModalDialog>
+  );
+};
 
 BaseCodeAssignmentModal.defaultProps = {
   error: null,
@@ -486,11 +458,8 @@ BaseCodeAssignmentModal.propTypes = {
     unassignedCodes: PropTypes.number,
     remainingUses: PropTypes.number,
   }),
-
-  // injected
-  intl: intlShape.isRequired,
 };
 
 export default reduxForm({
   form: 'code-assignment-modal-form',
-})(injectIntl(BaseCodeAssignmentModal));
+})(BaseCodeAssignmentModal);
