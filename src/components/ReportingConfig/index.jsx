@@ -1,9 +1,9 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { Collapsible, Icon, Pagination } from '@openedx/paragon';
 import { Check, Close } from '@openedx/paragon/icons';
 import { camelCaseObject } from '@edx/frontend-platform';
-import { FormattedMessage, injectIntl, intlShape } from '@edx/frontend-platform/i18n';
+import { FormattedMessage, useIntl } from '@edx/frontend-platform/i18n';
 import EnterpriseCatalogApiService from '../../data/services/EnterpriseCatalogApiService';
 import LMSApiService from '../../data/services/LmsApiService';
 import ReportingConfigForm from './ReportingConfigForm';
@@ -14,53 +14,74 @@ import ErrorPage from '../ErrorPage';
 const STATUS_FULFILLED = 'fulfilled';
 const DEFAULT_PAGE_SIZE = 10;
 
-class ReportingConfig extends React.Component {
-  // eslint-disable-next-line react/state-in-constructor
-  state = {
-    loading: true,
-    reportingConfigs: [],
-    reportingConfigTypes: [],
-    error: undefined,
-    availableCatalogs: [],
-  };
+const ReportingConfig = ({
+  enterpriseId,
+}) => {
+  const intl = useIntl();
+  const [loading, setLoading] = useState(true);
+  const [reportingConfigs, setReportingConfigs] = useState([]);
+  const [reportingConfigTypes, setReportingConfigTypes] = useState([]);
+  const [error, setError] = useState(undefined);
+  const [availableCatalogs, setAvailableCatalogs] = useState([]);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [totalPages, setTotalPages] = useState(1);
+  const [totalRecords, setTotalRecords] = useState(0);
 
-  // eslint-disable-next-line react/sort-comp
-  newConfigFormRef = React.createRef();
+  const newConfigFormRef = React.createRef();
 
-  componentDidMount() {
+  useEffect(() => {
     Promise.allSettled([
-      LMSApiService.fetchReportingConfigs(this.props.enterpriseId),
-      EnterpriseCatalogApiService.fetchEnterpriseCustomerCatalogs(this.props.enterpriseId),
-      LMSApiService.fetchReportingConfigTypes(this.props.enterpriseId),
+      LMSApiService.fetchReportingConfigs(enterpriseId),
+      EnterpriseCatalogApiService.fetchEnterpriseCustomerCatalogs(enterpriseId),
+      LMSApiService.fetchReportingConfigTypes(enterpriseId),
     ])
       .then((responses) => {
-        let totalPages = responses[0].status === STATUS_FULFILLED ? responses[0].value.data.num_pages : 1;
-        if (!totalPages) {
-          totalPages = 1;
+        let totalPagesReceived = responses[0].status === STATUS_FULFILLED ? responses[0].value.data.num_pages : 1;
+        if (!totalPagesReceived) {
+          totalPagesReceived = 1;
         }
 
-        this.setState({
-          totalPages,
-          currentPage: 1,
-          totalRecords: responses[0].status === STATUS_FULFILLED ? responses[0].value.data.count : 0,
-          reportingConfigs: responses[0].status === STATUS_FULFILLED ? responses[0].value.data.results : undefined,
-          availableCatalogs: responses[1].status === STATUS_FULFILLED ? responses[1].value.data.results : undefined,
-          reportingConfigTypes: responses[2].status === STATUS_FULFILLED ? responses[2].value.data : undefined,
-          loading: false,
-        });
+        setTotalPages(totalPagesReceived);
+        setCurrentPage(1);
+        setTotalRecords(responses[0].status === STATUS_FULFILLED ? responses[0].value.data.count : 0);
+        setReportingConfigs(responses[0].status === STATUS_FULFILLED ? responses[0].value.data.results : undefined);
+        setAvailableCatalogs(responses[1].status === STATUS_FULFILLED ? responses[1].value.data.results : undefined);
+        setReportingConfigTypes(responses[2].status === STATUS_FULFILLED ? responses[2].value.data : undefined);
+        setLoading(false);
       })
-      .catch(error => this.setState({
-        error,
-        loading: false,
-      }));
-  }
+      .catch(err => {
+        setError(err);
+        setLoading(false);
+      });
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  /**
+   * Handles page select event and fetches the data for the selected page
+   * @param {number} page - The page number to fetch data for
+   */
+  const handlePageSelect = async (page) => {
+    setLoading(true);
+
+    try {
+      const response = await LMSApiService.fetchReportingConfigs(enterpriseId, page);
+      setTotalPages(response.data.num_pages || 1);
+      setTotalRecords(response.data.count);
+      setCurrentPage(page);
+      setReportingConfigs(response.data.results);
+      setLoading(false);
+    } catch (err) {
+      setLoading(false);
+      setError(err);
+    }
+  };
 
   /**
    * Creates a new reporting configuration, then updates this list with the response.
    * Returns if there is an error.
    * @param {FormData} formData
    */
-  createConfig = async (formData) => {
+  const createConfig = async (formData) => {
     try {
       // Transform data to snake_case format
       const transformedData = snakeCaseFormData(formData);
@@ -68,41 +89,39 @@ class ReportingConfig extends React.Component {
       // Post the new configuration to the backend
       await LMSApiService.postNewReportingConfig(transformedData);
 
-      const { totalRecords, totalPages } = this.state;
-
       // Determine the target page to navigate to
       const shouldAddNewPage = totalRecords % DEFAULT_PAGE_SIZE === 0 && totalRecords !== 0;
       const targetPage = shouldAddNewPage ? totalPages + 1 : totalPages;
 
       // Navigate to the appropriate page
-      this.handlePageSelect(targetPage);
+      handlePageSelect(targetPage);
 
       // Close the new config form
-      this.newConfigFormRef.current.close();
+      newConfigFormRef.current.close();
 
       return undefined;
-    } catch (error) {
-      return error;
+    } catch (err) {
+      return err;
     }
   };
 
-  deleteConfig = async (uuid) => {
+  const deleteConfig = async (uuid) => {
     try {
       await LMSApiService.deleteReportingConfig(uuid);
 
-      const isLastPage = this.state.currentPage === this.state.totalPages;
-      const hasOneRecord = this.state.reportingConfigs.length === 1;
+      const isLastPage = currentPage === totalPages;
+      const hasOneRecord = reportingConfigs.length === 1;
       const isOnlyRecordOnLastPage = hasOneRecord && isLastPage;
 
-      if (isOnlyRecordOnLastPage && this.state.currentPage > 1) {
-        this.handlePageSelect(this.state.totalPages - 1);
+      if (isOnlyRecordOnLastPage && currentPage > 1) {
+        handlePageSelect(totalPages - 1);
       } else {
-        this.handlePageSelect(this.state.currentPage);
+        handlePageSelect(currentPage);
       }
 
       return undefined;
-    } catch (error) {
-      return error;
+    } catch (err) {
+      return err;
     }
   };
 
@@ -112,179 +131,141 @@ class ReportingConfig extends React.Component {
    * @param {FormData} formData
    * @param {string} uuid -> The uuid of the configuration we are updating
    */
-  updateConfig = async (formData, uuid) => {
+  const updateConfig = async (formData, uuid) => {
     const transformedData = snakeCaseFormData(formData);
     try {
       const response = await LMSApiService.updateReportingConfig(transformedData, uuid);
-      const updatedIndex = this.state.reportingConfigs
+      const updatedIndex = reportingConfigs
         .findIndex(config => config.uuid === response.data.uuid);
-      const reportingConfigsCopy = [...this.state.reportingConfigs];
+      const reportingConfigsCopy = [...reportingConfigs];
       reportingConfigsCopy[updatedIndex] = response.data;
-      this.setState({ reportingConfigs: [...reportingConfigsCopy] });
+      setReportingConfigs([...reportingConfigsCopy]);
       return undefined;
-    } catch (error) {
-      return error;
+    } catch (err) {
+      return err;
     }
   };
 
-  /**
-   * Handles page select event and fetches the data for the selected page
-   * @param {number} page - The page number to fetch data for
-   */
-  handlePageSelect = async (page) => {
-    this.setState({
-      loading: true,
-    });
+  if (loading) {
+    return <LoadingMessage className="overview" />;
+  }
 
-    try {
-      const response = await LMSApiService.fetchReportingConfigs(this.props.enterpriseId, page);
-      this.setState({
-        totalPages: response.data.num_pages || 1,
-        totalRecords: response.data.count,
-        currentPage: page,
-        reportingConfigs: response.data.results,
-        loading: false,
-      });
-    } catch (error) {
-      this.setState({
-        loading: false,
-        error,
-      });
-    }
-  };
-
-  render() {
-    const {
-      reportingConfigs,
-      loading,
-      error,
-      availableCatalogs,
-      reportingConfigTypes,
-      currentPage,
-      totalPages,
-    } = this.state;
-    const { intl } = this.props;
-    if (loading) {
-      return <LoadingMessage className="overview" />;
-    }
-    if (error) {
-      return (
-        <ErrorPage
-          status={error.response && error.response.status}
-          message={error.message}
-        />
-      );
-    }
+  if (error) {
     return (
-      <main role="main">
-        <div>
-          {reportingConfigs && reportingConfigs.map(config => (
-            <div
-              key={config.uuid}
-              className="mb-3"
-            >
-              <Collapsible
-                styling="card"
-                className="shadow"
-                title={(
-                  <div className="row justify-content-around flex-fill">
-                    {config.active ? (
-                      <Icon
-                        className="col-1 text-success-300"
-                        src={Check}
-                      />
-                    ) : (
-                      <Icon
-                        className="col-1 text-danger-300"
-                        src={Close}
-                      />
-                    )}
-                    <div className="col">
-                      <h3 className="h6">
-                        <FormattedMessage
-                          id="admin.portal.reporting.config.title"
-                          defaultMessage="Report Type:"
-                          description="Title for the reporting configuration"
-                        />
-                      </h3>
-                      <p>{config.data_type}</p>
-                    </div>
-                    <div className="col">
-                      <h3 className="h6">
-                        <FormattedMessage
-                          id="admin.portal.reporting.config.delivery.method"
-                          defaultMessage="Delivery Method:"
-                          description="Title for the delivery method of the reporting configuration"
-                        />
-                      </h3>
-                      <p>{config.delivery_method}</p>
-                    </div>
-                    <div className="col">
-                      <h3 className="h6">
-                        <FormattedMessage
-                          id="admin.portal.reporting.config.frequency"
-                          defaultMessage="Frequency:"
-                          description="Title for the frequency of the reporting configuration"
-                        />
-                      </h3>
-                      <p>{config.frequency}</p>
-                    </div>
-                  </div>
-                  )}
-                data-testid="collapsible-trigger-reporting-config"
-              >
-                <ReportingConfigForm
-                  config={camelCaseObject(config)}
-                  updateConfig={this.updateConfig}
-                  createConfig={this.createConfig}
-                  deleteConfig={this.deleteConfig}
-                  availableCatalogs={camelCaseObject(availableCatalogs)}
-                  reportingConfigTypes={camelCaseObject(reportingConfigTypes)}
-                  enterpriseCustomerUuid={this.props.enterpriseId}
-                />
-              </Collapsible>
-            </div>
-          ))}
-
-          {reportingConfigs && reportingConfigs.length > 0 && (
-            <Pagination
-              variant="reduced"
-              onPageSelect={this.handlePageSelect}
-              pageCount={totalPages}
-              currentPage={currentPage}
-              paginationLabel="reporting configurations pagination"
-            />
-          )}
-
-          <Collapsible
-            styling="basic"
-            title={intl.formatMessage({
-              id: 'admin.portal.reporting.config.add',
-              defaultMessage: 'Add a reporting configuration',
-              description: 'Add a reporting configuration',
-            })}
-            className="col justify-content-center align-items-center"
-            ref={this.newConfigFormRef}
-          >
-            <div>
-              <ReportingConfigForm
-                createConfig={this.createConfig}
-                enterpriseCustomerUuid={this.props.enterpriseId}
-                availableCatalogs={camelCaseObject(availableCatalogs)}
-                reportingConfigTypes={camelCaseObject(reportingConfigTypes)}
-              />
-            </div>
-          </Collapsible>
-        </div>
-      </main>
+      <ErrorPage
+        status={error.response && error.response.status}
+        message={error.message}
+      />
     );
   }
-}
+
+  return (
+    <main role="main">
+      <div>
+        {reportingConfigs && reportingConfigs.map(config => (
+          <div
+            key={config.uuid}
+            className="mb-3"
+          >
+            <Collapsible
+              styling="card"
+              className="shadow"
+              title={(
+                <div className="row justify-content-around flex-fill">
+                  {config.active ? (
+                    <Icon
+                      className="col-1 text-success-300"
+                      src={Check}
+                    />
+                  ) : (
+                    <Icon
+                      className="col-1 text-danger-300"
+                      src={Close}
+                    />
+                  )}
+                  <div className="col">
+                    <h3 className="h6">
+                      <FormattedMessage
+                        id="admin.portal.reporting.config.title"
+                        defaultMessage="Report Type:"
+                        description="Title for the reporting configuration"
+                      />
+                    </h3>
+                    <p>{config.data_type}</p>
+                  </div>
+                  <div className="col">
+                    <h3 className="h6">
+                      <FormattedMessage
+                        id="admin.portal.reporting.config.delivery.method"
+                        defaultMessage="Delivery Method:"
+                        description="Title for the delivery method of the reporting configuration"
+                      />
+                    </h3>
+                    <p>{config.delivery_method}</p>
+                  </div>
+                  <div className="col">
+                    <h3 className="h6">
+                      <FormattedMessage
+                        id="admin.portal.reporting.config.frequency"
+                        defaultMessage="Frequency:"
+                        description="Title for the frequency of the reporting configuration"
+                      />
+                    </h3>
+                    <p>{config.frequency}</p>
+                  </div>
+                </div>
+                  )}
+              data-testid="collapsible-trigger-reporting-config"
+            >
+              <ReportingConfigForm
+                config={camelCaseObject(config)}
+                updateConfig={updateConfig}
+                createConfig={createConfig}
+                deleteConfig={deleteConfig}
+                availableCatalogs={camelCaseObject(availableCatalogs)}
+                reportingConfigTypes={camelCaseObject(reportingConfigTypes)}
+                enterpriseCustomerUuid={enterpriseId}
+              />
+            </Collapsible>
+          </div>
+        ))}
+
+        {reportingConfigs && reportingConfigs.length > 0 && (
+        <Pagination
+          variant="reduced"
+          onPageSelect={handlePageSelect}
+          pageCount={totalPages}
+          currentPage={currentPage}
+          paginationLabel="reporting configurations pagination"
+        />
+        )}
+
+        <Collapsible
+          styling="basic"
+          title={intl.formatMessage({
+            id: 'admin.portal.reporting.config.add',
+            defaultMessage: 'Add a reporting configuration',
+            description: 'Add a reporting configuration',
+          })}
+          className="col justify-content-center align-items-center"
+          ref={newConfigFormRef}
+        >
+          <div>
+            <ReportingConfigForm
+              createConfig={createConfig}
+              enterpriseCustomerUuid={enterpriseId}
+              availableCatalogs={camelCaseObject(availableCatalogs)}
+              reportingConfigTypes={camelCaseObject(reportingConfigTypes)}
+            />
+          </div>
+        </Collapsible>
+      </div>
+    </main>
+  );
+};
 
 ReportingConfig.propTypes = {
   enterpriseId: PropTypes.string.isRequired,
-  // injected
-  intl: intlShape.isRequired,
 };
 
-export default injectIntl(ReportingConfig);
+export default ReportingConfig;
