@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import PropTypes from 'prop-types';
 import { Collapsible, Icon, Pagination } from '@openedx/paragon';
 import { Check, Close } from '@openedx/paragon/icons';
@@ -27,7 +27,7 @@ const ReportingConfig = ({
   const [totalPages, setTotalPages] = useState(1);
   const [totalRecords, setTotalRecords] = useState(0);
 
-  const newConfigFormRef = React.createRef();
+  const newConfigFormRef = useRef();
 
   useEffect(() => {
     Promise.allSettled([
