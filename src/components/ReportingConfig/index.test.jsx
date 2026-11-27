@@ -162,6 +162,7 @@ jest.mock('../../data/services/LmsApiService', () => ({
     },
   }),
   deleteReportingConfig: jest.fn().mockResolvedValue(undefined),
+  postNewReportingConfig: jest.fn(),
   fetchReportingConfigTypes: jest.fn().mockResolvedValue({ data: reportingConfigTypes }),
 }));
 
@@ -287,10 +288,16 @@ describe('<ReportingConfig />', () => {
     const paginationComponent = wrapper.querySelectorAll('[class*="pagination-"]')?.[0] || null;
     expect(paginationComponent).toBeInTheDocument();
   });
-  it.skip('calls createConfig function and handles new configuration creation', async () => {
+  it('calls createConfig function and handles new configuration creation', async () => {
     const user = userEvent.setup();
-    // Mock the necessary API service methods
-    LmsApiService.postNewReportingConfig = jest.fn().mockResolvedValue({
+    LmsApiService.fetchReportingConfigs.mockResolvedValue({
+      data: {
+        ...mockConfigsData.data,
+        count: 10,
+        num_pages: 1,
+      },
+    });
+    LmsApiService.postNewReportingConfig.mockResolvedValue({
       data: {
         uuid: 'new-config-uuid',
         active: true,
@@ -300,20 +307,13 @@ describe('<ReportingConfig />', () => {
       },
     });
 
-    let wrapper;
-    await act(async () => {
-      const { container } = render(
-        <IntlProvider locale="en">
-          <ReportingConfig {...defaultProps} intl={mockIntl} />
-        </IntlProvider>,
-      );
-      wrapper = container;
-    });
+    render(
+      <IntlProvider locale="en">
+        <ReportingConfig {...defaultProps} intl={mockIntl} />
+      </IntlProvider>,
+    );
 
-    // Find and click the "Add a reporting configuration" collapsible
-    const CollapsibleTriggers = wrapper.querySelectorAll('div.collapsible-trigger');
-    const addConfigCollapsible = CollapsibleTriggers[CollapsibleTriggers.length - 1];
-    await user.click(addConfigCollapsible);
+    await user.click(await screen.findByRole('button', { name: 'Add a reporting configuration' }));
 
     // Select Values in form
     const deliveryMethodSelect = await screen.findByTestId('delivery-method-select');
@@ -328,16 +328,19 @@ describe('<ReportingConfig />', () => {
     expect(dataTypeSelect).toHaveValue('progress_v3');
     expect(frequencySelect).toHaveValue('monthly');
 
-    const submitButton = await screen.getByRole('button', { name: /submit/i });
-    await user.click(submitButton);
+    await user.type(screen.getByLabelText('Email(s)'), 'new_email@example.com');
+    await user.type(screen.getByLabelText('Password'), 'password');
+    const hourOfDayInput = screen.getByLabelText('Hour of Day');
+    await user.clear(hourOfDayInput);
+    await user.type(hourOfDayInput, '5');
 
-    // Verify that the postNewReportingConfig method was called
-    expect(LmsApiService.postNewReportingConfig).toHaveBeenCalled();
+    await user.click(screen.getByRole('button', { name: /submit/i }));
 
-    // Verify that a new page was fetched after configuration creation
-    expect(LmsApiService.fetchReportingConfigs).toHaveBeenCalledWith(
+    await waitFor(() => expect(LmsApiService.postNewReportingConfig).toHaveBeenCalledTimes(1));
+    // 10 records fill the last page, so the new config lands on page 2
+    await waitFor(() => expect(LmsApiService.fetchReportingConfigs).toHaveBeenCalledWith(
       defaultProps.enterpriseId,
-      expect.any(Number),
-    );
+      2,
+    ));
   });
 });

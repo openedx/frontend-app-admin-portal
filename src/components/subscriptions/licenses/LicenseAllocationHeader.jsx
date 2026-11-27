@@ -1,11 +1,12 @@
 import React, { useContext } from 'react';
-import { injectIntl, intlShape } from '@edx/frontend-platform/i18n';
+import { useIntl } from '@edx/frontend-platform/i18n';
 import { SubscriptionDetailContext } from '../SubscriptionDetailContextProvider';
 import { SubsidyRequestsContext } from '../../subsidy-requests';
 import NewFeatureAlertBrowseAndRequest from '../../NewFeatureAlertBrowseAndRequest';
 import { SUPPORTED_SUBSIDY_TYPES } from '../../../data/constants/subsidyRequests';
 
-const LicenseAllocationHeader = ({ intl }) => {
+const LicenseAllocationHeader = () => {
+  const intl = useIntl();
   const {
     subscription,
   } = useContext(SubscriptionDetailContext);
@@ -38,8 +39,4 @@ const LicenseAllocationHeader = ({ intl }) => {
   );
 };
 
-LicenseAllocationHeader.propTypes = {
-  intl: intlShape.isRequired,
-};
-
-export default injectIntl(LicenseAllocationHeader);
+export default LicenseAllocationHeader;
